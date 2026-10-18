@@ -10,7 +10,7 @@ import { ageText, byDateDesc, vaxStatus } from "./utils";
      Authorization: Bearer <Supabase access token>   (so the server knows who is asking)
      body  { messages: [{ role: "user" | "assistant", content }], pet: petContext(pet) | null }
      200 → { reply: "…", model?: "v1" }   (model: a version label, saved with ratings so retrains can be compared)
-     any other status → an error, optionally { message } to show the user
+     any other status → an error, optionally { message } or { detail } (FastAPI) to show the user
 
    This is a thesis pilot: answers are only as accurate as the model's training data, and the UI says so. */
 
@@ -20,7 +20,7 @@ const HISTORY = 10;   // earlier messages sent along as context
 /* The messages actually sent to the model: no error notes, only the last few, only role and text. */
 export const conversation = (messages) =>
   messages.filter((m) => !m.error).slice(-HISTORY).map(({ role, content }) => ({ role, content }));
-const TIMEOUT = 30000;
+const TIMEOUT = 60000;  // small models on a CPU can take a while
 
 /* ------------------------------------------------------------------ pet context
    A short summary of the pet's records, so answers can be about this pet. */
@@ -83,7 +83,7 @@ export async function askAssistant({ user, messages, pet, signal }) {
       body: JSON.stringify({ messages: conversation(messages), pet: petContext(pet) }),
     });
     const body = await res.json().catch(() => ({}));
-    if (!res.ok || typeof body.reply !== "string") throw new Error(body.message || "The assistant couldn't answer just now. Try again in a moment.");
+    if (!res.ok || typeof body.reply !== "string") throw new Error(body.message || body.detail || "The assistant couldn't answer just now. Try again in a moment.");
     return { reply: body.reply.trim(), model: typeof body.model === "string" ? body.model : null };
   } catch (e) {
     if (e.name === "AbortError") throw new Error(signal?.aborted ? "Cancelled" : "The assistant took too long to answer. Try again.");

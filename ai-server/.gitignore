@@ -1,0 +1,6 @@
+.env
+.venv/
+adapters/
+__pycache__/
+# Exported ratings contain users' questions and pet details
+data/feedback_*.jsonl

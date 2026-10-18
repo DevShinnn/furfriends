@@ -1,0 +1,7 @@
+# Training (train_lora.py), e.g. on Google Colab
+torch>=2.3
+transformers>=4.45
+peft>=0.12
+accelerate>=0.33
+datasets>=2.20
+trl>=0.20
