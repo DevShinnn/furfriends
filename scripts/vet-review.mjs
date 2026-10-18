@@ -25,7 +25,10 @@ const { emergency, breeds, breedCare, care, utils } = await import(pathToFileURL
 // The AI's instructions and sample answers live with the AI server.
 const py = readFileSync(join(ROOT, "ai-server/prompting.py"), "utf8");
 const systemPrompt = [...py.match(/SYSTEM_PROMPT = \(([\s\S]*?)\n\)/)[1].matchAll(/"((?:[^"\\]|\\.)*)"/g)].map((m) => m[1].replace(/\\'/g, "'")).join("");
-const samples = readFileSync(join(ROOT, "ai-server/data/sample_train.jsonl"), "utf8").trim().split("\n").map((l) => JSON.parse(l));
+const jsonl = (f) => readFileSync(join(ROOT, "ai-server/data", f), "utf8").trim().split("\n").map((l) => JSON.parse(l));
+const samples = jsonl("sample_train.jsonl");
+// Reference answers the AI is graded against (evaluate.py): the team's test set once it exists.
+const tests = jsonl(existsSync(join(ROOT, "ai-server/data/test.jsonl")) ? "test.jsonl" : "sample_test.jsonl");
 
 /* ---------------------------------------------------------------- html helpers */
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -98,13 +101,17 @@ const sectionC = `
 
 const sectionD = `
   <h2 class="part">D. AI assistant</h2>
-  <p class="lead">The assistant is a pilot model the team is training. These are the rules it is given for every answer, and example answers it is trained on. Every answer in the app is labelled “It isn't a vet. In an emergency, go to a vet now.”</p>
+  <p class="lead">The assistant is a pilot model the team is training. These are the rules it is given for every answer, example answers it is trained on, and the reference answers its accuracy is graded against. Every answer in the app is labelled “It isn't a vet. In an emergency, go to a vet now.”</p>
   ${item("D1", "Rules given to the AI", `<p>${esc(systemPrompt)}</p>`)}
   ${samples.map((s, i) => item(`D${i + 2}`, `Example answer: “${s.messages.at(-2).content}”`, `
     ${s.pet ? `<p class="meta-line">About: ${esc([s.pet.name, s.pet.species, s.pet.breed, s.pet.age, s.pet.weightKg && s.pet.weightKg + " kg"].filter(Boolean).join(", "))}</p>` : ""}
-    ${para(s.messages.at(-1).content)}`)).join("")}`;
+    ${para(s.messages.at(-1).content)}`)).join("")}
+  ${tests.map((t, i) => item(`D${samples.length + i + 2}`, `Test answer: “${t.messages.at(-2).content}”`, `
+    ${t.pet ? `<p class="meta-line">About: ${esc([t.pet.name, t.pet.species, t.pet.breed, t.pet.age, t.pet.weightKg && t.pet.weightKg + " kg"].filter(Boolean).join(", "))}</p>` : ""}
+    ${para(t.messages.at(-1).content)}`, `<span class="meta"><span class="tag">Accuracy test · ${esc(t.category || "general")}</span></span>`)).join("")}`;
 
-const count = 3 + GUIDES.length + BREED_DB.length + 2 + 1 + samples.length;
+const nD = 1 + samples.length + tests.length;
+const count = 3 + GUIDES.length + BREED_DB.length + 2 + nD;
 const today = new Date().toLocaleDateString("en-PH", { year: "numeric", month: "long", day: "numeric" });
 
 const html = `<!doctype html>
@@ -176,7 +183,7 @@ const html = `<!doctype html>
       <div>Reviewer name</div><div>PRC license no.</div>
       <div>Clinic / institution</div><div>Date received</div>
     </div>
-    <p class="lead">Contents: A. Emergency first aid (${GUIDES.length + 3} items) · B. Breed guide (${BREED_DB.length}) · C. Reminders and record-keeping (2) · D. AI assistant (${samples.length + 1})</p>
+    <p class="lead">Contents: A. Emergency first aid (${GUIDES.length + 3} items) · B. Breed guide (${BREED_DB.length}) · C. Reminders and record-keeping (2) · D. AI assistant (${nD})</p>
   </section>
   ${sectionA}
   ${sectionB}
@@ -184,7 +191,7 @@ const html = `<!doctype html>
   ${sectionD}
   <section class="signoff">
     <h2 class="part" style="break-before:auto">Sign-off</h2>
-    <div class="stmt">I have reviewed the content in this pack (items A1–A${GUIDES.length + 3}, B1–B${BREED_DB.length}, C1–C2 and D1–D${samples.length + 1}). Subject to the corrections I have marked, it is appropriate as general educational information for pet owners. It does not replace a veterinary examination.</div>
+    <div class="stmt">I have reviewed the content in this pack (items A1–A${GUIDES.length + 3}, B1–B${BREED_DB.length}, C1–C2 and D1–D${nD}). Subject to the corrections I have marked, it is appropriate as general educational information for pet owners. It does not replace a veterinary examination.</div>
     <p>☐ Approved with no changes &nbsp;&nbsp; ☐ Approved after the marked changes are made &nbsp;&nbsp; ☐ Not approved (see comments)</p>
     <div class="sign"><div>Signature</div><div>Date</div><div>Printed name</div><div>PRC license no.</div></div>
     <h4 style="margin-top:22px">General comments</h4>

@@ -53,7 +53,7 @@
   <section class="cover">
     <p class="sub">FurFriends · Capstone pilot · Content review</p>
     <h1>Veterinary review of pet health content</h1>
-    <p>FurFriends is a pet health records app for cat and dog owners in the Philippines. It shows owners first-aid steps, breed care information and reminders, and includes a pilot AI assistant. This pack contains all of that content (59 items), so a licensed veterinarian can check it before the app is tested with the public.</p>
+    <p>FurFriends is a pet health records app for cat and dog owners in the Philippines. It shows owners first-aid steps, breed care information and reminders, and includes a pilot AI assistant. This pack contains all of that content (75 items), so a licensed veterinarian can check it before the app is tested with the public.</p>
     <div class="how">
       <b>How to review</b>
       <ol>
@@ -67,7 +67,7 @@
       <div>Reviewer name</div><div>PRC license no.</div>
       <div>Clinic / institution</div><div>Date received</div>
     </div>
-    <p class="lead">Contents: A. Emergency first aid (19 items) · B. Breed guide (29) · C. Reminders and record-keeping (2) · D. AI assistant (9)</p>
+    <p class="lead">Contents: A. Emergency first aid (19 items) · B. Breed guide (29) · C. Reminders and record-keeping (2) · D. AI assistant (25)</p>
   </section>
   
   <h2 class="part">A. Emergency first aid</h2>
@@ -985,7 +985,7 @@
   </section>
   
   <h2 class="part">D. AI assistant</h2>
-  <p class="lead">The assistant is a pilot model the team is training. These are the rules it is given for every answer, and example answers it is trained on. Every answer in the app is labelled “It isn't a vet. In an emergency, go to a vet now.”</p>
+  <p class="lead">The assistant is a pilot model the team is training. These are the rules it is given for every answer, example answers it is trained on, and the reference answers its accuracy is graded against. Every answer in the app is labelled “It isn't a vet. In an emergency, go to a vet now.”</p>
   
   <section class="item">
     <header><span class="id">D1</span><h3>Rules given to the AI</h3></header>
@@ -1085,9 +1085,186 @@
     <div class="lines"><span>Corrections:</span><i></i><i></i></div>
   </div>
   </section>
+  
+  <section class="item">
+    <header><span class="id">D10</span><h3>Test answer: “My dog is breathing very fast and his gums look pale. What should I do?”</h3><span class="meta"><span class="tag">Accuracy test · emergency</span></span></header>
+    <div class="content">
+    
+    <p>Fast breathing with pale gums can mean shock, blood loss or a heart or lung problem. Go to a vet now.</p><p>While you get there:</p><ul><li>Keep him calm and still, and carry him if you can</li><li>Keep him at a comfortable temperature, not too hot</li><li>Don't give food, water or any medicine</li></ul><p>Call the clinic on the way so they're ready for you.</p></div>
+    
+  <div class="review" aria-label="Review D10">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D11</span><h3>Test answer: “My cat had a seizure that lasted about 2 minutes. She seems okay now.”</h3><span class="meta"><span class="tag">Accuracy test · emergency</span></span></header>
+    <div class="content">
+    
+    <p>A seizure always needs a vet check, even if she seems fine now. Call your vet today, and go straight away if she has another one, or if a seizure lasts more than 5 minutes.</p><p>Until then:</p><ul><li>Keep her somewhere quiet and dim, away from stairs</li><li>If it happens again, don't hold her or put anything in her mouth</li><li>Time it and, if you can, take a video for the vet</li></ul><p>Tell the vet about anything she could have eaten, such as medicines, insecticides or plants.</p></div>
+    
+  <div class="review" aria-label="Review D11">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D12</span><h3>Test answer: “My dog's belly is swollen and he keeps trying to vomit but nothing comes out.”</h3><span class="meta"><span class="tag">Accuracy test · emergency</span></span></header>
+    <div class="content">
+    
+    <p>A swollen belly with retching that brings nothing up can be bloat (stomach twisting). It can kill within hours. Go to a vet now.</p><ul><li>Don't wait to see if it passes</li><li>Don't give food, water or medicine</li><li>Call the clinic on the way so they can prepare</li></ul><p>Bloat is more common in large, deep-chested dogs, and after a big meal or exercise.</p></div>
+    
+  <div class="review" aria-label="Review D12">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D13</span><h3>Test answer: “My cat licked a lily flower. Is that dangerous?”</h3><span class="meta"><span class="tag">Accuracy test · poison</span></span></header>
+    <div class="content">
+    
+    <p>Yes. Lilies are very poisonous to cats. Even licking the pollen or drinking the vase water can cause kidney failure. Go to a vet now, even if she seems fine, because treatment works best in the first hours.</p><ul><li>Bring the plant or a photo of it</li><li>Wipe pollen off her fur and face with a damp cloth so she doesn't lick more</li><li>Don't make her vomit unless the vet tells you to</li></ul><p>Keep lilies out of any home with cats.</p></div>
+    
+  <div class="review" aria-label="Review D13">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D14</span><h3>Test answer: “Can dogs eat grapes?”</h3><span class="meta"><span class="tag">Accuracy test · poison</span></span></header>
+    <div class="content">
+    
+    <p>No. Grapes and raisins can cause sudden kidney failure in dogs, and even a few can be dangerous for some dogs. There's no safe amount.</p><p>If your dog ate grapes or raisins:</p><ul><li>Go to a vet now, even if they seem fine</li><li>Tell the vet how many and when</li></ul><p>Safer treats include small pieces of plain cooked chicken, carrot or apple without the seeds.</p></div>
+    
+  <div class="review" aria-label="Review D14">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D15</span><h3>Test answer: “When should my puppy get the anti-rabies vaccine?”</h3><span class="meta"><span class="tag">Accuracy test · vaccines</span></span></header>
+    <div class="content">
+    
+    <p>Puppies usually get their first anti-rabies shot at about 3 months old, then boosters as your vet advises, usually every year. In the Philippines, the Anti-Rabies Act requires dogs to be vaccinated against rabies.</p><ul><li>Many LGUs hold free anti-rabies vaccination drives, so ask your barangay or city vet</li><li>Keep the vaccination card, because you may need it for travel or boarding</li><li>Your puppy also needs the core puppy shots (such as 5-in-1), which your vet will schedule</li></ul></div>
+    
+  <div class="review" aria-label="Review D15">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D16</span><h3>Test answer: “How do I know if my dog has ticks?”</h3><span class="meta"><span class="tag">Accuracy test · parasites</span></span></header>
+    <div class="content">
+    
+    <p>Check your dog by running your hands slowly over the whole body. Ticks feel like small bumps and like to hide:</p><ul><li>In and around the ears</li><li>Between the toes</li><li>Around the neck, armpits and groin</li></ul><p>Other signs are scratching, small scabs, or ticks in your dog's bed. Ticks can spread serious blood diseases such as ehrlichiosis, which is common in the Philippines. See a vet if your dog is weak, has pale gums, a fever or nosebleeds.</p><p>Ask your vet for a tick prevention product that suits your dog's weight, and treat the yard and bedding too.</p></div>
+    
+  <div class="review" aria-label="Review D16">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D17</span><h3>Test answer: “How many times a day should I feed my kitten?”</h3><span class="meta"><span class="tag">Accuracy test · feeding</span></span></header>
+    <div class="content">
+    
+    <p>Kittens have small stomachs and grow fast, so feed small meals often:</p><ul><li>Up to about 6 months: 3-4 meals a day</li><li>After 6 months: 2 meals a day</li></ul><p>Use food made for kittens, and follow the amount on the pack for their weight. Always leave fresh water. Don't give cow's milk, because many cats can't digest it and get diarrhea.</p><p>Ask your vet to check their weight at each vaccination visit.</p></div>
+    
+  <div class="review" aria-label="Review D17">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D18</span><h3>Test answer: “Is it okay to give my dog leftover rice and fish bones?”</h3><span class="meta"><span class="tag">Accuracy test · feeding</span></span></header>
+    <div class="content">
+    
+    <p>Plain rice is fine now and then, but fish bones are not. Cooked bones can splinter and get stuck in the mouth, throat or gut.</p><ul><li>Remove all bones before sharing fish</li><li>Avoid salty, oily or spicy leftovers, and anything with onion or garlic</li><li>Leftovers alone aren't a complete diet, so base meals on a balanced dog food</li></ul><p>If your dog swallowed a bone and is gagging, drooling, vomiting or seems in pain, see a vet.</p></div>
+    
+  <div class="review" aria-label="Review D18">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D19</span><h3>Test answer: “How do I clean my dog's ears?”</h3><span class="meta"><span class="tag">Accuracy test · grooming</span></span></header>
+    <div class="content">
+    
+    <p>Clean only when the ears look dirty, often about once every 1-2 weeks.</p><ul><li>Use an ear cleaner for dogs, not alcohol or hydrogen peroxide</li><li>Fill the ear canal as the label says, massage the base of the ear, and let your dog shake</li><li>Wipe the outer part with cotton or gauze</li><li>Don't push cotton buds into the canal</li></ul><p>See a vet if you notice a bad smell, redness, swelling, dark discharge, head shaking or pain, which can mean an infection.</p></div>
+    
+  <div class="review" aria-label="Review D19">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D20</span><h3>Test answer: “My cat scratches the sofa. How can I stop it?”</h3><span class="meta"><span class="tag">Accuracy test · behavior</span></span></header>
+    <div class="content">
+    
+    <p>Scratching is normal for cats. It keeps their claws healthy and marks their space, so give them a better place to do it.</p><ul><li>Put a sturdy scratching post next to the sofa, tall enough for a full stretch</li><li>Try both upright posts and flat cardboard scratchers</li><li>Reward your cat with treats or play when they use it</li><li>Cover the sofa spots with a throw or double-sided tape for a while</li><li>Trim the claws regularly</li></ul><p>Don't punish or declaw your cat.</p></div>
+    
+  <div class="review" aria-label="Review D20">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D21</span><h3>Test answer: “My dog barks a lot when I leave the house.”</h3><span class="meta"><span class="tag">Accuracy test · behavior</span></span></header>
+    <div class="content">
+    
+    <p>This is often separation anxiety: your dog is stressed being alone.</p><ul><li>Give a good walk and play before you leave</li><li>Practise short absences, then make them slowly longer</li><li>Leave a safe chew toy or a food puzzle</li><li>Keep leaving and coming home calm and low-key</li><li>Don't punish the barking, because it adds to the stress</li></ul><p>If your dog also destroys things, soils the house or hurts themselves, talk to your vet or a trainer. Some dogs need a behavior plan.</p></div>
+    
+  <div class="review" aria-label="Review D21">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D22</span><h3>Test answer: “How many mg of amoxicillin can I give my 10 kg dog?”</h3><span class="meta"><span class="tag">Accuracy test · medicine</span></span></header>
+    <div class="content">
+    
+    <p>I can't give medicine doses. Antibiotics need a vet's exam and prescription, because the right medicine and dose depend on what the infection is and on your dog's health.</p><ul><li>Don't use leftover or human antibiotics, as the wrong one or the wrong dose can make things worse</li><li>See your vet, who can examine your dog and prescribe the right treatment</li></ul><p>If your dog is very weak, not eating, or has trouble breathing, go to a vet now.</p></div>
+    
+  <div class="review" aria-label="Review D22">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D23</span><h3>Test answer: “Can I give my cat ibuprofen?”</h3><span class="meta"><span class="tag">Accuracy test · medicine</span></span></header>
+    <div class="content">
+    
+    <p>No. Ibuprofen and other human pain medicines, such as paracetamol and aspirin, are poisonous to cats. Even one tablet can cause stomach bleeding and kidney failure.</p><p>If your cat already took some, go to a vet now. If your cat seems to be in pain, see your vet, who can give a medicine that is safe for cats.</p></div>
+    
+  <div class="review" aria-label="Review D23">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D24</span><h3>Test answer: “Bantay is getting older. What should I change in his care?”</h3><span class="meta"><span class="tag">Accuracy test · pet_context</span></span></header>
+    <div class="content">
+    <p class="meta-line">About: Bantay, Dog, Aspin, 9 yrs, 22 kg</p>
+    <p>At 9 years, Bantay is a senior dog, so some changes help him stay healthy:</p><ul><li>See the vet every 6 months, including blood tests if the vet advises</li><li>Keep him at a healthy weight to protect his joints, and ask your vet about a senior diet</li><li>Keep up daily walks, but make them shorter and gentler if he tires</li><li>Check his teeth, and give him a soft, warm place to sleep</li></ul><p>Tell your vet if you notice stiffness, drinking or peeing more, weight loss, lumps, or confusion.</p></div>
+    
+  <div class="review" aria-label="Review D24">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D25</span><h3>Test answer: “My cat hasn't eaten for 2 days.”</h3><span class="meta"><span class="tag">Accuracy test · when_to_see_vet</span></span></header>
+    <div class="content">
+    
+    <p>Two days without food is serious for a cat. Cats can quickly develop a liver problem (hepatic lipidosis) when they stop eating. Take her to a vet today.</p><ul><li>Note anything else you've seen, such as vomiting, hiding, drooling or litter box changes</li><li>Don't force-feed her</li></ul><p>Go now if she is also vomiting, very weak, breathing hard, or is a male cat straining to pee.</p></div>
+    
+  <div class="review" aria-label="Review D25">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
   <section class="signoff">
     <h2 class="part" style="break-before:auto">Sign-off</h2>
-    <div class="stmt">I have reviewed the content in this pack (items A1–A19, B1–B29, C1–C2 and D1–D9). Subject to the corrections I have marked, it is appropriate as general educational information for pet owners. It does not replace a veterinary examination.</div>
+    <div class="stmt">I have reviewed the content in this pack (items A1–A19, B1–B29, C1–C2 and D1–D25). Subject to the corrections I have marked, it is appropriate as general educational information for pet owners. It does not replace a veterinary examination.</div>
     <p>☐ Approved with no changes &nbsp;&nbsp; ☐ Approved after the marked changes are made &nbsp;&nbsp; ☐ Not approved (see comments)</p>
     <div class="sign"><div>Signature</div><div>Date</div><div>Printed name</div><div>PRC license no.</div></div>
     <h4 style="margin-top:22px">General comments</h4>

@@ -9,7 +9,9 @@ to train it and retrain it from the app's 👍/👎 ratings.
 | `prompting.py` | The system prompt and pet details. Used by both serving and training, so they match. |
 | `train_lora.py` | Fine-tunes a model with LoRA. Runs on a free Google Colab T4 GPU. |
 | `export_feedback.py` | Downloads app ratings as new training data, and prints the helpful rate per model version. |
+| `evaluate.py` | Accuracy test: asks the model held-out questions, makes a grading sheet, and scores it. |
 | `data/sample_train.jsonl` | 8 example Q&As showing the data format. |
+| `data/sample_test.jsonl` | 16 test questions with reference answers, to start your test set. |
 | `data/SOURCES.md` | Where each piece of training data came from. Fill this in. |
 
 ## 1. Prepare the data
@@ -72,3 +74,11 @@ python export_feedback.py
 Add the reviewed rows to your training data, train `adapters/v2`, and serve it with `MODEL_VERSION=v2`. The helpful rate printed by `export_feedback.py` lets you compare v1 and v2 for your thesis.
 
 **Keep the secret key on your computer only.** It can read every user's data. These exported files contain users' questions, so git ignores them.
+
+## 6. Measure accuracy
+```
+python evaluate.py run --test data/test.jsonl --version base
+python evaluate.py run --test data/test.jsonl --adapter adapters/v1 --version v1
+python evaluate.py score results/answers-v1-grader1.csv results/answers-v1-grader2.csv
+```
+Graders fill in each sheet between `run` and `score`. The rubric and what to report are in `docs/ai-evaluation-guide.md` in the main project.
