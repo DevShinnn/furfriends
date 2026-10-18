@@ -5,3 +5,6 @@ dev-dist
 
 # Local setup SQL that contains secrets
 *.local.sql
+
+# Supabase CLI local state
+supabase/.temp/
