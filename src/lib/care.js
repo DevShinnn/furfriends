@@ -21,11 +21,14 @@ export const KINDS = {
   Grooming: { icon: "scissors", color: "lilac" },
   Deworming: { icon: "pill", color: "coral" },
   Vaccination: { icon: "syringe", color: "sky" },
+  "Vet appointment": { icon: "stetho", color: "mint" },
 };
+export const APPT = "Vet appointment";
 export const SUGGESTIONS = {
   Grooming: ["Bath", "Brushing", "Nail trim", "Ear cleaning", "Teeth brushing", "Full groom (salon)"],
   Deworming: ["Deworming tablet", "Drontal Plus", "Milbemax", "Broadline spot-on", "Heartworm chewable", "Flea & tick treatment"],
   Vaccination: ["Rabies booster", "DHPP booster", "FVRCP booster", "Leptospirosis", "Bordetella", "FeLV booster"],
+  [APPT]: ["Annual checkup", "Vaccination", "Follow-up visit", "Dental cleaning", "Spay / neuter", "Lab tests"],
 };
 export const REPEATS = [
   [0, "Does not repeat"], [1, "Every day"], [7, "Every week"], [14, "Every 2 weeks"], [30, "Every month"],
@@ -39,7 +42,8 @@ export const feedingsOn = (pet, iso) => (pet.feeding || []).filter((f) => feedsO
 export const isFed = (pet, feedId, iso = todayISO()) => (pet.fedLog?.[iso] || []).includes(feedId);
 
 /* ---------------------------------------------------------------- care tasks */
-// A care task: { id, kind, title, nextDue, repeatDays (0 = once), lastDone, notes, done }
+// A care task: { id, kind, title, nextDue, dueTime, repeatDays (0 = once), lastDone, notes, done }
+// Vet appointments are care tasks with kind APPT: title = reason, notes = clinic / what to bring.
 export function careStatus(t) {
   if (t.done) return { key: "ok", label: "Completed", days: null };
   const d = daysUntil(t.nextDue);
@@ -104,10 +108,25 @@ export function upcomingActivities(pets, horizon = 30) {
       const overdue = t.nextDue < today;
       const next = overdue ? t.nextDue : occurrences(t, today, end)[0];
       if (!next) continue;
-      items.push({ key: `care-${pet.id}-${t.id}`, kind: t.kind, pet, date: next, title: t.title, sub: t.fromRecord ? "From vaccination records" : repeatLabel(t.repeatDays), task: t, overdue });
+      const sub = t.fromRecord ? "From vaccination records" : t.kind === APPT ? apptSub(t) : repeatLabel(t.repeatDays);
+      items.push({ key: `care-${pet.id}-${t.id}`, kind: t.kind, pet, date: next, time: t.dueTime || "", title: t.title, sub, task: t, overdue });
     }
   }
   return items.sort((a, b) => (b.overdue - a.overdue) || a.date.localeCompare(b.date) || (a.time || "99").localeCompare(b.time || "99"));
+}
+
+export const apptSub = (t) => [fmtTime(t.dueTime), t.notes].filter(Boolean).join(" · ");
+
+/* All vet appointments across pets: upcoming (soonest first) and past (most recent first).
+   An appointment is past once it's marked done or its date has gone by. */
+export function appointments(pets) {
+  const today = todayISO();
+  const all = pets.flatMap((pet) => (pet.care || []).filter((t) => t.kind === APPT).map((t) => ({ pet, t })));
+  const key = (x) => x.t.nextDue + (x.t.dueTime || "99");
+  return {
+    upcoming: all.filter((x) => !x.t.done && x.t.nextDue >= today).sort((a, b) => key(a).localeCompare(key(b))),
+    past: all.filter((x) => x.t.done || x.t.nextDue < today).sort((a, b) => key(b).localeCompare(key(a))),
+  };
 }
 
 export function groupLabel(item) {

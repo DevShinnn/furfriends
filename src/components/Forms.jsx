@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useStore } from "../store/StoreContext";
 import { Modal, useUI } from "./UIContext";
 import Icon from "./Icon";
-import { BREEDS, VACCINES, MED_TYPES, DOC_TYPES, compressImage, todayISO, plural } from "../lib/utils";
+import { DocThumb } from "./PetBits";
+import { VACCINES, MED_TYPES, DOC_TYPES, compressImage, todayISO, plural, PDF_MAX, readFile, isPdf } from "../lib/utils";
+import { breedOptions } from "../lib/breeds";
 
 const useFields = (initial) => {
   const [v, setV] = useState(initial);
@@ -80,7 +82,7 @@ export function PetForm({ pet }) {
       </div>
       <div className="field"><label htmlFor="f-breed">Breed</label>
         <input className="input" id="f-breed" list="breed-list" placeholder="Start typing or pick one" {...bind("breed")} />
-        <datalist id="breed-list">{BREEDS[v.species].map((b) => <option key={b} value={b} />)}</datalist>
+        <datalist id="breed-list">{breedOptions(v.species).map((b) => <option key={b} value={b} />)}</datalist>
       </div>
       <div className="row-3">
         <div className="field"><label htmlFor="f-ay">Age (years)</label><input className="input" id="f-ay" type="number" min="0" max="40" {...bind("ageYears")} /></div>
@@ -115,19 +117,22 @@ export function DocForm({ petId, doc }) {
   const [v, setV, bind] = useFields(doc ? { ...doc, pet: petId } : { pet: petId || pets[0]?.id, type: DOC_TYPES[0], date: todayISO(), title: "", notes: "" });
 
   async function take(file) {
-    if (!file || !file.type.startsWith("image/")) return setError("Please choose an image (photo or scan).");
+    if (!file) return;
+    const pdf = file.type === "application/pdf";
+    if (!pdf && !file.type.startsWith("image/")) return setError("Please choose a photo, a scan or a PDF.");
+    if (pdf && file.size > PDF_MAX) return setError("That PDF is over 10 MB. Try a smaller file, or a photo of the page.");
     try {
-      const src = await compressImage(file, 1600, 0.82); // keep documents legible
+      const src = pdf ? await readFile(file) : await compressImage(file, 1600, 0.82); // keep documents legible
       setError("");
-      setV((s) => ({ ...s, src, title: s.title || file.name.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ") }));
-    } catch { setError("That file couldn't be read as an image."); }
+      setV((s) => ({ ...s, src, fileName: file.name, title: s.title || file.name.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ") }));
+    } catch { setError(pdf ? "That PDF couldn't be read." : "That file couldn't be read as an image."); }
   }
 
   function submit() {
-    if (!v.src) return setError("Add a photo or scan of the document.");
+    if (!v.src) return setError("Add a photo, scan or PDF of the document.");
     if (!v.title.trim()) return setError("Please give the document a title.");
     const item = { id: doc?.id, src: v.src, title: v.title.trim(), type: v.type, date: v.date || todayISO(), notes: (v.notes || "").trim() };
-    if (!upsertItem(v.pet, "documents", item)) return setError("Browser storage is full — try a smaller image.");
+    if (!upsertItem(v.pet, "documents", item)) return setError("Browser storage is full. Try a smaller file.");
     closeModal();
     if (doc) toast("Document updated");
     else { toast(`Saved to ${getPet(v.pet).name}'s documents`); navigate(`/app/pets/${v.pet}?tab=documents`); }
@@ -145,12 +150,15 @@ export function DocForm({ petId, doc }) {
         onDragEnter={(e) => { e.preventDefault(); setOver(true); }} onDragOver={(e) => { e.preventDefault(); setOver(true); }}
         onDragLeave={(e) => { e.preventDefault(); setOver(false); }}
         onDrop={(e) => { e.preventDefault(); setOver(false); take(e.dataTransfer.files[0]); }}>
-        <span className="dz-preview">{v.src && <img src={v.src} alt="" />}</span>
+        <span className="dz-preview">{v.src && (isPdf(v)
+          ? <span className="dz-pdf"><DocThumb doc={v} /><small>{v.fileName || v.title || "PDF document"}</small></span>
+          : <img src={v.src} alt="" />)}</span>
         <span className="dz-empty">
           <span className="ic"><Icon name="camera" size={24} /></span>
-          <b>Take a photo or drop a scan here</b><small>JPG or PNG · click to browse</small>
+          <b>Take a photo, or drop a scan or PDF here</b><small>JPG, PNG or PDF · click to browse</small>
         </span>
-        <input type="file" accept="image/*" capture="environment" id="u-file" onChange={(e) => take(e.target.files[0])} />
+        {/* No capture attribute: it would force the camera on phones and hide PDFs. */}
+        <input type="file" accept="image/*,application/pdf" id="u-file" onChange={(e) => take(e.target.files[0])} />
       </label>
       <div className="field" style={{ marginTop: 16 }}><label htmlFor="u-title">Title *</label><input className="input" id="u-title" placeholder="e.g. Rabies certificate 2026" {...bind("title")} /></div>
       <div className="row">
@@ -173,11 +181,12 @@ export function useDeleteDoc() {
 }
 
 /* ---------------------------------------------------------------- medical */
-export function MedForm({ pet, rec }) {
+// `prefill` starts a new record with some fields filled in; `intro` adds a line above the form.
+export function MedForm({ pet, rec, prefill, intro }) {
   const { upsertItem } = useStore();
   const { closeModal, toast } = useUI();
   const [error, setError] = useState("");
-  const [v, , bind] = useFields(rec ? { ...rec } : { date: todayISO(), type: "Checkup", title: "", vet: "", notes: "" });
+  const [v, , bind] = useFields(rec ? { ...rec } : { date: todayISO(), type: "Checkup", title: "", vet: "", notes: "", ...prefill });
   function submit() {
     if (!v.date || !v.title.trim()) return setError("Date and title are required.");
     upsertItem(pet.id, "medical", { id: rec?.id, date: v.date, type: v.type, title: v.title.trim(), vet: v.vet.trim(), notes: v.notes.trim() });
@@ -185,7 +194,8 @@ export function MedForm({ pet, rec }) {
   }
   return (
     <Modal title={rec ? "Edit medical record" : `Add medical record · ${pet.name}`} error={error} onSubmit={submit}
-      footer={<><Cancel /><button className="btn btn-primary" type="submit">{rec ? "Save" : "Add record"}</button></>}>
+      footer={<><button type="button" className="btn btn-ghost" onClick={closeModal}>{intro ? "Skip" : "Cancel"}</button><button className="btn btn-primary" type="submit">{rec ? "Save" : "Add record"}</button></>}>
+      {intro && <p className="form-intro">{intro}</p>}
       <div className="row">
         <div className="field"><label htmlFor="m-date">Date *</label><input className="input" id="m-date" type="date" max={todayISO()} {...bind("date")} /></div>
         <div className="field"><label htmlFor="m-type">Type *</label><select className="select" id="m-type" {...bind("type")}>{MED_TYPES.map((t) => <option key={t}>{t}</option>)}</select></div>

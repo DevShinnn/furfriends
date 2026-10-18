@@ -43,6 +43,20 @@ export const petVaxSummary = (pet) => {
 
 export const byDateDesc = (a, b) => b.date.localeCompare(a.date);
 
+/* PDFs are stored as they are (no compression), up to the storage bucket's 10 MB limit. */
+export const PDF_MAX = 10 * 1024 * 1024;
+export const mimeOf = (src) => (typeof src === "string" && src.startsWith("data:") ? src.slice(5, src.indexOf(";")) : null);
+// A newly picked file (data URL) wins over the saved type, so replacing a PDF with a photo shows the photo.
+export const isPdf = (doc) => (mimeOf(doc?.src) || doc?.mimeType) === "application/pdf";
+export function readFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(reader.error);
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(file);
+  });
+}
+
 // Resize images client-side so they fit in localStorage.
 export function compressImage(file, max = 1100, quality = 0.8) {
   return new Promise((resolve, reject) => {
@@ -67,10 +81,6 @@ export function compressImage(file, max = 1100, quality = 0.8) {
   });
 }
 
-export const BREEDS = {
-  Cat: ["Domestic Shorthair", "Domestic Longhair", "Persian", "Maine Coon", "Siamese", "Ragdoll", "British Shorthair", "Bengal", "Sphynx", "Scottish Fold", "Russian Blue", "Abyssinian"],
-  Dog: ["Mixed Breed", "Aspin", "Labrador Retriever", "Golden Retriever", "German Shepherd", "French Bulldog", "Poodle", "Beagle", "Shih Tzu", "Pomeranian", "Siberian Husky", "Dachshund", "Corgi", "Chihuahua"],
-};
 export const VACCINES = {
   Cat: ["FVRCP", "Rabies", "FeLV", "Chlamydia"],
   Dog: ["DHPP", "Rabies", "Bordetella", "Leptospirosis", "Canine Influenza", "Lyme"],

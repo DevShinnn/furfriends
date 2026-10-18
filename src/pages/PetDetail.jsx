@@ -2,9 +2,11 @@ import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useStore } from "../store/StoreContext";
 import { useUI } from "../components/UIContext";
 import { PetForm, DocForm, MedForm, VaxForm, useDeletePet, useDeleteDoc } from "../components/Forms";
-import { SpeciesPill, StatusPill, DocPill } from "../components/PetBits";
+import { SpeciesPill, StatusPill, DocPill, DocThumb } from "../components/PetBits";
 import Icon from "../components/Icon";
 import { PetCarePanel } from "./Care";
+import { EmergencyCard } from "./Emergency";
+import { breedFor } from "../lib/breeds";
 import { ageText, fmtDate, petVaxSummary, vaxStatus, byDateDesc } from "../lib/utils";
 
 const TABS = [["medical", "clip", "Medical history"], ["vaccines", "syringe", "Vaccinations"], ["care", "bowl", "Feeding & care"], ["documents", "file", "Documents"]];
@@ -32,6 +34,7 @@ function PetView({ pet, tab, setTab }) {
   const s = petVaxSummary(pet);
   const counts = { medical: pet.medical.length, vaccines: pet.vaccinations.length, care: (pet.feeding || []).length + (pet.care || []).filter((t) => !t.done).length, documents: pet.documents.length };
   const edit = () => openModal(<PetForm pet={pet} />);
+  const breed = breedFor(pet);
 
   return (
     <>
@@ -49,15 +52,19 @@ function PetView({ pet, tab, setTab }) {
             <div className="tags"><SpeciesPill species={pet.species} glass /><span className="pill glass">{pet.breed || "Unknown breed"}</span><StatusPill s={s} /></div>
           </div>
           <div className="actions">
-            <button className="btn btn-sm glass-btn" onClick={edit}><Icon name="edit" /> Edit</button>
-            <button className="btn btn-sm glass-btn" onClick={() => deletePet(pet, true)}><Icon name="trash" /> Delete</button>
+            <button className="btn btn-sm glass-btn" onClick={() => openModal(<EmergencyCard pet={pet} />)}><Icon name="idcard" /> Emergency card</button>
+            <Link className="btn btn-sm glass-btn" to={`/app/assistant?pet=${pet.id}`} aria-label={`Ask about ${pet.name}`}><Icon name="chat" size={16} /><span className="ph-lbl"> Ask</span></Link>
+            <button className="btn btn-sm glass-btn" onClick={edit} aria-label="Edit"><Icon name="edit" /><span className="ph-lbl"> Edit</span></button>
+            <button className="btn btn-sm glass-btn" onClick={() => deletePet(pet, true)} aria-label="Delete"><Icon name="trash" /><span className="ph-lbl"> Delete</span></button>
           </div>
         </div>
       </section>
 
       <div className="facts">
         {[["Species", pet.species], ["Breed", pet.breed || "—"], ["Age", ageText(pet)], ["Gender", pet.gender || "—"], ["Weight", pet.weight ? `${pet.weight} kg` : "—"]].map(([k, v]) => (
-          <div className="fact" key={k}><small>{k}</small><b>{v}</b></div>
+          k === "Breed" && breed
+            ? <Link className="fact fact-link" key={k} to={`/app/breeds/${breed.slug}`}><small>{k}</small><b>{v}</b><span>Breed guide <Icon name="arrowR" size={13} /></span></Link>
+            : <div className="fact" key={k}><small>{k}</small><b>{v}</b></div>
         ))}
       </div>
 
@@ -158,12 +165,12 @@ function DocumentsTab({ pet }) {
       <div className="tab-head"><h3>Documents</h3><button className="btn btn-coral btn-sm" onClick={upload}><Icon name="upload" size={15} /> Upload document</button></div>
       <div className="doc-grid">
         <button className="doc-add" onClick={upload}>
-          <span><Icon name="camera" size={28} /><b>Add a document</b><small>Photo or scan of certificates, lab results, receipts…</small></span>
+          <span><Icon name="camera" size={28} /><b>Add a document</b><small>Photo, scan or PDF of certificates, lab results, receipts…</small></span>
         </button>
         {docs.map((d, i) => (
           <div className="doc-card" key={d.id}>
             <button className="thumb" onClick={() => openViewer(items, i)} aria-label={`Open ${d.title}`}>
-              <img src={d.src} alt={d.title} loading="lazy" /><span className="zoom"><Icon name="zoom" /></span>
+              <DocThumb doc={d} alt={d.title} /><span className="zoom"><Icon name="zoom" /></span>
             </button>
             <div className="meta">
               <div className="grow"><DocPill type={d.type} /><b>{d.title}</b><small><Icon name="cal" /> {fmtDate(d.date)}</small></div>

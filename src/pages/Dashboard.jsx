@@ -2,9 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useStore } from "../store/StoreContext";
 import { useUI } from "../components/UIContext";
 import { PetForm, DocForm } from "../components/Forms";
-import { PetCard, PetThumb, EmptyPets, StatusPill } from "../components/PetBits";
+import { PetCard, PetThumb, EmptyPets, StatusPill, DocThumb } from "../components/PetBits";
 import Icon from "../components/Icon";
 import { UpcomingList } from "./Care";
+import { ApptRow } from "./Appointments";
+import { AppointmentForm } from "../components/CareForms";
+import { appointments } from "../lib/care";
 import { vaxStatus, fmtDate, plural, byDateDesc } from "../lib/utils";
 
 function Stat({ icon, bg, fg, num, label, to }) {
@@ -31,6 +34,7 @@ export default function Dashboard() {
   const recentDocs = docs.slice(0, 4);
   const medCount = pets.reduce((n, p) => n + p.medical.length, 0);
   const names = pets.map((p) => p.name);
+  const visits = appointments(pets).upcoming.slice(0, 3);
   const nameList = names.length > 1 ? names.slice(0, -1).join(", ") + " & " + names.at(-1) : names[0];
 
   return (
@@ -45,6 +49,7 @@ export default function Dashboard() {
           <div className="cta">
             <button className="btn btn-coral" onClick={() => openModal(<PetForm />)}><Icon name="plus" /> Add pet</button>
             {pets.length > 0 && <button className="btn btn-ghost-w" onClick={() => openModal(<DocForm />)}><Icon name="upload" size={16} /> Upload document</button>}
+            <Link className="btn btn-ghost-w" to="/app/assistant"><Icon name="chat" size={16} /> Ask FurFriends</Link>
           </div>
         </div>
         {pets.length > 0 && (
@@ -81,7 +86,7 @@ export default function Dashboard() {
                 {recentDocs.map((d, i) => (
                   <button key={d.id} className="doc-card sm" aria-label={`Open ${d.title}`}
                     onClick={() => openViewer(recentDocs.map((x) => ({ petId: x.pet.id, docId: x.id })), i)}>
-                    <span className="thumb"><img src={d.src} alt="" loading="lazy" /></span>
+                    <span className="thumb"><DocThumb doc={d} /></span>
                     <span className="meta"><b>{d.title}</b><small>{d.pet.name} · {fmtDate(d.date)}</small></span>
                   </button>
                 ))}
@@ -93,6 +98,12 @@ export default function Dashboard() {
           <div className="card">
             <div className="card-head"><h3>Today's care</h3></div>
             <UpcomingList pets={pets} horizon={0} only={["Overdue", "Today"]} limit={7} />
+          </div>
+          <div className="card">
+            <div className="card-head"><h3>Vet visits</h3><Link to="/app/appointments" className="link-more">All visits <Icon name="arrowR" /></Link></div>
+            {visits.length
+              ? <div className="appt-list">{visits.map((x) => <ApptRow key={x.t.id} {...x} compact />)}</div>
+              : <div className="empty small">No visits booked.{pets.length > 0 && <> <button className="linkish" onClick={() => openModal(<AppointmentForm />)}>Book one</button></>}</div>}
           </div>
           <div className="card">
             <div className="card-head"><h3>Vaccine reminders</h3><span className="pill neutral">Next 60 days</span></div>

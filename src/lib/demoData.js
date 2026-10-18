@@ -9,6 +9,7 @@ const med = (days, type, title, vet, notes) => ({ id: uid(), date: addDays(days)
 const vax = (name, given, due, vet, lot = "") => ({ id: uid(), name, dateGiven: addDays(given), nextDue: addDays(due), vet, lot });
 
 const meal = (time, food, amount, days = []) => ({ id: uid(), time, food, amount, days, notes: "" });
+const appt = (title, due, dueTime, notes, done = false) => ({ id: uid(), kind: "Vet appointment", title, nextDue: addDays(due), dueTime, repeatDays: 0, lastDone: done ? addDays(due) : null, notes, done });
 const care = (kind, title, due, repeatDays, lastDone = null, notes = "") => ({ id: uid(), kind, title, nextDue: addDays(due), repeatDays, lastDone: lastDone === null ? null : addDays(lastDone), notes, done: false });
 
 // Attach feeding plans and care tasks, plus ~2 weeks of feeding history so the
@@ -80,13 +81,16 @@ export function demoPets(ownerId) {
     withCare(mochi, [meal("07:00", "Royal Canin Indoor (dry)", "1/4 cup"), meal("12:30", "Wet food pouch", "1 pouch", [1, 3, 5]), meal("19:00", "Royal Canin Indoor (dry)", "1/4 cup")], [
       care("Grooming", "Brushing", 1, 7, -6), care("Grooming", "Nail trim", 9, 30, -21),
       care("Deworming", "Milbemax tablet", 18, 90, -72, "Give with food."),
+      appt("Annual checkup & FVRCP booster", 12, "10:00", `Dr. Santos · ${MAPLE}`),
     ]),
     withCare(bori, [meal("06:30", "Salmon & rice kibble", "2 cups"), meal("18:00", "Salmon & rice kibble", "2 cups")], [
       care("Grooming", "Bath", -2, 14, -16), care("Grooming", "Teeth brushing", 0, 2, -2), care("Grooming", "Full groom (salon)", 24, 60, -36, "Paws & Suds, Katipunan"),
       care("Deworming", "Heartworm chewable", 8, 30, -22), care("Deworming", "Drontal Plus", 40, 90, -50),
+      appt("Paw re-check", 2, "16:30", `Dr. Cruz · ${RIVER}`), appt("Paw pad injury", -30, "18:15", `Dr. Cruz · ${RIVER}`, true),
     ]),
     withCare(ginger, [meal("07:15", "Grain-free chicken (dry)", "1/3 cup"), meal("19:15", "Grain-free chicken (dry)", "1/3 cup")], [
       care("Grooming", "Brushing (long coat)", 0, 3, -3), care("Deworming", "Broadline spot-on", 3, 30, -27),
+      appt("Dental check", -1, "14:00", `Dr. Santos · ${MAPLE}`),
     ]),
     withCare(kong, [meal("07:30", "Puppy kibble", "3/4 cup"), meal("12:30", "Puppy kibble", "1/2 cup"), meal("18:30", "Puppy kibble", "3/4 cup")], [
       care("Grooming", "Face wrinkle cleaning", 1, 2, -1), care("Grooming", "Nail trim", 12, 21, -9),

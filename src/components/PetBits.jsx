@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Icon from "./Icon";
 import { useUI } from "./UIContext";
 import { PetForm, useDeletePet } from "./Forms";
-import { ageText, petVaxSummary, plural, DOC_COLORS } from "../lib/utils";
+import { ageText, petVaxSummary, plural, isPdf, DOC_COLORS } from "../lib/utils";
 
 export const PetThumb = ({ pet, size }) => (
   <div className={`pet-thumb ${pet.species === "Cat" ? "cat" : "dog"}`} style={size ? { width: size, height: size } : undefined}>
@@ -18,6 +18,11 @@ export const SpeciesPill = ({ species, glass }) => (
 
 export const StatusPill = ({ s }) => <span className={`pill ${s.key}`}><span className="dot" />{s.label}</span>;
 export const DocPill = ({ type }) => <span className={`pill ${DOC_COLORS[type] || "neutral"}`}>{type}</span>;
+
+/* A document's thumbnail: the image itself, or a PDF tile. */
+export const DocThumb = ({ doc, alt = "" }) => isPdf(doc)
+  ? <span className="pdf-tile" role="img" aria-label={alt || undefined}><Icon name="file" size={34} /><b>PDF</b></span>
+  : <img src={doc.src} alt={alt} loading="lazy" />;
 
 export const PetPlaceholder = ({ species, size = 56 }) => (
   <div className="ph" style={species === "Cat" ? { background: "var(--cat-soft)", color: "var(--cat)" } : { background: "var(--dog-soft)", color: "var(--dog)" }}>

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useStore } from "../store/StoreContext";
 import { Modal, useUI } from "./UIContext";
-import { todayISO } from "../lib/utils";
-import { WEEKDAYS, REPEATS, SUGGESTIONS, KINDS } from "../lib/care";
+import { todayISO, fmtDate, addDays } from "../lib/utils";
+import { WEEKDAYS, REPEATS, SUGGESTIONS, KINDS, APPT, fmtTime, shiftISO } from "../lib/care";
+import { MedForm } from "./Forms";
 import Icon from "./Icon";
 
 const PetSelect = ({ value, onChange, disabled }) => {
@@ -62,6 +63,12 @@ export function FeedingForm({ petId, meal }) {
 
 /* ---------------------------------------------------------------- care task (grooming / deworming / vaccination) */
 export function CareForm({ petId, task, kind = "Grooming" }) {
+  // Every "edit task" button routes through here, so appointments get their own form.
+  if ((task?.kind || kind) === APPT) return <AppointmentForm petId={petId} appt={task} />;
+  return <TaskForm petId={petId} task={task} kind={kind} />;
+}
+
+function TaskForm({ petId, task, kind }) {
   const { pets, upsertItem, getPet } = useStore();
   const { closeModal, toast } = useUI();
   const [error, setError] = useState("");
@@ -85,7 +92,7 @@ export function CareForm({ petId, task, kind = "Grooming" }) {
       {!task && (
         <div className="field"><label>Type</label>
           <div className="seg">
-            {Object.keys(KINDS).filter((k) => k !== "Feeding").map((k) => (
+            {Object.keys(KINDS).filter((k) => k !== "Feeding" && k !== APPT).map((k) => (
               <span key={k} style={{ display: "contents" }}>
                 <input type="radio" id={`kind-${k}`} name="kind" checked={v.kind === k} onChange={() => setV({ ...v, kind: k, title: "", repeatDays: k === "Vaccination" ? 0 : k === "Deworming" ? 90 : 14 })} />
                 <label htmlFor={`kind-${k}`}><Icon name={KINDS[k].icon} size={16} />{k}</label>
@@ -110,6 +117,69 @@ export function CareForm({ petId, task, kind = "Grooming" }) {
       <div className="field"><label htmlFor="c-notes">Notes</label><input className="input" id="c-notes" placeholder="Optional" value={v.notes} onChange={set("notes")} /></div>
     </Modal>
   );
+}
+
+/* ---------------------------------------------------------------- vet appointment */
+export function AppointmentForm({ petId, appt }) {
+  const { pets, upsertItem, getPet } = useStore();
+  const { closeModal, toast } = useUI();
+  const [error, setError] = useState("");
+  const [v, setV] = useState(appt
+    ? { pet: petId, title: appt.title, nextDue: appt.nextDue, dueTime: appt.dueTime || "", notes: appt.notes || "" }
+    : { pet: petId || pets[0]?.id, title: "", nextDue: addDays(1), dueTime: "09:00", notes: "" });
+  const set = (k) => (e) => setV({ ...v, [k]: e.target.value });
+
+  function submit() {
+    if (!v.title.trim()) return setError("What's the visit for?");
+    if (!v.nextDue) return setError("Choose the appointment date.");
+    // Moving a finished appointment to a new date books it again.
+    const done = !!appt?.done && appt.nextDue === v.nextDue;
+    upsertItem(v.pet, "care", {
+      id: appt?.id, kind: APPT, title: v.title.trim(), nextDue: v.nextDue, dueTime: v.dueTime, repeatDays: 0,
+      notes: v.notes.trim(), done, lastDone: done ? appt.lastDone : null,
+    });
+    closeModal();
+    const name = getPet(v.pet).name;
+    toast(appt ? "Appointment updated" : `Booked for ${name} · ${fmtDate(v.nextDue).replace(/, \d{4}$/, "")}${v.dueTime ? `, ${fmtTime(v.dueTime)}` : ""}`);
+  }
+
+  return (
+    <Modal title={appt ? "Edit vet appointment" : "Book a vet appointment"} error={error} onSubmit={submit}
+      footer={<><button type="button" className="btn btn-ghost" onClick={closeModal}>Cancel</button><button className="btn btn-primary" type="submit">{appt ? "Save" : "Book appointment"}</button></>}>
+      <PetSelect value={v.pet} onChange={(pet) => setV({ ...v, pet })} disabled={!!appt} />
+      <div className="field"><label htmlFor="a-title">What's it for? *</label>
+        <input className="input" id="a-title" list="appt-suggest" placeholder="e.g. Annual checkup" value={v.title} onChange={set("title")} />
+        <datalist id="appt-suggest">{SUGGESTIONS[APPT].map((s) => <option key={s} value={s} />)}</datalist>
+        <div className="chips" style={{ marginTop: 8 }}>
+          {SUGGESTIONS[APPT].slice(0, 4).map((s) => <button type="button" key={s} className="chip sm" onClick={() => setV({ ...v, title: s })}>{s}</button>)}
+        </div>
+      </div>
+      <div className="row">
+        <div className="field"><label htmlFor="a-date">Date *</label><input className="input" id="a-date" type="date" value={v.nextDue} onChange={set("nextDue")} /></div>
+        <div className="field"><label htmlFor="a-time">Time</label><input className="input" id="a-time" type="time" value={v.dueTime} onChange={set("dueTime")} /></div>
+      </div>
+      <div className="field"><label htmlFor="a-notes">Clinic &amp; notes</label>
+        <input className="input" id="a-notes" placeholder="e.g. Dr. Santos, Maple Vet Clinic · bring stool sample" value={v.notes} onChange={set("notes")} />
+      </div>
+    </Modal>
+  );
+}
+
+/* Mark a task done. Finishing a vet appointment offers to log the visit in medical history. */
+export function useCompleteCare() {
+  const { completeCare } = useStore();
+  const { toast, openModal } = useUI();
+  return (pet, t) => {
+    if (!completeCare(pet.id, t.id)) return;
+    if (t.kind === APPT) {
+      const date = t.nextDue <= todayISO() ? t.nextDue : todayISO();
+      openModal(<MedForm pet={pet} prefill={{ date, type: "Checkup", title: t.title, vet: t.notes || "" }}
+        intro={<>Appointment marked done. Add what the vet said to {pet.name}'s medical history, or press Skip.</>} />);
+      return;
+    }
+    const r = Number(t.repeatDays);
+    toast(r ? `${t.title} done · next on ${fmtDate(shiftISO(todayISO(), r))}` : `${t.title} marked done`);
+  };
 }
 
 export function useDeleteCare() {

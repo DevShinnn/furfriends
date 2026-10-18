@@ -1,0 +1,236 @@
+import { useEffect, useRef, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { useStore } from "../store/StoreContext";
+import { useUI } from "../components/UIContext";
+import Icon from "../components/Icon";
+import { ASSISTANT_URL, askAssistant, conversation, petContext, urgentGuides } from "../lib/assistant";
+import { uid } from "../lib/utils";
+
+/* Chat with the FurFriends assistant, optionally about one pet.
+   The conversation lives in this tab only (sessionStorage). Only answers someone rates are saved,
+   to the assistant_feedback table, so the team can measure accuracy and retrain. */
+const chatKey = (user) => `ff-ai-chat:${user.id}`;
+const loadChat = (user) => { try { return JSON.parse(sessionStorage.getItem(chatKey(user))) || []; } catch { return []; } };
+
+const REASONS = ["Wrong or inaccurate", "Not about my pet", "Unsafe advice", "Didn't answer my question", "Hard to understand", "Other"];
+
+function suggestions(pet) {
+  if (!pet) return ["What vaccines does a puppy need?", "How do I keep my cat cool in hot weather?", "How often should I deworm my dog?", "What human foods are toxic to pets?"];
+  const kind = pet.species === "Cat" ? "cat" : "dog";
+  return [
+    pet.weight ? `Is ${pet.weight} kg a healthy weight for ${pet.name}?` : `What's a healthy weight for ${pet.name}?`,
+    `What health problems should I watch for${pet.breed ? ` in a ${pet.breed}` : ""}?`,
+    `How do I keep ${pet.name} cool on hot days?`,
+    `How much should I feed a ${kind} like ${pet.name}?`,
+  ];
+}
+
+export default function Assistant() {
+  const { user, pets, rateAnswer, clearRating } = useStore();
+  const { toast } = useUI();
+  const [params, setParams] = useSearchParams();
+  const petId = params.get("pet") || "";
+  const pet = pets.find((p) => p.id === petId) || null;
+  const [chat, setChat] = useState(() => loadChat(user));
+  const [text, setText] = useState("");
+  const [busy, setBusy] = useState(false);
+  const abort = useRef(null);
+  const saving = useRef(Promise.resolve());
+  const end = useRef(null);
+  const input = useRef(null);
+
+  const connected = user.isDemo || !!ASSISTANT_URL;
+
+  useEffect(() => { try { sessionStorage.setItem(chatKey(user), JSON.stringify(chat)); } catch { /* ignore */ } }, [chat, user]);
+  useEffect(() => { end.current?.scrollIntoView({ block: "end", behavior: "smooth" }); }, [chat, busy]);
+  useEffect(() => () => abort.current?.abort(), []);
+
+  const pickPet = (id) => setParams(id ? { pet: id } : {}, { replace: true });
+
+  const send = async (q = text) => {
+    q = q.trim();
+    if (!q || busy || !connected) return;
+    const mine = { id: uid(), role: "user", content: q, petName: pet?.name, urgent: urgentGuides(q).map((g) => g.slug) };
+    const next = [...chat, mine];
+    setChat(next); setText(""); setBusy(true);
+    abort.current = new AbortController();
+    try {
+      const { reply, model } = await askAssistant({ user, messages: next.filter((m) => !m.error), pet, signal: abort.current.signal });
+      // Keep what the model saw alongside the answer, in case it's rated later.
+      setChat((c) => [...c, {
+        id: uid(), fid: crypto.randomUUID(), role: "assistant", content: reply, model,
+        q, petId: pet?.id || null, ctx: petContext(pet), convo: conversation(chat), rating: 0,
+      }]);
+    } catch (e) {
+      if (e.message === "Cancelled") return;
+      setChat((c) => [...c, { id: uid(), role: "assistant", error: true, content: e.message }]);
+    } finally {
+      setBusy(false);
+      input.current?.focus();
+    }
+  };
+
+  // Ratings save in order, so a quick change of mind can't be overwritten by an older request.
+  const patch = (id, fields) => setChat((c) => c.map((m) => (m.id === id ? { ...m, ...fields } : m)));
+  const saveRating = (m) => {
+    saving.current = saving.current.then(async () => {
+      const err = m.rating
+        ? await rateAnswer({ id: m.fid, petId: m.petId, question: m.q, answer: m.content, conversation: m.convo,
+            petContext: m.ctx, model: m.model, rating: m.rating, reason: m.reason, comment: m.comment })
+        : await clearRating(m.fid);
+      if (err) toast(`Couldn't save your rating: ${err}`, "error");
+    });
+  };
+  const rate = (m, rating) => {
+    const next = { ...m, rating: m.rating === rating ? 0 : rating, reason: null, comment: "", reasonDone: false };
+    patch(m.id, next);
+    saveRating(next);
+  };
+  const explain = (m, reason, comment) => {
+    const next = { ...m, reason, comment, reasonDone: true };
+    patch(m.id, next);
+    if (reason || comment) { saveRating(next); toast("Thanks, that helps the team improve the assistant."); }
+  };
+
+  const clear = () => { abort.current?.abort(); setChat([]); setBusy(false); };
+  const onKey = (e) => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); send(); } };
+
+  return (
+    <>
+      <div className="topbar">
+        <div><h1>Ask FurFriends</h1><p>Questions about food, care, behavior or symptoms, answered with your pet's records in mind.</p></div>
+        {chat.length > 0 && <div className="actions"><button className="btn btn-ghost" onClick={clear}><Icon name="plus" /> New chat</button></div>}
+      </div>
+
+      {pets.length > 0 && (
+        <div className="ai-about">
+          <span>Asking about</span>
+          <div className="chips">
+            <button className={`chip ${!pet ? "on" : ""}`} onClick={() => pickPet("")}>Pets in general</button>
+            {pets.map((p) => (
+              <button key={p.id} className={`chip ${pet?.id === p.id ? "on" : ""}`} onClick={() => pickPet(p.id)}>
+                {p.photo && <img src={p.photo} alt="" />}{p.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <section className="card ai-card">
+        <div className="ai-log" aria-live="polite">
+          {!connected ? (
+            <div className="empty small">
+              <div className="ic"><Icon name="chat" size={30} /></div>
+              <h3>The assistant isn't switched on yet</h3>
+              <p>It's coming soon. For now, the <Link className="linkish" to="/app/emergency">Emergency guides</Link> and <Link className="linkish" to="/app/breeds">Breed guide</Link> work without it.</p>
+            </div>
+          ) : !chat.length ? (
+            <div className="ai-start">
+              <div className="ai-start-ic"><Icon name="chat" size={28} /></div>
+              <h3>{pet ? `What would you like to know about ${pet.name}?` : "What would you like to know?"}</h3>
+              {pet && <p>{pet.name}'s profile, vaccines and medical history are shared with the assistant so answers can take them into account.</p>}
+              <div className="ai-suggest">
+                {suggestions(pet).map((s) => <button key={s} className="ai-suggestion" onClick={() => send(s)}>{s}</button>)}
+              </div>
+            </div>
+          ) : (
+            chat.map((m) => <Message key={m.id} m={m} onRate={rate} onExplain={explain} />)
+          )}
+          {busy && <div className="ai-msg bot"><div className="ai-bubble ai-typing" aria-label="The assistant is typing"><span /><span /><span /></div></div>}
+          <div ref={end} className="ai-end" />
+        </div>
+
+        {connected && (
+          <form className="ai-compose" onSubmit={(e) => { e.preventDefault(); send(); }}>
+            <div className="ai-row">
+              <textarea ref={input} className="textarea ai-input" rows={1} value={text} onChange={(e) => setText(e.target.value)} onKeyDown={onKey}
+                placeholder={pet ? `Ask about ${pet.name}…` : "Ask a question…"} aria-label="Your question" disabled={busy} />
+              <button className="btn btn-primary ai-send" type="submit" disabled={busy || !text.trim()} aria-label="Send"><Icon name="send" size={18} /></button>
+            </div>
+            <p className="ai-foot">Pilot version: answers come from a model that's still being trained and can be wrong. Rating an answer shares it with the FurFriends team to improve the assistant. It isn't a vet. In an emergency, go to a vet now.</p>
+          </form>
+        )}
+      </section>
+    </>
+  );
+}
+
+function Message({ m, onRate, onExplain }) {
+  if (m.role === "user") {
+    const guides = urgentGuides(m.content);
+    return (
+      <>
+        <div className="ai-msg me"><div className="ai-bubble">{m.content}{m.petName && <small>About {m.petName}</small>}</div></div>
+        {guides.length > 0 && (
+          <div className="ai-urgent" role="alert">
+            <Icon name="alert" size={18} />
+            <div>
+              <b>This could be an emergency.</b> Don't wait for an answer if your pet is struggling. Follow the guide and go to a vet.
+              <div className="ai-urgent-links">
+                {guides.map((g) => <Link key={g.slug} className="btn btn-sm em-card-btn" to={`/app/emergency/${g.slug}`}><Icon name={g.icon} size={14} /> {g.title}</Link>)}
+              </div>
+            </div>
+          </div>
+        )}
+      </>
+    );
+  }
+  return (
+    <div className="ai-msg bot">
+      <span className="ai-avatar" aria-hidden="true"><Icon name="paw" size={16} /></span>
+      <div className="ai-turn">
+        <div className={`ai-bubble ${m.error ? "is-error" : ""}`}><Reply text={m.content} /></div>
+        {m.fid && <Rating m={m} onRate={onRate} onExplain={onExplain} />}
+      </div>
+    </div>
+  );
+}
+
+function Rating({ m, onRate, onExplain }) {
+  const [reason, setReason] = useState(null);
+  const [comment, setComment] = useState("");
+  const label = m.rating === 1 ? "Thanks! Glad it helped." : m.rating === -1 ? "Thanks for telling us." : "Was this helpful?";
+  return (
+    <>
+      <div className="ai-rate">
+        <span>{label}</span>
+        <button type="button" className={`ai-rate-btn ${m.rating === 1 ? "on" : ""}`} onClick={() => onRate(m, 1)} aria-pressed={m.rating === 1} aria-label="Helpful"><Icon name="thumbUp" size={15} /></button>
+        <button type="button" className={`ai-rate-btn down ${m.rating === -1 ? "on" : ""}`} onClick={() => onRate(m, -1)} aria-pressed={m.rating === -1} aria-label="Not helpful"><Icon name="thumbDown" size={15} /></button>
+      </div>
+      {m.rating === -1 && !m.reasonDone && (
+        <form className="ai-why" onSubmit={(e) => { e.preventDefault(); onExplain(m, reason, comment.trim()); }}>
+          <b>What was wrong?</b>
+          <div className="chips">
+            {REASONS.map((r) => <button key={r} type="button" className={`chip sm ${reason === r ? "on" : ""}`} onClick={() => setReason(reason === r ? null : r)}>{r}</button>)}
+          </div>
+          <textarea className="textarea" rows={2} value={comment} onChange={(e) => setComment(e.target.value)}
+            placeholder="What should the answer have said? (optional)" aria-label="What should the answer have said?" />
+          <div className="ai-why-acts">
+            <button type="button" className="btn btn-ghost btn-sm" onClick={() => onExplain(m, null, "")}>Skip</button>
+            <button type="submit" className="btn btn-primary btn-sm" disabled={!reason && !comment.trim()}>Send</button>
+          </div>
+        </form>
+      )}
+      {m.rating === -1 && m.reasonDone && m.reason && <small className="ai-why-done">{m.reason}{m.comment && ` · “${m.comment}”`}</small>}
+    </>
+  );
+}
+
+/* Plain-text replies with paragraphs and "- " / "1. " lists. No HTML from the model is rendered. */
+function Reply({ text }) {
+  return text.split(/\n{2,}/).map((block, i) => {
+    const lines = block.split("\n");
+    const bullets = lines.filter((l) => /^\s*([-*•]|\d+[.)])\s+/.test(l));
+    if (bullets.length && bullets.length >= lines.length - 1) {
+      const head = bullets.length < lines.length ? lines[0] : null;
+      const Tag = /^\s*\d/.test(bullets[0]) ? "ol" : "ul";
+      return (
+        <div key={i}>
+          {head && <p>{head}</p>}
+          <Tag>{bullets.map((l, j) => <li key={j}>{l.replace(/^\s*([-*•]|\d+[.)])\s+/, "")}</li>)}</Tag>
+        </div>
+      );
+    }
+    return <p key={i}>{lines.map((l, j) => <span key={j}>{j > 0 && <br />}{l}</span>)}</p>;
+  });
+}

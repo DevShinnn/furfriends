@@ -25,6 +25,7 @@ export default defineConfig({
         ],
       },
       workbox: {
+        importScripts: ["sw-notify.js"], // opens the app when a reminder notification is tapped
         // Precache the app shell plus demo images so the app works offline.
         globPatterns: ["**/*.{js,css,html,svg,png,jpg,webmanifest}"],
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,

@@ -2,23 +2,24 @@ import { useState, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { useStore } from "../store/StoreContext";
 import { useUI } from "../components/UIContext";
-import { FeedingForm, CareForm, useDeleteCare } from "../components/CareForms";
+import { FeedingForm, CareForm, AppointmentForm, useDeleteCare, useCompleteCare } from "../components/CareForms";
 import { PetThumb } from "../components/PetBits";
 import Icon from "../components/Icon";
 import { todayISO, fmtDate } from "../lib/utils";
 import {
   KINDS, WEEKDAYS, fmtTime, feedingsOn, isFed, careStatus, occurrences, scheduleBetween,
-  occurrenceStatus, allCareTasks, upcomingActivities, groupLabel, repeatLabel, shiftISO, weekday,
+  occurrenceStatus, allCareTasks, upcomingActivities, groupLabel, repeatLabel, shiftISO, weekday, APPT, apptSub,
 } from "../lib/care";
 
-const KindIcon = ({ kind, size = 36 }) => (
+export const KindIcon = ({ kind, size = 36 }) => (
   <span className={`kind-ic k-${KINDS[kind].color}`} style={{ width: size, height: size }}><Icon name={KINDS[kind].icon} size={Math.round(size * 0.5)} /></span>
 );
 
 /* ================================================================ Upcoming list */
 export function UpcomingList({ pets, horizon = 30, only, limit, showPet = true }) {
-  const { toggleFed, completeCare } = useStore();
-  const { toast, openModal } = useUI();
+  const { toggleFed } = useStore();
+  const { openModal } = useUI();
+  const complete = useCompleteCare();
   let items = upcomingActivities(pets, horizon);
   if (only) items = items.filter((it) => only.includes(groupLabel(it)));
   const total = items.length;
@@ -32,12 +33,6 @@ export function UpcomingList({ pets, horizon = 30, only, limit, showPet = true }
     groups.at(-1).items.push(it);
   }
 
-  const done = (it) => {
-    completeCare(it.pet.id, it.task.id);
-    const r = Number(it.task.repeatDays);
-    toast(r ? `${it.title} done · next on ${fmtDate(shiftISO(todayISO(), r))}` : `${it.title} marked done`);
-  };
-
   return (
     <div className="upcoming">
       {groups.map((g) => (
@@ -46,7 +41,7 @@ export function UpcomingList({ pets, horizon = 30, only, limit, showPet = true }
           {g.items.map((it) => (
             <div key={it.key} className={`up-item ${it.fed ? "is-done" : ""}`}>
               <KindIcon kind={it.kind} />
-              <div className="when">{it.time ? fmtTime(it.time) : fmtDate(it.date).replace(/, \d{4}$/, "")}</div>
+              <div className="when">{it.feeding ? fmtTime(it.time) : fmtDate(it.date).replace(/, \d{4}$/, "")}</div>
               <button className="grow" onClick={() => it.feeding ? openModal(<FeedingForm petId={it.pet.id} meal={it.feeding} />) : !it.task.fromRecord && openModal(<CareForm petId={it.pet.id} task={it.task} />)}>
                 <b>{it.title}</b>
                 <small>{showPet && <>{it.pet.name} · </>}{it.kind}{it.sub ? ` · ${it.sub}` : ""}</small>
@@ -59,7 +54,7 @@ export function UpcomingList({ pets, horizon = 30, only, limit, showPet = true }
               ) : it.task.fromRecord ? (
                 <Link className="check-btn" to={`/app/pets/${it.pet.id}?tab=vaccines`}>View</Link>
               ) : (
-                <button className="check-btn" onClick={() => done(it)}><Icon name="check" size={14} /> Done</button>
+                <button className="check-btn" onClick={() => complete(it.pet, it.task)}><Icon name="check" size={14} /> Done</button>
               )}
             </div>
           ))}
@@ -190,8 +185,9 @@ function PetUpcoming({ pet, onManage }) {
 const isoOf = (d) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 
 function PetCalendar({ pet }) {
-  const { openModal, toast } = useUI();
-  const { completeCare, toggleFed } = useStore();
+  const { openModal } = useUI();
+  const { toggleFed } = useStore();
+  const complete = useCompleteCare();
   const today = todayISO();
   const [monthOffset, setMonthOffset] = useState(0);
   const [selected, setSelected] = useState(today);
@@ -293,14 +289,14 @@ function PetCalendar({ pet }) {
                 <div className={`care-row ${st === "done" ? "is-done" : ""}`} key={t.id}>
                   <div className="cr-main">
                     <span className={`cr-ic k-${KINDS[t.kind].color}`}><Icon name={KINDS[t.kind].icon} size={16} /></span>
-                    <div className="cr-info"><b>{t.title}</b><small>{t.fromRecord ? "Vaccine record" : `${t.kind} · ${repeatLabel(t.repeatDays)}`}</small></div>
+                    <div className="cr-info"><b>{t.title}</b><small>{t.fromRecord ? "Vaccine record" : t.kind === APPT ? ["Vet visit", apptSub(t)].filter(Boolean).join(" · ") : `${t.kind} · ${repeatLabel(t.repeatDays)}`}</small></div>
                   </div>
                   <div className="cr-side">
                     {t.fromRecord ? <Link className="btn btn-soft btn-sm" to={`/app/pets/${pet.id}?tab=vaccines`}>View</Link>
                       : st === "done" ? <span className="log-badge ok"><Icon name="check" size={13} /> Done</span>
                       : st === "missed" ? <span className="log-badge miss">Missed</span>
                       : <>
-                          <button className="btn btn-soft btn-sm" onClick={() => { completeCare(pet.id, t.id); toast(`${t.title} marked done`); }}><Icon name="check" size={14} /> Done</button>
+                          <button className="btn btn-soft btn-sm" onClick={() => complete(pet, t)}><Icon name="check" size={14} /> Done</button>
                           <button className="icon-btn" onClick={() => openModal(<CareForm petId={pet.id} task={t} />)} aria-label="Edit task"><Icon name="edit" /></button>
                         </>}
                   </div>
@@ -316,6 +312,7 @@ function PetCalendar({ pet }) {
         <span><i className="k-lilac" /> Grooming</span>
         <span><i className="k-coral" /> Deworming</span>
         <span><i className="k-sky" /> Vaccine</span>
+        <span><i className="k-mint" /> Vet visit</span>
         <span className="cl-note">Page back with ‹ for past days — tap any day to see its log.</span>
       </p>
     </>
@@ -353,7 +350,7 @@ function PetGantt({ pet }) {
   for (const t of allCareTasks(pet).filter((x) => !x.done)) {
     const occ = new Set(occurrences(t, start, end));
     if (!occ.size) continue;
-    rows.push({ id: t.id, kind: t.kind, title: t.title, sub: t.fromRecord ? "Vaccine" : repeatLabel(t.repeatDays), dots: days.map((d) => occ.has(d)), task: t });
+    rows.push({ id: t.id, kind: t.kind, title: t.title, sub: t.fromRecord ? "Vaccine" : t.kind === APPT ? fmtTime(t.dueTime) || "Vet visit" : repeatLabel(t.repeatDays), dots: days.map((d) => occ.has(d)), task: t });
   }
   const label = offset === 0 ? "Next 2 weeks" : `${fmtDate(start).replace(/,.*/, "")} – ${fmtDate(end).replace(/,.*/, "")}`;
 
@@ -400,6 +397,7 @@ function PetGantt({ pet }) {
         <span><i className="k-lilac" /> Grooming</span>
         <span><i className="k-coral" /> Deworming</span>
         <span><i className="k-sky" /> Vaccine</span>
+        <span><i className="k-mint" /> Vet visit</span>
         <span className="cl-note">Tap a lane name to edit that task.</span>
       </p>
     </>
@@ -411,11 +409,23 @@ function PetSchedule({ pet }) {
   const meals = [...(pet.feeding || [])].sort((a, b) => a.time.localeCompare(b.time));
   const tasks = allCareTasks(pet).filter((t) => ["Grooming", "Deworming", "Vaccination"].includes(t.kind))
     .sort((a, b) => (a.done - b.done) || (a.nextDue || "").localeCompare(b.nextDue || ""));
+  // Upcoming visits first (soonest at the top), then the last few past ones.
+  const today = todayISO();
+  const apptAll = (pet.care || []).filter((t) => t.kind === APPT);
+  const appts = [
+    ...apptAll.filter((t) => !t.done && t.nextDue >= today).sort((a, b) => a.nextDue.localeCompare(b.nextDue)),
+    ...apptAll.filter((t) => t.done || t.nextDue < today).sort((a, b) => b.nextDue.localeCompare(a.nextDue)).slice(0, 3),
+  ];
+  const book = () => openModal(<AppointmentForm petId={pet.id} />);
   return (
     <>
       <section>
         <div className="tab-head"><h3><Icon name="bowl" size={18} /> Feeding</h3><button className="btn btn-primary btn-sm" onClick={() => openModal(<FeedingForm petId={pet.id} />)}><Icon name="plus" size={15} /> Add meal</button></div>
         {meals.length ? <MealList pet={pet} meals={meals} /> : <div className="empty small">No meals yet — add {pet.name}'s first meal time and food.<br /><button className="btn btn-primary btn-sm" style={{ marginTop: 10 }} onClick={() => openModal(<FeedingForm petId={pet.id} />)}><Icon name="plus" size={15} /> Add a meal</button></div>}
+      </section>
+      <section style={{ marginTop: 26 }}>
+        <div className="tab-head"><h3><Icon name="stetho" size={18} /> Vet appointments</h3><button className="btn btn-primary btn-sm" onClick={book}><Icon name="plus" size={15} /> Book visit</button></div>
+        {appts.length ? <TaskList pet={pet} tasks={appts} /> : <div className="empty small">No vet visits booked for {pet.name}.<br /><button className="btn btn-primary btn-sm" style={{ marginTop: 10 }} onClick={book}><Icon name="plus" size={15} /> Book a visit</button></div>}
       </section>
       <section style={{ marginTop: 26 }}>
         <div className="tab-head"><h3><Icon name="syringe" size={17} /> Grooming, deworming &amp; vaccines</h3><button className="btn btn-primary btn-sm" onClick={() => openModal(<CareForm petId={pet.id} />)}><Icon name="plus" size={15} /> Add task</button></div>
@@ -467,8 +477,9 @@ function MealList({ pet, meals }) {
 }
 
 function TaskList({ pet, tasks }) {
-  const { completeCare, reopenCare } = useStore();
-  const { openModal, toast } = useUI();
+  const { reopenCare } = useStore();
+  const { openModal } = useUI();
+  const complete = useCompleteCare();
   const del = useDeleteCare();
   return (
     <div className="care-rows">
@@ -480,7 +491,9 @@ function TaskList({ pet, tasks }) {
               <span className={`cr-ic k-${KINDS[t.kind].color}`}><Icon name={KINDS[t.kind].icon} size={16} /></span>
               <div className="cr-info">
                 <b>{t.title}</b>
-                <small>{t.fromRecord ? "Vaccine record" : repeatLabel(t.repeatDays)}{t.done ? "" : ` · due ${fmtDate(t.nextDue).replace(/, \d{4}$/, "")}`}</small>
+                <small>{t.kind === APPT
+                  ? [fmtDate(t.nextDue).replace(/, \d{4}$/, ""), apptSub(t)].filter(Boolean).join(" · ")
+                  : <>{t.fromRecord ? "Vaccine record" : repeatLabel(t.repeatDays)}{t.done ? "" : ` · due ${fmtDate(t.nextDue).replace(/, \d{4}$/, "")}`}</>}</small>
               </div>
             </div>
             <div className="cr-side">
@@ -488,9 +501,9 @@ function TaskList({ pet, tasks }) {
               {t.fromRecord ? <Link className="btn btn-soft btn-sm" to={`/app/pets/${pet.id}?tab=vaccines`}>View</Link> : <>
                 {t.done
                   ? <button className="btn btn-soft btn-sm" onClick={() => reopenCare(pet.id, t.id)}>Reopen</button>
-                  : <button className="btn btn-soft btn-sm" onClick={() => { completeCare(pet.id, t.id); toast(`${t.title} marked done`); }}><Icon name="check" size={14} /> Done</button>}
+                  : <button className="btn btn-soft btn-sm" onClick={() => complete(pet, t)}><Icon name="check" size={14} /> Done</button>}
                 <button className="icon-btn" onClick={() => openModal(<CareForm petId={pet.id} task={t} />)} aria-label="Edit task"><Icon name="edit" /></button>
-                <button className="icon-btn danger" onClick={() => del(pet, "care", t, "this task")} aria-label="Delete task"><Icon name="trash" /></button>
+                <button className="icon-btn danger" onClick={() => del(pet, "care", t, t.kind === APPT ? "this appointment" : "this task")} aria-label="Delete task"><Icon name="trash" /></button>
               </>}
             </div>
           </div>
