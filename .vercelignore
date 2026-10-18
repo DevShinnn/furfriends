@@ -1,0 +1,9 @@
+# Never upload secrets or local state to Vercel. The build only needs the app source.
+.env.local
+.env*.local
+*.local.sql
+supabase/
+node_modules/
+dist/
+dev-dist/
+.vercel/

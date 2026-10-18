@@ -16,7 +16,9 @@ const toBytes = (b64url) => {
    Resolves to null when push can't work here (no service worker, no permission, not configured). */
 export async function getPushSubscription(create = true) {
   if (!pushConfigured() || Notification.permission !== "granted") return null;
-  const reg = await navigator.serviceWorker.getRegistration();
+  // Wait for the service worker to be active: on a first visit it may still be installing,
+  // and subscribing before then fails. Dev builds have no worker, so give up after a while.
+  const reg = await Promise.race([navigator.serviceWorker.ready, new Promise((r) => setTimeout(() => r(null), 15000))]);
   if (!reg) return null;
   let sub = await reg.pushManager.getSubscription();
   if (!sub && create) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: toBytes(VAPID_PUBLIC) });
