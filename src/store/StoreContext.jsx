@@ -9,13 +9,20 @@ import { demoPets, DEMO_EMAIL, DEMO_PASS } from "../lib/demoData";
 
    Pet-data mutations stay synchronous for the UI: state updates immediately, and the
    matching Supabase write is queued so writes reach the server in order. If a write
-   fails, the error is surfaced and everything is reloaded from the server. */
+   fails, the error is surfaced and everything is reloaded from the server.
+
+   Other devices' changes arrive through Supabase Realtime (see the realtime migration) and
+   trigger a reload once this device has no writes waiting. The app also reloads when it comes
+   back to the foreground or back online, in case it missed changes while asleep. */
 const DEMO_KEY = "furfriends.demo.v1";
 const PHOTOS = "pet-photos";
 const DOCS = "pet-documents";
 const URL_TTL = 60 * 60 * 24 * 7; // signed file links last a week
 const FED_DAYS = 14;              // only the last 2 weeks of feeding log are loaded
 const EMPTY = { user: null, pets: [] };
+const SYNC_TABLES = ["profiles", "pets", "medical_records", "vaccinations", "documents", "feeding_schedules", "feeding_log", "care_tasks"];
+const SYNC_DELAY = 1200;          // wait for a burst of changes to settle before reloading
+const STALE_AFTER = 30 * 1000;    // reload when the app returns after being hidden this long
 
 // crypto.randomUUID needs a secure context; fall back for http:// LAN testing on phones.
 const newId = () => crypto.randomUUID?.() ??
@@ -61,12 +68,27 @@ async function removeFolder(bucket, prefix) {
 }
 
 // Files are private, so stored paths are swapped for signed links when loading.
+// Links are reused while they have over a day left, so reloads don't make every image re-download.
+const signed = new Map(); // "bucket/path" → { url, expires }
 async function signAll(bucket, paths) {
   paths = [...new Set(paths.filter(Boolean))];
-  if (!paths.length) return {};
-  const { data, error } = await supabase.storage.from(bucket).createSignedUrls(paths, URL_TTL);
+  const out = {};
+  const soon = Date.now() + 24 * 3600 * 1000;
+  const need = [];
+  for (const p of paths) {
+    const hit = signed.get(`${bucket}/${p}`);
+    if (hit && hit.expires > soon) out[p] = hit.url; else need.push(p);
+  }
+  if (!need.length) return out;
+  const { data, error } = await supabase.storage.from(bucket).createSignedUrls(need, URL_TTL);
   if (error) throw error;
-  return Object.fromEntries(data.filter((x) => x.signedUrl).map((x) => [x.path, x.signedUrl]));
+  const expires = Date.now() + URL_TTL * 1000;
+  for (const x of data) {
+    if (!x.signedUrl) continue;
+    out[x.path] = x.signedUrl;
+    signed.set(`${bucket}/${x.path}`, { url: x.signedUrl, expires });
+  }
+  return out;
 }
 
 async function fetchAll(authUser) {
@@ -144,6 +166,8 @@ export function StoreProvider({ children }) {
   const [syncError, setSyncError] = useState(null);
   const ref = useRef(db);
   const queue = useRef(Promise.resolve());
+  const pending = useRef(0);      // queued writes not yet finished
+  const dirty = useRef(false);    // a change arrived while writes were pending
 
   const set = useCallback((next) => { ref.current = next; setDb(next); }, []);
 
@@ -164,14 +188,25 @@ export function StoreProvider({ children }) {
     try { set(await fetchAll(data.session.user)); } catch (e) { setSyncError(e.message); }
   }, [set]);
 
+  // Reload from the server, but never while this device still has writes on the way:
+  // a reload then would briefly drop changes the server hasn't received yet.
+  const syncNow = useCallback(() => {
+    if (!ref.current.user || ref.current.user.isDemo) return;
+    if (pending.current) { dirty.current = true; return; }
+    dirty.current = false;
+    reload();
+  }, [reload]);
+
   // Queue a server write. Tasks run one at a time, in the order they were made.
   const remote = useCallback((task) => {
     if (!ref.current.user || ref.current.user.isDemo) return;
+    pending.current++;
     queue.current = queue.current
       .then(task)
       .then((r) => { if (r?.error) throw r.error; })
-      .catch((e) => { console.error(e); setSyncError(e.message || String(e)); return reload(); });
-  }, [reload]);
+      .catch((e) => { console.error(e); setSyncError(e.message || String(e)); dirty.current = true; })
+      .finally(() => { if (--pending.current === 0 && dirty.current) syncNow(); });
+  }, [syncNow]);
 
   // Restore the session on startup.
   useEffect(() => {
@@ -196,6 +231,31 @@ export function StoreProvider({ children }) {
     });
     return () => { alive = false; sub.subscription.unsubscribe(); };
   }, [set]);
+
+  // Live sync for real accounts: Realtime changes, returning to the app, and coming back online.
+  const userId = db.user && !db.user.isDemo ? db.user.id : null;
+  useEffect(() => {
+    if (!userId) return;
+    let timer = null;
+    const soon = () => { clearTimeout(timer); timer = setTimeout(syncNow, SYNC_DELAY); };
+    const channel = supabase.channel(`sync-${userId}`);
+    for (const table of SYNC_TABLES) channel.on("postgres_changes", { event: "*", schema: "public", table }, soon);
+    channel.subscribe();
+
+    let hiddenAt = 0;
+    const onVis = () => {
+      if (document.hidden) hiddenAt = Date.now();
+      else if (hiddenAt && Date.now() - hiddenAt > STALE_AFTER) soon();
+    };
+    document.addEventListener("visibilitychange", onVis);
+    window.addEventListener("online", soon);
+    return () => {
+      clearTimeout(timer);
+      supabase.removeChannel(channel);
+      document.removeEventListener("visibilitychange", onVis);
+      window.removeEventListener("online", soon);
+    };
+  }, [userId, syncNow]);
 
   const api = useMemo(() => {
     const { user, pets } = db;
@@ -285,6 +345,21 @@ export function StoreProvider({ children }) {
         }
         commit((d) => ({ ...d, user: { ...d.user, name, phone, city } }));
         return { notice };
+      },
+
+      // This device's web-push address, so reminders can arrive when the app is closed.
+      // Both resolve to an error message or null. Not used by the demo account.
+      async savePushSubscription(s) {
+        if (!user || user.isDemo) return null;
+        const { error } = await supabase.rpc("save_push_subscription", {
+          p_endpoint: s.endpoint, p_p256dh: s.p256dh, p_auth: s.auth, p_timezone: s.timezone, p_user_agent: s.userAgent,
+        });
+        return error ? error.message : null;
+      },
+      async removePushSubscription(endpoint) {
+        if (!user || user.isDemo || !endpoint) return null;
+        const { error } = await supabase.rpc("remove_push_subscription", { p_endpoint: endpoint });
+        return error ? error.message : null;
       },
 
       // Turns reminders on or off for this account (saved to the profile, so it follows the user).

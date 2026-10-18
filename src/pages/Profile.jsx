@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { notifySupport } from "../lib/reminders";
+import { getPushSubscription, dropPushSubscription, pushConfigured } from "../lib/push";
 import { useStore } from "../store/StoreContext";
 import { useUI } from "../components/UIContext";
 import Icon from "../components/Icon";
 import { initials } from "../lib/utils";
 
 export default function Profile() {
-  const { user, pets, updateUser, changePassword, resetDemo, setNotifications } = useStore();
+  const { user, pets, updateUser, changePassword, resetDemo, setNotifications, savePushSubscription, removePushSubscription } = useStore();
   const { toast, confirm } = useUI();
   const [info, setInfo] = useState({ name: user.name, email: user.email, phone: user.phone || "", city: user.city || "" });
   const [pw, setPw] = useState({ current: "", next: "", confirm: "" });
@@ -71,7 +72,19 @@ export default function Profile() {
             </div>
             <div style={{ display: "flex", justifyContent: "flex-end" }}><button className="btn btn-primary" type="submit">Save changes</button></div>
           </form>
-          <NotificationSettings on={user.notificationsEnabled} setOn={(on) => { setNotifications(on); toast(on ? "Reminders turned on" : "Reminders turned off"); }} />
+          <NotificationSettings user={user} on={user.notificationsEnabled}
+            setOn={async (on) => {
+              setNotifications(on);
+              toast(on ? "Reminders turned on" : "Reminders turned off");
+              if (user.isDemo) return;
+              if (on) { const s = await getPushSubscription().catch(() => null); if (s) savePushSubscription(s); }
+              else removePushSubscription(await dropPushSubscription().catch(() => null));
+            }}
+            onAllowed={async () => {
+              if (user.isDemo) return null;
+              const s = await getPushSubscription().catch(() => null);
+              return s ? savePushSubscription(s) : "unavailable";
+            }} />
           <form className="card" onSubmit={savePw} noValidate>
             <div className="card-head"><h3>Change password</h3><span style={{ color: "var(--ink-3)" }}><Icon name="lock" /></span></div>
             {pwErr && <div className="error-msg">{pwErr}</div>}
@@ -90,9 +103,23 @@ export default function Profile() {
 
 const REMINDS = ["Feeding times", "Grooming", "Deworming", "Vaccinations", "Vet appointments (the day before and on the day)"];
 
-function NotificationSettings({ on, setOn }) {
+function NotificationSettings({ user, on, setOn, onAllowed }) {
   const [perm, setPerm] = useState(notifySupport);
-  const ask = async () => setPerm(await Notification.requestPermission());
+  const [pushErr, setPushErr] = useState(null);
+  const ask = async () => {
+    const p = await Notification.requestPermission();
+    setPerm(p);
+    if (p === "granted") setPushErr(await onAllowed());
+  };
+  const closedApp = user.isDemo
+    ? "With a real account, alerts also arrive when FurFriends is closed."
+    : !pushConfigured() || pushErr === "unavailable"
+      ? "This device can only get alerts while FurFriends is open or running in the background. On iPhone, add FurFriends to your Home Screen first."
+      : pushErr
+        ? `Alerts when FurFriends is closed couldn't be set up: ${pushErr}`
+        : perm === "granted"
+          ? "Alerts also arrive when FurFriends is closed."
+          : "Once you allow notifications, alerts also arrive when FurFriends is closed.";
   return (
     <section className="card">
       <div className="card-head"><h3>Reminders &amp; notifications</h3><span style={{ color: "var(--ink-3)" }}><Icon name="bell" /></span></div>
@@ -109,7 +136,7 @@ function NotificationSettings({ on, setOn }) {
             {perm === "denied" && <p>Notifications are blocked for this site. To allow them, change the site's notification setting in your browser, then reload.</p>}
             {perm === "unsupported" && <p>This browser can't show notifications. On iPhone, add FurFriends to your Home Screen first.</p>}
           </div>
-          <p className="care-hint" style={{ margin: "12px 0 0" }}>Alerts work while FurFriends is open or running in the background. Alerts when the app is fully closed need a server, which the pilot doesn't have yet.</p>
+          <p className="care-hint" style={{ margin: "12px 0 0" }}>{closedApp}</p>
         </>
       )}
     </section>

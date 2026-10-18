@@ -2,3 +2,6 @@ node_modules
 dist
 dev-dist
 .env*.local
+
+# Local setup SQL that contains secrets
+*.local.sql

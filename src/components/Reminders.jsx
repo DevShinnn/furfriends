@@ -7,6 +7,7 @@ import { PetThumb } from "./PetBits";
 import Icon from "./Icon";
 import { KindIcon } from "../pages/Care";
 import { dueReminders, loadSeen, saveSeen, notifySupport, showSystemNotification } from "../lib/reminders";
+import { getPushSubscription } from "../lib/push";
 import { todayISO } from "../lib/utils";
 
 /* Re-checks every minute, so a mealtime that arrives while the app is open shows up. */
@@ -20,7 +21,7 @@ export function useReminders() {
 /* Announces reminders that become due while the app is running: a system notification when
    allowed, otherwise a toast. Ones already due when the app opens only show on the bell. */
 export function ReminderWatcher() {
-  const { user } = useStore();
+  const { user, savePushSubscription } = useStore();
   const { toast } = useUI();
   const due = useReminders();
   const started = useRef(false);
@@ -41,6 +42,13 @@ export function ReminderWatcher() {
   }, [keys]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => { started.current = true; }, []);
+
+  // Re-save this device's push address once per session (it can change, or the row may be gone).
+  const pushOn = !!user && !user.isDemo && user.notificationsEnabled;
+  useEffect(() => {
+    if (!pushOn) return;
+    getPushSubscription().then((s) => s && savePushSubscription(s)).catch((e) => console.warn("push setup", e));
+  }, [pushOn]); // eslint-disable-line react-hooks/exhaustive-deps
   return null;
 }
 

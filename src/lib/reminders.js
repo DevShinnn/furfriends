@@ -3,8 +3,8 @@ import { todayISO } from "./utils";
 
 /* Reminders: what needs attention right now, worked out on the device from each pet's schedules.
    They cover feeding, grooming, deworming, vaccinations and vet appointments.
-   They show while the app is open (or running in the background). Notifying someone whose app is
-   fully closed needs a server sending web push, which this pilot doesn't have yet. */
+   They show while the app is open (or running in the background). When the app is closed,
+   supabase/functions/send-reminders sends them by web push using the same rules and keys. */
 
 const EARLY_MIN = 15;   // feeding reminders start this many minutes before mealtime
 
@@ -36,7 +36,7 @@ export function dueReminders(pets, now = new Date()) {
       const when = overdue ? "overdue" : isToday ? "today" : "tomorrow";
       const what = appt ? "Vet visit" : t.kind;
       out.push({
-        key: `care-${pet.id}-${t.id}-${t.nextDue}`, kind: t.kind, pet, task: t, time: t.dueTime || "", rank: overdue ? 0 : isToday ? 2 : 3,
+        key: `care-${pet.id}-${t.id}-${t.nextDue}-${when}`, kind: t.kind, pet, task: t, time: t.dueTime || "", rank: overdue ? 0 : isToday ? 2 : 3,
         title: `${what} ${when} for ${pet.name}`, overdue, when,
         body: [t.title, fmtTime(t.dueTime), appt && t.notes].filter(Boolean).join(" · "),
         to: appt ? "/app/appointments" : `/app/pets/${pet.id}?tab=${t.fromRecord ? "vaccines" : "care"}`,
