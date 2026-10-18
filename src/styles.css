@@ -1261,6 +1261,44 @@ table.data td.actions { text-align: right; white-space: nowrap; }
 .breed-care-ic.t-grooming { background: var(--lilac-soft); color: var(--cat); }
 .breed-care-ic.t-behavior { background: var(--coral-soft); color: var(--coral-2); }
 @media (max-width: 600px) { .breed-care { grid-template-columns: 1fr; gap: 12px; } }
+/* Usability survey */
+.survey { max-width: 860px; }
+.survey-part { margin-bottom: 18px; }
+.survey-part h3 { display: flex; align-items: center; gap: 10px; font-size: 18px; margin-bottom: 14px; }
+.survey-part .care-hint { margin: -6px 0 14px; }
+.survey-num { width: 28px; height: 28px; border-radius: 9px; background: var(--primary-soft); color: var(--primary); display: grid; place-items: center; font-size: 14px; flex-shrink: 0; }
+.survey-note { display: flex; gap: 8px; align-items: center; background: var(--sun-soft); border-radius: var(--r-sm); padding: 10px 14px; font-size: 14px; margin-bottom: 18px; }
+.survey-tasks, .survey-sus { list-style: none; margin: 0; padding: 0; counter-reset: q; display: flex; flex-direction: column; }
+.survey-tasks li, .survey-sus li { counter-increment: q; display: flex; flex-direction: column; gap: 10px; padding: 14px 0; border-top: 1px solid var(--line); scroll-margin-top: 80px; }
+.survey-tasks li:first-child, .survey-sus li:first-child { border-top: 0; padding-top: 0; }
+.survey-q { font-weight: 600; font-size: 14.5px; }
+.survey-q::before { content: counter(q) ". "; color: var(--ink-3); font-weight: 700; }
+.survey-sus li.is-missing .survey-q { color: var(--danger); }
+.seg, .likert { display: flex; gap: 6px; flex-wrap: wrap; }
+.seg-opt, .likert-opt { position: relative; cursor: pointer; border: 1.5px solid var(--line); border-radius: 12px; background: var(--surface); transition: border-color .15s, background .15s; }
+.seg-opt input, .likert-opt input { position: absolute; opacity: 0; pointer-events: none; }
+.seg-opt:focus-within, .likert-opt:focus-within { outline: 2px solid var(--primary); outline-offset: 2px; }
+.seg-opt { padding: 7px 12px; font-size: 13px; font-weight: 700; color: var(--ink-2); }
+.seg-opt:hover, .likert-opt:hover { border-color: var(--ink-3); }
+.seg-opt.on.r-done { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+.seg-opt.on.r-help { background: var(--warn-soft); border-color: var(--warn); color: var(--warn); }
+.seg-opt.on.r-failed { background: var(--danger-soft); border-color: var(--danger); color: var(--danger); }
+.likert { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.likert-opt { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; text-align: center; }
+.likert-opt b { font-size: 16px; }
+.likert-opt small { font-size: 11px; color: var(--ink-3); line-height: 1.2; }
+.likert-opt.on { background: var(--primary); border-color: var(--primary); color: #fff; }
+.likert-opt.on small { color: rgba(255,255,255,.85); }
+.survey-foot { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 4px; }
+.survey-foot small { color: var(--ink-3); font-size: 12.5px; max-width: 480px; }
+.survey-done p { max-width: 420px; margin: 0 auto 20px; }
+.survey-invite { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+.survey-invite h3 { font-size: 17px; margin-bottom: 4px; }
+.survey-invite p { color: var(--ink-2); font-size: 14px; }
+@media (max-width: 600px) {
+  .likert-opt small { display: none; }
+  .likert-opt:first-child small, .likert-opt:last-child small { display: block; }
+}
 .trait-list { margin: 0; display: flex; flex-direction: column; gap: 12px; }
 .trait-list div { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 14px; }
 .trait-list dt { font-weight: 600; color: var(--ink-2); }

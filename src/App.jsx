@@ -12,6 +12,7 @@ import Appointments from "./pages/Appointments";
 import Emergency, { EmergencyGuide } from "./pages/Emergency";
 import Breeds, { BreedDetail } from "./pages/Breeds";
 import Assistant from "./pages/Assistant";
+import Survey from "./pages/Survey";
 
 // HashRouter keeps deep links working on any static host without rewrite rules.
 export default function App() {
@@ -34,6 +35,7 @@ export default function App() {
               <Route path="breeds" element={<Breeds />} />
               <Route path="breeds/:slug" element={<BreedDetail />} />
               <Route path="assistant" element={<Assistant />} />
+              <Route path="survey" element={<Survey />} />
               <Route path="profile" element={<Profile />} />
               <Route path="*" element={<Navigate to="/app" replace />} />
             </Route>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { notifySupport } from "../lib/reminders";
 import { getPushSubscription, dropPushSubscription, pushConfigured } from "../lib/push";
 import { useStore } from "../store/StoreContext";
@@ -72,6 +73,10 @@ export default function Profile() {
             </div>
             <div style={{ display: "flex", justifyContent: "flex-end" }}><button className="btn btn-primary" type="submit">Save changes</button></div>
           </form>
+          <section className="card survey-invite">
+            <div><h3>Help test FurFriends</h3><p>Took part in our usability test? Tell us how it went in a 5-minute survey.</p></div>
+            <Link className="btn btn-soft" to="/app/survey"><Icon name="clip" size={16} /> Take the survey</Link>
+          </section>
           <NotificationSettings user={user} on={user.notificationsEnabled}
             setOn={async (on) => {
               setNotifications(on);

@@ -362,6 +362,22 @@ export function StoreProvider({ children }) {
         return error ? error.message : null;
       },
 
+      /* ------------------------------------------------ usability survey (thesis)
+         Resolves to an error message or null. The demo account can't take part. */
+      async submitSurvey({ participantCode, device, tasks, sus, liked, improve }) {
+        if (!user || user.isDemo) return "The demo account can't send survey answers. Log in with a real account to take part.";
+        const { error } = await supabase.from("usability_responses").insert({
+          participant_code: participantCode.trim(), device, tasks, sus, liked: liked.trim(), improve: improve.trim(),
+        });
+        return error ? error.message : null;
+      },
+      // How many responses this account has sent (0 for the demo, or if the table isn't set up).
+      async surveyCount() {
+        if (!user || user.isDemo) return 0;
+        const { count, error } = await supabase.from("usability_responses").select("id", { count: "exact", head: true });
+        return error ? 0 : count || 0;
+      },
+
       // Turns reminders on or off for this account (saved to the profile, so it follows the user).
       setNotifications(on) {
         commit((d) => ({ ...d, user: { ...d.user, notificationsEnabled: on } }));
