@@ -1,0 +1,1097 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FurFriends Vet Review</title>
+<style>
+  :root { --ink: #1b2421; --muted: #5d6763; --line: #cfd6d2; --accent: #1d6b56; --now: #b3261e; --call: #8a5a00; --paper: #ffffff; }
+  @page { size: A4; margin: 16mm 15mm 18mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 10.5pt/1.45 "Segoe UI", Arial, sans-serif; }
+  main { max-width: 190mm; margin: 0 auto; padding: 8mm 4mm; }
+  h1 { font: 700 26pt/1.1 Georgia, "Times New Roman", serif; margin: 0 0 6px; letter-spacing: -0.01em; }
+  h2.part { font: 700 17pt/1.2 Georgia, serif; margin: 0 0 4px; padding-top: 2mm; break-before: page; color: var(--accent); }
+  h3 { font-size: 12pt; margin: 0; }
+  h4 { font-size: 9pt; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 8px 0 3px; }
+  p { margin: 4px 0; } ul, ol { margin: 2px 0 4px; padding-left: 18px; } li { margin: 1px 0; }
+  .lead { color: var(--muted); max-width: 62em; margin-bottom: 10px; }
+  .cover { min-height: 250mm; display: flex; flex-direction: column; gap: 14px; }
+  .cover .sub { font-size: 13pt; color: var(--muted); }
+  .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; margin-top: 10px; }
+  .fields div { border-bottom: 1px solid var(--ink); padding-top: 18px; font-size: 9pt; color: var(--muted); }
+  .how { border: 1px solid var(--line); border-radius: 6px; padding: 10px 14px; }
+  .how ol { margin: 4px 0 0; }
+  .item { border-top: 1.5px solid var(--ink); padding: 8px 0 10px; break-inside: avoid; }
+  .item header { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+  .id { font: 700 9pt ui-monospace, Consolas, monospace; background: var(--ink); color: var(--paper); padding: 1px 6px; border-radius: 3px; }
+  .meta { font-size: 9pt; color: var(--muted); margin-left: auto; }
+  .tag { display: inline-block; border: 1px solid var(--line); border-radius: 3px; padding: 0 5px; font-size: 8.5pt; color: var(--muted); }
+  .tag.now { border-color: var(--now); color: var(--now); font-weight: 700; }
+  .tag.call { border-color: var(--call); color: var(--call); font-weight: 700; }
+  .summary { font-style: italic; }
+  .note { font-size: 9.5pt; color: var(--muted); border-left: 3px solid var(--line); padding-left: 8px; }
+  .meta-line { font-size: 9pt; color: var(--muted); }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
+  table { border-collapse: collapse; margin: 4px 0; width: 100%; font-size: 9.5pt; }
+  th, td { border: 1px solid var(--line); padding: 3px 6px; text-align: left; vertical-align: top; }
+  th { background: #f1f4f2; white-space: nowrap; }
+  .traits { font-size: 9pt; color: var(--muted); }
+  dl.care { display: grid; grid-template-columns: 22mm 1fr; gap: 2px 8px; margin: 6px 0 0; font-size: 9.5pt; }
+  dl.care dt { font-weight: 700; } dl.care dd { margin: 0; }
+  .review { margin-top: 8px; padding: 6px 8px; border: 1px dashed var(--muted); border-radius: 4px; display: grid; grid-template-columns: auto auto auto 1fr; gap: 4px 14px; align-items: end; font-size: 9.5pt; }
+  .box { white-space: nowrap; font-weight: 600; }
+  .lines { grid-column: 1 / -1; display: grid; gap: 22px; padding-top: 4px; }
+  .lines span { font-size: 8.5pt; color: var(--muted); }
+  .lines i { display: block; border-bottom: 1px solid var(--line); height: 0; }
+  .signoff { break-before: page; }
+  .signoff .stmt { border: 1.5px solid var(--ink); padding: 12px 14px; margin: 10px 0 18px; }
+  .sign { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 30px; }
+  .sign div { border-top: 1px solid var(--ink); padding-top: 4px; font-size: 9pt; color: var(--muted); margin-top: 26px; }
+  footer.gen { margin-top: 14px; font-size: 8.5pt; color: var(--muted); }
+  @media screen { body { background: #e9ecea; } main { background: var(--paper); margin: 16px auto; padding: 14mm; box-shadow: 0 2px 12px rgba(0,0,0,.12); } h2.part { margin-top: 18mm; } }
+  @media (max-width: 640px) { .cols, .fields, .sign { grid-template-columns: 1fr; } main { padding: 16px; } }
+</style></head>
+<body><main>
+  <section class="cover">
+    <p class="sub">FurFriends · Capstone pilot · Content review</p>
+    <h1>Veterinary review of pet health content</h1>
+    <p>FurFriends is a pet health records app for cat and dog owners in the Philippines. It shows owners first-aid steps, breed care information and reminders, and includes a pilot AI assistant. This pack contains all of that content (59 items), so a licensed veterinarian can check it before the app is tested with the public.</p>
+    <div class="how">
+      <b>How to review</b>
+      <ol>
+        <li>For each numbered item, tick <b>OK</b>, <b>Change</b> or <b>Remove</b>.</li>
+        <li>For <b>Change</b>, write the correction on the lines (or mark up the text directly).</li>
+        <li>Pay most attention to part A (emergency steps): anything that could delay getting to a vet or cause harm.</li>
+        <li>Sign the last page. The team will update the app and send you a new pack to confirm.</li>
+      </ol>
+    </div>
+    <div class="fields">
+      <div>Reviewer name</div><div>PRC license no.</div>
+      <div>Clinic / institution</div><div>Date received</div>
+    </div>
+    <p class="lead">Contents: A. Emergency first aid (19 items) · B. Breed guide (29) · C. Reminders and record-keeping (2) · D. AI assistant (9)</p>
+  </section>
+  
+  <h2 class="part">A. Emergency first aid</h2>
+  <p class="lead">Shown on the Emergency page. Owners use these steps while getting to a vet, so check that nothing could delay care or cause harm.</p>
+  
+  <section class="item">
+    <header><span class="id">A1</span><h3>“Go to a vet now if you see”</h3></header>
+    <div class="content"><ul><li>Struggling to breathe, or pale, blue or grey gums</li><li>Collapse, can't stand, or won't wake up properly</li><li>A seizure lasting over 5 minutes, or more than one in a day</li><li>Swollen, tight belly with retching but nothing coming up</li><li>Straining to pee with little or nothing coming out (especially male cats)</li><li>Ate or touched something poisonous, even if they seem fine</li><li>Bleeding that won't stop after 5 minutes of firm pressure</li><li>Hit by a vehicle or fell from a height</li><li>Heavy panting, drooling and weakness on a hot day</li><li>Any eye injury, or an eye bulging out of its socket</li></ul></div>
+    
+  <div class="review" aria-label="Review A1">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  
+  <section class="item">
+    <header><span class="id">A2</span><h3>Normal values</h3></header>
+    <div class="content"><table><tr><th>Temperature</th><td>38.0–39.2 °C (rectal)</td></tr><tr><th>Breathing at rest</th><td>Under 30 breaths a minute (count while asleep)</td></tr><tr><th>Gums</th><td>Moist and pink; color returns within 2 seconds after a press</td></tr><tr><th>Heart rate</th><td>Dogs 60–140 (small dogs higher) · Cats 140–220 per minute</td></tr></table></div>
+    
+  <div class="review" aria-label="Review A2">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  
+  <section class="item">
+    <header><span class="id">A3</span><h3>Pet first-aid kit</h3></header>
+    <div class="content"><ul><li>Your vet's number and the nearest 24-hour animal hospital</li><li>Gauze pads, rolled gauze and self-stick bandage wrap</li><li>Blunt-tip scissors, tweezers and a tick remover</li><li>Sterile saline for rinsing eyes and wounds</li><li>Digital thermometer and petroleum jelly</li><li>Disposable gloves and clean towels</li><li>A soft muzzle (or a strip of cloth) and a cone collar</li><li>Instant cold pack</li><li>Needle-free syringe for rinsing or giving water</li><li>A sturdy carrier, or a board or blanket to carry a large dog</li></ul></div>
+    
+  <div class="review" aria-label="Review A3">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  
+  <section class="item">
+    <header><span class="id">A4</span><h3>Heatstroke</h3><span class="meta"><span class="tag now">Go to a vet now</span> <span class="tag">Heat &amp; burns</span></span></header>
+    <div class="content">
+    <p class="summary">Overheating can damage organs within minutes. Flat-faced and thick-coated breeds are most at risk.</p>
+    <div class="cols">
+      <div><h4>Signs to look for</h4><ul><li>Heavy panting, or noisy breathing (any panting in a cat is a warning sign)</li><li>Thick drool, bright red or very pale gums</li><li>Vomiting or diarrhea</li><li>Wobbly, weak or confused; collapse or seizures</li></ul></div>
+      <div><h4>Don't</h4><ul><li>Ice or ice-cold water. It narrows blood vessels and slows cooling.</li><li>Leaving a wet towel draped over them. It traps heat. Wet the coat and keep air moving instead.</li><li>Waiting to see if they recover on their own.</li></ul></div>
+    </div>
+    <h4>What to do now</h4><ol><li>Move them out of the sun right away, into shade or an air-conditioned room.</li><li>Wet the coat with cool tap water, especially the belly, armpits, groin and paws, then fan them so the water evaporates.</li><li>Offer small sips of cool water if they're alert. Don't force them to drink.</li><li>Keep cooling for 10–15 minutes, then go to the vet with the car's air-con on, even if they seem better. Damage can show up hours later.</li><li>If you have a rectal thermometer, stop active cooling at about 39.5 °C so they don't get too cold.</li></ol>
+    
+    <p class="note">Never leave a pet in a parked car, even with the windows open. Walk dogs early in the morning or after sunset, and keep water and shade available all day.</p></div>
+    
+  <div class="review" aria-label="Review A4">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">A5</span><h3>Poisoning</h3><span class="meta"><span class="tag now">Go to a vet now</span> <span class="tag">Poisoning</span></span></header>
+    <div class="content">
+    <p class="summary">Many everyday foods, medicines and plants are toxic. Act fast, even if your pet seems fine. Signs can take hours or days.</p>
+    <div class="cols">
+      <div><h4>Signs to look for</h4><ul><li>Vomiting, drooling or diarrhea</li><li>Shaking, twitching or seizures</li><li>Wobbly, unusually sleepy or overexcited</li><li>Pale gums, bleeding or bruising (rat poison)</li><li>Trouble breathing</li></ul></div>
+      <div><h4>Don't</h4><ul><li>Making your pet vomit unless a vet tells you to. It's dangerous with some poisons and if your pet is drowsy.</li><li>Home remedies like salt, milk, oil or hydrogen peroxide.</li><li>Giving any human medicine.</li></ul></div>
+    </div>
+    <h4>What to do now</h4><ol><li>Move your pet away from the source and remove anything left in their mouth, if it's safe to do so.</li><li>Note what they ate, about how much, and when. Bring the packaging, label or a piece of the plant.</li><li>Call your vet or the nearest 24-hour clinic now and tell them you're on your way.</li><li>If it's on their skin or fur (for example a flea product), wash with mild dish soap and lukewarm water, then rinse well.</li></ol>
+    <h4>Common poisons</h4><ul><li>Chocolate, coffee and energy drinks</li><li>Grapes and raisins</li><li>Onions, garlic and chives</li><li>Xylitol: sugar-free gum, candy and some peanut butters</li><li>Human painkillers. Paracetamol is deadly to cats; ibuprofen harms both cats and dogs.</li><li>Rat and mouse poison, insect sprays and pesticides</li><li>Lilies (cats). Even pollen or the vase water can cause kidney failure.</li><li>Dog flea and tick products on cats (permethrin)</li><li>Alcohol, cleaning products and antifreeze</li></ul>
+    </div>
+    
+  <div class="review" aria-label="Review A5">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">A6</span><h3>Toad poisoning</h3><span class="meta"><span class="tag now">Go to a vet now</span> <span class="tag">Poisoning</span></span></header>
+    <div class="content">
+    <p class="summary">Cane toads, the large brown toads that come out after rain, release a poison when a dog or cat bites or licks them.</p>
+    <div class="cols">
+      <div><h4>Signs to look for</h4><ul><li>Sudden heavy drooling or foaming at the mouth</li><li>Pawing at the mouth, shaking the head</li><li>Bright red gums</li><li>Vomiting, wobbliness, a racing heartbeat, seizures</li></ul></div>
+      <div><h4>Don't</h4><ul><li>Spraying water down the throat. It can go into the lungs.</li><li>Making them vomit.</li></ul></div>
+    </div>
+    <h4>What to do now</h4><ol><li>Rinse the mouth straight away. Point the head down and run a gentle stream of water across the gums and tongue from the side, so it flows out of the mouth. Keep going for 10 minutes.</li><li>Wipe the gums and tongue with a damp cloth to remove the sticky poison.</li><li>Go to the vet now, especially if there's anything more than drooling.</li></ol>
+    
+    </div>
+    
+  <div class="review" aria-label="Review A6">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">A7</span><h3>Choking</h3><span class="meta"><span class="tag now">Go to a vet now</span> <span class="tag">Breathing &amp; choking</span></span></header>
+    <div class="content">
+    <p class="summary">Something stuck in the mouth or throat. If your pet is still breathing and coughing, go to the vet. Only step in if they can't breathe.</p>
+    <div class="cols">
+      <div><h4>Signs to look for</h4><ul><li>Pawing at the mouth, gagging or retching</li><li>Panic, struggling to breathe</li><li>Blue or pale gums</li><li>Collapse</li></ul></div>
+      <div><h4>Don't</h4><ul><li>Sweeping your fingers blindly. It can push the object deeper.</li><li>Pulling on string, thread or tinsel hanging from the mouth or bottom. It can cut the intestines.</li></ul></div>
+    </div>
+    <h4>What to do now</h4><ol><li>Stay calm and hold them gently but firmly. A choking pet may bite.</li><li>Open the mouth and look. If you can see the object and get a grip on it, remove it carefully with fingers or tweezers.</li><li>If you can't remove it and they can't breathe: hold a cat or small dog with their back against your chest and give 5 firm thrusts inward and upward just below the ribs.</li><li>For a large dog, put your arms around the belly from behind, make a fist just below the ribs and push firmly up and forward 5 times. If they're lying down, push from behind the ribs toward the head.</li><li>Check the mouth again and repeat. If they collapse and stop breathing, start CPR.</li><li>Go to the vet even if the object comes out. The throat may be injured.</li></ol>
+    
+    </div>
+    
+  <div class="review" aria-label="Review A7">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">A8</span><h3>Trouble breathing</h3><span class="meta"><span class="tag now">Go to a vet now</span> <span class="tag">Breathing &amp; choking</span></span></header>
+    <div class="content">
+    <p class="summary">Breathing problems can come from heart disease, asthma, injury or allergic reactions. They are always urgent.</p>
+    <div class="cols">
+      <div><h4>Signs to look for</h4><ul><li>Open-mouth breathing in a cat</li><li>Neck stretched out, elbows held out, belly heaving</li><li>More than 40 breaths a minute at rest</li><li>Blue, grey or pale gums; noisy breathing</li></ul></div>
+      <div><h4>Don't</h4><ul><li>Holding them tightly or covering their face.</li><li>Offering food or water.</li></ul></div>
+    </div>
+    <h4>What to do now</h4><ol><li>Keep them calm and cool, and handle them as little as possible.</li><li>Loosen or remove a tight collar or harness.</li><li>Let them pick the position that's comfortable. Carry small pets in an open carrier.</li><li>Go to the vet now, with the car's air-con on.</li></ol>
+    
+    </div>
+    
+  <div class="review" aria-label="Review A8">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">A9</span><h3>Bleeding &amp; wounds</h3><span class="meta"><span class="tag now">Go to a vet now</span> <span class="tag">Injuries &amp; wounds</span></span></header>
+    <div class="content">
+    <p class="summary">Most bleeding stops with firm, steady pressure. Bite wounds can look small but often get infected.</p>
+    <div class="cols">
+      <div><h4>Signs to look for</h4><ul><li>Bleeding that spurts or won't stop</li><li>A deep or gaping wound, or one on the chest or belly</li><li>Puncture wounds from another animal's bite</li><li>Pale gums, weakness (blood loss)</li></ul></div>
+      <div><h4>Don't</h4><ul><li>Tourniquets, unless you're trained. They can kill the limb.</li><li>Hydrogen peroxide or alcohol in the wound. They damage tissue.</li><li>Pulling out something stuck in the wound.</li></ul></div>
+    </div>
+    <h4>What to do now</h4><ol><li>If they're in pain, use a soft muzzle or towel so they don't bite. Skip this if they're vomiting or struggling to breathe.</li><li>Press firmly on the wound with a clean cloth or gauze for at least 5 minutes. Don't lift it to check.</li><li>If blood soaks through, add more layers on top. Don't remove the first one.</li><li>Once it stops, wrap it snugly but not tight. You should fit two fingers under the bandage.</li><li>Go to the vet for anything deeper than a scrape, all bite wounds, and any bleeding that won't stop.</li></ol>
+    
+    </div>
+    
+  <div class="review" aria-label="Review A9">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">A10</span><h3>Hit by a vehicle or fall</h3><span class="meta"><span class="tag now">Go to a vet now</span> <span class="tag">Injuries &amp; wounds</span></span></header>
+    <div class="content">
+    <p class="summary">Internal bleeding and chest injuries may not show at first. Pets that fall from balconies or windows need a vet check too.</p>
+    <div class="cols">
+      <div><h4>Signs to look for</h4><ul><li>Limping, not putting weight on a leg</li><li>Fast breathing, pale gums</li><li>Swelling belly, bleeding from the nose or mouth</li><li>Seems fine but was hit or fell. Still go.</li></ul></div>
+      <div><h4>Don't</h4><ul><li>Giving any painkiller.</li><li>Trying to straighten or splint a leg.</li><li>Giving food or water.</li></ul></div>
+    </div>
+    <h4>What to do now</h4><ol><li>Make sure you're safe from traffic first.</li><li>Approach slowly and speak softly. Hurt animals bite, so use a towel or muzzle unless they're vomiting or struggling to breathe.</li><li>Move them as little as possible. Slide a large dog onto a board or blanket to use as a stretcher, keeping the back and neck straight. Put small pets in a box or carrier.</li><li>Press on any bleeding, keep them calm, and go to the vet now.</li></ol>
+    
+    </div>
+    
+  <div class="review" aria-label="Review A10">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">A11</span><h3>Seizures</h3><span class="meta"><span class="tag now">Go to a vet now</span> <span class="tag">Collapse &amp; seizures</span></span></header>
+    <div class="content">
+    <p class="summary">Most seizures stop within 2 minutes. Keep your pet safe, time it, and call your vet.</p>
+    <div class="cols">
+      <div><h4>Signs to look for</h4><ul><li>Collapse, stiff or paddling legs</li><li>Jaw chomping, drooling, losing control of pee or poo</li><li>Not responding to you</li><li>Afterwards: confused, wobbly, briefly blind</li></ul></div>
+      <div><h4>Don't</h4><ul><li>Putting fingers or anything else in their mouth. Pets can't swallow their tongue.</li><li>Holding them down.</li><li>Giving food, water or medicine until they're fully alert.</li></ul></div>
+    </div>
+    <h4>What to do now</h4><ol><li>Stay calm and note the time it starts.</li><li>Move furniture and objects away, keep them away from stairs and water, and put a towel under the head. Keep your hands away from the mouth.</li><li>Dim the lights and keep things quiet. Film it if you can, since it helps the vet.</li><li>Afterwards, keep them somewhere quiet and cool, and speak softly while they recover.</li><li>Call your vet after any first seizure. Go now if it lasts over 5 minutes, they have another one, they don't wake up between seizures, or they may have eaten a poison.</li></ol>
+    
+    </div>
+    
+  <div class="review" aria-label="Review A11">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">A12</span><h3>Bloat (twisted stomach)</h3><span class="meta"><span class="tag now">Go to a vet now</span> <span class="tag">Stomach &amp; bladder</span> <span class="tag">Dogs only</span></span></header>
+    <div class="content">
+    <p class="summary">The stomach fills with gas and can twist. It can kill within hours and usually needs surgery. Most common in large, deep-chested dogs.</p>
+    <div class="cols">
+      <div><h4>Signs to look for</h4><ul><li>Swollen, tight belly</li><li>Retching or trying to vomit with nothing coming up</li><li>Restless, pacing, can't get comfortable</li><li>Drooling, pale gums, collapse</li></ul></div>
+      <div><h4>Don't</h4><ul><li>Waiting to see if it passes.</li><li>Giving food, water or home remedies.</li><li>Trying to make them vomit.</li></ul></div>
+    </div>
+    <h4>What to do now</h4><ol><li>Go to the vet immediately. Call ahead so they can prepare.</li><li>Keep your dog as calm and still as you can on the way.</li></ol>
+    
+    <p class="note">To lower the risk, feed two or three smaller meals a day and rest for an hour before and after meals.</p></div>
+    
+  <div class="review" aria-label="Review A12">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">A13</span><h3>Can't pee (blocked bladder)</h3><span class="meta"><span class="tag now">Go to a vet now</span> <span class="tag">Stomach &amp; bladder</span></span></header>
+    <div class="content">
+    <p class="summary">A blocked bladder, most common in male cats, can be fatal within a day or two. It's often mistaken for constipation.</p>
+    <div class="cols">
+      <div><h4>Signs to look for</h4><ul><li>Straining in the litter box with little or no pee</li><li>Going back to the box again and again</li><li>Crying while trying to pee, or peeing outside the box</li><li>Licking the genitals; vomiting, hiding, low energy</li></ul></div>
+      <div><h4>Don't</h4><ul><li>Pressing on the belly or bladder.</li><li>Waiting until the next day.</li></ul></div>
+    </div>
+    <h4>What to do now</h4><ol><li>Go to the vet now. Tell them when you last saw your pet pee normally.</li><li>Carry them gently in a carrier.</li></ol>
+    
+    </div>
+    
+  <div class="review" aria-label="Review A13">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">A14</span><h3>Vomiting &amp; diarrhea</h3><span class="meta"><span class="tag call">Call your vet</span> <span class="tag">Stomach &amp; bladder</span></span></header>
+    <div class="content">
+    <p class="summary">One episode in a bright, adult pet is often minor. Call your vet for advice and watch closely for the warning signs below.</p>
+    <div class="cols">
+      <div><h4>Signs to look for</h4><ul><li>Go now: repeated vomiting, or they can't keep water down</li><li>Go now: blood in the vomit or stool, or black, tarry stool</li><li>Go now: swollen or painful belly, weakness or collapse</li><li>Go now: a puppy or kitten, or an unvaccinated young dog (parvovirus risk)</li><li>Go now: may have swallowed a toy, bone or poison</li></ul></div>
+      <div><h4>Don't</h4><ul><li>Human anti-diarrhea or stomach medicines. Some are toxic to cats and some dogs.</li><li>Withholding food from a cat for more than a day. It can cause liver disease.</li></ul></div>
+    </div>
+    <h4>What to do now</h4><ol><li>Call your vet and describe what you've seen. A photo helps.</li><li>Offer small amounts of water often.</li><li>If your vet agrees, feed small portions of bland food, like plain boiled chicken and rice for dogs.</li><li>Keep a sick puppy away from other dogs and disinfect the area. Parvovirus spreads easily.</li></ol>
+    
+    </div>
+    
+  <div class="review" aria-label="Review A14">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">A15</span><h3>Burns &amp; electric shock</h3><span class="meta"><span class="tag now">Go to a vet now</span> <span class="tag">Heat &amp; burns</span></span></header>
+    <div class="content">
+    <p class="summary">Chewed electric cords, hot water and chemicals are the usual causes. Electric shock can cause breathing problems hours later.</p>
+    <div class="cols">
+      <div><h4>Signs to look for</h4><ul><li>Red, blistered or raw skin; singed fur</li><li>Burns at the corners of the mouth after chewing a cord</li><li>Coughing or trouble breathing</li><li>Collapse</li></ul></div>
+      <div><h4>Don't</h4><ul><li>Touching a pet that's still in contact with electricity.</li><li>Ice, butter, oil or creams on burns.</li><li>Popping blisters.</li></ul></div>
+    </div>
+    <h4>What to do now</h4><ol><li>Electric shock: switch off the power or unplug before you touch them. If you can't, push them away with something dry and wooden, like a broom handle.</li><li>Check breathing, and start CPR if they aren't breathing and have no heartbeat.</li><li>Heat burns: run cool water over the area for 10 minutes, then cover with a clean, damp cloth.</li><li>Chemical burns: wear gloves and rinse with plenty of running water for 15–20 minutes. Stop them licking it.</li><li>Go to the vet, even if they seem fine.</li></ol>
+    
+    </div>
+    
+  <div class="review" aria-label="Review A15">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">A16</span><h3>Snake bite</h3><span class="meta"><span class="tag now">Go to a vet now</span> <span class="tag">Bites &amp; stings</span></span></header>
+    <div class="content">
+    <p class="summary">Venom spreads faster when your pet moves. Keep them still and get to a vet. Signs can be delayed.</p>
+    <div class="cols">
+      <div><h4>Signs to look for</h4><ul><li>A sudden yelp, swelling, puncture marks</li><li>Bleeding that won't stop</li><li>Drooling, wide pupils, trembling</li><li>Weakness, wobbliness, trouble breathing, collapse</li></ul></div>
+      <div><h4>Don't</h4><ul><li>Cutting the wound, sucking out venom, tourniquets or ice.</li><li>Waiting for signs to appear.</li></ul></div>
+    </div>
+    <h4>What to do now</h4><ol><li>Keep yourself safe. Don't try to catch or kill the snake. Take a photo from a distance if it's easy.</li><li>Keep your pet calm and still, and carry them if you can.</li><li>Take off the collar if the bite is on the head or neck, because it may swell.</li><li>Go to the vet now. Call ahead so they can check for antivenom.</li></ol>
+    
+    </div>
+    
+  <div class="review" aria-label="Review A16">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">A17</span><h3>Stings &amp; allergic reactions</h3><span class="meta"><span class="tag call">Call your vet</span> <span class="tag">Bites &amp; stings</span></span></header>
+    <div class="content">
+    <p class="summary">Bee, wasp, ant and centipede stings usually cause swelling that settles. A spreading reaction or trouble breathing is an emergency.</p>
+    <div class="cols">
+      <div><h4>Signs to look for</h4><ul><li>Mild: swelling and pain where they were stung, licking the spot</li><li>Go now: the face swells and keeps spreading, or hives all over the body</li><li>Go now: vomiting, diarrhea, pale gums, weakness or collapse</li><li>Go now: trouble breathing, a sting inside the mouth or throat, or many stings</li></ul></div>
+      <div><h4>Don't</h4><ul><li>Giving human allergy or cold tablets without a vet's dose. Some contain decongestants that are toxic to pets.</li></ul></div>
+    </div>
+    <h4>What to do now</h4><ol><li>Move away from the insects.</li><li>If you see a bee stinger, scrape it out sideways with a card. Don't squeeze it.</li><li>Hold a cold pack wrapped in cloth on the spot for 10 minutes.</li><li>Watch closely for the next 1–2 hours and call your vet for advice.</li></ol>
+    
+    </div>
+    
+  <div class="review" aria-label="Review A17">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">A18</span><h3>Eye injuries</h3><span class="meta"><span class="tag now">Go to a vet now</span> <span class="tag">Injuries &amp; wounds</span></span></header>
+    <div class="content">
+    <p class="summary">Eyes get worse fast. Flat-faced breeds like Shih Tzus and Pugs are prone to eye injuries, and an eye can even pop out.</p>
+    <div class="cols">
+      <div><h4>Signs to look for</h4><ul><li>Squinting, an eye held shut, pawing at it</li><li>Redness, tearing, cloudiness</li><li>Something stuck in the eye</li><li>An eye bulging out of its socket</li></ul></div>
+      <div><h4>Don't</h4><ul><li>Removing something stuck in the eye.</li><li>Pushing a bulging eye back in.</li><li>Human eye drops or ointments.</li></ul></div>
+    </div>
+    <h4>What to do now</h4><ol><li>Stop them rubbing it. Use a cone collar or hold their paws.</li><li>Chemicals: flush the eye with sterile saline or clean, lukewarm water for 10–15 minutes.</li><li>Eye out of its socket: keep it moist with a clean cloth soaked in saline and go straight away.</li><li>Go to the vet the same day for any eye injury.</li></ol>
+    
+    </div>
+    
+  <div class="review" aria-label="Review A18">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">A19</span><h3>CPR</h3><span class="meta"><span class="tag now">Go to a vet now</span> <span class="tag">Collapse &amp; seizures</span></span></header>
+    <div class="content">
+    <p class="summary">Only for a pet who is unconscious, not breathing and has no heartbeat. Get someone to drive to the vet while you work.</p>
+    <div class="cols">
+      <div><h4>Signs to look for</h4><ul><li>Doesn't respond when you call or touch them</li><li>No chest movement for 10 seconds</li><li>No heartbeat on the left side of the chest, just behind the elbow</li></ul></div>
+      <div><h4>Don't</h4><ul><li>CPR on a pet who is breathing or has a heartbeat. It can hurt them.</li></ul></div>
+    </div>
+    <h4>What to do now</h4><ol><li>Lay them on their right side on a firm surface. Put flat-chested breeds like Bulldogs on their back.</li><li>Cats and small dogs: wrap one hand around the chest just behind the elbows and squeeze. Larger dogs: stack both hands on the widest part of the chest. On their back: press on the breastbone.</li><li>Push hard and fast: a third to a half of the chest's width, 100–120 times a minute (the beat of &quot;Stayin' Alive&quot;). Let the chest come all the way back up.</li><li>After 30 compressions, close the mouth, straighten the neck and give 2 quick breaths into the nose, watching the chest rise.</li><li>Keep going 30 compressions to 2 breaths. Check for breathing and a heartbeat every 2 minutes, and keep going on the way to the vet.</li></ol>
+    
+    </div>
+    
+  <div class="review" aria-label="Review A19">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  
+  <h2 class="part">B. Breed guide</h2>
+  <p class="lead">Shown in the Breed guide and on each pet's profile. The app also uses the weight range to tell owners whether their pet is “within the typical range”. Ratings are 1 (low) to 5 (high); “Handles heat” means tolerance of hot, humid weather.</p>
+  
+  <section class="item">
+    <header><span class="id">B1</span><h3>Aspin (Dog)</h3><span class="meta">Also called Asong Pinoy, Mixed Breed</span></header>
+    <div class="content">
+    <p class="summary">The Philippines' own street-smart dog: alert, loyal and adaptable. Aspins are generally hardy and well suited to the local climate.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>8–20 kg</td><th>Lifespan</th><td>12–16 yrs</td>
+      <th>Size</th><td>Medium</td><th>Coat</th><td>Short, single coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>4/5</b> · Grooming needs <b>1/5</b> · Shedding <b>2/5</b> · Handles heat <b>5/5</b> · Good with kids <b>4/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Tick-borne blood infections (ehrlichia, babesia)</li><li>Mange and other skin parasites</li><li>Parvovirus and distemper if not vaccinated</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Year-round tick and flea prevention is the most important care step.</li><li>Keep vaccines up to date, including rabies and leptospirosis.</li><li>Spaying or neutering helps prevent roaming and unwanted litters.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Two meals a day of a complete dog food for medium dogs. Rice with leftovers isn't a complete diet, and cooked bones can splinter. Keep the waist visible from above.</dd><dt>Exercise</dt><dd>Active. Aim for about an hour a day of walks and play, in the cooler morning or evening. Needs a secure fence, as Aspins like to roam.</dd><dt>Grooming</dt><dd>Low. Brush weekly with a rubber brush, bathe monthly or when dirty, and check for ticks after every walk.</dd><dt>Behavior</dt><dd>Alert, loyal and quick to learn. Often wary of strangers, which makes a good watchdog. Early socialization and treat-based training work well.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B1">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B2</span><h3>Shih Tzu (Dog)</h3></header>
+    <div class="content">
+    <p class="summary">Affectionate lap dog that loves company. Its flat face and long coat need extra care in hot weather.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>4–7.5 kg</td><th>Lifespan</th><td>10–16 yrs</td>
+      <th>Size</th><td>Small</td><th>Coat</th><td>Long, double coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>2/5</b> · Grooming needs <b>5/5</b> · Shedding <b>2/5</b> · Handles heat <b>1/5</b> · Good with kids <b>4/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Breathing problems from the flat face (BOAS)</li><li>Eye injuries, ulcers and dry eye</li><li>Dental disease</li><li>Ear infections and skin allergies</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Keep indoors with a fan or air-con on hot days and avoid midday walks.</li><li>Brush daily or keep a short puppy cut, with a groom every 4–6 weeks.</li><li>Wipe the eyes and face daily, and see a vet quickly for any squinting.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Small-breed food in two or three small meals. Small kibble is easier for the flat face to pick up. Gains weight easily, so keep treats tiny.</dd><dt>Exercise</dt><dd>Low. Two short walks of 15–20 minutes plus indoor play. Never exercise in the heat; the flat face makes overheating dangerous.</dd><dt>Grooming</dt><dd>High. Brush daily, or keep a short puppy cut with a groom every 4–6 weeks. Wipe the eyes and face daily and brush the teeth often.</dd><dt>Behavior</dt><dd>Friendly, affectionate and happiest near people. Can be slow to house-train, so be patient and consistent.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B2">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B3</span><h3>Labrador Retriever (Dog)</h3><span class="meta">Also called Labrador, Lab</span></header>
+    <div class="content">
+    <p class="summary">Friendly, eager-to-please family dog with lots of energy. Labs love food, so watch their weight.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>25–36 kg</td><th>Lifespan</th><td>11–14 yrs</td>
+      <th>Size</th><td>Large</td><th>Coat</th><td>Short, dense double coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>5/5</b> · Grooming needs <b>2/5</b> · Shedding <b>4/5</b> · Handles heat <b>3/5</b> · Good with kids <b>5/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Obesity</li><li>Hip and elbow dysplasia</li><li>Ear infections</li><li>Exercise-induced collapse</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Measure meals and keep treats under 10% of daily food.</li><li>Exercise early in the morning or evening, and let them swim if they can.</li><li>Dry the ears after baths and swimming.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Large-breed food in two measured meals. Labs are very food-driven and gain weight easily, so measure portions and count treats. A slow-feeder bowl helps fast eaters.</dd><dt>Exercise</dt><dd>Very high. One to two hours a day of walks, fetch and swimming. A bored Lab chews. Rest in the shade between games on hot days.</dd><dt>Grooming</dt><dd>Moderate. Brush weekly, and daily when shedding. Dry the ears well after swimming to prevent infections.</dd><dt>Behavior</dt><dd>Friendly, eager to please and great with families. Easy to train with food rewards, but boisterous as a young dog.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B3">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B4</span><h3>Golden Retriever (Dog)</h3><span class="meta">Also called Golden</span></header>
+    <div class="content">
+    <p class="summary">Gentle, patient and very social. Their thick coat needs regular brushing and they feel the heat.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>25–34 kg</td><th>Lifespan</th><td>10–12 yrs</td>
+      <th>Size</th><td>Large</td><th>Coat</th><td>Medium-long, double coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>4/5</b> · Grooming needs <b>3/5</b> · Shedding <b>5/5</b> · Handles heat <b>2/5</b> · Good with kids <b>5/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Hip and elbow dysplasia</li><li>Higher cancer risk than many breeds</li><li>Hot spots and skin allergies in humid weather</li><li>Hypothyroidism</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Brush 2–3 times a week. Don't shave the coat; it protects against sun and heat.</li><li>Dry the coat fully after baths to prevent hot spots.</li><li>Have regular senior check-ups and report new lumps early.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Large-breed food in two measured meals, and large-breed puppy food while growing. Keep lean, as extra weight strains the hips and elbows.</dd><dt>Exercise</dt><dd>High. One to two hours a day of walks, retrieving and swimming, in the cool parts of the day.</dd><dt>Grooming</dt><dd>Moderate to high. Brush two or three times a week, and daily when shedding. Trim the feathering and check the ears weekly.</dd><dt>Behavior</dt><dd>Gentle, patient and very social. Gets on with people and other pets, but doesn't like being left alone for long.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B4">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B5</span><h3>German Shepherd (Dog)</h3><span class="meta">Also called GSD, Alsatian</span></header>
+    <div class="content">
+    <p class="summary">Intelligent, loyal working dog that needs training, a job to do and plenty of exercise.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>22–40 kg</td><th>Lifespan</th><td>9–13 yrs</td>
+      <th>Size</th><td>Large</td><th>Coat</th><td>Medium, double coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>5/5</b> · Grooming needs <b>3/5</b> · Shedding <b>5/5</b> · Handles heat <b>2/5</b> · Good with kids <b>4/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Hip and elbow dysplasia</li><li>Bloat (twisted stomach)</li><li>Degenerative myelopathy</li><li>Skin and ear allergies</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Feed two or three smaller meals a day and rest after eating to lower bloat risk.</li><li>Give daily training or puzzle games as well as walks.</li><li>Brush several times a week; never shave the double coat.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Large-breed food in two meals, not one big one. Rest for an hour before and after meals to lower the risk of bloat.</dd><dt>Exercise</dt><dd>Very high. One to two hours a day, plus training or puzzle games. Mental work matters as much as walks.</dd><dt>Grooming</dt><dd>Moderate. Brush two or three times a week, and daily during the heavy sheds twice a year.</dd><dt>Behavior</dt><dd>Loyal, intelligent and protective. Needs early socialization and steady training. Often reserved with strangers.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B5">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B6</span><h3>Siberian Husky (Dog)</h3><span class="meta">Also called Husky</span></header>
+    <div class="content">
+    <p class="summary">Bred for snow, so the tropics are hard on them. Friendly, vocal and a known escape artist.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>16–27 kg</td><th>Lifespan</th><td>12–14 yrs</td>
+      <th>Size</th><td>Medium</td><th>Coat</th><td>Thick, double coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>5/5</b> · Grooming needs <b>3/5</b> · Shedding <b>5/5</b> · Handles heat <b>1/5</b> · Good with kids <b>4/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Heatstroke</li><li>Eye problems (cataracts, progressive retinal atrophy)</li><li>Hypothyroidism</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Needs air-con or a cool shaded room on hot days.</li><li>Exercise only at dawn or after sunset, and watch for heavy panting.</li><li>Don't shave the coat; brush out the loose undercoat instead.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Often eats less than you'd expect for its size. Two measured meals, adjusted to keep a lean, athletic shape.</dd><dt>Exercise</dt><dd>Very high, but only in the cool early morning or late evening here. Keep in a cool room or air-con during the day. Walk on a leash; Huskies run off and escape fences.</dd><dt>Grooming</dt><dd>Brush two or three times a week, and daily when shedding. Don't shave the double coat; it protects the skin from sun.</dd><dt>Behavior</dt><dd>Friendly, playful and independent, so not a guard dog. Howls and &quot;talks&quot;. Strong urge to chase cats and small animals.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B6">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B7</span><h3>Pug (Dog)</h3></header>
+    <div class="content">
+    <p class="summary">Charming, comical companion. The flat face makes breathing and staying cool difficult.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>6–8 kg</td><th>Lifespan</th><td>12–15 yrs</td>
+      <th>Size</th><td>Small</td><th>Coat</th><td>Short, fine coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>2/5</b> · Grooming needs <b>2/5</b> · Shedding <b>4/5</b> · Handles heat <b>1/5</b> · Good with kids <b>5/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Breathing problems (BOAS)</li><li>Heatstroke</li><li>Eye injuries</li><li>Skin-fold infections</li><li>Obesity</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Keep cool and indoors on hot days, and keep walks short and gentle.</li><li>Clean and dry the face wrinkles daily.</li><li>Use a harness instead of a collar, and keep them lean so they breathe easier.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Small portions in two meals. Pugs overeat easily, and extra weight makes breathing worse. Use treats sparingly.</dd><dt>Exercise</dt><dd>Low to moderate. Two short walks of 15–20 minutes, in cool hours only. Stop at the first sign of heavy panting, and use a harness, not a collar.</dd><dt>Grooming</dt><dd>Low to moderate. Brush weekly, as Pugs shed a lot. Clean the face wrinkles daily and dry them well.</dd><dt>Behavior</dt><dd>Charming, playful and people-focused. Good with children. Snores, and can be stubborn.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B7">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B8</span><h3>Beagle (Dog)</h3></header>
+    <div class="content">
+    <p class="summary">Merry, curious scent hound. Their nose leads them everywhere, including into the trash.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>9–14 kg</td><th>Lifespan</th><td>10–15 yrs</td>
+      <th>Size</th><td>Medium</td><th>Coat</th><td>Short, dense coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>4/5</b> · Grooming needs <b>1/5</b> · Shedding <b>3/5</b> · Handles heat <b>3/5</b> · Good with kids <b>5/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Obesity</li><li>Ear infections</li><li>Epilepsy</li><li>Back problems (IVDD)</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Keep food and trash out of reach.</li><li>Walk on a leash or in a secure yard, since they follow their nose.</li><li>Check and clean the floppy ears weekly.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Two measured meals. Beagles will eat anything, so keep food, rubbish and toxic foods out of reach and watch the waistline.</dd><dt>Exercise</dt><dd>High. At least an hour a day. Follows its nose, so walk on a leash and keep a secure fence.</dd><dt>Grooming</dt><dd>Low. Brush weekly, and check and clean the long ears weekly.</dd><dt>Behavior</dt><dd>Friendly, curious and cheerful. Great with children and other dogs. Bays and howls, and is hard to call back off-leash.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B8">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B9</span><h3>Chihuahua (Dog)</h3></header>
+    <div class="content">
+    <p class="summary">Tiny dog with a big personality. Bonds closely with one person.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>1.5–3 kg</td><th>Lifespan</th><td>14–16 yrs</td>
+      <th>Size</th><td>Toy</td><th>Coat</th><td>Short or long coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>3/5</b> · Grooming needs <b>1/5</b> · Shedding <b>2/5</b> · Handles heat <b>3/5</b> · Good with kids <b>2/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Dental disease</li><li>Kneecap slipping (luxating patella)</li><li>Low blood sugar in puppies</li><li>Collapsing windpipe</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Brush teeth several times a week.</li><li>Use a harness to protect the windpipe.</li><li>Feed puppies small meals often, and watch for weakness or shaking.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Small-breed food in two or three small meals. Tiny puppies need frequent meals to avoid low blood sugar. Very easy to overfeed.</dd><dt>Exercise</dt><dd>Low to moderate. Short walks and indoor play, about 30 minutes a day. Protect from rough play and cold air-con.</dd><dt>Grooming</dt><dd>Low. Brush weekly (long coats two or three times). Brush the teeth often, as dental problems are common.</dd><dt>Behavior</dt><dd>Bold, loyal and often attached to one person. Can be wary of strangers and snappy if handled roughly, so best with older, gentle children.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B9">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B10</span><h3>Pomeranian (Dog)</h3><span class="meta">Also called Pom</span></header>
+    <div class="content">
+    <p class="summary">Bright, lively little dog with a big fluffy coat. Confident and often vocal.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>1.5–3.5 kg</td><th>Lifespan</th><td>12–16 yrs</td>
+      <th>Size</th><td>Toy</td><th>Coat</th><td>Fluffy, double coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>3/5</b> · Grooming needs <b>4/5</b> · Shedding <b>4/5</b> · Handles heat <b>2/5</b> · Good with kids <b>3/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Kneecap slipping (luxating patella)</li><li>Collapsing windpipe</li><li>Dental disease</li><li>Coat loss (alopecia X)</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Brush 2–3 times a week down to the skin.</li><li>Keep cool on hot days; the coat traps heat.</li><li>Use a harness instead of a collar.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Small-breed food in two or three small meals. Keep treats tiny.</dd><dt>Exercise</dt><dd>Moderate. Two short walks and play, about 30 minutes a day, in cool hours. Use a harness to protect the windpipe.</dd><dt>Grooming</dt><dd>High. Brush two or three times a week, right down to the skin. Don't shave the double coat.</dd><dt>Behavior</dt><dd>Lively, curious and alert. Barks readily, so start training early. Better with older, gentle children.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B10">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B11</span><h3>French Bulldog (Dog)</h3><span class="meta">Also called Frenchie</span></header>
+    <div class="content">
+    <p class="summary">Easygoing, affectionate companion. One of the breeds most at risk from heat because of its flat face.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>8–13 kg</td><th>Lifespan</th><td>10–12 yrs</td>
+      <th>Size</th><td>Small</td><th>Coat</th><td>Short, smooth coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>2/5</b> · Grooming needs <b>1/5</b> · Shedding <b>2/5</b> · Handles heat <b>1/5</b> · Good with kids <b>4/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Breathing problems (BOAS)</li><li>Heatstroke</li><li>Back problems (IVDD)</li><li>Skin-fold infections and allergies</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Keep indoors with air-con on hot days and exercise only when it's cool.</li><li>Can't swim well. Supervise around pools.</li><li>Clean the face folds and keep them lean.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Two measured meals. Gains weight easily, which makes breathing harder. Some have food allergies, so change foods slowly.</dd><dt>Exercise</dt><dd>Low. Short walks of 15–20 minutes in cool hours. Overheats quickly; never leave in a car. Can't swim well, so supervise near water.</dd><dt>Grooming</dt><dd>Low. Brush weekly, and clean and dry the face folds.</dd><dt>Behavior</dt><dd>Playful, affectionate and happy in small homes. Good with children; can be stubborn.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B11">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B12</span><h3>Poodle (Dog)</h3><span class="meta">Also called Toy Poodle, Miniature Poodle, Standard Poodle</span></header>
+    <div class="content">
+    <p class="summary">Very clever and easy to train. Comes in toy, miniature and standard sizes; the coat keeps growing.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>2–32 kg</td><th>Lifespan</th><td>10–18 yrs</td>
+      <th>Size</th><td>Toy to large</td><th>Coat</th><td>Curly, low-shedding coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>4/5</b> · Grooming needs <b>5/5</b> · Shedding <b>1/5</b> · Handles heat <b>3/5</b> · Good with kids <b>4/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Dental disease (smaller sizes)</li><li>Kneecap slipping (luxating patella)</li><li>Progressive retinal atrophy</li><li>Bloat and Addison's disease (standard size)</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Professional groom every 4–6 weeks; a short clip is cooler.</li><li>Give daily brain games and training.</li><li>Brush the teeth of toy and miniature Poodles often.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Food sized for the variety (toy, miniature or standard) in two meals. Standards should rest after meals, as they can get bloat.</dd><dt>Exercise</dt><dd>Moderate to high. From 30 minutes a day for toys to over an hour for standards, plus training games. Needs mental work.</dd><dt>Grooming</dt><dd>High. Brush several times a week and clip every 4–6 weeks. Clean the ears regularly.</dd><dt>Behavior</dt><dd>Very intelligent, eager to learn and sociable. Easy to train, but sensitive to harsh handling.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B12">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B13</span><h3>Dachshund (Dog)</h3><span class="meta">Also called Doxie, Wiener dog</span></header>
+    <div class="content">
+    <p class="summary">Brave, playful and stubborn. Their long back needs protecting.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>4–14 kg</td><th>Lifespan</th><td>12–16 yrs</td>
+      <th>Size</th><td>Small</td><th>Coat</th><td>Smooth, long or wire coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>3/5</b> · Grooming needs <b>2/5</b> · Shedding <b>2/5</b> · Handles heat <b>3/5</b> · Good with kids <b>3/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Back disc disease (IVDD)</li><li>Obesity</li><li>Dental disease</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Use ramps and avoid jumping off furniture or using stairs.</li><li>Keep them slim to take strain off the spine.</li><li>Go to the vet right away for back pain, wobbliness or dragging legs.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Two measured meals. Keeping slim is the best protection for the long back.</dd><dt>Exercise</dt><dd>Moderate. Two walks of 20–30 minutes. Limit jumping on and off furniture; use ramps where you can.</dd><dt>Grooming</dt><dd>Low for smooth coats, moderate for long or wire coats. Brush weekly.</dd><dt>Behavior</dt><dd>Brave, curious and independent. Can be stubborn and vocal, and loves to dig.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B13">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B14</span><h3>Pembroke Welsh Corgi (Dog)</h3><span class="meta">Also called Corgi, Welsh Corgi</span></header>
+    <div class="content">
+    <p class="summary">Smart, bold herding dog on short legs. Loves food and people.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>10–14 kg</td><th>Lifespan</th><td>12–13 yrs</td>
+      <th>Size</th><td>Small to medium</td><th>Coat</th><td>Medium, double coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>4/5</b> · Grooming needs <b>3/5</b> · Shedding <b>5/5</b> · Handles heat <b>2/5</b> · Good with kids <b>4/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Back problems (IVDD)</li><li>Hip dysplasia</li><li>Obesity</li><li>Degenerative myelopathy</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Keep them lean and limit jumping.</li><li>Brush several times a week, more when shedding heavily.</li><li>Walk in the cooler parts of the day.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Two measured meals. Corgis love food and gain weight easily, which strains the back.</dd><dt>Exercise</dt><dd>High. About an hour a day of walks and games, in cool hours. A herding dog that likes having a job.</dd><dt>Grooming</dt><dd>Moderate. Brush two or three times a week; sheds heavily.</dd><dt>Behavior</dt><dd>Smart, bold and affectionate. May nip at heels when herding children, so train this out early.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B14">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B15</span><h3>Japanese Spitz (Dog)</h3></header>
+    <div class="content">
+    <p class="summary">Cheerful, loyal family dog with a bright white coat that sheds dirt surprisingly well.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>5–10 kg</td><th>Lifespan</th><td>12–14 yrs</td>
+      <th>Size</th><td>Small</td><th>Coat</th><td>White, fluffy double coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>3/5</b> · Grooming needs <b>3/5</b> · Shedding <b>4/5</b> · Handles heat <b>2/5</b> · Good with kids <b>5/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Kneecap slipping (luxating patella)</li><li>Tear staining and eye irritation</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Brush 2–3 times a week; don't shave the coat.</li><li>Wipe tear stains daily.</li><li>Keep cool and shaded in the hottest months.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Two meals of a small-to-medium breed food.</dd><dt>Exercise</dt><dd>Moderate. Two walks of 20–30 minutes plus play, in cool hours.</dd><dt>Grooming</dt><dd>Moderate. Brush two or three times a week. The coat sheds dirt well but sheds a lot of hair.</dd><dt>Behavior</dt><dd>Cheerful, affectionate and alert. A good family dog and watchdog; can be barky.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B15">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B16</span><h3>Maltese (Dog)</h3></header>
+    <div class="content">
+    <p class="summary">Gentle, playful toy dog with a silky white coat that sheds very little.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>2–4 kg</td><th>Lifespan</th><td>12–15 yrs</td>
+      <th>Size</th><td>Toy</td><th>Coat</th><td>Long, silky single coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>3/5</b> · Grooming needs <b>5/5</b> · Shedding <b>1/5</b> · Handles heat <b>3/5</b> · Good with kids <b>3/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Dental disease</li><li>Kneecap slipping (luxating patella)</li><li>Tear staining</li><li>Collapsing windpipe</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Brush daily or keep a short trim.</li><li>Brush teeth several times a week.</li><li>Use a harness instead of a collar.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Small-breed food in two or three small meals. Small kibble and regular tooth brushing help with dental problems.</dd><dt>Exercise</dt><dd>Low to moderate. Short walks and indoor play, about 30 minutes a day.</dd><dt>Grooming</dt><dd>High. Brush daily, or keep a short puppy cut with a groom every 4–6 weeks. Wipe around the eyes daily.</dd><dt>Behavior</dt><dd>Gentle, playful and affectionate. Loves company. Small and delicate, so supervise with young children.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B16">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B17</span><h3>American Bully (Dog)</h3><span class="meta">Also called Bully</span></header>
+    <div class="content">
+    <p class="summary">Muscular, confident and people-loving. Needs early socialization and consistent, kind training.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>14–55 kg</td><th>Lifespan</th><td>10–13 yrs</td>
+      <th>Size</th><td>Medium to large</td><th>Coat</th><td>Short, smooth coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>3/5</b> · Grooming needs <b>1/5</b> · Shedding <b>2/5</b> · Handles heat <b>2/5</b> · Good with kids <b>4/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Hip and elbow dysplasia</li><li>Skin allergies</li><li>Heat sensitivity in shorter-muzzled dogs</li><li>Cherry eye</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Socialize early with people and other dogs.</li><li>Exercise in the cooler parts of the day and keep them at a healthy weight.</li><li>Watch for itchy skin and red paws, signs of allergies.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Two measured meals of a food for muscular medium-to-large dogs. Don't overfeed; extra weight strains the joints.</dd><dt>Exercise</dt><dd>Moderate. 45–60 minutes a day of walks and play, in cool hours. Shorter muzzles overheat easily.</dd><dt>Grooming</dt><dd>Low. Brush weekly and check the skin folds.</dd><dt>Behavior</dt><dd>Confident, loyal and affectionate with family. Needs early socialization and steady training; supervise around other dogs.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B17">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B18</span><h3>Puspin (Cat)</h3><span class="meta">Also called Pusang Pinoy, Domestic Shorthair, Domestic Longhair, Mixed</span></header>
+    <div class="content">
+    <p class="summary">The Filipino house cat: clever, adaptable and generally very healthy. Comes in every color and pattern.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>3–5.5 kg</td><th>Lifespan</th><td>12–18 yrs</td>
+      <th>Size</th><td>Medium</td><th>Coat</th><td>Usually short coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>4/5</b> · Grooming needs <b>1/5</b> · Shedding <b>2/5</b> · Handles heat <b>5/5</b> · Good with kids <b>4/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Cat flu (upper respiratory infections)</li><li>FIV and FeLV in cats that go outdoors</li><li>Worms, fleas and ear mites</li><li>Urinary blockage in males</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Keep vaccines (FVRCP, rabies) and deworming on schedule.</li><li>Keeping them indoors means fewer fights, infections and accidents.</li><li>Spay or neuter to prevent litters and roaming.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>A complete cat food (wet, dry or both) in two or three meals, with fresh water always. Fish and rice alone isn't a complete diet for cats.</dd><dt>Exercise</dt><dd>Active. Two or three short play sessions a day with wand toys. Keeping them indoors is safer.</dd><dt>Grooming</dt><dd>Low. Brush weekly and check for fleas and ear mites.</dd><dt>Behavior</dt><dd>Smart, adaptable and often affectionate once settled. Independent, and personalities vary a lot.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B18">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B19</span><h3>Persian (Cat)</h3></header>
+    <div class="content">
+    <p class="summary">Calm, gentle and quiet. The long coat and flat face need daily care, especially in the heat.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>3–5.5 kg</td><th>Lifespan</th><td>12–17 yrs</td>
+      <th>Size</th><td>Medium</td><th>Coat</th><td>Long, thick coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>1/5</b> · Grooming needs <b>5/5</b> · Shedding <b>4/5</b> · Handles heat <b>1/5</b> · Good with kids <b>3/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Polycystic kidney disease (PKD)</li><li>Breathing problems from the flat face</li><li>Tear staining and eye problems</li><li>Dental problems</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Comb daily to stop mats, or keep a short trim.</li><li>Wipe the eyes and face daily.</li><li>Keep in a cool room on hot days, and ask your vet about kidney screening.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Measured meals of a complete cat food; wet food helps them drink enough. Kibble shaped for flat faces is easier to eat.</dd><dt>Exercise</dt><dd>Low. Gentle daily play to keep the weight off.</dd><dt>Grooming</dt><dd>Very high. Comb daily to prevent mats, wipe the eyes daily, and bathe every 4–6 weeks or keep a short trim.</dd><dt>Behavior</dt><dd>Calm, gentle and quiet. Prefers a peaceful home and a set routine.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B19">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B20</span><h3>Siamese (Cat)</h3></header>
+    <div class="content">
+    <p class="summary">Talkative, social and very attached to their people. They don't like being left alone for long.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>3–5.5 kg</td><th>Lifespan</th><td>12–20 yrs</td>
+      <th>Size</th><td>Medium</td><th>Coat</th><td>Short, fine coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>4/5</b> · Grooming needs <b>1/5</b> · Shedding <b>2/5</b> · Handles heat <b>4/5</b> · Good with kids <b>4/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Dental disease</li><li>Asthma and respiratory problems</li><li>Progressive retinal atrophy</li><li>Amyloidosis (liver)</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Give plenty of play time and company.</li><li>Brush teeth or use dental treats.</li><li>See the vet for any coughing or wheezing.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Measured meals; usually stays slim. Wet food helps them drink enough.</dd><dt>Exercise</dt><dd>High. Daily interactive play, and shelves or a cat tree for climbing.</dd><dt>Grooming</dt><dd>Low. Brush weekly.</dd><dt>Behavior</dt><dd>Very talkative, social and attached to their people. Doesn't like being left alone for long.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B20">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B21</span><h3>Maine Coon (Cat)</h3></header>
+    <div class="content">
+    <p class="summary">A gentle giant: friendly, playful and dog-like. Their heavy coat needs help staying cool.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>4–9 kg</td><th>Lifespan</th><td>12–15 yrs</td>
+      <th>Size</th><td>Large</td><th>Coat</th><td>Long, shaggy coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>3/5</b> · Grooming needs <b>4/5</b> · Shedding <b>4/5</b> · Handles heat <b>2/5</b> · Good with kids <b>5/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Heart disease (hypertrophic cardiomyopathy)</li><li>Hip dysplasia</li><li>Spinal muscular atrophy</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Brush 2–3 times a week.</li><li>Use a large litter box and a sturdy scratching post.</li><li>Ask your vet about heart screening.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Measured meals of a complete cat food. Grows slowly until 3–5 years old; avoid overfeeding along the way.</dd><dt>Exercise</dt><dd>Moderate. Daily play; many enjoy fetch and water.</dd><dt>Grooming</dt><dd>Moderate to high. Brush two or three times a week, more in hot weather when shedding.</dd><dt>Behavior</dt><dd>A gentle giant: friendly, patient and usually good with children and dogs.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B21">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B22</span><h3>Ragdoll (Cat)</h3></header>
+    <div class="content">
+    <p class="summary">Famously relaxed and floppy when picked up. Best kept indoors.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>4.5–9 kg</td><th>Lifespan</th><td>12–17 yrs</td>
+      <th>Size</th><td>Large</td><th>Coat</th><td>Semi-long, silky coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>2/5</b> · Grooming needs <b>3/5</b> · Shedding <b>3/5</b> · Handles heat <b>2/5</b> · Good with kids <b>5/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Heart disease (hypertrophic cardiomyopathy)</li><li>Bladder stones</li><li>Obesity</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Brush twice a week.</li><li>Encourage play to keep them trim.</li><li>Offer water fountains or wet food to help the bladder.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Measured meals; Ragdolls gain weight easily.</dd><dt>Exercise</dt><dd>Low to moderate. Gentle daily play sessions.</dd><dt>Grooming</dt><dd>Moderate. Brush two or three times a week.</dd><dt>Behavior</dt><dd>Relaxed and affectionate, often going limp when picked up. Best kept indoors.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B22">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B23</span><h3>British Shorthair (Cat)</h3></header>
+    <div class="content">
+    <p class="summary">Calm, easygoing teddy-bear cat. Independent but affectionate.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>3.5–8 kg</td><th>Lifespan</th><td>12–20 yrs</td>
+      <th>Size</th><td>Medium to large</td><th>Coat</th><td>Short, very dense coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>2/5</b> · Grooming needs <b>2/5</b> · Shedding <b>3/5</b> · Handles heat <b>2/5</b> · Good with kids <b>4/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Heart disease (hypertrophic cardiomyopathy)</li><li>Polycystic kidney disease (PKD)</li><li>Obesity</li><li>Gum disease</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Brush weekly, more often when shedding.</li><li>Measure meals; they gain weight easily.</li><li>Keep a cool spot available on hot days.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Measured meals; prone to weight gain, so go easy on treats.</dd><dt>Exercise</dt><dd>Low. Encourage play every day to keep them moving.</dd><dt>Grooming</dt><dd>Low to moderate. Brush weekly.</dd><dt>Behavior</dt><dd>Calm, easygoing and independent. Likes being near people, but often not a lap cat.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B23">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B24</span><h3>Scottish Fold (Cat)</h3></header>
+    <div class="content">
+    <p class="summary">Sweet, quiet cat with folded ears. The gene that folds the ears also affects cartilage everywhere, so many get painful joints.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>3–6 kg</td><th>Lifespan</th><td>11–15 yrs</td>
+      <th>Size</th><td>Medium</td><th>Coat</th><td>Short or long coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>2/5</b> · Grooming needs <b>2/5</b> · Shedding <b>3/5</b> · Handles heat <b>3/5</b> · Good with kids <b>4/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Bone and joint disease (osteochondrodysplasia)</li><li>Arthritis, often at a young age</li><li>Ear wax build-up</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Watch for stiffness, a short or thick tail, or not wanting to jump. These are signs of pain.</li><li>Provide steps and low-sided litter boxes.</li><li>Clean the folded ears gently every week.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Measured meals; keeping slim reduces strain on the joints.</dd><dt>Exercise</dt><dd>Low to moderate. Gentle play. Tell your vet if they seem stiff or reluctant to jump.</dd><dt>Grooming</dt><dd>Low to moderate. Brush weekly and clean the folded ears gently.</dd><dt>Behavior</dt><dd>Sweet, calm and people-oriented.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B24">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B25</span><h3>Bengal (Cat)</h3></header>
+    <div class="content">
+    <p class="summary">Athletic, wild-looking and very active. Needs lots of play and climbing space, and often loves water.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>3.5–7 kg</td><th>Lifespan</th><td>12–16 yrs</td>
+      <th>Size</th><td>Medium</td><th>Coat</th><td>Short, pelt-like coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>5/5</b> · Grooming needs <b>1/5</b> · Shedding <b>1/5</b> · Handles heat <b>4/5</b> · Good with kids <b>4/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Heart disease (hypertrophic cardiomyopathy)</li><li>Progressive retinal atrophy</li><li>Kneecap slipping (luxating patella)</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Plan daily play sessions and give them cat trees.</li><li>Puzzle feeders help prevent boredom.</li><li>Keep indoors or use a secure catio.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Measured meals of a high-protein cat food. Puzzle feeders help burn energy.</dd><dt>Exercise</dt><dd>Very high. Daily vigorous play, climbing spaces and puzzle toys.</dd><dt>Grooming</dt><dd>Low. Brush weekly.</dd><dt>Behavior</dt><dd>Energetic, curious and clever. Can be demanding, and often likes water.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B25">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B26</span><h3>Sphynx (Cat)</h3></header>
+    <div class="content">
+    <p class="summary">Warm, cuddly and outgoing. With no coat, they need baths and protection from sun and air-con chill.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>3–5.5 kg</td><th>Lifespan</th><td>9–15 yrs</td>
+      <th>Size</th><td>Medium</td><th>Coat</th><td>Hairless (fine down)</td>
+    </tr></table>
+    <p class="traits">Energy <b>4/5</b> · Grooming needs <b>3/5</b> · Shedding <b>1/5</b> · Handles heat <b>3/5</b> · Good with kids <b>4/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Heart disease (hypertrophic cardiomyopathy)</li><li>Sunburn</li><li>Oily skin and ear wax build-up</li><li>Dental disease</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Bathe weekly or as needed to remove skin oils.</li><li>Keep out of direct sun and give a blanket in air-con.</li><li>Clean the ears and nail beds regularly.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Needs more food than most cats to stay warm; split it into several meals.</dd><dt>Exercise</dt><dd>Moderate to high. Daily play.</dd><dt>Grooming</dt><dd>Hairless but not low-care. Bathe weekly to remove skin oil, clean the ears, and keep out of strong sun, which burns the skin.</dd><dt>Behavior</dt><dd>Very affectionate, social and playful.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B26">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B27</span><h3>Russian Blue (Cat)</h3></header>
+    <div class="content">
+    <p class="summary">Gentle and quietly affectionate. Shy with strangers but devoted to their family.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>3–5.5 kg</td><th>Lifespan</th><td>15–20 yrs</td>
+      <th>Size</th><td>Medium</td><th>Coat</th><td>Short, dense silver-blue coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>3/5</b> · Grooming needs <b>1/5</b> · Shedding <b>2/5</b> · Handles heat <b>3/5</b> · Good with kids <b>3/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Generally healthy</li><li>Obesity</li><li>Bladder stones</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Keep a steady routine; they like predictability.</li><li>Measure food and encourage play.</li><li>Brush weekly.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Food-motivated, so measure portions.</dd><dt>Exercise</dt><dd>Moderate. Daily play.</dd><dt>Grooming</dt><dd>Low. Brush weekly.</dd><dt>Behavior</dt><dd>Gentle and loyal; shy with strangers and fond of routine.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B27">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B28</span><h3>Abyssinian (Cat)</h3><span class="meta">Also called Aby</span></header>
+    <div class="content">
+    <p class="summary">Curious, athletic and always busy. Not a lap cat. Loves climbing high.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>3–5 kg</td><th>Lifespan</th><td>12–15 yrs</td>
+      <th>Size</th><td>Medium</td><th>Coat</th><td>Short, ticked coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>5/5</b> · Grooming needs <b>1/5</b> · Shedding <b>2/5</b> · Handles heat <b>4/5</b> · Good with kids <b>4/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Progressive retinal atrophy</li><li>Gum disease</li><li>Kidney amyloidosis</li><li>Pyruvate kinase deficiency</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Give high perches and lots of interactive play.</li><li>Brush teeth or use dental treats.</li><li>Ask about genetic tests from the breeder.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Measured meals of a complete cat food.</dd><dt>Exercise</dt><dd>Very high. Daily play and plenty of climbing.</dd><dt>Grooming</dt><dd>Low. Brush weekly.</dd><dt>Behavior</dt><dd>Curious, playful and always busy. Rarely a lap cat.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B28">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">B29</span><h3>Exotic Shorthair (Cat)</h3><span class="meta">Also called Exotic</span></header>
+    <div class="content">
+    <p class="summary">A Persian in a short coat: calm and sweet, with the same flat-face care needs.</p>
+    <table class="facts"><tr>
+      <th>Weight</th><td>3–6 kg</td><th>Lifespan</th><td>12–15 yrs</td>
+      <th>Size</th><td>Medium</td><th>Coat</th><td>Short, plush coat</td>
+    </tr></table>
+    <p class="traits">Energy <b>2/5</b> · Grooming needs <b>2/5</b> · Shedding <b>3/5</b> · Handles heat <b>1/5</b> · Good with kids <b>4/5</b></p>
+    <div class="cols">
+      <div><h4>Health watch-list</h4><ul><li>Breathing problems from the flat face</li><li>Polycystic kidney disease (PKD)</li><li>Tear staining and eye problems</li></ul></div>
+      <div><h4>Care tips</h4><ul><li>Wipe the eyes and face daily.</li><li>Keep in a cool room on hot days.</li><li>Brush weekly.</li></ul></div>
+    </div>
+    <dl class="care"><dt>Feeding</dt><dd>Measured meals; prone to weight gain. Kibble shaped for flat faces is easier to eat.</dd><dt>Exercise</dt><dd>Low. Gentle daily play.</dd><dt>Grooming</dt><dd>Moderate. Brush weekly and wipe the eyes daily.</dd><dt>Behavior</dt><dd>Calm, sweet and quietly playful.</dd></dl></div>
+    
+  <div class="review" aria-label="Review B29">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  
+  <h2 class="part">C. Reminders and record-keeping</h2>
+  <p class="lead">Suggestions offered when owners add vaccines and care tasks. Owners can type their own; these are only shortcuts.</p>
+  
+  <section class="item">
+    <header><span class="id">C1</span><h3>Vaccine names offered</h3></header>
+    <div class="content"><table><tr><th>Cats</th><td>FVRCP, Rabies, FeLV, Chlamydia</td></tr><tr><th>Dogs</th><td>DHPP, Rabies, Bordetella, Leptospirosis, Canine Influenza, Lyme</td></tr></table></div>
+    
+  <div class="review" aria-label="Review C1">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  
+  <section class="item">
+    <header><span class="id">C2</span><h3>Care task suggestions</h3></header>
+    <div class="content"><table><tr><th>Grooming</th><td>Bath, Brushing, Nail trim, Ear cleaning, Teeth brushing, Full groom (salon)</td></tr><tr><th>Deworming</th><td>Deworming tablet, Drontal Plus, Milbemax, Broadline spot-on, Heartworm chewable, Flea &amp; tick treatment</td></tr><tr><th>Vaccination</th><td>Rabies booster, DHPP booster, FVRCP booster, Leptospirosis, Bordetella, FeLV booster</td></tr><tr><th>Vet appointment</th><td>Annual checkup, Vaccination, Follow-up visit, Dental cleaning, Spay / neuter, Lab tests</td></tr></table>
+    <p class="note">Deworming suggestions include brand names. Check that each is appropriate for the species owners would pick it for.</p></div>
+    
+  <div class="review" aria-label="Review C2">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  
+  <h2 class="part">D. AI assistant</h2>
+  <p class="lead">The assistant is a pilot model the team is training. These are the rules it is given for every answer, and example answers it is trained on. Every answer in the app is labelled “It isn't a vet. In an emergency, go to a vet now.”</p>
+  
+  <section class="item">
+    <header><span class="id">D1</span><h3>Rules given to the AI</h3></header>
+    <div class="content"><p>You are FurFriends, a pet-care assistant for cat and dog owners in the Philippines. Give practical, educational answers in plain, friendly language. You are not a veterinarian: do not diagnose, and do not give medicine doses. If the owner describes an emergency (trouble breathing, poisoning, a seizure, heavy bleeding, collapse, a cat straining to pee, or a swollen belly with retching), tell them to go to a vet now. When a question needs an exam or tests, say so and suggest seeing their vet. Keep answers under 200 words. Use short paragraphs, and '- ' for lists.</p></div>
+    
+  <div class="review" aria-label="Review D1">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  
+  <section class="item">
+    <header><span class="id">D2</span><h3>Example answer: “How often should I deworm my puppy?”</h3></header>
+    <div class="content">
+    
+    <p>Puppies pick up worms easily, so they're dewormed more often than adults. A common schedule is:</p><ul><li>Every 2 weeks from about 2 weeks old until 12 weeks</li><li>Then monthly until 6 months old</li><li>Then every 3 months for adults</li></ul><p>Your vet will choose the right product and dose for your puppy's weight, so ask them before giving anything. Keep the yard clean and treat fleas too, since fleas can spread tapeworm.</p></div>
+    
+  <div class="review" aria-label="Review D2">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D3</span><h3>Example answer: “My dog ate a chocolate bar. What should I do?”</h3></header>
+    <div class="content">
+    
+    <p>Chocolate is poisonous to dogs, especially dark and baking chocolate. Call or go to a vet now, even if your dog seems fine, because signs can take hours to show.</p><p>While you get there:</p><ul><li>Note the type of chocolate, how much, and when it was eaten</li><li>Bring the wrapper if you can</li><li>Don't make your dog vomit unless the vet tells you to</li></ul><p>Watch for vomiting, restlessness, fast breathing, shaking or seizures, and tell the vet straight away if you see them.</p></div>
+    
+  <div class="review" aria-label="Review D3">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D4</span><h3>Example answer: “How do I keep my cat cool during hot days?”</h3></header>
+    <div class="content">
+    
+    <p>Cats handle heat better than many dogs, but hot, humid days can still be dangerous.</p><ul><li>Keep fresh water in several places, and add wet food for extra fluids</li><li>Give them a shaded, airy spot, and use a fan or air-con in the hottest hours</li><li>Brush long-haired cats often to remove loose fur</li><li>Never leave a cat in a parked car</li></ul><p>Open-mouth panting, drooling, wobbliness or collapse can mean heatstroke. Move them somewhere cool and go to a vet now.</p></div>
+    
+  <div class="review" aria-label="Review D4">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D5</span><h3>Example answer: “Is Mochi's weight healthy?”</h3></header>
+    <div class="content">
+    <p class="meta-line">About: Mochi, Cat, Puspin, 3 yrs, 4.2 kg</p>
+    <p>At 4.2 kg, Mochi is within the usual range for an adult Puspin, which is about 3 to 5.5 kg. Weight alone doesn't tell the whole story, though. A healthy cat has:</p><ul><li>Ribs you can feel easily under a thin layer of fat</li><li>A visible waist when you look from above</li><li>A belly that doesn't hang or swing</li></ul><p>If you can't feel Mochi's ribs, or she's gaining weight, ask your vet about portion sizes and a target weight.</p></div>
+    
+  <div class="review" aria-label="Review D5">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D6</span><h3>Example answer: “What vaccines does my kitten need?”</h3></header>
+    <div class="content">
+    
+    <p>Most kittens get these core vaccines:</p><ul><li>FVRCP (cat flu and panleukopenia), usually starting at 6 to 8 weeks and repeated every 3 to 4 weeks until about 16 weeks</li><li>Rabies, given from around 12 weeks, which is required in the Philippines</li></ul><p>Your vet may also suggest FeLV if your kitten will go outdoors or live with other cats. Keep the vaccine card, and add each shot in FurFriends so you get reminders for boosters.</p></div>
+    
+  <div class="review" aria-label="Review D6">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D7</span><h3>Example answer: “My male cat keeps going to the litter box but nothing comes out.”</h3></header>
+    <div class="content">
+    
+    <p>This can be a blocked bladder, which is an emergency in male cats. Take him to a vet now. A blockage can become life-threatening within a day.</p><p>Other signs include crying in the litter box, licking his genitals, vomiting, or hiding. Don't wait to see if it passes, and don't press on his belly. The vet can check his bladder and relieve the blockage.</p></div>
+    
+  <div class="review" aria-label="Review D7">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D8</span><h3>Example answer: “Can I give my dog paracetamol for pain?”</h3></header>
+    <div class="content">
+    
+    <p>Please don't give human pain medicine to your dog without your vet's advice. Many common ones, including paracetamol and ibuprofen, can cause serious harm to dogs, and paracetamol is deadly to cats.</p><p>Call your vet and describe where your dog seems sore and since when. They can examine your dog and prescribe a pain medicine that's safe for pets, at the right dose for their weight.</p></div>
+    
+  <div class="review" aria-label="Review D8">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D9</span><h3>Example answer: “How often should I bathe my Shih Tzu?”</h3></header>
+    <div class="content">
+    
+    <p>Most Shih Tzus do well with a bath every 3 to 4 weeks. Bathing too often can dry out their skin.</p><ul><li>Use a dog shampoo, not human shampoo</li><li>Brush before the bath to remove tangles, then dry them fully, especially the ears</li><li>Wipe the eyes and face daily, as tear stains and food build up there</li></ul><p>Many owners keep a short &quot;puppy cut&quot; with a groom every 4 to 6 weeks, which makes daily care much easier.</p></div>
+    
+  <div class="review" aria-label="Review D9">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="signoff">
+    <h2 class="part" style="break-before:auto">Sign-off</h2>
+    <div class="stmt">I have reviewed the content in this pack (items A1–A19, B1–B29, C1–C2 and D1–D9). Subject to the corrections I have marked, it is appropriate as general educational information for pet owners. It does not replace a veterinary examination.</div>
+    <p>☐ Approved with no changes &nbsp;&nbsp; ☐ Approved after the marked changes are made &nbsp;&nbsp; ☐ Not approved (see comments)</p>
+    <div class="sign"><div>Signature</div><div>Date</div><div>Printed name</div><div>PRC license no.</div></div>
+    <h4 style="margin-top:22px">General comments</h4>
+    <div class="lines" style="gap:22px"><i></i><i></i><i></i><i></i><i></i></div>
+    <footer class="gen">Generated from the FurFriends source on October 19, 2026 by scripts/vet-review.mjs.</footer>
+  </section>
+</main></body></html>
