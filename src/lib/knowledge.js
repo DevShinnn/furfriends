@@ -23,7 +23,7 @@ export const speciesOf = (text) => {
 };
 
 /* What each entry is searched by: its question plus the start of its answer. */
-export const searchText = (e) => `${e.q} ${e.keys || ""} ${e.a.split(/\s+/).slice(0, LEAD_WORDS).join(" ")}`;
+export const searchText = (e) => withEnglish(`${e.q} ${e.keys || ""} ${e.a.split(/\s+/).slice(0, LEAD_WORDS).join(" ")}`);
 
 /* ------------------------------------------------------------------ safety rules
    Checked before searching. FurFriends never gives medicine doses, whatever the data says. */
@@ -126,7 +126,9 @@ export function queryText(messages) {
   return withEnglish(last.split(/\s+/).length < 5 && asked.length > 1 ? `${asked.at(-2)} ${last}` : last);
 }
 
-const TAGALOG = [
+const TAGALOG = [   // phrases first, so "nakagat ako" (bit me) isn't read as just "bite"
+  [/\b(nakagat|kinagat) ako\b/, "bit me what do i do"], [/\b(nakalmot|kinalmot) ako\b/, "scratched me what do i do"],
+  [/\bkailangan\b/, "need"], [/\b(iparehistro|irehistro|parehistro|rehistro)\b/, "register"],
   [/\baso\b|\bmga aso\b|\btuta\b/, "dog"], [/\bpusa\b|\bkuting\b/, "cat"],
   [/\bnakagat\b|\bkinagat\b|\bkagat\b/, "bitten bite"], [/\bkalmot\b|\bnakalmot\b|\bkinalmot\b/, "scratched scratch"],
   [/\bnagsusuka\b|\bsuka\b|\bsumuka\b/, "vomiting"], [/\bnagtatae\b|\bpagtatae\b/, "diarrhea"], [/\btae\b|\bdumi\b/, "poop"],
@@ -142,10 +144,15 @@ const TAGALOG = [
   [/\bpagkain\b|\bpakain\b/, "food feeding"], [/\bpaliguan\b|\bligo\b/, "bath"], [/\bkapitbahay\b/, "neighbor"],
   [/\bnaligaw\b|\bnawala\b/, "lost"], [/\bbuntis\b/, "pregnant"], [/\bkapon\b|\bkinapon\b/, "neuter spay"],
 ];
+// Small Tagalog words that carry no meaning for the search ("ang", "ng", "ko" …).
+const FILLER = /\b(ang|ng|nang|ko|mo|niya|nya|ako|ka|siya|sya|kami|kayo|sila|namin|natin|nila|yung|iyong|ung|sa|si|ni|may|mayroon|meron|na|ba|po|ho|ano|anong|paano|bakit|ito|iyan|yan|lang|din|rin|pa|kasi|tapos|pag|kapag|dahil|para|mga|eh|naman|talaga|ganito|ganun)\b/g;
 export function withEnglish(text) {
-  const t = text.toLowerCase();
-  const extra = TAGALOG.filter(([re]) => re.test(t)).map(([, en]) => en);
-  return extra.length ? `${text} (${extra.join(", ")})` : text;
+  let t = text.toLowerCase(), found = false;
+  for (const [re, en] of TAGALOG) {
+    const all = new RegExp(re.source, "g");
+    if (all.test(t)) { found = true; t = t.replace(all, ` ${en} `); }
+  }
+  return found ? t.replace(FILLER, " ").replace(/\s+/g, " ").trim() : text;
 }
 
 /* ------------------------------------------------------------------ reply */
