@@ -1395,6 +1395,11 @@ table.data td.actions { text-align: right; white-space: nowrap; }
 .ai-send { width: 46px; height: 46px; padding: 0; flex-shrink: 0; border-radius: 14px; }
 .ai-send:disabled { opacity: .45; cursor: default; }
 .ai-foot { margin-top: 8px; font-size: 12px; color: var(--ink-3); }
+.ai-source { display: block; font-size: 12px; color: var(--ink-3); padding: 0 4px; line-height: 1.45; overflow-wrap: anywhere; }
+.ai-source a { color: var(--primary); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+.ai-related { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 0 4px; font-size: 12px; color: var(--ink-3); }
+.ai-related .chip { max-width: 100%; text-align: left; white-space: normal; line-height: 1.3; }
+.ai-preparing { display: block; margin-top: 6px; font-size: 12px; color: var(--ink-3); max-width: 320px; }
 
 /* With the bottom bar showing, the page scrolls instead of the log, so keep the question box in view. */
 @media (max-width: 980px) {

@@ -91,6 +91,8 @@ def to_example(r):
         pet["weightKg"] = float(r["pet_weight_kg"])
     if pet:
         ex["pet"] = pet
+    if (r.get("source") or "").strip():
+        ex["source"] = r["source"].strip()   # shown with the answer in the app (credit the license requires)
     return ex
 
 

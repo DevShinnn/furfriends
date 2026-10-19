@@ -104,22 +104,33 @@ def check_leaks(test, train_path):
 def run(args):
     test = load_test(args.test)[: args.limit or None]
     check_leaks(test, args.train)
-    os.environ.setdefault("MODEL_VERSION", args.version)
-    import app            # same loading and generation code as the server
-    from transformers import set_seed
+    given = {}
+    if args.answers:      # answers made elsewhere, e.g. the app's knowledge search (scripts/build-knowledge.mjs --eval)
+        with open(args.answers, encoding="utf-8") as f:
+            given = {a["id"]: a for a in map(json.loads, filter(str.strip, f))}
+        missing = [t["id"] for t in test if t["id"] not in given]
+        if missing:
+            sys.exit(f"{args.answers} has no answer for: {', '.join(missing)}. Run it again on the same test.jsonl.")
+    else:
+        os.environ.setdefault("MODEL_VERSION", args.version)
+        import app            # same loading and generation code as the server
+        from transformers import set_seed
 
-    app.load_model(args.base, args.adapter)
-    print(f"Loaded {app._base}" + (f" + {args.adapter}" if args.adapter else ""))
+        app.load_model(args.base, args.adapter)
+        print(f"Loaded {app._base}" + (f" + {args.adapter}" if args.adapter else ""))
     out = args.out or os.path.join("results", f"answers-{args.version}.csv")
     os.makedirs(os.path.dirname(out) or ".", exist_ok=True)
     with open(out, "w", encoding="utf-8-sig", newline="") as f:   # utf-8-sig so Excel shows it correctly
         w = csv.DictWriter(f, COLUMNS)
         w.writeheader()
         for i, t in enumerate(test, 1):
-            set_seed(args.seed)             # each answer can be reproduced on its own
-            t0 = time.time()
-            answer = app.generate(build_messages(t["messages"], t["pet"]), args.max_new_tokens).strip()
-            secs = round(time.time() - t0, 1)
+            if given:
+                answer, secs = given[t["id"]]["answer"].strip(), given[t["id"]].get("seconds", "")
+            else:
+                set_seed(args.seed)             # each answer can be reproduced on its own
+                t0 = time.time()
+                answer = app.generate(build_messages(t["messages"], t["pet"]), args.max_new_tokens).strip()
+                secs = round(time.time() - t0, 1)
             w.writerow({"id": t["id"], "category": t["category"], "question": t["messages"][-1]["content"],
                         "pet": json.dumps(t["pet"], ensure_ascii=False) if t["pet"] else "",
                         "reference_answer": t["reference"], "model_answer": answer, "model_version": args.version,
@@ -248,6 +259,7 @@ def main():
     r.add_argument("--max-new-tokens", type=int, default=int(os.getenv("MAX_NEW_TOKENS", "350")))
     r.add_argument("--seed", type=int, default=42)
     r.add_argument("--limit", type=int, default=0, help="only the first N questions (for a quick try)")
+    r.add_argument("--answers", default="", help="JSONL of answers made elsewhere ({id, answer, seconds}) instead of running a model")
     r.add_argument("--out", default="")
     s = sub.add_parser("score", help="summarize graded sheets (give two files to compare two graders)")
     s.add_argument("files", nargs="+")

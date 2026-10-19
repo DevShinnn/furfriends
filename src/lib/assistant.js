@@ -2,9 +2,15 @@ import { supabase } from "./supabase";
 import { GUIDES } from "./emergency";
 import { breedFor } from "./breeds";
 import { ageText, byDateDesc, vaxStatus } from "./utils";
+import { compose, decodeIndex, queryText, safetyReply, search } from "./knowledge";
 
-/* Client for the FurFriends assistant. The model is the team's own; this file only talks to it.
+/* Client for the FurFriends assistant.
 
+   By default it runs entirely on the owner's device, with nothing to host: an open-source sentence
+   model finds the closest checked answer in public/knowledge/index.json (see knowledge.js and
+   scripts/build-knowledge.mjs). Answers come only from checked text, never generated.
+
+   Optionally, a team-trained model can answer instead (ai-server/). Set VITE_ASSISTANT_URL to use it.
    Contract the team's server implements:
      POST  VITE_ASSISTANT_URL
      Authorization: Bearer <Supabase access token>   (so the server knows who is asking)
@@ -64,9 +70,10 @@ export function urgentGuides(text) {
   return GUIDES.filter((g) => slugs.includes(g.slug)).slice(0, 3);
 }
 
-/* ------------------------------------------------------------------ asking */
-export async function askAssistant({ user, messages, pet, signal }) {
-  if (user.isDemo) return { reply: await demoAnswer(messages.at(-1).content, pet), model: "demo" };
+/* ------------------------------------------------------------------ asking
+   Resolves to { reply, model, match?, related? }. match is the checked answer used (with its source). */
+export async function askAssistant({ user, messages, pet, signal, onStatus }) {
+  if (!ASSISTANT_URL) return askKnowledge({ messages, pet, signal, onStatus });
 
   const { data } = await supabase.auth.getSession();
   const token = data.session?.access_token;
@@ -95,26 +102,59 @@ export async function askAssistant({ user, messages, pet, signal }) {
   }
 }
 
-/* ------------------------------------------------------------------ demo
-   Sample answers from the app's own guides, so the demo works with no model connected. */
-async function demoAnswer(q, pet) {
-  await new Promise((r) => setTimeout(r, 700));
-  const t = q.toLowerCase();
-  const name = pet?.name || "your pet";
-  const urgent = urgentGuides(q);
-  if (urgent.length) {
-    const g = urgent[0];
-    return `This could be urgent. Open the ${g.title} guide below for what to do right now, and ${g.urgency === "now" ? "take " + name + " to a vet now" : "call your vet for advice"}.\n\nThis is a demo answer. When the FurFriends assistant is connected, you'll get a full reply here.`;
+/* ------------------------------------------------------------------ on-device knowledge search */
+let indexPromise = null;
+const loadIndex = () => (indexPromise ??= fetch(`${import.meta.env.BASE_URL}knowledge/index.json`)
+  .then((r) => { if (!r.ok) throw new Error(); return r.json(); })
+  .then(decodeIndex)
+  .catch(() => { indexPromise = null; throw new Error("Couldn't load the assistant's answers. Check your connection and try again."); }));
+
+let worker = null, nextId = 0;
+const waiting = new Map();   // request id -> { resolve, reject, onStatus }
+function embed(text, onStatus) {
+  if (!worker) {
+    worker = new Worker(new URL("./embedWorker.js", import.meta.url), { type: "module" });
+    worker.onmessage = ({ data }) => {
+      if ("progress" in data) return waiting.forEach((w) => w.onStatus?.(data.progress));
+      const w = waiting.get(data.id);
+      if (!w) return;
+      waiting.delete(data.id);
+      data.error ? w.reject(new Error("The assistant couldn't get ready. Check your connection and try again.")) : w.resolve(data.vector);
+    };
   }
+  const id = ++nextId;
+  return new Promise((resolve, reject) => {
+    waiting.set(id, { resolve, reject, onStatus });
+    worker.postMessage({ id, text });
+  });
+}
+
+async function askKnowledge({ messages, pet, signal, onStatus }) {
+  const q = queryText(messages);
+  const ready = loadIndex();
+  const rule = safetyReply(q) || breedReply(q, pet);
+  const index = await ready;
+  const answer = rule || compose(search(index, await embed(q, onStatus), q, { species: (pet?.species || "").toLowerCase() }), q);
+  if (signal?.aborted) throw new Error("Cancelled");
+  return { reply: answer.reply, model: index.version, match: answer.match, related: answer.related };
+}
+
+/* Questions about the selected pet's weight or breed health are answered from the breed guide,
+   with the pet's own weight, rather than from someone else's pet. */
+function breedReply(q, pet) {
   const breed = pet && breedFor(pet);
-  if (breed && /breed|health|problem|watch|care|tip|weight|groom|hot|heat|weather/.test(t)) {
-    return [
-      `Here's what the breed guide says about ${breed.name}s like ${name}:`,
-      `Typical weight is ${breed.weight[0]}–${breed.weight[1]} kg${pet.weight ? `, and ${name} is ${pet.weight} kg` : ""}.`,
+  if (!breed || !/\b(weight|heavy|fat|thin|skinny|breed|health problems?|watch for|prone)\b/i.test(q)) return null;
+  const [lo, hi] = breed.weight, w = Number(pet.weight);
+  const verdict = !w ? "" : w < lo ? `, so ${pet.name} (${w} kg) is below the typical range` : w > hi ? `, so ${pet.name} (${w} kg) is above the typical range` : `, and ${pet.name} (${w} kg) is within it`;
+  return {
+    reply: [
+      `Here's what the FurFriends breed guide says about ${breed.name}s like ${pet.name}:`,
+      `A typical adult weighs ${lo}–${hi} kg${verdict}. Body shape matters as much as the number: you should be able to feel the ribs easily, with a visible waist.`,
       "Health problems to watch for:\n" + breed.health.map((h) => `- ${h}`).join("\n"),
       "Care tips:\n" + breed.tips.map((h) => `- ${h}`).join("\n"),
-      "This is a demo answer built from the breed guide.",
-    ].join("\n\n");
-  }
-  return `In the demo, the assistant gives sample answers from the app's breed and first-aid guides. Try asking about ${pet ? name + "'s breed" : "a pet's breed"}, or describe an emergency to see how it points you to the right guide.\n\nWhen the FurFriends assistant is connected, you'll get a full answer about ${name} here.`;
+      "Your vet can check whether this is right for your pet in particular.",
+    ].join("\n\n"),
+    sure: true, related: [],
+    match: { q: `Breed guide: ${breed.name}`, source: "FurFriends breed guide", url: `#/app/breeds/${breed.slug}`, kind: "breed", score: 1 },
+  };
 }

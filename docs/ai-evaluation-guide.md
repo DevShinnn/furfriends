@@ -20,8 +20,16 @@ grades into tables. All commands run in the `ai-server` folder.
   Other names (`feeding`, `behavior`, …) are fine and get their own row in the results.
 - **Check the reference answers.** `node scripts/vet-review.mjs` puts them in the vet review pack as "Test answer" items, so your vet adviser checks them with everything else.
 
-## 2. Run the model on the test set
-Use a GPU (Google Colab T4, the same as training) for speed. A laptop CPU works, but a 1.5B model takes about 30–60 seconds per question.
+## 2. Get the assistant's answers to the test set
+**The live app's assistant (on-device search).** In the main project folder:
+```
+npm run knowledge:eval
+cd ai-server
+python evaluate.py run --answers results/search-answers.jsonl --version search-v1
+```
+The first command builds a search index **without** the test questions, so they can't find themselves, and records what the assistant answers to each one. The second turns those answers into the grading sheet `results/answers-search-v1.csv`. After changing the Q&A data, run `npm run knowledge` to rebuild the index the app uses, then redeploy.
+
+**A trained model (optional, `ai-server/`).** Use a GPU (Google Colab T4, the same as training) for speed. A laptop CPU works, but a 1.5B model takes about 30–60 seconds per question.
 
 ```
 python evaluate.py run --test data/test.jsonl --version base

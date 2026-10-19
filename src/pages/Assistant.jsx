@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useStore } from "../store/StoreContext";
 import { useUI } from "../components/UIContext";
 import Icon from "../components/Icon";
-import { ASSISTANT_URL, askAssistant, conversation, petContext, urgentGuides } from "../lib/assistant";
+import { askAssistant, conversation, petContext, urgentGuides } from "../lib/assistant";
 import { uid } from "../lib/utils";
 
 /* Chat with the FurFriends assistant, optionally about one pet.
@@ -34,12 +34,11 @@ export default function Assistant() {
   const [chat, setChat] = useState(() => loadChat(user));
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
+  const [preparing, setPreparing] = useState(null);   // % of the model downloaded, the first time only
   const abort = useRef(null);
   const saving = useRef(Promise.resolve());
   const end = useRef(null);
   const input = useRef(null);
-
-  const connected = user.isDemo || !!ASSISTANT_URL;
 
   useEffect(() => { try { sessionStorage.setItem(chatKey(user), JSON.stringify(chat)); } catch { /* ignore */ } }, [chat, user]);
   useEffect(() => { end.current?.scrollIntoView({ block: "end", behavior: "smooth" }); }, [chat, busy]);
@@ -49,23 +48,25 @@ export default function Assistant() {
 
   const send = async (q = text) => {
     q = q.trim();
-    if (!q || busy || !connected) return;
+    if (!q || busy) return;
     const mine = { id: uid(), role: "user", content: q, petName: pet?.name, urgent: urgentGuides(q).map((g) => g.slug) };
     const next = [...chat, mine];
     setChat(next); setText(""); setBusy(true);
     abort.current = new AbortController();
     try {
-      const { reply, model } = await askAssistant({ user, messages: next.filter((m) => !m.error), pet, signal: abort.current.signal });
-      // Keep what the model saw alongside the answer, in case it's rated later.
+      const { reply, model, match, related } = await askAssistant({
+        user, messages: next.filter((m) => !m.error), pet, signal: abort.current.signal, onStatus: setPreparing,
+      });
+      // Keep what the assistant saw alongside the answer, in case it's rated later.
       setChat((c) => [...c, {
-        id: uid(), fid: crypto.randomUUID(), role: "assistant", content: reply, model,
+        id: uid(), fid: crypto.randomUUID(), role: "assistant", content: reply, model, match, related,
         q, petId: pet?.id || null, ctx: petContext(pet), convo: conversation(chat), rating: 0,
       }]);
     } catch (e) {
       if (e.message === "Cancelled") return;
       setChat((c) => [...c, { id: uid(), role: "assistant", error: true, content: e.message }]);
     } finally {
-      setBusy(false);
+      setBusy(false); setPreparing(null);
       input.current?.focus();
     }
   };
@@ -98,7 +99,7 @@ export default function Assistant() {
   return (
     <>
       <div className="topbar">
-        <div><h1>Ask FurFriends</h1><p>Questions about food, care, behavior or symptoms, answered with your pet's records in mind.</p></div>
+        <div><h1>Ask FurFriends</h1><p>Questions about food, care, behavior or symptoms, answered from checked pet-care answers.</p></div>
         {chat.length > 0 && <div className="actions"><button className="btn btn-ghost" onClick={clear}><Icon name="plus" /> New chat</button></div>}
       </div>
 
@@ -118,44 +119,41 @@ export default function Assistant() {
 
       <section className="card ai-card">
         <div className="ai-log" aria-live="polite">
-          {!connected ? (
-            <div className="empty small">
-              <div className="ic"><Icon name="chat" size={30} /></div>
-              <h3>The assistant isn't switched on yet</h3>
-              <p>It's coming soon. For now, the <Link className="linkish" to="/app/emergency">Emergency guides</Link> and <Link className="linkish" to="/app/breeds">Breed guide</Link> work without it.</p>
-            </div>
-          ) : !chat.length ? (
+          {!chat.length ? (
             <div className="ai-start">
               <div className="ai-start-ic"><Icon name="chat" size={28} /></div>
               <h3>{pet ? `What would you like to know about ${pet.name}?` : "What would you like to know?"}</h3>
-              {pet && <p>{pet.name}'s profile, vaccines and medical history are shared with the assistant so answers can take them into account.</p>}
+              {pet && <p>Answers are picked for {pet.species === "Cat" ? "cats" : "dogs"}, and weight and breed questions use {pet.name}'s breed guide.</p>}
               <div className="ai-suggest">
                 {suggestions(pet).map((s) => <button key={s} className="ai-suggestion" onClick={() => send(s)}>{s}</button>)}
               </div>
             </div>
           ) : (
-            chat.map((m) => <Message key={m.id} m={m} onRate={rate} onExplain={explain} />)
+            chat.map((m) => <Message key={m.id} m={m} onRate={rate} onExplain={explain} onAsk={send} />)
           )}
-          {busy && <div className="ai-msg bot"><div className="ai-bubble ai-typing" aria-label="The assistant is typing"><span /><span /><span /></div></div>}
+          {busy && (
+            <div className="ai-msg bot">
+              <div className="ai-bubble ai-typing" aria-label="The assistant is looking for an answer"><span /><span /><span /></div>
+              {preparing !== null && <small className="ai-preparing">Getting the assistant ready on your device ({preparing}%). This only happens the first time.</small>}
+            </div>
+          )}
           <div ref={end} className="ai-end" />
         </div>
 
-        {connected && (
-          <form className="ai-compose" onSubmit={(e) => { e.preventDefault(); send(); }}>
-            <div className="ai-row">
-              <textarea ref={input} className="textarea ai-input" rows={1} value={text} onChange={(e) => setText(e.target.value)} onKeyDown={onKey}
-                placeholder={pet ? `Ask about ${pet.name}…` : "Ask a question…"} aria-label="Your question" disabled={busy} />
-              <button className="btn btn-primary ai-send" type="submit" disabled={busy || !text.trim()} aria-label="Send"><Icon name="send" size={18} /></button>
-            </div>
-            <p className="ai-foot">Pilot version: answers come from a model that's still being trained and can be wrong. Rating an answer shares it with the FurFriends team to improve the assistant. It isn't a vet. In an emergency, go to a vet now.</p>
-          </form>
-        )}
+        <form className="ai-compose" onSubmit={(e) => { e.preventDefault(); send(); }}>
+          <div className="ai-row">
+            <textarea ref={input} className="textarea ai-input" rows={1} value={text} onChange={(e) => setText(e.target.value)} onKeyDown={onKey}
+              placeholder={pet ? `Ask about ${pet.name}…` : "Ask a question…"} aria-label="Your question" disabled={busy} />
+            <button className="btn btn-primary ai-send" type="submit" disabled={busy || !text.trim()} aria-label="Send"><Icon name="send" size={18} /></button>
+          </div>
+          <p className="ai-foot">Pilot version: an open-source AI on your device picks the closest answer from FurFriends' guides and open pet-care Q&As. It can pick the wrong one, so check the question it matched. Rating an answer shares it with the FurFriends team to improve the assistant. It isn't a vet. In an emergency, go to a vet now.</p>
+        </form>
       </section>
     </>
   );
 }
 
-function Message({ m, onRate, onExplain }) {
+function Message({ m, onRate, onExplain, onAsk }) {
   if (m.role === "user") {
     const guides = urgentGuides(m.content);
     return (
@@ -180,9 +178,29 @@ function Message({ m, onRate, onExplain }) {
       <span className="ai-avatar" aria-hidden="true"><Icon name="paw" size={16} /></span>
       <div className="ai-turn">
         <div className={`ai-bubble ${m.error ? "is-error" : ""}`}><Reply text={m.content} /></div>
+        {m.match && <Source match={m.match} />}
+        {m.related?.length > 0 && (
+          <div className="ai-related">
+            <span>Similar questions:</span>
+            {m.related.map((r) => <button key={r.q} type="button" className="chip sm" onClick={() => onAsk(r.q)}>{r.q}</button>)}
+          </div>
+        )}
         {m.fid && <Rating m={m} onRate={onRate} onExplain={onExplain} />}
       </div>
     </div>
+  );
+}
+
+/* Where the answer came from: owners can check it, and Stack Exchange's license requires the credit. */
+function Source({ match }) {
+  const inApp = match.url?.startsWith("#/");
+  const label = match.source || "FurFriends";
+  return (
+    <small className="ai-source">
+      {match.kind === "qa" && <>Matched: “{match.q}” · </>}
+      {inApp ? <Link to={match.url.slice(1)}>{label}</Link>
+        : match.url ? <a href={match.url} target="_blank" rel="noopener noreferrer">{label}</a> : label}
+    </small>
   );
 }
 
