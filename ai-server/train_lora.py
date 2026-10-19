@@ -10,7 +10,10 @@ what the server sends. Output: a small LoRA adapter folder. Serve it with
 ADAPTER_PATH=adapters/v1 MODEL_VERSION=v1 (same MODEL_ID as --base).
 """
 import argparse
+import glob
 import json
+import os
+import sys
 
 import torch
 from datasets import Dataset
@@ -37,6 +40,14 @@ def load_examples(path):
     return Dataset.from_list(rows)
 
 
+def keep_awake():
+    """Stops Windows from sleeping while this process runs, so a long CPU run isn't paused."""
+    if sys.platform == "win32":
+        import ctypes
+        ES_CONTINUOUS, ES_SYSTEM_REQUIRED = 0x80000000, 0x00000001
+        ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED)
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--data", default="data/train.jsonl")
@@ -46,7 +57,10 @@ def main():
     p.add_argument("--epochs", type=float, default=3)
     p.add_argument("--lr", type=float, default=2e-4)
     p.add_argument("--max-steps", type=int, default=-1, help="for a quick test run")
+    p.add_argument("--save-steps", type=int, default=0,
+                   help="save progress every N steps, so a long run (e.g. on a laptop CPU) can resume after a stop")
     args = p.parse_args()
+    keep_awake()
 
     train = load_examples(args.data)
     evals = load_examples(args.eval) if args.eval else None
@@ -62,7 +76,9 @@ def main():
         learning_rate=args.lr,
         lr_scheduler_type="cosine",
         logging_steps=10 if gpu else 1,
-        save_strategy="no",
+        save_strategy="steps" if args.save_steps else "no",
+        save_steps=args.save_steps or 500,
+        save_total_limit=2,
         eval_strategy="epoch" if evals else "no",
         fp16=gpu,
         bf16=False,            # the free Colab T4 GPU has no bf16
@@ -75,7 +91,10 @@ def main():
     lora = LoraConfig(r=16, lora_alpha=32, lora_dropout=0.05, task_type="CAUSAL_LM",
                       target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"])
     trainer = SFTTrainer(model=args.base, args=config, train_dataset=train, eval_dataset=evals, peft_config=lora)
-    trainer.train()
+    resume = bool(args.save_steps and glob.glob(os.path.join(args.out, "checkpoint-*")))
+    if resume:
+        print("Resuming from the last saved checkpoint in", args.out)
+    trainer.train(resume_from_checkpoint=resume or None)
     trainer.save_model(args.out)              # the LoRA adapter
     trainer.processing_class.save_pretrained(args.out)
     print(f"Saved adapter to {args.out}. Serve it with ADAPTER_PATH={args.out} MODEL_ID={args.base}")
