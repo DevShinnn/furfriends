@@ -3,6 +3,7 @@ import { feedsOn } from "./care";
 
 export const DEMO_EMAIL = "demo@furfriends.app";
 export const DEMO_PASS = "demo1234";
+export const DEMO_PROFILE = { name: "Alex Rivera", phone: "0917 123 4567", city: "Quezon City" };
 
 const DOC = (file, title, type, days, notes = "") => ({ id: uid(), src: `/assets/docs/${file}.svg`, title, type, date: addDays(days), notes });
 const med = (days, type, title, vet, notes) => ({ id: uid(), date: addDays(days), type, title, vet, notes });

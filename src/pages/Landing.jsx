@@ -22,7 +22,7 @@ const FAQS = [
   ["How do vaccine reminders work?", "Add the date a vaccine was given and when the next booster is due. Your dashboard highlights anything due in the next 30 days and flags anything overdue."],
   ["What documents can I store?", "Anything from the vet: vaccination certificates, lab results, prescriptions, invoices, X-rays and microchip papers. Just take a photo or upload a scan."],
   ["Can I install it on my phone?", "Yes. FurFriends is a Progressive Web App — open it in your phone's browser and choose “Install” or “Add to Home Screen”. It even works offline."],
-  ["Is my pets' data private?", "Your records sit behind your account login and are never shared. In this demo, data is stored only in your own browser."],
+  ["Is my pets' data private?", "Your records sit behind your account login and are never shared. The demo account is shared by everyone who tries it and is reset often, so don't put real details in it."],
 ];
 const PLANS = [
   { name: "Starter", monthly: 0, yearly: 0, desc: () => "For a single furry friend getting started.", cta: "Start for free", to: "/register",
@@ -73,7 +73,11 @@ export default function Landing() {
     return () => window.removeEventListener("scroll", on);
   }, []);
 
-  const demo = () => { demoLogin(); toast("Welcome! You're exploring the demo account"); navigate("/app"); };
+  const demo = async () => {
+    const err = await demoLogin();
+    if (err) return toast(err, "error");
+    toast("Welcome! You're exploring the demo account"); navigate("/app");
+  };
   const go = (id) => {
     setMenu(false);
     const t = document.getElementById(id);

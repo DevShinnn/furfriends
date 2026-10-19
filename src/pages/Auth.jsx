@@ -33,7 +33,13 @@ export function Login() {
   const [busy, setBusy] = useState(false);
   if (user) return <Navigate to="/app" replace />;
 
-  const demo = () => { demoLogin(); toast("Welcome! You're exploring the demo account"); navigate("/app"); };
+  const demo = async () => {
+    setBusy(true);
+    const err = await demoLogin();
+    setBusy(false);
+    if (err) return setError(err);
+    toast("Welcome! You're exploring the demo account"); navigate("/app");
+  };
   const submit = async (e) => {
     e.preventDefault();
     setBusy(true);
@@ -51,7 +57,7 @@ export function Login() {
           <div className="faces">{["mochi-1", "bori-1", "ginger-1", "kong-1"].map((p) => <img key={p} src={PET(p)} alt="" />)}</div>
           <div><b>Just exploring?</b><small>Meet Mochi, Bori, Ginger & Kong</small></div>
         </div>
-        <button type="button" className="btn btn-coral btn-block" onClick={demo}>Log in with demo account <Icon name="arrowR" className="arrow" /></button>
+        <button type="button" className="btn btn-coral btn-block" onClick={demo} disabled={busy}>{busy ? "Logging in…" : <>Log in with demo account <Icon name="arrowR" className="arrow" /></>}</button>
         <small style={{ display: "block", marginTop: 10, textAlign: "center" }}><code>{DEMO_EMAIL}</code> / <code>{DEMO_PASS}</code></small>
       </div>
       <div className="divider">or log in with email</div>
@@ -116,9 +122,13 @@ export function Register() {
 /* Shareable one-click demo link: #/demo or #/demo?next=/app/pets */
 export function DemoLink() {
   const { demoLogin, user } = useStore();
+  const { toast } = useUI();
   const [params] = useSearchParams();
   const navigate = useNavigate();
-  useEffect(() => { demoLogin(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (user) return;
+    demoLogin().then((err) => { if (err) { toast(err, "error"); navigate("/login", { replace: true }); } });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!user) return;
     const next = params.get("next") || "";

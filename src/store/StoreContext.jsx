@@ -1,11 +1,14 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "../lib/supabase";
-import { isEmail, todayISO, mimeOf } from "../lib/utils";
+import { isEmail, todayISO, mimeOf, newId } from "../lib/utils";
 import { shiftISO } from "../lib/care";
-import { demoPets, DEMO_EMAIL, DEMO_PASS } from "../lib/demoData";
+import { DEMO_EMAIL, DEMO_PASS, DEMO_PROFILE } from "../lib/demoData";
+import { addDemoPets, browserFiles, clearPets } from "../lib/seedDemo";
 
-/* Real accounts live in Supabase (Auth + Postgres + Storage, see supabase/migrations).
-   The demo account stays in this browser's localStorage so it works without signing up.
+/* Accounts live in Supabase (Auth + Postgres + Storage, see supabase/migrations).
+   The demo account is a real, shared account (made by scripts/seed-sample-accounts.mjs) that
+   the demo buttons log into. It can't change its password or email, send survey answers or
+   rate the assistant, so the shared login keeps working and the research data stays clean.
 
    Pet-data mutations stay synchronous for the UI: state updates immediately, and the
    matching Supabase write is queued so writes reach the server in order. If a write
@@ -14,7 +17,7 @@ import { demoPets, DEMO_EMAIL, DEMO_PASS } from "../lib/demoData";
    Other devices' changes arrive through Supabase Realtime (see the realtime migration) and
    trigger a reload once this device has no writes waiting. The app also reloads when it comes
    back to the foreground or back online, in case it missed changes while asleep. */
-const DEMO_KEY = "furfriends.demo.v1";
+const OLD_DEMO_KEY = "furfriends.demo.v1"; // the browser-only demo used before; cleared on startup
 const PHOTOS = "pet-photos";
 const DOCS = "pet-documents";
 const URL_TTL = 60 * 60 * 24 * 7; // signed file links last a week
@@ -24,9 +27,6 @@ const SYNC_TABLES = ["profiles", "pets", "medical_records", "vaccinations", "doc
 const SYNC_DELAY = 1200;          // wait for a burst of changes to settle before reloading
 const STALE_AFTER = 30 * 1000;    // reload when the app returns after being hidden this long
 
-// crypto.randomUUID needs a secure context; fall back for http:// LAN testing on phones.
-const newId = () => crypto.randomUUID?.() ??
-  "10000000-1000-4000-8000-100000000000".replace(/[018]/g, (c) => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16));
 const redirectTo = () => window.location.origin + window.location.pathname;
 
 /* ---------------------------------------------------------------- row mapping (app camelCase ↔ db snake_case) */
@@ -136,6 +136,7 @@ async function fetchAll(authUser) {
   const user = {
     id: authUser.id, email: authUser.email, name: p.name || "", phone: p.phone || "", city: p.city || "",
     notificationsEnabled: p.notifications_enabled ?? true, createdAt: Date.parse(authUser.created_at),
+    isDemo: authUser.email === DEMO_EMAIL,
   };
   return { user, pets };
 }
@@ -148,14 +149,6 @@ function authMessage(error) {
   if (c === "over_email_send_rate_limit") return "Too many emails sent — please wait a minute and try again.";
   return error.message || "Something went wrong. Please try again.";
 }
-
-/* ---------------------------------------------------------------- demo account (browser only) */
-const loadDemo = () => { try { return JSON.parse(localStorage.getItem(DEMO_KEY)) || null; } catch { return null; } };
-const demoUser = () => ({
-  id: "demo", name: "Alex Rivera", email: DEMO_EMAIL, phone: "0917 123 4567", city: "Quezon City",
-  isDemo: true, notificationsEnabled: true, createdAt: Date.now() - 400 * 86400000,
-});
-const freshDemo = () => { const user = demoUser(); return { user, pets: demoPets(user.id) }; };
 
 /* ---------------------------------------------------------------- provider */
 const StoreCtx = createContext(null);
@@ -171,14 +164,9 @@ export function StoreProvider({ children }) {
 
   const set = useCallback((next) => { ref.current = next; setDb(next); }, []);
 
-  // Demo data is persisted to localStorage; real accounts persist through `remote` below.
-  // Returns false (and changes nothing) if the browser's storage is full.
+  // Updates the screen right away; the server write goes through `remote` below.
   const commit = useCallback((updater) => {
-    const next = updater(ref.current);
-    if (next.user?.isDemo) {
-      try { localStorage.setItem(DEMO_KEY, JSON.stringify({ ...next, active: true })); } catch { return false; }
-    }
-    set(next);
+    set(updater(ref.current));
     return true;
   }, [set]);
 
@@ -191,7 +179,7 @@ export function StoreProvider({ children }) {
   // Reload from the server, but never while this device still has writes on the way:
   // a reload then would briefly drop changes the server hasn't received yet.
   const syncNow = useCallback(() => {
-    if (!ref.current.user || ref.current.user.isDemo) return;
+    if (!ref.current.user) return;
     if (pending.current) { dirty.current = true; return; }
     dirty.current = false;
     reload();
@@ -199,7 +187,7 @@ export function StoreProvider({ children }) {
 
   // Queue a server write. Tasks run one at a time, in the order they were made.
   const remote = useCallback((task) => {
-    if (!ref.current.user || ref.current.user.isDemo) return;
+    if (!ref.current.user) return;
     pending.current++;
     queue.current = queue.current
       .then(task)
@@ -212,14 +200,12 @@ export function StoreProvider({ children }) {
   useEffect(() => {
     let alive = true;
     (async () => {
+      try { localStorage.removeItem(OLD_DEMO_KEY); } catch { /* storage blocked */ }
       const { data } = await supabase.auth.getSession();
-      const demo = loadDemo();
       let next = EMPTY;
       if (data.session) {
         try { next = await fetchAll(data.session.user); }
         catch (e) { setSyncError(`Couldn't load your data (${e.message}).`); }
-      } else if (demo?.active) {
-        next = { user: demo.user, pets: demo.pets };
       }
       if (!alive) return;
       set(next);
@@ -227,13 +213,13 @@ export function StoreProvider({ children }) {
     })();
     // Session ended elsewhere (other tab, expired refresh token).
     const { data: sub } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "SIGNED_OUT" && !ref.current.user?.isDemo) set(EMPTY);
+      if (event === "SIGNED_OUT") set(EMPTY);
     });
     return () => { alive = false; sub.subscription.unsubscribe(); };
   }, [set]);
 
-  // Live sync for real accounts: Realtime changes, returning to the app, and coming back online.
-  const userId = db.user && !db.user.isDemo ? db.user.id : null;
+  // Live sync: Realtime changes, returning to the app, and coming back online.
+  const userId = db.user ? db.user.id : null;
   useEffect(() => {
     if (!userId) return;
     let timer = null;
@@ -271,9 +257,13 @@ export function StoreProvider({ children }) {
       try { set(await fetchAll(authUser)); return null; }
       catch (e) { await supabase.auth.signOut(); return `Couldn't load your data (${e.message}).`; }
     }
-    function startDemo(reset) {
-      const saved = !reset && loadDemo();
-      commit(() => (saved?.user ? { user: saved.user, pets: saved.pets } : freshDemo()));
+    // Resolves to an error message or null.
+    async function login(email, password) {
+      email = (email || "").trim().toLowerCase();
+      if (!email || !password) return "Please enter your email and password.";
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) return email === DEMO_EMAIL ? "The demo account isn't available right now. Please try again later." : authMessage(error);
+      return enter(data.user);
     }
 
     return {
@@ -281,20 +271,22 @@ export function StoreProvider({ children }) {
       syncError, clearSyncError: () => setSyncError(null),
 
       /* ------------------------------------------------ account */
-      demoLogin() { startDemo(false); },
-      resetDemo() { startDemo(true); },
+      login,
+      demoLogin: () => login(DEMO_EMAIL, DEMO_PASS),
 
-      async login(email, password) {
-        email = (email || "").trim().toLowerCase();
-        if (!email || !password) return "Please enter your email and password.";
-        if (email === DEMO_EMAIL) {
-          if (password !== DEMO_PASS) return "Incorrect email or password.";
-          startDemo(false);
+      // Puts the demo account back to its original pets, profile and records. Resolves to an error message or null.
+      async resetDemo() {
+        if (!user?.isDemo) return null;
+        try {
+          await clearPets(supabase, user.id);
+          await addDemoPets(supabase, user.id, browserFiles);
+          await supabase.from("profiles").update({ ...DEMO_PROFILE, notifications_enabled: true }).eq("id", user.id);
+          await reload();
           return null;
+        } catch (e) {
+          await reload();
+          return e.message || String(e);
         }
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) return authMessage(error);
-        return enter(data.user);
       },
 
       // Resolves to { error } or { confirmEmail: true } when Supabase requires email confirmation.
@@ -316,11 +308,7 @@ export function StoreProvider({ children }) {
       },
 
       logout() {
-        if (ref.current.user?.isDemo) {
-          try { localStorage.setItem(DEMO_KEY, JSON.stringify({ ...ref.current, active: false })); } catch { /* ignore */ }
-        } else {
-          supabase.auth.signOut();
-        }
+        supabase.auth.signOut();
         set(EMPTY);
       },
 
@@ -330,11 +318,7 @@ export function StoreProvider({ children }) {
         name = name.trim(); phone = phone.trim(); city = city.trim();
         if (!name) return { error: "Name can't be empty." };
         if (!isEmail(email)) return { error: "Please enter a valid email address." };
-        if (user.isDemo) {
-          if (email !== DEMO_EMAIL) return { error: "The demo account's email can't be changed." };
-          commit((d) => ({ ...d, user: { ...d.user, name, phone, city } }));
-          return {};
-        }
+        if (user.isDemo && email !== user.email) return { error: "The demo account's email can't be changed." };
         const r = await supabase.from("profiles").update({ name, phone, city }).eq("id", user.id);
         if (r.error) return { error: r.error.message };
         let notice = null;
@@ -348,16 +332,16 @@ export function StoreProvider({ children }) {
       },
 
       // This device's web-push address, so reminders can arrive when the app is closed.
-      // Both resolve to an error message or null. Not used by the demo account.
+      // Both resolve to an error message or null.
       async savePushSubscription(s) {
-        if (!user || user.isDemo) return null;
+        if (!user) return null;
         const { error } = await supabase.rpc("save_push_subscription", {
           p_endpoint: s.endpoint, p_p256dh: s.p256dh, p_auth: s.auth, p_timezone: s.timezone, p_user_agent: s.userAgent,
         });
         return error ? error.message : null;
       },
       async removePushSubscription(endpoint) {
-        if (!user || user.isDemo || !endpoint) return null;
+        if (!user || !endpoint) return null;
         const { error } = await supabase.rpc("remove_push_subscription", { p_endpoint: endpoint });
         return error ? error.message : null;
       },
@@ -537,7 +521,7 @@ export function StoreProvider({ children }) {
         return error ? error.message : null;
       },
     };
-  }, [db, ready, syncError, commit, set, remote]);
+  }, [db, ready, syncError, commit, set, remote, reload]);
 
   return <StoreCtx.Provider value={api}>{ready ? children : null}</StoreCtx.Provider>;
 }

@@ -1,4 +1,7 @@
 export const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+// Database ids. crypto.randomUUID needs a secure context; fall back for http:// LAN testing on phones.
+export const newId = () => crypto.randomUUID?.() ??
+  "10000000-1000-4000-8000-100000000000".replace(/[018]/g, (c) => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16));
 const localISO = (d) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 export const todayISO = () => localISO(new Date());
 export const addDays = (n) => { const d = new Date(); d.setDate(d.getDate() + n); return localISO(d); };

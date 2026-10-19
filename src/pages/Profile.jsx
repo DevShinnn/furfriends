@@ -53,8 +53,12 @@ export default function Profile() {
             </div>
             {user.isDemo && (
               <button className="btn btn-soft btn-block btn-sm" style={{ marginTop: 16 }} onClick={() => confirm({
-                title: "Reset demo data?", confirmLabel: "Reset", text: "Restores the demo account's original pets, records and documents.",
-                onConfirm: () => { resetDemo(); toast("Demo data restored"); },
+                title: "Reset demo data?", confirmLabel: "Reset", text: "Restores the demo account's original pets, records and documents for everyone using it.",
+                onConfirm: async () => {
+                  toast("Restoring demo data…");
+                  const err = await resetDemo();
+                  toast(err ? `Couldn't reset the demo: ${err}` : "Demo data restored", err ? "error" : "ok");
+                },
               })}>Reset demo data</button>
             )}
           </div>
@@ -81,12 +85,10 @@ export default function Profile() {
             setOn={async (on) => {
               setNotifications(on);
               toast(on ? "Reminders turned on" : "Reminders turned off");
-              if (user.isDemo) return;
               if (on) { const s = await getPushSubscription().catch(() => null); if (s) savePushSubscription(s); }
               else removePushSubscription(await dropPushSubscription().catch(() => null));
             }}
             onAllowed={async () => {
-              if (user.isDemo) return null;
               const s = await getPushSubscription().catch(() => null);
               return s ? savePushSubscription(s) : "unavailable";
             }} />
@@ -116,9 +118,7 @@ function NotificationSettings({ user, on, setOn, onAllowed }) {
     setPerm(p);
     if (p === "granted") setPushErr(await onAllowed());
   };
-  const closedApp = user.isDemo
-    ? "With a real account, alerts also arrive when FurFriends is closed."
-    : !pushConfigured() || pushErr === "unavailable"
+  const closedApp = !pushConfigured() || pushErr === "unavailable"
       ? "This device can only get alerts while FurFriends is open or running in the background. On iPhone, add FurFriends to your Home Screen first."
       : pushErr
         ? `Alerts when FurFriends is closed couldn't be set up: ${pushErr}`

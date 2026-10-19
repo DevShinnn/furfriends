@@ -44,7 +44,7 @@ export function ReminderWatcher() {
   useEffect(() => { started.current = true; }, []);
 
   // Re-save this device's push address once per session (it can change, or the row may be gone).
-  const pushOn = !!user && !user.isDemo && user.notificationsEnabled;
+  const pushOn = !!user && user.notificationsEnabled;
   useEffect(() => {
     if (!pushOn) return;
     getPushSubscription().then((s) => s && savePushSubscription(s)).catch((e) => console.warn("push setup", e));
