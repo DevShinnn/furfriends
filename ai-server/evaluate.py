@@ -108,8 +108,8 @@ def run(args):
     import app            # same loading and generation code as the server
     from transformers import set_seed
 
-    print(f"Loading {args.base}" + (f" + {args.adapter}" if args.adapter else "") + " ...")
     app.load_model(args.base, args.adapter)
+    print(f"Loaded {app._base}" + (f" + {args.adapter}" if args.adapter else ""))
     out = args.out or os.path.join("results", f"answers-{args.version}.csv")
     os.makedirs(os.path.dirname(out) or ".", exist_ok=True)
     with open(out, "w", encoding="utf-8-sig", newline="") as f:   # utf-8-sig so Excel shows it correctly
@@ -241,7 +241,8 @@ def main():
     r = sub.add_parser("run", help="ask the model the test questions and write a grading sheet")
     r.add_argument("--test", default="data/test.jsonl", help="held-out questions with reference answers")
     r.add_argument("--train", default="data/train.jsonl", help="training data, to check no test question is in it")
-    r.add_argument("--base", default=os.getenv("MODEL_ID", "Qwen/Qwen2.5-1.5B-Instruct"))
+    r.add_argument("--base", default=os.getenv("MODEL_ID", ""),
+                   help="base model; leave out to use the one the adapter was trained on (or Qwen2.5-1.5B with no adapter)")
     r.add_argument("--adapter", default="", help="LoRA adapter folder; leave out to test the base model")
     r.add_argument("--version", default="base", help="name for this model, e.g. base, v1, v2")
     r.add_argument("--max-new-tokens", type=int, default=int(os.getenv("MAX_NEW_TOKENS", "350")))

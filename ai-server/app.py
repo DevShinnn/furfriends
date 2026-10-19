@@ -10,6 +10,7 @@ Run:  uvicorn app:app --host 0.0.0.0 --port 8000
 Settings come from environment variables (see .env.example in this folder).
 """
 import asyncio
+import json
 import os
 import threading
 import time
@@ -21,7 +22,8 @@ from pydantic import BaseModel
 
 from prompting import build_messages
 
-MODEL_ID = os.getenv("MODEL_ID", "Qwen/Qwen2.5-1.5B-Instruct")   # base model from Hugging Face
+DEFAULT_BASE = "Qwen/Qwen2.5-1.5B-Instruct"
+MODEL_ID = os.getenv("MODEL_ID", "")         # base model from Hugging Face; empty = the one the adapter was trained on
 ADAPTER_PATH = os.getenv("ADAPTER_PATH", "")                     # LoRA adapter folder from train_lora.py
 MODEL_VERSION = os.getenv("MODEL_VERSION", "base")               # saved with ratings; bump it after each retrain
 MAX_NEW_TOKENS = int(os.getenv("MAX_NEW_TOKENS", "350"))
@@ -57,14 +59,32 @@ async def require_user(authorization: str | None):
 
 # ---------------------------------------------------------------- the model
 _model = _tokenizer = None
+_base = ""                      # the base model actually loaded
 _lock = threading.Lock()        # one generation at a time: a single GPU can't share well
 
 
-def load_model(model_id=MODEL_ID, adapter_path=ADAPTER_PATH):
-    """Also used by evaluate.py, so tests run the model exactly as the app gets it."""
-    global _model, _tokenizer
+def adapter_base(adapter_path):
+    """The base model an adapter was trained on (train_lora.py records it in adapter_config.json)."""
+    try:
+        with open(os.path.join(adapter_path, "adapter_config.json"), encoding="utf-8") as f:
+            return json.load(f).get("base_model_name_or_path") or ""
+    except OSError:
+        return ""
+
+
+def load_model(model_id="", adapter_path=""):
+    """Also used by evaluate.py, so tests run the model exactly as the app gets it.
+    Empty arguments fall back to MODEL_ID / ADAPTER_PATH from the environment."""
+    global _model, _tokenizer, _base
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
+
+    model_id, adapter_path = model_id or MODEL_ID, adapter_path or ADAPTER_PATH
+    trained_on = adapter_base(adapter_path) if adapter_path else ""
+    if model_id and trained_on and model_id != trained_on:
+        raise RuntimeError(f"The adapter in {adapter_path} was trained on {trained_on}, but MODEL_ID is {model_id}. "
+                           "An adapter only works with its own base model: set MODEL_ID to it, or leave MODEL_ID empty.")
+    model_id = _base = model_id or trained_on or DEFAULT_BASE
 
     _tokenizer = AutoTokenizer.from_pretrained(adapter_path or model_id)
     dtype = torch.float16 if torch.cuda.is_available() else torch.float32
@@ -113,4 +133,4 @@ async def ask(body: AskBody, authorization: str | None = Header(default=None)):
 
 @app.get("/health")
 def health():
-    return {"ok": _model is not None, "model": MODEL_VERSION, "base": MODEL_ID, "adapter": ADAPTER_PATH or None}
+    return {"ok": _model is not None, "model": MODEL_VERSION, "base": _base, "adapter": ADAPTER_PATH or None}
