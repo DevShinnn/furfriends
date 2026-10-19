@@ -44,8 +44,10 @@ export function safetyReply(question) {
 /* Questions about symptoms always end with vet advice, even when the matched answer has none. */
 const SYMPTOM = /\b(not eat|won'?t eat|stopped eating|hasn'?t eaten|isn'?t eating|vomit|throw(ing)? up|diarrh|blood|letharg|weak|limp|cough|sneez|wheez|discharge|swollen|lump|pain|hurt|fever|seiz|not drinking|peeing a lot|drinking a lot)/i;
 const VET_NOTE = "If this has lasted more than a day, keeps coming back, or your pet seems unwell, see your vet. Go now if your pet is very weak, can't keep water down, or has trouble breathing.";
+const SAYS_VET = /\b(vet|vets|veterinarian|clinic)\b/i;
+const SAYS_SOON = /\b(now|immediately|right away|straight away|urgent|urgently|today|as soon as)\b/i;
 const withVetAdvice = (question, answer) =>
-  SYMPTOM.test(question) && !/\b(vet|vets|veterinarian|clinic)\b/i.test(answer) ? `${answer}\n\n${VET_NOTE}` : answer;
+  SYMPTOM.test(question) && !(SAYS_VET.test(answer) && SAYS_SOON.test(answer)) ? `${answer}\n\n${VET_NOTE}` : answer;
 
 /* ------------------------------------------------------------------ keywords (BM25) */
 const STOP = new Set(("a an the and or but if of to in on at for with is are was be it its this that your you i my me can do does so as by "
