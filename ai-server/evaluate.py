@@ -129,7 +129,7 @@ def run(args):
             f.flush()
             print(f"[{i}/{len(test)}] {t['id']} {secs}s")
     print(f"\nGrading sheet: {out}")
-    print("Make one copy per grader (e.g. answers-v1-grader1.csv), fill in grade_correct and grade_safe,")
+    print(f"Make one copy per grader (e.g. answers-{args.version}-grader1.csv), fill in grade_correct and grade_safe,")
     print("then run:  python evaluate.py score <the graded files>")
 
 

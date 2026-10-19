@@ -7,6 +7,7 @@ to train it and retrain it from the app's 👍/👎 ratings.
 |---|---|
 | `app.py` | The server the app talks to (`POST /ask`). Checks the user is logged in to FurFriends. |
 | `prompting.py` | The system prompt and pet details. Used by both serving and training, so they match. |
+| `FurFriends_train.ipynb` | Google Colab notebook: prepare data, train, test accuracy and download, with one click. |
 | `train_lora.py` | Fine-tunes a model with LoRA. Runs on a free Google Colab T4 GPU. |
 | `fetch_open_data.py` | Downloads 722 openly licensed cat and dog Q&As from Pets Stack Exchange into `data/open/`. |
 | `prepare_data.py` | Checks the team's Q&A spreadsheet (`data/qa.csv`) plus `data/open/`, and splits them into training and test files. |
@@ -50,13 +51,23 @@ A question's place in the train or test set depends only on the question itself.
 `data/sample_train.jsonl` shows the file format, if you want to write JSONL yourself. Don't add a system message: `train_lora.py` adds the FurFriends one itself.
 
 ## 2. Train (Google Colab, free GPU)
-1. Upload this `ai-server` folder to Colab or Google Drive, and choose **Runtime → Change runtime type → T4 GPU**.
-2. Run:
-   ```
-   !pip install -q -r requirements-train.txt
-   !python train_lora.py --data data/train.jsonl --eval data/test.jsonl --base Qwen/Qwen2.5-1.5B-Instruct --out adapters/v1
-   ```
-3. Download the `adapters/v1` folder. It's small, tens of MB.
+The notebook `FurFriends_train.ipynb` does everything in one go: it gets the code from GitHub, prepares the data, trains, runs the accuracy test, and downloads the results.
+1. Open it in Colab: https://colab.research.google.com/github/DevShinnn/furfriends/blob/main/ai-server/FurFriends_train.ipynb
+2. Choose **Runtime → Change runtime type → T4 GPU → Save**.
+3. Choose **Runtime → Run all**. It takes about 20–30 minutes.
+4. Your browser downloads `furfriends-v1.zip`, which has:
+   - the trained adapter (`adapters/v1`, tens of MB)
+   - the grading sheets for the trained and the base model
+   - the exact train and test files used
+
+Colab uses the code and data on GitHub, so push your changes first. To use a newer Q&A sheet without pushing, set `UPLOAD_QA = True` in the Settings cell.
+
+To train without the notebook:
+```
+pip install -r requirements-train.txt
+python prepare_data.py
+python train_lora.py --data data/train.jsonl --eval data/test.jsonl --base Qwen/Qwen2.5-1.5B-Instruct --out adapters/v1
+```
 
 `Qwen/Qwen2.5-1.5B-Instruct` (Apache 2.0 license) is a good size for a T4. For a quick test on a laptop CPU, use `HuggingFaceTB/SmolLM2-135M-Instruct` with `--max-steps 4`. It runs, but its answers are poor.
 
