@@ -8,7 +8,10 @@
     "build": "vite build",
     "preview": "vite preview",
     "knowledge": "node scripts/build-knowledge.mjs",
-    "knowledge:eval": "node scripts/build-knowledge.mjs --eval"
+    "knowledge:eval": "node scripts/build-knowledge.mjs --eval",
+    "check-secrets": "node scripts/check-secrets.mjs",
+    "check-secrets:all": "node scripts/check-secrets.mjs --all",
+    "check-secrets:install": "node scripts/check-secrets.mjs --install-hook"
   },
   "dependencies": {
     "@huggingface/transformers": "4.3.0",
