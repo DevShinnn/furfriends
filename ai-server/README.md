@@ -19,7 +19,7 @@ to train it and retrain it from the app's 👍/👎 ratings.
 
 ## 1. Prepare the data
 The training data has two parts:
-- **Open data**, already downloaded: `data/open/pets_stackexchange.csv` has 722 real cat and dog Q&As from Pets Stack Exchange (CC BY-SA, with credit in `data/SOURCES.md`). Only well-voted answers are kept, and answers with medicine doses or emergencies without vet advice are filtered out. To download it again, run `python fetch_open_data.py`. These answers come from owners, not vets, so have your vet adviser check a random sample of about 30.
+- **Open data**, already downloaded: `data/open/pets_stackexchange.csv` has 722 real cat and dog Q&As from Pets Stack Exchange (CC BY-SA, with credit in `data/SOURCES.md`). Only well-voted answers are kept, and answers with medicine doses or emergencies without vet advice are filtered out. To download it again, run `python fetch_open_data.py`. These answers come from owners, not vets, so the team checks a random sample of about 30 against trusted vet sources.
 - **Your own Q&As**, in `data/qa.csv`. Focus on what the open data covers least: emergencies, poisons, vaccines, parasites and Philippine rules such as rabies vaccination. Your test questions go here too.
 
 Collect your Q&As in a spreadsheet, so the whole team can add to it:
@@ -34,7 +34,7 @@ Collect your Q&As in a spreadsheet, so the whole team can add to it:
    | `set` | Leave it blank. Write `test` or `train` only to force a row into one set. |
    | `pet_name` … `pet_weight_kg` | Optional. Fill these in when the answer is about one specific pet. |
    | `source` | Where the information came from (name and link). Also list each source in `data/SOURCES.md`. |
-   | `checked_by` | Who checked the answer, for example your vet adviser |
+   | `checked_by` | Who checked the answer, for example the team member who checked it against its source |
 
 3. Go to **File → Download → Comma-separated values (.csv)**, and save the file over `data/qa.csv`.
 4. Run:

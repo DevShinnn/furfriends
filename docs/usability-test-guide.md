@@ -36,7 +36,7 @@ Task 9 needs the AI server running. If it isn't, skip the task and write "not ru
 3. Ask one last question out loud and write down the answer: *"What would make you use this app every week?"*
 
 ## Results for the thesis
-Run the queries at the bottom of `supabase/migrations/20261019030000_usability_survey.sql` in the Supabase SQL editor. They give:
+In Supabase, open Table Editor → `usability_responses` → Export → Export as CSV, then run `node scripts/survey-results.mjs <the downloaded file>`. (Or run the queries at the bottom of `supabase/migrations/20261019030000_usability_survey.sql` in the SQL editor.) To see the tables before testing, `docs/simulated/` has a practice run on made-up data. They give:
 - **SUS score:** mean, standard deviation, minimum and maximum. 68 is the average for software in general. Above 68 is above average; above 80.3 is in the top 10% ("excellent").
 - **Task success rate:** per task, how many did it alone, needed help or couldn't.
 - **Average answer per SUS statement:** shows which parts of usability scored low.

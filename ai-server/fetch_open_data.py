@@ -12,7 +12,7 @@ Writes data/open/pets_stackexchange.csv with the same columns as data/qa.csv.
 prepare_data.py reads it together with qa.csv. Only cat and dog questions with a well-voted
 answer are kept. Answers that give medicine doses, depend on photos or other answers, or don't
 send an emergency to the vet are left out, because the assistant must not learn from them.
-These answers come from owners, not vets: have your vet adviser check a sample.
+These answers come from owners, not vets: the team checks a sample against trusted vet sources.
 """
 import argparse
 import ast

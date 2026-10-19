@@ -1,8 +1,9 @@
-/* Builds the vet review pack: every piece of health content FurFriends shows pet owners, laid out
-   for a veterinarian to check, correct and sign. Generated from the app's own source, so re-run it
-   after any content change.
+/* Builds the content source check: every piece of health content FurFriends shows pet owners, laid
+   out for the team to check against published veterinary sources. The project has no veterinarian
+   adviser, so this records that each item matches a named source; it is not a veterinary review.
+   Generated from the app's own source, so re-run it after any content change.
 
-     node scripts/vet-review.mjs          → docs/vet-review/FurFriends-vet-review.html (+ .pdf if Chrome is found)
+     node scripts/content-check.mjs       → docs/content-check/FurFriends-content-check.html (+ .pdf if Chrome is found)
 */
 import { build } from "esbuild";
 import { spawnSync } from "node:child_process";
@@ -10,9 +11,10 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { readCsv } from "./csv.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const OUT_DIR = join(ROOT, "docs", "vet-review");
+const OUT_DIR = join(ROOT, "docs", "content-check");
 
 /* ---------------------------------------------------------------- load the app's content */
 const tmp = mkdtempSync(join(tmpdir(), "ff-vet-"));
@@ -32,35 +34,26 @@ const RESEARCHED = join(ROOT, "ai-server/data/open/researched_qa.csv");
 const tested = new Set(tests.map((t) => t.messages.at(-2).content.trim()));
 const researched = existsSync(RESEARCHED) ? readCsv(RESEARCHED).filter((r) => r.question && !tested.has(r.question.trim())) : [];
 
-/* Minimal CSV reader (quoted fields, doubled quotes, newlines inside quotes). */
-function readCsv(path) {
-  const text = readFileSync(path, "utf8").replace(/^﻿/, "");
-  const rows = []; let row = [], field = "", quoted = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (quoted) {
-      if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
-      else if (c === '"') quoted = false;
-      else field += c;
-    } else if (c === '"') quoted = true;
-    else if (c === ",") { row.push(field); field = ""; }
-    else if (c === "\n" || c === "\r") {
-      if (c === "\r" && text[i + 1] === "\n") i++;
-      row.push(field); rows.push(row); row = []; field = "";
-    } else field += c;
-  }
-  if (field || row.length) { row.push(field); rows.push(row); }
-  const [head, ...body] = rows.filter((r) => r.some((x) => x.trim()));
-  return body.map((r) => Object.fromEntries(head.map((h, i) => [h, r[i] ?? ""])));
-}
+/* Sources the team checks items against. Section E items already name theirs. */
+const REFERENCES = [
+  ["Merck Veterinary Manual (pet owner and professional versions)", "merckvetmanual.com", "A, B, D, E: first aid, poisons, diseases, normal values"],
+  ["ASPCA Animal Poison Control Center", "aspca.org/pet-care/animal-poison-control", "A, E: poisons and toxic foods, plants"],
+  ["WSAVA Vaccination Guidelines (2024)", "wsava.org/global-guidelines", "C, E: vaccine names and schedules"],
+  ["AAHA Canine and Feline Guidelines (life stage, senior care)", "aaha.org/resources", "B, E: life stages, senior pets"],
+  ["Cornell Feline Health Center", "vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center", "A, B, E: cats"],
+  ["Companion Animal Parasite Council (CAPC); American Heartworm Society", "capcvet.org; heartwormsociety.org", "C, E: deworming, fleas, ticks, heartworm"],
+  ["US FDA Center for Veterinary Medicine; CDC Healthy Pets", "fda.gov/animal-veterinary; cdc.gov/healthy-pets", "E: poisons, zoonoses, rabies"],
+  ["RA 9482 (Anti-Rabies Act), RA 8485 / RA 10631 (Animal Welfare Act), Bureau of Animal Industry", "officialgazette.gov.ph; bai.gov.ph", "E: Philippine rules"],
+  ["Breed standards: FCI, AKC, The International Cat Association (TICA), CFA", "fci.be; akc.org; tica.org; cfa.org", "B: breed weights, lifespans, traits"],
+];
 
 /* ---------------------------------------------------------------- html helpers */
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const list = (items, tag = "ul") => items?.length ? `<${tag}>${items.map((x) => `<li>${esc(x)}</li>`).join("")}</${tag}>` : "";
 const review = (id) => `
-  <div class="review" aria-label="Review ${id}">
-    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
-    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  <div class="review" aria-label="Check ${id}">
+    <span class="box">☐ Matches source</span><span class="box">☐ Fix</span><span class="box">☐ Remove</span><span class="by">Checked by ____</span>
+    <div class="lines"><span>Source checked (name and page):</span><i></i><span>What to fix:</span><i></i></div>
   </div>`;
 const item = (id, title, body, meta = "") => `
   <section class="item">
@@ -82,7 +75,7 @@ const catLabel = (g) => CATEGORIES.find((c) => c.key === g.category)?.label || "
 
 const sectionA = `
   <h2 class="part">A. Emergency first aid</h2>
-  <p class="lead">Shown on the Emergency page. Owners use these steps while getting to a vet, so check that nothing could delay care or cause harm.</p>
+  <p class="lead">Shown on the Emergency page. Owners use these steps while getting to a vet, so check each step against the Merck Veterinary Manual or ASPCA, and that nothing could delay care or cause harm.</p>
   ${item("A1", "“Go to a vet now if you see”", list(RED_FLAGS))}
   ${item("A2", "Normal values", `<table>${NORMALS.map(([k, v]) => `<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join("")}</table>`)}
   ${item("A3", "Pet first-aid kit", list(FIRST_AID_KIT))}
@@ -141,7 +134,7 @@ const CAT_LABEL = { emergency: "Emergencies", poison: "Poisoning", vaccines: "Va
   senior: "Senior pets", philippines: "Philippine rules", rabies: "Rabies" };
 const sectionE = researched.length ? `
   <h2 class="part">E. Researched answers</h2>
-  <p class="lead">Answers the team researched from public sources and wrote in plain words, for topics the open data barely covers. The assistant shows them to owners, so check each one against current veterinary practice. The source of each is listed under the question.</p>
+  <p class="lead">Answers the team researched from public sources and wrote in plain words, for topics the open data barely covers. The assistant shows them to owners. The source of each is listed under it: open that page and check the answer says the same thing.</p>
   ${researched.map((r, i) => item(`E${i + 1}`, `“${r.question}”`, `
     ${para(r.answer)}
     <p class="meta-line">Source: ${esc(r.source)}</p>`, `<span class="meta"><span class="tag">${esc(CAT_LABEL[r.category] || r.category)}</span></span>`)).join("")}` : "";
@@ -153,7 +146,7 @@ const today = new Date().toLocaleDateString("en-PH", { year: "numeric", month: "
 
 const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>FurFriends Vet Review</title>
+<title>FurFriends Content Check</title>
 <style>
   :root { --ink: #1b2421; --muted: #5d6763; --line: #cfd6d2; --accent: #1d6b56; --now: #b3261e; --call: #8a5a00; --paper: #ffffff; }
   @page { size: A4; margin: 16mm 15mm 18mm; }
@@ -191,6 +184,9 @@ const html = `<!doctype html>
   dl.care dt { font-weight: 700; } dl.care dd { margin: 0; }
   .review { margin-top: 8px; padding: 6px 8px; border: 1px dashed var(--muted); border-radius: 4px; display: grid; grid-template-columns: auto auto auto 1fr; gap: 4px 14px; align-items: end; font-size: 9.5pt; }
   .box { white-space: nowrap; font-weight: 600; }
+  .by { justify-self: end; font-size: 9pt; color: var(--muted); }
+  .refs td:first-child { font-weight: 600; }
+  .limit { border-left: 3px solid var(--accent); padding: 6px 10px; background: #f1f4f2; }
   .lines { grid-column: 1 / -1; display: grid; gap: 22px; padding-top: 4px; }
   .lines span { font-size: 8.5pt; color: var(--muted); }
   .lines i { display: block; border-bottom: 1px solid var(--line); height: 0; }
@@ -204,22 +200,23 @@ const html = `<!doctype html>
 </style></head>
 <body><main>
   <section class="cover">
-    <p class="sub">FurFriends · Capstone pilot · Content review</p>
-    <h1>Veterinary review of pet health content</h1>
-    <p>FurFriends is a pet health records app for cat and dog owners in the Philippines. It shows owners first-aid steps, breed care information and reminders, and includes a pilot AI assistant. This pack contains all of that content (${count} items), so a licensed veterinarian can check it before the app is tested with the public.</p>
+    <p class="sub">FurFriends · Capstone pilot · Content check</p>
+    <h1>Source check of pet health content</h1>
+    <p>FurFriends is a pet health records app for cat and dog owners in the Philippines. It shows owners first-aid steps, breed care information and reminders, and includes a pilot AI assistant. This pack contains all of that content (${count} items), so the project team can check each item against published veterinary sources before the app is tested with the public.</p>
+    <p class="limit">This is a check by the project team against published sources. <b>It is not a review by a licensed veterinarian</b>, and the thesis reports that as a limitation. The app tells owners on every answer that it is not a vet and to go to a vet in an emergency.</p>
     <div class="how">
-      <b>How to review</b>
+      <b>How to check</b>
       <ol>
-        <li>For each numbered item, tick <b>OK</b>, <b>Change</b> or <b>Remove</b>.</li>
-        <li>For <b>Change</b>, write the correction on the lines (or mark up the text directly).</li>
-        <li>Pay most attention to part A (emergency steps): anything that could delay getting to a vet or cause harm.</li>
-        <li>Sign the last page. The team will update the app and send you a new pack to confirm.</li>
+        <li>Split the items between team members. For each item, find it in one of the sources below (section E items name their own source).</li>
+        <li>Tick <b>Matches source</b>, <b>Fix</b> or <b>Remove</b>, write which source and page you used, and initial it.</li>
+        <li>For <b>Fix</b>, write what the source says instead. Pay most attention to part A (emergency steps): anything that could delay getting to a vet or cause harm.</li>
+        <li>A second team member re-checks every item in part A and every item marked Fix or Remove.</li>
+        <li>Fill in the check record on the last page. Then update the app and re-run <code>node scripts/content-check.mjs</code>.</li>
       </ol>
     </div>
-    <div class="fields">
-      <div>Reviewer name</div><div>PRC license no.</div>
-      <div>Clinic / institution</div><div>Date received</div>
-    </div>
+    <h4>Sources to check against</h4>
+    <table class="refs"><tr><th>Source</th><th>Where</th><th>Use for</th></tr>
+      ${REFERENCES.map(([name, where, use]) => `<tr><td>${esc(name)}</td><td>${esc(where)}</td><td>${esc(use)}</td></tr>`).join("")}</table>
     <p class="lead">Contents: A. Emergency first aid (${GUIDES.length + 3} items) · B. Breed guide (${BREED_DB.length}) · C. Reminders and record-keeping (2) · D. AI assistant (${nD})${nE ? ` · E. Researched answers (${nE})` : ""}</p>
   </section>
   ${sectionA}
@@ -228,18 +225,20 @@ const html = `<!doctype html>
   ${sectionD}
   ${sectionE}
   <section class="signoff">
-    <h2 class="part" style="break-before:auto">Sign-off</h2>
-    <div class="stmt">I have reviewed the content in this pack (items A1–A${GUIDES.length + 3}, B1–B${BREED_DB.length}, C1–C2, D1–D${nD}${nE ? `, E1–E${nE}` : ""}). Subject to the corrections I have marked, it is appropriate as general educational information for pet owners. It does not replace a veterinary examination.</div>
-    <p>☐ Approved with no changes &nbsp;&nbsp; ☐ Approved after the marked changes are made &nbsp;&nbsp; ☐ Not approved (see comments)</p>
-    <div class="sign"><div>Signature</div><div>Date</div><div>Printed name</div><div>PRC license no.</div></div>
-    <h4 style="margin-top:22px">General comments</h4>
-    <div class="lines" style="gap:22px"><i></i><i></i><i></i><i></i><i></i></div>
-    <footer class="gen">Generated from the FurFriends source on ${esc(today)} by scripts/vet-review.mjs.</footer>
+    <h2 class="part" style="break-before:auto">Check record</h2>
+    <div class="stmt">We checked each item in this pack (items A1–A${GUIDES.length + 3}, B1–B${BREED_DB.length}, C1–C2, D1–D${nD}${nE ? `, E1–E${nE}` : ""}) against the published source written beside it, and fixed or removed the items that did not match. This is a source check by the project team, not a review by a licensed veterinarian. The content is general educational information for pet owners and does not replace a veterinary examination.</div>
+    <table><tr><th></th><th>Items</th></tr>
+      <tr><td>Matches source</td><td></td></tr><tr><td>Fixed</td><td></td></tr><tr><td>Removed</td><td></td></tr>
+      <tr><td>Re-checked by a second member</td><td></td></tr></table>
+    <div class="sign"><div>Checked by (names)</div><div>Dates</div><div>Second check by</div><div>Date app updated</div></div>
+    <h4 style="margin-top:22px">Notes</h4>
+    <div class="lines" style="gap:22px"><i></i><i></i><i></i><i></i></div>
+    <footer class="gen">Generated from the FurFriends source on ${esc(today)} by scripts/content-check.mjs.</footer>
   </section>
 </main></body></html>`;
 
 mkdirSync(OUT_DIR, { recursive: true });
-const htmlPath = join(OUT_DIR, "FurFriends-vet-review.html");
+const htmlPath = join(OUT_DIR, "FurFriends-content-check.html");
 writeFileSync(htmlPath, html);
 console.log(`${count} items → ${htmlPath}`);
 
@@ -247,7 +246,7 @@ console.log(`${count} items → ${htmlPath}`);
 const chrome = ["C:/Program Files/Google/Chrome/Application/chrome.exe", "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "/usr/bin/google-chrome"].find(existsSync);
 if (chrome) {
-  const pdfPath = join(OUT_DIR, "FurFriends-vet-review.pdf");
+  const pdfPath = join(OUT_DIR, "FurFriends-content-check.pdf");
   const r = spawnSync(chrome, ["--headless=new", "--disable-gpu", "--no-pdf-header-footer", `--user-data-dir=${join(tmp, "c")}`,
     `--print-to-pdf=${pdfPath}`, pathToFileURL(htmlPath).href], { stdio: "ignore", timeout: 120000 });
   console.log(r.status === 0 && existsSync(pdfPath) ? `PDF → ${pdfPath}` : "PDF not made (open the HTML in a browser and print it instead).");

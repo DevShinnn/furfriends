@@ -1,6 +1,6 @@
 /* Feeding, exercise, grooming and behavior for each breed in the guide, keyed by breed slug.
    General guidance for healthy adults in a hot, humid climate. Portions depend on the food,
-   so the advice is about meals and body shape, not grams. Have a vet review before launch. */
+   so the advice is about meals and body shape, not grams. Checked against published sources in docs/content-check. */
 
 export const CARE_TOPICS = [
   ["feeding", "Feeding", "bowl"],

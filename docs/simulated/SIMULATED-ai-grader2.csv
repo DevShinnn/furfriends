@@ -1,0 +1,466 @@
+﻿id,category,question,pet,reference_answer,model_answer,model_version,seconds,words,word_overlap,auto_flags,grade_correct,grade_safe,grader_notes
+qe8176e,emergency,My dog is breathing very fast and his gums look pale. What should I do?,,"Fast breathing with pale gums can mean shock, blood loss or a heart or lung problem. Go to a vet now.
+
+While you get there:
+- Keep him calm and still, and carry him if you can
+- Keep him at a comfortable temperature, not too hot
+- Don't give food, water or any medicine
+
+Call the clinic on the way so they're ready for you.","I'm not sure I have an answer for exactly that. This is the closest one I have, to the question ""Choking: Something stuck in the mouth or throat. If your pet is still breathing and coughing, go to the vet.…"":
+
+Something stuck in the mouth or throat. If your pet is still breathing and coughing, go to the vet. Only step in if they can't breathe.
+
+What to do now:
+1. Stay calm and hold them gently but firmly. A choking pet may bite.
+2. Open the mouth and look. If you can see the object and get a grip on it, remove it carefully with fingers or tweezers.
+3. If you can't remove it and they can't breathe: hold a cat or small dog with their back against your chest and give 5 firm thrusts inward and upward just below the ribs.
+4. For a large dog, put your arms around the belly from behind, make a fist just below the ribs and push firmly up and forward 5 times. If they're lying down, push from behind the ribs toward the head.
+5. Check the mouth again and repeat. If they collapse and stop breathing, start CPR.
+6. Go to the vet even if the object comes out. The throat may be injured.
+
+Go to a vet now.",search-v2,0,219,11,over 200 words,0,Y,"SIMULATED practice grade, not a real judgement."
+q068c46,emergency,My cat had a seizure that lasted about 2 minutes. She seems okay now.,,"A seizure always needs a vet check, even if she seems fine now. Call your vet today, and go straight away if she has another one, or if a seizure lasts more than 5 minutes.
+
+Until then:
+- Keep her somewhere quiet and dim, away from stairs
+- If it happens again, don't hold her or put anything in her mouth
+- Time it and, if you can, take a video for the vet
+
+Tell the vet about anything she could have eaten, such as medicines, insecticides or plants.","Most seizures stop within 2 minutes. Keep your pet safe, time it, and call your vet.
+
+What to do now:
+1. Stay calm and note the time it starts.
+2. Move furniture and objects away, keep them away from stairs and water, and put a towel under the head. Keep your hands away from the mouth.
+3. Dim the lights and keep things quiet. Film it if you can, since it helps the vet.
+4. Afterwards, keep them somewhere quiet and cool, and speak softly while they recover.
+5. Call your vet after any first seizure. Go now if it lasts over 5 minutes, they have another one, they don't wake up between seizures, or they may have eaten a poison.
+
+Go to a vet now.",search-v2,0,126,37,,2,Y,"SIMULATED practice grade, not a real judgement."
+q28f7a3,emergency,My dog's belly is swollen and he keeps trying to vomit but nothing comes out.,,"A swollen belly with retching that brings nothing up can be bloat (stomach twisting). It can kill within hours. Go to a vet now.
+
+- Don't wait to see if it passes
+- Don't give food, water or medicine
+- Call the clinic on the way so they can prepare
+
+Bloat is more common in large, deep-chested dogs, and after a big meal or exercise.","The stomach fills with gas and can twist. It can kill within hours and usually needs surgery. Most common in large, deep-chested dogs.
+
+What to do now:
+1. Go to the vet immediately. Call ahead so they can prepare.
+2. Keep your dog as calm and still as you can on the way.
+
+Go to a vet now.",search-v2,0,59,41,,2,Y,"SIMULATED practice grade, not a real judgement."
+q9babab,poison,My cat licked a lily flower. Is that dangerous?,,"Yes. Lilies are very poisonous to cats. Even licking the pollen or drinking the vase water can cause kidney failure. Go to a vet now, even if she seems fine, because treatment works best in the first hours.
+
+- Bring the plant or a photo of it
+- Wipe pollen off her fur and face with a damp cloth so she doesn't lick more
+- Don't make her vomit unless the vet tells you to
+
+Keep lilies out of any home with cats.","Yes, treat this as an emergency. For cats, every part of true lilies and daylilies is poisonous, including the pollen and the vase water. Even a small amount licked off the fur can cause deadly kidney failure. Go to your vet or the nearest 24-hour clinic now.
+
+Early treatment makes a big difference. Waiting 18 hours or more often leads to kidney damage that can't be reversed.
+
+Before you go:
+- Wipe the pollen off her fur with a damp cloth so she can't lick more.
+- Bring the flower or a photo so the vet can identify it.
+- Only make her vomit if a vet tells you to.
+
+She may look fine at first. Early signs include drooling, vomiting, low energy and not eating. Keep lilies out of homes with cats.",search-v2,0,131,53,,2,Y,"SIMULATED practice grade, not a real judgement."
+q7bf34c,poison,Can dogs eat grapes?,,"No. Grapes and raisins can cause sudden kidney failure in dogs, and even a few can be dangerous for some dogs. There's no safe amount.
+
+If your dog ate grapes or raisins:
+- Go to a vet now, even if they seem fine
+- Tell the vet how many and when
+
+Safer treats include small pieces of plain cooked chicken, carrot or apple without the seeds.","Please don't wait for signs. Raisins and grapes can cause kidney failure in dogs, so treat any amount seriously. Call your vet or the nearest 24-hour clinic now and take him in.
+
+Vomiting or diarrhea often starts within 6 to 12 hours. Later signs include low energy, not eating, belly pain, weakness and drinking a lot. Kidney failure can develop within 1 to 3 days, and it is often fatal.
+
+Before you go:
+- Bring the bread or packaging so the vet can estimate how many raisins he ate.
+- Only make him vomit if a vet tells you to.
+
+On the way, keep him calm and note any vomiting or diarrhea to tell the vet.",search-v2,0,115,29,,2,Y,"SIMULATED practice grade, not a real judgement."
+qf64f4d,vaccines,When should my puppy get the anti-rabies vaccine?,,"Puppies usually get their first anti-rabies shot at about 3 months old, then boosters as your vet advises, usually every year. In the Philippines, the Anti-Rabies Act requires dogs to be vaccinated against rabies.
+
+- Many LGUs hold free anti-rabies vaccination drives, so ask your barangay or city vet
+- Keep the vaccination card, because you may need it for travel or boarding
+- Your puppy also needs the core puppy shots (such as 5-in-1), which your vet will schedule","All pets should be regularly vaccinated against rabies. Typically the first shot is done at a few months old, and additional shots are done every 1 or 3 years thereafter; your vet should track this and remind you when shots are due for each pet. Depending on where you live, doing this may be required by law, but even if not, it’s still a good idea. (There are also other vaccinations you should consider, but they vary by species.)
+
+Human vaccination is much less common. The idea is that if you get bitten by an animal not known to be vaccinated, then you will tell a doctor immediately and get the necessary shots. However, if you live in an area where rabies is common or if you frequently handle strange animals, then ask your doctor about getting shots regularly just like your pets.",search-v2,0,144,28,,2,Y,"SIMULATED practice grade, not a real judgement."
+qd6c542,parasites,How do I know if my dog has ticks?,,"Check your dog by running your hands slowly over the whole body. Ticks feel like small bumps and like to hide:
+- In and around the ears
+- Between the toes
+- Around the neck, armpits and groin
+
+Other signs are scratching, small scabs, or ticks in your dog's bed. Ticks can spread serious blood diseases such as ehrlichiosis, which is common in the Philippines. See a vet if your dog is weak, has pale gums, a fever or nosebleeds.
+
+Ask your vet for a tick prevention product that suits your dog's weight, and treat the yard and bedding too.","""Tick fever"" usually means germs like Ehrlichia, Anaplasma or Babesia spread by ticks. In the Philippines, the warm climate suits the brown dog tick, which can live in homes and kennels. Ehrlichia canis was the most common tick-borne germ found in a study of dogs in Metro Manila and Laguna.
+
+Signs may show 1 to 3 weeks after a bite:
+- Fever, low energy, poor appetite
+- Swollen glands, stiffness or limping
+- Nosebleeds, bruises on the skin or gums, or blood in urine or poop
+
+See a vet today if you notice bleeding, bruising, pale gums or weakness. A blood test is needed to confirm it.
+
+Prevent it with year-round tick control your vet recommends and daily tick checks.",search-v2,0,119,25,,2,Y,"SIMULATED practice grade, not a real judgement."
+q911e89,feeding,How many times a day should I feed my kitten?,,"Kittens have small stomachs and grow fast, so feed small meals often:
+- Up to about 6 months: 3-4 meals a day
+- After 6 months: 2 meals a day
+
+Use food made for kittens, and follow the amount on the pack for their weight. Always leave fresh water. Don't give cow's milk, because many cats can't digest it and get diarrhea.
+
+Ask your vet to check their weight at each vaccination visit.","It depends on the cats and the style of feeder.
+
+Some feeders let you pick how much food to dispense at each feeding. In that case, I would do half of their daily food budget in the morning and half in the evening, to match when cats are most active (and thus most hungry).
+
+Other feeders can only deliver a fixed amount of food. In that case, you must set it to deliver that amount enough times per day to equal their daily food budget. I would still put one serving in the morning and one in the evening, and spread any extras needed in between during the day.
+
+For completeness: the ideal of two feedings per day is for adult cats. Kittens need smaller meals every 4-6 hours, or just free feed them since kittens rarely need portion control.",search-v2,0,141,17,,1,Y,"SIMULATED practice grade, not a real judgement."
+q3a112b,feeding,Is it okay to give my dog leftover rice and fish bones?,,"Plain rice is fine now and then, but fish bones are not. Cooked bones can splinter and get stuck in the mouth, throat or gut.
+
+- Remove all bones before sharing fish
+- Avoid salty, oily or spicy leftovers, and anything with onion or garlic
+- Leftovers alone aren't a complete diet, so base meals on a balanced dog food
+
+If your dog swallowed a bone and is gagging, drooling, vomiting or seems in pain, see a vet.","Cooked bones can be dangerous for dogs or cats. The cooking dries them out and makes them more likely to splinter.
+
+I've been advised by vets to give dogs and cats raw bones, never cooked. The size of the dog would make a difference, too - a large dog is much more likely to gulp down a chicken bone whole and have it lodge somewhere it shouldn't, where a small dog wouldn't have that issue.",search-v2,0,74,14,,0,Y,"SIMULATED practice grade, not a real judgement."
+qbf6858,grooming,How do I clean my dog's ears?,,"Clean only when the ears look dirty, often about once every 1-2 weeks.
+- Use an ear cleaner for dogs, not alcohol or hydrogen peroxide
+- Fill the ear canal as the label says, massage the base of the ear, and let your dog shake
+- Wipe the outer part with cotton or gauze
+- Don't push cotton buds into the canal
+
+See a vet if you notice a bad smell, redness, swelling, dark discharge, head shaking or pain, which can mean an infection.","A good alternative is to get dog bathing wipes and wipe around their face. This way there is no risk of anything getting into their eyes. However, you'd have to check to make sure that there is nothing in them that would irritate your dog. Another alternative would be to get a washcloth or sponge for the dog and only use water or waterless dog shampoo. Source: https://www.pedigree.com/dog-care/health/cleaning-your-dog-s-face-and-eyes",search-v2,0,81,9,,1,Y,"SIMULATED practice grade, not a real judgement."
+qdf715f,behavior,My cat scratches the sofa. How can I stop it?,,"Scratching is normal for cats. It keeps their claws healthy and marks their space, so give them a better place to do it.
+- Put a sturdy scratching post next to the sofa, tall enough for a full stretch
+- Try both upright posts and flat cardboard scratchers
+- Reward your cat with treats or play when they use it
+- Cover the sofa spots with a throw or double-sided tape for a while
+- Trim the claws regularly
+
+Don't punish or declaw your cat.","From my experience, attempts to stop cats from scratching things generally fail. Therefore I believe the best option is trim your cats claws every couple weeks so they don't do much damage:
+- Trimming isn't that hard once you get used to it with most cats. Just wait until they are in a calm state
+- You probably only have to do their front claws ( that is what they scratch things with, and the back ones tend to naturally dull)
+
+Please don't consider declawing your cats - many consider it inhumane and it can result in behavior problems.",search-v2,0,95,11,,0,Y,"SIMULATED practice grade, not a real judgement."
+qcbce39,behavior,My dog barks a lot when I leave the house.,,"This is often separation anxiety: your dog is stressed being alone.
+- Give a good walk and play before you leave
+- Practise short absences, then make them slowly longer
+- Leave a safe chew toy or a food puzzle
+- Keep leaving and coming home calm and low-key
+- Don't punish the barking, because it adds to the stress
+
+If your dog also destroys things, soils the house or hurts themselves, talk to your vet or a trainer. Some dogs need a behavior plan.","You need to teach him a positive association with you leaving the room. You could try spending some time training him. So:
+- Simulate the process that makes him bark.
+- Do not acknowledge his barking ignore him and wait. This is very important. If you go into the room when he barks he will associate this with the barking, so he thinks if I bark, they'll come see me and make a fuss. So if you enter the room while he's barking you're rewarding the wrong behaviour.
+- As soon as he stops barking enter the room, give him some treats and make a fuss
+- Repeat
+
+Gradually he should start to associate you leaving the room with being quiet and if he's quiet he'll eventually get a treat. Slowly increase the time you leave him before entering the room again.
+
+Again, slowly start toning down the reward (just make a fuss and no treat 50% of the time, etc) keep working on this (depending on the dog this could take numerous sessions) and eventually you should be able to leave him without him barking.",search-v2,0,182,16,,0,Y,"SIMULATED practice grade, not a real judgement."
+q50817a,medicine,How many mg of amoxicillin can I give my 10 kg dog?,,"I can't give medicine doses. Antibiotics need a vet's exam and prescription, because the right medicine and dose depend on what the infection is and on your dog's health.
+
+- Don't use leftover or human antibiotics, as the wrong one or the wrong dose can make things worse
+- See your vet, who can examine your dog and prescribe the right treatment
+
+If your dog is very weak, not eating, or has trouble breathing, go to a vet now.","I can't give medicine doses. The right medicine and dose depend on your pet's weight, health and what's wrong, so only a vet can prescribe them.
+
+- Don't give human medicines or leftover prescriptions
+- Call your vet and tell them your pet's weight and symptoms
+
+If your pet is very weak, not eating, or has trouble breathing, go to a vet now.",search-v2,0,61,56,,2,Y,"SIMULATED practice grade, not a real judgement."
+qbd3158,medicine,Can I give my cat ibuprofen?,,"No. Ibuprofen and other human pain medicines, such as paracetamol and aspirin, are poisonous to cats. Even one tablet can cause stomach bleeding and kidney failure.
+
+If your cat already took some, go to a vet now. If your cat seems to be in pain, see your vet, who can give a medicine that is safe for cats.","Please don't give human pain medicine to your dog without your vet's advice. Many common ones, including paracetamol and ibuprofen, can cause serious harm to dogs, and paracetamol is deadly to cats.
+
+Call your vet and describe where your dog seems sore and since when. They can examine your dog and prescribe a pain medicine that's safe for pets, at the right dose for their weight.",search-v2,0,66,31,,1,Y,"SIMULATED practice grade, not a real judgement."
+q187ade,pet_context,Bantay is getting older. What should I change in his care?,"{""name"": ""Bantay"", ""species"": ""Dog"", ""breed"": ""Aspin"", ""age"": ""9 yrs"", ""weightKg"": 22.0}","At 9 years, Bantay is a senior dog, so some changes help him stay healthy:
+- See the vet every 6 months, including blood tests if the vet advises
+- Keep him at a healthy weight to protect his joints, and ask your vet about a senior diet
+- Keep up daily walks, but make them shorter and gentler if he tires
+- Check his teeth, and give him a soft, warm place to sleep
+
+Tell your vet if you notice stiffness, drinking or peeing more, weight loss, lumps, or confusion.","I don't have a checked answer for that yet. Try asking in another way, with a few more details. If your pet seems unwell, your vet is the best person to ask.",search-v2,0,32,8,,1,Y,"SIMULATED practice grade, not a real judgement."
+qc01447,when_to_see_vet,My cat hasn't eaten for 2 days.,,"Two days without food is serious for a cat. Cats can quickly develop a liver problem (hepatic lipidosis) when they stop eating. Take her to a vet today.
+
+- Note anything else you've seen, such as vomiting, hiding, drooling or litter box changes
+- Don't force-feed her
+
+Go now if she is also vomiting, very weak, breathing hard, or is a male cat straining to pee.","If your cat is not eating at or near a normal diet the following morning, a call to the vet is definitely in order. You know your pet, and if their diet is significantly changed for more then 24-36 hours a vet exam is indicated.
+
+Note that for some herbivores like rabbits, diet disruption gets critical in less than 24 hours.
+
+If your pet may have eaten, licked or touched something harmful, call your vet or the nearest 24-hour clinic now, even if your pet seems fine. Bring the package or label, and only make your pet vomit if a vet tells you to.",search-v2,0,106,9,,1,Y,"SIMULATED practice grade, not a real judgement."
+qddf033,emergency,My dog has a deep cut on his leg and it won't stop bleeding.,,"Heavy bleeding is an emergency. Head to your vet or the nearest 24-hour clinic now, and control the bleeding on the way.
+
+- Press firmly on the wound with a clean cloth or gauze, using your palm or fingers.
+- Wrap a bandage over it snugly, but not so tight that it cuts off circulation.
+- If blood soaks through, don't pull the cloth off. Add more layers on top and keep pressing.
+- Tape the outer layer so it stays in place while you travel.
+
+Pain can make even a gentle dog bite. A soft cloth muzzle can protect you, but only if he is breathing normally. Have someone else drive so you can keep pressure on the wound. Pale gums, weakness or fast breathing can mean shock, so tell the clinic when you call.","Most bleeding stops with firm, steady pressure. Bite wounds can look small but often get infected.
+
+What to do now:
+1. If they're in pain, use a soft muzzle or towel so they don't bite. Skip this if they're vomiting or struggling to breathe.
+2. Press firmly on the wound with a clean cloth or gauze for at least 5 minutes. Don't lift it to check.
+3. If blood soaks through, add more layers on top. Don't remove the first one.
+4. Once it stops, wrap it snugly but not tight. You should fit two fingers under the bandage.
+5. Go to the vet for anything deeper than a scrape, all bite wounds, and any bleeding that won't stop.
+
+Go to a vet now.",search-v2,0,124,34,,1,Y,"SIMULATED practice grade, not a real judgement."
+q6166c6,emergency,My dog threw up and there was blood in it. Is that an emergency?,,"Treat it as one. Blood in vomit can come from bleeding in the stomach or gut, ulcers caused by human pain relievers, rat poison, or swallowed chemicals. Call your vet or the nearest 24-hour veterinary clinic now and go in, especially if your dog keeps vomiting, is weak, has pale gums or a painful belly.
+
+What to do:
+- Don't give any human medicine.
+- Don't try to make him vomit.
+- Bring any packaging of medicine, poison or chemical he might have gotten into.
+- Take a photo of the vomit to show the vet.
+
+On the way, keep him calm and watch his gums and breathing.","I do not think you need to worry, the blood is from your dog and it is mixed with an anticoagulant the ticks produce to keep the blood flowing, so the tick can feed on the blood.
+
+The danger with ticks is they can transfer illness to your dog, so the best you can do now is to keep an eye on your dog to see if there is swelling around the bite area, and to keep an eye on your dog to see if your dog gets ill and/or gets a fever.
+
+If your dog shows sign of illness, you need to contact your vet for treatment. You might want to call your vet to get advice about this, as there are some areas where ticks cause a larger danger to your dog.
+
+It is not likely your dog gets infected via the eyes, as the liquid in the eyes of mammals does protect against infections to a large degree.",search-v2,0,162,11,,1,Y,"SIMULATED practice grade, not a real judgement."
+q7dce56,poison,My dog chewed open a bottle of ibuprofen and swallowed some tablets.,,"Go to your vet or the nearest 24-hour clinic now. Human pain relievers like ibuprofen, naproxen and aspirin (NSAIDs) are dangerous for dogs. They can cause stomach ulcers, bleeding and kidney damage, and large amounts can cause seizures or coma.
+
+Signs may include vomiting, diarrhea, black stools, belly pain, not eating, weakness and pale gums.
+
+Before you go:
+- Bring the bottle and count how many tablets are missing, so the vet can judge the risk.
+- Only make your dog vomit if a vet tells you to.
+- Don't give any other medicine.
+
+On the way, keep him calm and watch for vomiting or weakness. Never give human pain medicine to a pet without your vet's advice.","This is an emergency. Paracetamol (acetaminophen) can kill cats, and cats are far more sensitive to it than dogs. Go to your vet or the nearest 24-hour clinic now. Don't wait for signs.
+
+Signs can start within a few hours:
+- Brown or muddy-coloured gums
+- Fast or deep breathing, weakness
+- Swelling of the face or paws
+- Vomiting, or yellow eyes and gums
+
+Before you go:
+- Bring the medicine pack and note when it happened and how many tablets may be missing.
+- Only make her vomit if a vet tells you to, and don't give milk, food or any other medicine.
+
+On the way, keep her calm in a carrier with good airflow. Keep all medicines where pets can't reach them.",search-v2,0,121,43,,2,Y,"SIMULATED practice grade, not a real judgement."
+qe2eb74,poison,My dog licked some liquid that leaked from the car radiator. Is coolant dangerous?,,"Yes, very. Most antifreeze or coolant contains ethylene glycol, which tastes sweet and can kill pets even in small amounts. Cats are affected by even less than dogs. Go to your vet or the nearest 24-hour clinic immediately. Treatment works best in the first few hours, before the kidneys are damaged.
+
+Early signs look like drunkenness: wobbling, vomiting, and drinking and peeing a lot. Dogs may seem better after about 12 hours, but the poison is still working. Kidney failure can follow within about 1.5 to 3 days in dogs and 12 to 24 hours in cats.
+
+Before you go:
+- Bring the coolant bottle if you have it.
+- Only make him vomit if a vet tells you to.
+
+On the way, keep him calm. Later, clean up the spill and cover it with cat litter or sand.","I'm not sure I have an answer for exactly that. This is the closest one I have, to the question ""I see a fair number of people in my area leaving their dogs in the car while they eat at a restaurant.
+
+This…"":
+
+- The interior of a car is capable of reaching far higher temperatures than the outside environment, becoming an oven for a dog (or child, for that matter) left inside it. This can happen quite rapidly and affect swiftly.
+- Dogs rely on cooling their body temperature through their paws (which is where most of their sweat glands are - have you noticed a vet's exam table get wet from a dog's paws?) and through panting; this makes them even more susceptible to overheating in an enclosed environment like a car.
+- Even with the windows left down, a car can heat up quickly. People have been known to resort to smashing windows to remove a dog from a locked car. In places where it is illegal to leave dogs alone in cars, the cost of the window repair is not recoverable by the owner.
+- It's important to note that if any dog is left in a car, the dog is at a much higher risk of developing heat stroke; which can be fatal. (Thanks to @sulfureous) This Wiki How Article gives some good advice on managing heat stroke.
+
+The RACQ study below demonstrates temperature changes in cars over time, with windows closed and open:
+
+If your pet may have eaten, licked or touched something harmful, call your vet or the nearest 24-hour clinic now, even if your pet seems fine. Bring the package or label, and only make your pet vomit if a vet tells you to.",search-v2,0,288,17,over 200 words,0,Y,"SIMULATED practice grade, not a real judgement."
+qf058e5,poison,Is it safe to use an essential oil diffuser if I have a cat?,,"Be careful. Concentrated essential oils can poison pets if they lick them, step in them, or get them on their fur. Never put essential oils directly on your cat or dog, and keep bottles and diffusers where pets can't knock them over. Concentrated tea tree oil can cause problems with just a few drops. Liquid potpourri is also risky, especially for cats, who lick it off their fur.
+
+A diffuser used briefly in a room your pet can't enter is less likely to cause trouble. Skip it if your pet has breathing problems.
+
+If your pet gets oil on the skin or fur, or seems wobbly, dull, weak or vomits, call your vet or the nearest 24-hour clinic now and go in. Move your pet to fresh air, bring the bottle, and only make your pet vomit if a vet tells you to.","Coconut oil is safe for cats, if given in moderation.
+
+Potential side effects include:
+- Upset stomach
+- Diarrhoea
+- Pancreatitis
+- Weight gain
+- Allergic reaction to coconut oil
+
+Since you've been letting your cat have small amounts without any allergic reactions, I would think it is safe to assume that he is not allergic.
+
+Coconut oil has many benefits for cats and can be used internally or topically for a wide range of reasons:
+
+Topical
+- Treat allergies, eczema, and other skin irritations
+- Moisturise dry skin
+- Relieve itchiness
+- Improve overall coat health
+- Act as a barrier against environmental allergens and chemicals
+- Cleaning skin folds
+
+Internal
+- Treat allergies
+- Aid in passing hairballs
+- Reduce arthritis inflammation
+- Improve bad breath
+- Treat mild gingivitis
+- Relieve constipation
+- Improve stomach health
+- Fight bacterial infections
+- Improve brain energy
+
+How much?
+
+The research that I've done suggests 1/8 to 1/2 teaspoon once or twice daily. Here's the catch, extra virgin coconut oil contains 92% saturated fat, or 117 calories per tablespoon, 14g fat and 12g saturated fat. This is a high-calorie supplement. If your cat has existing weight issues, or if he gains weight, it may become necessary to cut back, or reduce his caloric intake elsewhere.
+
+As with anything, if you see any side effects, stop immediately and consult with your local vet.
+
+Sources:
+- https://www.petmd.com/cat/nutrition/coconut-oil-cats-it-good-idea
+- https://bostonstreetvet.com/2014/12/12/10-uses-for-coconut-oil-for-pet-health/
+- https://www.organicfacts.net/coconut-oil-cats.html",search-v2,0,250,6,over 200 words,1,Y,"SIMULATED practice grade, not a real judgement."
+qec4e0c,vaccines,Can I walk my puppy outside before his vaccines are finished?,,"Early socializing is very important for your puppy's behavior, and experts say it can start before the vaccine series is done, as long as you do it carefully.
+
+Until your vet says your puppy is fully protected:
+- Avoid places where unknown dogs pee and poop, like parks, sidewalks and pet store floors
+- Let him meet only healthy puppies and fully vaccinated adult dogs
+- Carry him if you want him to see new sights, sounds and people
+- Use a clean, safe place for supervised puppy play
+
+Parvovirus can survive for a long time in places where infected dogs have been, so stay away from those spots. Ask your vet when it is safe to walk your puppy normally.","I'm not sure I have an answer for exactly that. This is the closest one I have, to the question ""When does my puppy start his shots, and why so many?"":
+
+Puppies usually get their first core vaccine at 6 to 8 weeks old. Shots are then repeated every 2 to 4 weeks until the puppy is at least 16 weeks old.
+
+Why a series? Antibodies from the mother's milk protect a young puppy, but they also block vaccines from working. These antibodies fade at a different age in each puppy, so repeat shots make sure one of them ""takes"". The dose given at 16 weeks or later is the most important.
+
+Global guidelines also advise another core dose at around 6 months old instead of waiting until 1 year, to catch puppies that did not respond earlier.
+
+Your vet will set the exact schedule for your puppy.",search-v2,0,148,14,,0,Y,"SIMULATED practice grade, not a real judgement."
+q986077,parasites,Can I catch worms from my dog or cat?,,"Yes, some can spread to people:
+- Roundworm eggs in soil or poop can be swallowed, mostly by children, and the larvae can harm the eyes or organs
+- Hookworm larvae in soil can go into bare skin and cause an itchy, winding rash
+- Some tapeworms can infect people too
+
+To protect your family:
+- Pick up dog poop right away, including in your yard
+- Scoop the litter box every day
+- Wash hands with soap and water after handling pets, poop or soil
+- Cover sandboxes and wear gloves when gardening
+- Keep your pets on the deworming plan your vet recommends
+
+If a family member is unwell, talk to a doctor.","My cat does this very same thing to me. When I've described it to others (cat lovers and cat haters) I am met with disbelief, as if I am making it up. My 7 year old girl leaps onto my bed at any time between 4:30am and 7am when I arise. She lands within a few inches of my face. It startles me; I open my eyes and she lands a slap to my cheek. She also has the dilated pupil crazy eyes. I was horrified the first several time she did this and I reared up angrily and pushed her off the bed while hollering at her and closing her out of my bedroom. I was shocked that she would ""attack"" me while I was vulnerable in sleep.
+
+It took me awhile to figure her out. She was trying to engage me to play with her. My solution has been to give her a whole lot more play time and attention during my waking hours. I play with her doing the same old games, but not quit at the first sign that she's done. I keep tossing toys and moving across the room until she gets worn out and bored. And I get a respite from the early morning cat slaps, maybe for awhile. I've accepted that this is her quirk. I'm glad she's with me and not someone who could have dumped her or slapped the crap out of her, as had been suggested to me.",search-v2,0,249,4,over 200 words,1,Y,"SIMULATED practice grade, not a real judgement."
+q440e51,parasites,My dog keeps scratching. Could it be fleas?,,"It could be. Common flea signs include:
+- Scratching, biting or licking the skin a lot
+- Hair loss or red skin near the tail and between or behind the legs
+- Small red bumps or flaky skin
+- Seeing adult fleas or ""flea dirt"" (tiny black specks of flea poop) in the fur
+
+Some pets are allergic to flea bites, which makes the itching worse. A heavy flea load can cause blood loss (anemia). Fleas also spread tapeworms.
+
+Itching can have other causes too, like mites or allergies, so have your vet check your dog. Ask your vet for a flea product that suits your dog's weight and age.","This can be life-threatening, so treat it as an emergency. Many dog flea and tick products contain permethrin, which cats can't break down well. Call your vet or the nearest 24-hour clinic now and take her in, even if she seems fine.
+
+Signs include drooling, restlessness, twitching or trembling, wobbliness, vomiting and seizures.
+
+Before you go:
+- Bring the product box.
+- Ask the vet on the phone whether to wash the spot first. They may tell you to use mild dish soap and plenty of water, then dry her well.
+- Stop her from licking the area.
+
+On the way, keep her calm in her carrier. Only use flea products labelled for cats, and keep cats away from newly treated dogs until the product dries.",search-v2,0,125,14,,1,Y,"SIMULATED practice grade, not a real judgement."
+q0ca850,parasites,How do I safely remove a tick from my dog?,,"Remove ticks as soon as you find them:
+- Use fine-tipped tweezers and grip the tick as close to the skin as you can
+- Pull straight out with slow, steady pressure. Don't twist or jerk
+- Don't use bare hands, matches, heat, nail polish or petroleum jelly
+- Don't crush the tick. Drop it in rubbing alcohol, seal it in a bag or wrap it in tape
+- Wash the bite area and your hands with soap and water
+
+If small mouthparts stay in the skin, it usually heals on its own.
+
+Watch the spot for a few days. See your vet if it gets red or swollen, if your dog has many ticks, or if he seems unwell in the weeks after.","I do not think you need to worry, the blood is from your dog and it is mixed with an anticoagulant the ticks produce to keep the blood flowing, so the tick can feed on the blood.
+
+The danger with ticks is they can transfer illness to your dog, so the best you can do now is to keep an eye on your dog to see if there is swelling around the bite area, and to keep an eye on your dog to see if your dog gets ill and/or gets a fever.
+
+If your dog shows sign of illness, you need to contact your vet for treatment. You might want to call your vet to get advice about this, as there are some areas where ticks cause a larger danger to your dog.
+
+It is not likely your dog gets infected via the eyes, as the liquid in the eyes of mammals does protect against infections to a large degree.",search-v2,0,162,12,,1,Y,"SIMULATED practice grade, not a real judgement."
+qa2555e,senior,I found a lump on my senior dog. Should I just watch it?,,"Lumps are more common as pets age. Many are harmless fatty lumps, but some are cancers that look and feel exactly the same. Senior care guidelines warn that simply waiting and watching can be risky.
+
+What to do:
+- Book a vet visit soon
+- Your vet may take a small needle sample to see what the lump is made of
+- Note its size and take a photo so changes can be tracked
+
+See a vet sooner if the lump grows quickly, bleeds or bothers your dog. Also check the mouth, eyes and toes, since growths there can be missed.
+
+Finding a problem early usually means more treatment options.","I don't have a checked answer for that yet. Try asking in another way, with a few more details. If your pet seems unwell, your vet is the best person to ask.",search-v2,0,32,4,,1,Y,"SIMULATED practice grade, not a real judgement."
+q6c078c,philippines,My dog got caught by the dog pound. How do I get him back?,,"Under Section 9 of RA 9482, unregistered, stray or unvaccinated dogs can be impounded by the LGU. Go to your city or municipal pound or veterinary office as soon as possible.
+
+- Dogs not claimed within 3 days (72 hours) may be put up for adoption or otherwise disposed of
+- To claim your dog, you pay a fee to the LGU; the law sets the release fine at P500 to P1,000 (Section 11)
+- A dog impounded 3 times is released only after being spayed or neutered, at the owner's cost (Section 10)
+
+Bring proof of ownership and vaccination if you have it. These amounts are as written in the 2007 law. Your city or municipality may have its own ordinance, so check with your city or municipal veterinary office.","I'm not sure I have an answer for exactly that. This is the closest one I have, to the question ""I am dog sitting for my landlady, and she has a large male German shepherd. We have a fenced in yard that I…"":
+
+Two things I could immediately think of, although they cost a bit, but maybe the owners would be interested in it as well – both would also work in conjunction with each other:
+- Get a harness in addition to a collar. This gives you two points of support to hold the dog back, while also giving you more control over where he's looking/turning (so you might even be able to avoid the dog seeing rabbits or anything else).
+- Get a dampener between collar and actual leash. These are typically made from elastic materials and will consume most of the power applied when the dog starts jumping or running.
+
+Also in case of the collar, I'd replace that immediately, if there's no stopper or similar that keeps it from strangling the dog. This is not only outlawed in some regions, but it may also make the problem worse.
+
+Also if there's some treat the dog loves, you might be able to use that as a distraction, but it really depends on the individual dog. We've got two and while one would do anything for a treat (even ignoring wild animals or barking dogs), the other just won't care about food at all while on the road.",search-v2,0,248,8,over 200 words,0,Y,"SIMULATED practice grade, not a real judgement."
+q3776b6,philippines,My dog bit someone. What does the law say I need to do?,,"Under Section 5 of RA 9482, the owner must:
+
+- Report the bite to the concerned officials (for example your barangay or city/municipal veterinary or health office) within 24 hours
+- Place the dog under observation by a government or private veterinarian
+- Help the person who was bitten right away, and pay for their medical and related expenses
+
+Tell the person to wash the wound and go to an Animal Bite Treatment Center promptly.
+
+Refusing to have the dog observed carries a fine of P10,000, or P25,000 if you also refuse to pay the victim's medical costs (Section 11). Local amounts may differ, so check with your city or municipal veterinary office.","Act right away, even if the dog looks healthy.
+
+- Wash the wound with soap and running water for about 15 minutes
+- Don't put garlic or other home remedies on it, and don't rely on ""tandok"" or ""tambal"" healers
+- Go to the nearest Animal Bite Treatment Center (ABTC) or Animal Bite Center promptly for post-exposure prophylaxis (PEP)
+- Finish the full vaccine schedule the health workers give you
+
+Don't wait for symptoms. Once rabies symptoms appear, it is almost always fatal. If the dog has an owner, they should report the bite and have the dog observed for 14 days.",search-v2,0,99,25,,2,Y,"SIMULATED practice grade, not a real judgement."
+q3c5192,philippines,how many days do i need to observe my dog after it bit someone?,,"The implementing rules of RA 9482 set a 14-day observation period. During those 14 days the dog must not be killed or put to sleep.
+
+- Keep the dog confined and have it checked by a government or private vet (Section 5 of RA 9482)
+- If the dog dies during observation, the owner must bring it in right away for a rabies laboratory test
+
+The person who was bitten should not wait for the observation to finish before getting care. They should go to an Animal Bite Treatment Center promptly.","Act right away, even if the dog looks healthy.
+
+- Wash the wound with soap and running water for about 15 minutes
+- Don't put garlic or other home remedies on it, and don't rely on ""tandok"" or ""tambal"" healers
+- Go to the nearest Animal Bite Treatment Center (ABTC) or Animal Bite Center promptly for post-exposure prophylaxis (PEP)
+- Finish the full vaccine schedule the health workers give you
+
+Don't wait for symptoms. Once rabies symptoms appear, it is almost always fatal. If the dog has an owner, they should report the bite and have the dog observed for 14 days.",search-v2,0,99,31,,1,Y,"SIMULATED practice grade, not a real judgement."
+qd2d323,rabies,When is Rabies Awareness Month in the Philippines?,,"March. Executive Order No. 84, signed in 1999, declared March of every year as Rabies Awareness Month. It calls for a nationwide rabies information drive and mass dog vaccination with free vaccines.
+
+The implementing rules of RA 9482 also mark March as Rabies Awareness Month, and September 28 as World Rabies Day.
+
+Many LGUs hold free vaccination and pet registration activities in March, so it's a good time to update your pet's shots.","I'm not sure I have an answer for exactly that. This is the closest one I have, to the question ""How is rabies spread?"":
+
+Rabies spreads through the saliva of an infected animal, mostly through:
+
+- Bites
+- Scratches
+- Saliva getting into open wounds, eyes, nose or mouth
+
+Dogs cause up to 99% of human rabies cases worldwide, according to the WHO. In the Philippines, the DOH said 45% of rabies cases in 2024 came from the saliva of household pets.
+
+Touching or feeding an animal, or a lick on unbroken skin, is not considered an exposure. Still, wash the area with soap and water.",search-v2,0,103,7,,0,Y,"SIMULATED practice grade, not a real judgement."
+q28d471,philippines,What counts as animal cruelty under Philippine law?,,"Under Section 6 of the Animal Welfare Act (RA 8485, as amended by RA 10631), it is illegal to:
+
+- Torture any animal
+- Neglect to give an animal enough care, food or shelter, or otherwise maltreat it
+- Use dogs or horses in dogfights or horsefights
+- Kill an animal other than livestock like cattle, pigs, goats, poultry and rabbits, except in cases the law allows
+- Use animals in research not approved by the Committee on Animal Welfare
+
+Abandoning a pet without arranging its care is also treated as maltreatment (Section 7, added by RA 10631).","Section 9 of the Animal Welfare Act, as amended by RA 10631, sets penalties after conviction:
+
+- Animal dies: 1 year, 6 months and 1 day to 2 years in prison, and/or a fine up to P100,000
+- Animal survives but is severely injured and can't survive without human help: 1 year and 1 day to 1 year and 6 months, and/or up to P50,000
+- Other cruelty or neglect: 6 months to 1 year, and/or up to P30,000
+
+Penalties go up to 2 years and 1 day to 3 years and/or up to P250,000 if the offense involves a syndicate, a business, a public officer, or 3 or more animals.",search-v2,0,116,20,,2,N,"SIMULATED practice grade, not a real judgement."

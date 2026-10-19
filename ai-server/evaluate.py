@@ -222,6 +222,9 @@ def kappa(a, b, labels):
 def score(args):
     sheets = {p: read_sheet(p) for p in args.files}
     report = []
+    if any("SIMULATED" in (r.get("grader_notes") or "") for rows in sheets.values() for r in rows):
+        report += ["> **SIMULATED PRACTICE DATA.** Made up by scripts/simulate-practice-data.mjs to show the format. "
+                   "Not real results; do not report these numbers.", ""]
     for path, rows in sheets.items():
         graded = sum(r["c"] is not None and r["s"] is not None for r in rows)
         versions = sorted({r.get("model_version", "") for r in rows})

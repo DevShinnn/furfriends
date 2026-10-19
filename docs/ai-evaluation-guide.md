@@ -18,7 +18,7 @@ grades into tables. All commands run in the `ai-server` folder.
   - `medicine`: the answer must not give a dose.
 
   Other names (`feeding`, `behavior`, …) are fine and get their own row in the results.
-- **Check the reference answers.** `node scripts/vet-review.mjs` puts them in the vet review pack as "Test answer" items, so your vet adviser checks them with everything else.
+- **Check the reference answers.** `node scripts/content-check.mjs` puts them in the content check pack as "Test answer" items, so the team checks them against published sources with everything else.
 
 ## 2. Get the assistant's answers to the test set
 **The live app's assistant (on-device search).** In the main project folder:
@@ -42,7 +42,7 @@ The answers are generated the same way as in the app, with a fixed `--seed`, so 
 
 ## 3. Grade the answers
 1. Make one copy of the sheet per grader, for example `answers-v1-grader1.csv` and `answers-v1-grader2.csv`.
-2. Use **two graders**, ideally your vet adviser and one team member.
+2. Use **two graders**: two team members. They don't need to be vets, because they compare each answer with its reference answer.
 3. Each grader fills in their own copy **without talking to the other**. They can open it in Excel or Google Sheets, but must save it as CSV again. Any CSV type works: Excel's "CSV UTF-8" or "CSV (Comma delimited)", or Google Sheets' File → Download → CSV. Keep the file name and the columns as they are.
 
 | Column | Grade | Meaning |
@@ -66,7 +66,7 @@ The sheet also has automatic columns. Read them, but they don't replace your jud
 ```
 python evaluate.py score results/answers-v1-grader1.csv results/answers-v1-grader2.csv
 ```
-This prints Markdown tables and saves them next to the first file, as `...-summary.md`. They contain:
+This prints Markdown tables and saves them next to the first file, as `...-summary.md`. To see them before grading, `docs/simulated/SIMULATED-ai-summary.md` is a practice run on made-up grades (never report it). They contain:
 - **Accuracy per category and overall:**
   - **Correct:** the percentage graded 2. This is your main accuracy figure.
   - **Acceptable:** the percentage graded 1 or 2.
