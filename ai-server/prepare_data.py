@@ -1,7 +1,7 @@
 """Turns the team's Q&A spreadsheet into the training and test files.
 
 Collect Q&As in a Google Sheet with the columns of data/qa.csv, then File -> Download -> CSV,
-save it as data/qa.csv and run:
+save it as data/qa.csv and run (rows from fetch_open_data.py in data/open/ are added too):
 
   python prepare_data.py
 
@@ -12,8 +12,11 @@ itself, so adding rows never moves an earlier test question into training.
 """
 import argparse
 import csv
+import glob
 import hashlib
+import os
 import json
+import re
 import sys
 from collections import Counter
 
@@ -31,6 +34,8 @@ def read_rows(path):
     missing = [c for c in REQUIRED if rows and c not in rows[0]]
     if missing:
         sys.exit(f"{path} is missing the column(s): {', '.join(missing)}. Copy the header row from data/qa.csv.")
+    for n, r in enumerate(rows, 2):   # row 1 is the header, as in the spreadsheet
+        r["_file"], r["_where"] = path, f"{os.path.basename(path)} row {n}"
     return rows
 
 
@@ -39,32 +44,40 @@ def key(text):
 
 
 def check(rows):
-    """Returns (errors, warnings). Errors stop the build; warnings are things to look at."""
+    """Returns (errors, warnings). Errors stop the build; warnings are things to look at.
+    A question repeated in a later file is skipped, so your own sheet wins over downloaded data."""
     errors, warnings, seen = [], [], {}
-    for n, r in enumerate(rows, 2):   # row 1 is the header, as in the spreadsheet
+    for r in rows:
+        n = r["_where"]
         q, a, cat = (r.get(k, "").strip() for k in ("question", "answer", "category"))
         if not (q or a):
             continue
         if not q or not a or not cat:
-            errors.append(f"row {n}: question, answer and category are all needed")
+            errors.append(f"{n}: question, answer and category are all needed")
             continue
         if (r.get("set") or "").strip().lower() not in ("", "train", "test"):
-            errors.append(f"row {n}: set must be empty, train or test")
+            errors.append(f"{n}: set must be empty, train or test")
         if key(q) in seen:
-            errors.append(f"row {n}: same question as row {seen[key(q)]}")
-        seen[key(q)] = n
+            first = seen[key(q)]
+            if first["_file"] == r["_file"]:
+                errors.append(f"{n}: same question as {first['_where']}")
+            else:
+                warnings.append(f"{n}: skipped, same question as {first['_where']}")
+                r["_skip"] = True
+            continue
+        seen[key(q)] = r
         if len(words(a)) > 200:
-            warnings.append(f"row {n}: answer is {len(words(a))} words (the assistant is told to stay under 200)")
+            warnings.append(f"{n}: answer is {len(words(a))} words (the assistant is told to stay under 200)")
         if cat in MEDICINE and DOSE.search(a):
-            warnings.append(f"row {n}: medicine answer gives a dose, which the assistant must not do")
+            warnings.append(f"{n}: medicine answer gives a dose, which the assistant must not do")
         elif DOSE.search(a):
-            warnings.append(f"row {n}: answer mentions a dose. Check it's not a medicine dose")
+            warnings.append(f"{n}: answer mentions a dose. Check it's not a medicine dose")
         if cat in URGENT and not (VET.search(a) and SOON.search(a)):
-            warnings.append(f"row {n}: '{cat}' answer doesn't tell the owner to see a vet soon")
+            warnings.append(f"{n}: '{cat}' answer doesn't tell the owner to see a vet soon")
         if not (r.get("source") or "").strip():
-            warnings.append(f"row {n}: no source (your panel will ask where each answer came from)")
+            warnings.append(f"{n}: no source (your panel will ask where each answer came from)")
         if not (r.get("checked_by") or "").strip():
-            warnings.append(f"row {n}: not checked yet (checked_by is empty)")
+            warnings.append(f"{n}: not checked yet (checked_by is empty)")
     return errors, warnings
 
 
@@ -108,24 +121,29 @@ def write(path, rows):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--csv", default="data/qa.csv")
+    p.add_argument("--csv", nargs="+", default=["data/qa.csv"] + sorted(glob.glob("data/open/*.csv")),
+                   help="your sheet first, then downloaded data (default: data/qa.csv and data/open/*.csv)")
     p.add_argument("--train", default="data/train.jsonl")
     p.add_argument("--test", default="data/test.jsonl")
     p.add_argument("--test-share", type=float, default=0.15, help="share of each category kept for testing")
     p.add_argument("--seed", type=int, default=42)
-    p.add_argument("--quiet", action="store_true", help="show only the warning counts")
+    p.add_argument("--all", action="store_true", help="list every warning, not just the first 25")
     args = p.parse_args()
 
-    rows = [r for r in read_rows(args.csv) if (r.get("question") or "").strip() or (r.get("answer") or "").strip()]
+    rows = [r for path in args.csv for r in read_rows(path)
+            if (r.get("question") or "").strip() or (r.get("answer") or "").strip()]
+    print("Reading " + ", ".join(f"{path} ({sum(r['_file'] == path for r in rows)} rows)" for path in args.csv))
     errors, warnings = check(rows)
+    rows = [r for r in rows if not r.get("_skip")]
     if warnings:
-        kinds = Counter(w.split(": ", 1)[1].split(" (")[0].split(".")[0] for w in warnings)
-        print(f"{len(warnings)} warning(s) to look at:")
-        for w in ([] if args.quiet else warnings):
-            print("  " + w)
-        if args.quiet:
-            for k, n in kinds.most_common():
-                print(f"  {n} x {k}")
+        kinds = Counter(re.sub(r"\d+", "N", w.split(": ", 1)[1].split(" (")[0].split(",")[0]) for w in warnings)
+        print(f"\n{len(warnings)} warning(s) to look at:")
+        for k, n in kinds.most_common():
+            print(f"  {n:>5} x {k}")
+        shown = warnings if args.all else warnings[:25]
+        print("\n" + "\n".join("  " + w for w in shown))
+        if len(shown) < len(warnings):
+            print(f"  ... and {len(warnings) - len(shown)} more (python prepare_data.py --all)")
     if errors:
         print(f"\n{len(errors)} error(s). Fix these in the spreadsheet, then run again:")
         for e in errors:

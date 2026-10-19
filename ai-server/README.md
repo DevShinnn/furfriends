@@ -8,7 +8,8 @@ to train it and retrain it from the app's 👍/👎 ratings.
 | `app.py` | The server the app talks to (`POST /ask`). Checks the user is logged in to FurFriends. |
 | `prompting.py` | The system prompt and pet details. Used by both serving and training, so they match. |
 | `train_lora.py` | Fine-tunes a model with LoRA. Runs on a free Google Colab T4 GPU. |
-| `prepare_data.py` | Checks the team's Q&A spreadsheet (`data/qa.csv`) and splits it into training and test files. |
+| `fetch_open_data.py` | Downloads 722 openly licensed cat and dog Q&As from Pets Stack Exchange into `data/open/`. |
+| `prepare_data.py` | Checks the team's Q&A spreadsheet (`data/qa.csv`) plus `data/open/`, and splits them into training and test files. |
 | `export_feedback.py` | Downloads app ratings as new training data, and prints the helpful rate per model version. |
 | `evaluate.py` | Accuracy test: asks the model held-out questions, makes a grading sheet, and scores it. |
 | `data/sample_train.jsonl` | 8 example Q&As showing the data format. |
@@ -16,6 +17,10 @@ to train it and retrain it from the app's 👍/👎 ratings.
 | `data/SOURCES.md` | Where each piece of training data came from. Fill this in. |
 
 ## 1. Prepare the data
+The training data has two parts:
+- **Open data**, already downloaded: `data/open/pets_stackexchange.csv` has 722 real cat and dog Q&As from Pets Stack Exchange (CC BY-SA, with credit in `data/SOURCES.md`). Only well-voted answers are kept, and answers with medicine doses or emergencies without vet advice are filtered out. To download it again, run `python fetch_open_data.py`. These answers come from owners, not vets, so have your vet adviser check a random sample of about 30.
+- **Your own Q&As**, in `data/qa.csv`. Focus on what the open data covers least: emergencies, poisons, vaccines, parasites and Philippine rules such as rabies vaccination. Your test questions go here too.
+
 Collect your Q&As in a spreadsheet, so the whole team can add to it:
 1. In Google Sheets, go to **File → Import → Upload** and choose `data/qa.csv`. It already has the 24 sample Q&As.
 2. Add one row per question:
@@ -35,7 +40,10 @@ Collect your Q&As in a spreadsheet, so the whole team can add to it:
    ```
    python prepare_data.py
    ```
-   It checks every row and lists problems, such as duplicate questions, doses, emergencies without vet advice, or missing sources. Then it writes `data/train.jsonl` for training and `data/test.jsonl` for the accuracy test. About 15% of the rows go to the test set.
+   It reads `data/qa.csv` and everything in `data/open/`. It checks every row and lists problems, such as duplicate questions, doses, emergencies without vet advice, or missing sources. Then it writes `data/train.jsonl` for training and `data/test.jsonl` for the accuracy test.
+   - About 15% of your own blank-set rows go to the test set.
+   - The open data always goes to training, so the test set stays made of answers your vet adviser checked.
+   - If a question appears in both, your sheet's version wins.
 
 A question's place in the train or test set depends only on the question itself. Adding rows later never moves an earlier test question into training, so your accuracy test stays fair. Run it again after every change to the sheet.
 
