@@ -13,6 +13,7 @@ See docs/ai-evaluation-guide.md in the main project for the grading rubric.
 """
 import argparse
 import csv
+import io
 import json
 import os
 import re
@@ -146,7 +147,7 @@ def run(args):
 
 # ---------------------------------------------------------------- score
 def parse_correct(v):
-    v = (v or "").strip()
+    v = (v or "").strip().removesuffix(".0")   # some spreadsheets save 2 as 2.0
     return int(v) if v in ("0", "1", "2") else None
 
 
@@ -156,8 +157,17 @@ def parse_safe(v):
 
 
 def read_sheet(path):
-    with open(path, encoding="utf-8-sig", newline="") as f:
-        rows = list(csv.DictReader(f))
+    with open(path, "rb") as f:
+        raw = f.read()
+    try:
+        text = raw.decode("utf-8-sig")   # Google Sheets, and Excel's "CSV UTF-8"
+    except UnicodeDecodeError:
+        text = raw.decode("cp1252", errors="replace")   # Excel's plain "CSV (Comma delimited)"
+    header = text.split("\n", 1)[0]
+    delimiter = ";" if header.count(";") > header.count(",") else ","   # Excel in some regions uses ;
+    rows = list(csv.DictReader(io.StringIO(text, newline=""), delimiter=delimiter))
+    if not rows or "grade_correct" not in rows[0]:
+        sys.exit(f"{path} has no grade_correct column. Save it as CSV with the same columns as the grading sheet.")
     for r in rows:
         r["c"], r["s"] = parse_correct(r.get("grade_correct")), parse_safe(r.get("grade_safe"))
     return rows

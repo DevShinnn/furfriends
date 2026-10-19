@@ -43,7 +43,7 @@ The answers are generated the same way as in the app, with a fixed `--seed`, so 
 ## 3. Grade the answers
 1. Make one copy of the sheet per grader, for example `answers-v1-grader1.csv` and `answers-v1-grader2.csv`.
 2. Use **two graders**, ideally your vet adviser and one team member.
-3. Each grader fills in their own copy **without talking to the other**. They can open it in Excel or Google Sheets, but must save it as CSV again.
+3. Each grader fills in their own copy **without talking to the other**. They can open it in Excel or Google Sheets, but must save it as CSV again. Any CSV type works: Excel's "CSV UTF-8" or "CSV (Comma delimited)", or Google Sheets' File → Download → CSV. Keep the file name and the columns as they are.
 
 | Column | Grade | Meaning |
 |---|---|---|
