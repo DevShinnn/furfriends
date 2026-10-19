@@ -53,7 +53,7 @@
   <section class="cover">
     <p class="sub">FurFriends · Capstone pilot · Content review</p>
     <h1>Veterinary review of pet health content</h1>
-    <p>FurFriends is a pet health records app for cat and dog owners in the Philippines. It shows owners first-aid steps, breed care information and reminders, and includes a pilot AI assistant. This pack contains all of that content (75 items), so a licensed veterinarian can check it before the app is tested with the public.</p>
+    <p>FurFriends is a pet health records app for cat and dog owners in the Philippines. It shows owners first-aid steps, breed care information and reminders, and includes a pilot AI assistant. This pack contains all of that content (173 items), so a licensed veterinarian can check it before the app is tested with the public.</p>
     <div class="how">
       <b>How to review</b>
       <ol>
@@ -67,7 +67,7 @@
       <div>Reviewer name</div><div>PRC license no.</div>
       <div>Clinic / institution</div><div>Date received</div>
     </div>
-    <p class="lead">Contents: A. Emergency first aid (19 items) · B. Breed guide (29) · C. Reminders and record-keeping (2) · D. AI assistant (25)</p>
+    <p class="lead">Contents: A. Emergency first aid (19 items) · B. Breed guide (29) · C. Reminders and record-keeping (2) · D. AI assistant (40) · E. Researched answers (83)</p>
   </section>
   
   <h2 class="part">A. Emergency first aid</h2>
@@ -985,11 +985,14 @@
   </section>
   
   <h2 class="part">D. AI assistant</h2>
-  <p class="lead">The assistant is a pilot model the team is training. These are the rules it is given for every answer, example answers it is trained on, and the reference answers its accuracy is graded against. Every answer in the app is labelled “It isn't a vet. In an emergency, go to a vet now.”</p>
+  <p class="lead">The assistant finds the closest checked answer to the owner's question, using an open-source AI model on the owner's phone. It does not write its own answers. Below are its fixed safety messages, the team's example answers, and the reference answers its accuracy is graded against. Every answer in the app is labelled “It isn't a vet. In an emergency, go to a vet now.”</p>
   
   <section class="item">
-    <header><span class="id">D1</span><h3>Rules given to the AI</h3></header>
-    <div class="content"><p>You are FurFriends, a pet-care assistant for cat and dog owners in the Philippines. Give practical, educational answers in plain, friendly language. You are not a veterinarian: do not diagnose, and do not give medicine doses. If the owner describes an emergency (trouble breathing, poisoning, a seizure, heavy bleeding, collapse, a cat straining to pee, or a swollen belly with retching), tell them to go to a vet now. When a question needs an exam or tests, say so and suggest seeing their vet. Keep answers under 200 words. Use short paragraphs, and '- ' for lists.</p></div>
+    <header><span class="id">D1</span><h3>Fixed safety messages</h3></header>
+    <div class="content">
+    <h4>Shown for any question asking for a medicine dose</h4><p>I can't give medicine doses. The right medicine and dose depend on your pet's weight, health and what's wrong, so only a vet can prescribe them.</p><ul><li>Don't give human medicines or leftover prescriptions</li><li>Call your vet and tell them your pet's weight and symptoms</li></ul><p>If your pet is very weak, not eating, or has trouble breathing, go to a vet now.</p>
+    <h4>Added to answers about something a pet ate, licked or touched, if they don't already say to see a vet soon</h4><p>If your pet may have eaten, licked or touched something harmful, call your vet or the nearest 24-hour clinic now, even if your pet seems fine. Bring the package or label, and only make your pet vomit if a vet tells you to.</p>
+    <h4>Added to answers about symptoms that don't already say to see a vet soon</h4><p>If this has lasted more than a day, keeps coming back, or your pet seems unwell, see your vet. Go now if your pet is very weak, can't keep water down, or has trouble breathing.</p></div>
     
   <div class="review" aria-label="Review D1">
     <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
@@ -1262,9 +1265,1091 @@
     <div class="lines"><span>Corrections:</span><i></i><i></i></div>
   </div>
   </section>
+  <section class="item">
+    <header><span class="id">D26</span><h3>Test answer: “My dog has a deep cut on his leg and it won't stop bleeding.”</h3><span class="meta"><span class="tag">Accuracy test · emergency</span></span></header>
+    <div class="content">
+    
+    <p>Heavy bleeding is an emergency. Head to your vet or the nearest 24-hour clinic now, and control the bleeding on the way.</p><ul><li>Press firmly on the wound with a clean cloth or gauze, using your palm or fingers.</li><li>Wrap a bandage over it snugly, but not so tight that it cuts off circulation.</li><li>If blood soaks through, don't pull the cloth off. Add more layers on top and keep pressing.</li><li>Tape the outer layer so it stays in place while you travel.</li></ul><p>Pain can make even a gentle dog bite. A soft cloth muzzle can protect you, but only if he is breathing normally. Have someone else drive so you can keep pressure on the wound. Pale gums, weakness or fast breathing can mean shock, so tell the clinic when you call.</p></div>
+    
+  <div class="review" aria-label="Review D26">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D27</span><h3>Test answer: “My dog threw up and there was blood in it. Is that an emergency?”</h3><span class="meta"><span class="tag">Accuracy test · emergency</span></span></header>
+    <div class="content">
+    
+    <p>Treat it as one. Blood in vomit can come from bleeding in the stomach or gut, ulcers caused by human pain relievers, rat poison, or swallowed chemicals. Call your vet or the nearest 24-hour veterinary clinic now and go in, especially if your dog keeps vomiting, is weak, has pale gums or a painful belly.</p><p>What to do:</p><ul><li>Don't give any human medicine.</li><li>Don't try to make him vomit.</li><li>Bring any packaging of medicine, poison or chemical he might have gotten into.</li><li>Take a photo of the vomit to show the vet.</li></ul><p>On the way, keep him calm and watch his gums and breathing.</p></div>
+    
+  <div class="review" aria-label="Review D27">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D28</span><h3>Test answer: “My dog chewed open a bottle of ibuprofen and swallowed some tablets.”</h3><span class="meta"><span class="tag">Accuracy test · poison</span></span></header>
+    <div class="content">
+    
+    <p>Go to your vet or the nearest 24-hour clinic now. Human pain relievers like ibuprofen, naproxen and aspirin (NSAIDs) are dangerous for dogs. They can cause stomach ulcers, bleeding and kidney damage, and large amounts can cause seizures or coma.</p><p>Signs may include vomiting, diarrhea, black stools, belly pain, not eating, weakness and pale gums.</p><p>Before you go:</p><ul><li>Bring the bottle and count how many tablets are missing, so the vet can judge the risk.</li><li>Only make your dog vomit if a vet tells you to.</li><li>Don't give any other medicine.</li></ul><p>On the way, keep him calm and watch for vomiting or weakness. Never give human pain medicine to a pet without your vet's advice.</p></div>
+    
+  <div class="review" aria-label="Review D28">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D29</span><h3>Test answer: “My dog licked some liquid that leaked from the car radiator. Is coolant dangerous?”</h3><span class="meta"><span class="tag">Accuracy test · poison</span></span></header>
+    <div class="content">
+    
+    <p>Yes, very. Most antifreeze or coolant contains ethylene glycol, which tastes sweet and can kill pets even in small amounts. Cats are affected by even less than dogs. Go to your vet or the nearest 24-hour clinic immediately. Treatment works best in the first few hours, before the kidneys are damaged.</p><p>Early signs look like drunkenness: wobbling, vomiting, and drinking and peeing a lot. Dogs may seem better after about 12 hours, but the poison is still working. Kidney failure can follow within about 1.5 to 3 days in dogs and 12 to 24 hours in cats.</p><p>Before you go:</p><ul><li>Bring the coolant bottle if you have it.</li><li>Only make him vomit if a vet tells you to.</li></ul><p>On the way, keep him calm. Later, clean up the spill and cover it with cat litter or sand.</p></div>
+    
+  <div class="review" aria-label="Review D29">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D30</span><h3>Test answer: “Is it safe to use an essential oil diffuser if I have a cat?”</h3><span class="meta"><span class="tag">Accuracy test · poison</span></span></header>
+    <div class="content">
+    
+    <p>Be careful. Concentrated essential oils can poison pets if they lick them, step in them, or get them on their fur. Never put essential oils directly on your cat or dog, and keep bottles and diffusers where pets can't knock them over. Concentrated tea tree oil can cause problems with just a few drops. Liquid potpourri is also risky, especially for cats, who lick it off their fur.</p><p>A diffuser used briefly in a room your pet can't enter is less likely to cause trouble. Skip it if your pet has breathing problems.</p><p>If your pet gets oil on the skin or fur, or seems wobbly, dull, weak or vomits, call your vet or the nearest 24-hour clinic now and go in. Move your pet to fresh air, bring the bottle, and only make your pet vomit if a vet tells you to.</p></div>
+    
+  <div class="review" aria-label="Review D30">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D31</span><h3>Test answer: “Can I walk my puppy outside before his vaccines are finished?”</h3><span class="meta"><span class="tag">Accuracy test · vaccines</span></span></header>
+    <div class="content">
+    
+    <p>Early socializing is very important for your puppy's behavior, and experts say it can start before the vaccine series is done, as long as you do it carefully.</p><p>Until your vet says your puppy is fully protected:</p><ul><li>Avoid places where unknown dogs pee and poop, like parks, sidewalks and pet store floors</li><li>Let him meet only healthy puppies and fully vaccinated adult dogs</li><li>Carry him if you want him to see new sights, sounds and people</li><li>Use a clean, safe place for supervised puppy play</li></ul><p>Parvovirus can survive for a long time in places where infected dogs have been, so stay away from those spots. Ask your vet when it is safe to walk your puppy normally.</p></div>
+    
+  <div class="review" aria-label="Review D31">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D32</span><h3>Test answer: “Can I catch worms from my dog or cat?”</h3><span class="meta"><span class="tag">Accuracy test · parasites</span></span></header>
+    <div class="content">
+    
+    <p>Yes, some can spread to people:</p><ul><li>Roundworm eggs in soil or poop can be swallowed, mostly by children, and the larvae can harm the eyes or organs</li><li>Hookworm larvae in soil can go into bare skin and cause an itchy, winding rash</li><li>Some tapeworms can infect people too</li></ul><p>To protect your family:</p><ul><li>Pick up dog poop right away, including in your yard</li><li>Scoop the litter box every day</li><li>Wash hands with soap and water after handling pets, poop or soil</li><li>Cover sandboxes and wear gloves when gardening</li><li>Keep your pets on the deworming plan your vet recommends</li></ul><p>If a family member is unwell, talk to a doctor.</p></div>
+    
+  <div class="review" aria-label="Review D32">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D33</span><h3>Test answer: “My dog keeps scratching. Could it be fleas?”</h3><span class="meta"><span class="tag">Accuracy test · parasites</span></span></header>
+    <div class="content">
+    
+    <p>It could be. Common flea signs include:</p><ul><li>Scratching, biting or licking the skin a lot</li><li>Hair loss or red skin near the tail and between or behind the legs</li><li>Small red bumps or flaky skin</li><li>Seeing adult fleas or &quot;flea dirt&quot; (tiny black specks of flea poop) in the fur</li></ul><p>Some pets are allergic to flea bites, which makes the itching worse. A heavy flea load can cause blood loss (anemia). Fleas also spread tapeworms.</p><p>Itching can have other causes too, like mites or allergies, so have your vet check your dog. Ask your vet for a flea product that suits your dog's weight and age.</p></div>
+    
+  <div class="review" aria-label="Review D33">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D34</span><h3>Test answer: “How do I safely remove a tick from my dog?”</h3><span class="meta"><span class="tag">Accuracy test · parasites</span></span></header>
+    <div class="content">
+    
+    <p>Remove ticks as soon as you find them:</p><ul><li>Use fine-tipped tweezers and grip the tick as close to the skin as you can</li><li>Pull straight out with slow, steady pressure. Don't twist or jerk</li><li>Don't use bare hands, matches, heat, nail polish or petroleum jelly</li><li>Don't crush the tick. Drop it in rubbing alcohol, seal it in a bag or wrap it in tape</li><li>Wash the bite area and your hands with soap and water</li></ul><p>If small mouthparts stay in the skin, it usually heals on its own.</p><p>Watch the spot for a few days. See your vet if it gets red or swollen, if your dog has many ticks, or if he seems unwell in the weeks after.</p></div>
+    
+  <div class="review" aria-label="Review D34">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D35</span><h3>Test answer: “I found a lump on my senior dog. Should I just watch it?”</h3><span class="meta"><span class="tag">Accuracy test · senior</span></span></header>
+    <div class="content">
+    
+    <p>Lumps are more common as pets age. Many are harmless fatty lumps, but some are cancers that look and feel exactly the same. Senior care guidelines warn that simply waiting and watching can be risky.</p><p>What to do:</p><ul><li>Book a vet visit soon</li><li>Your vet may take a small needle sample to see what the lump is made of</li><li>Note its size and take a photo so changes can be tracked</li></ul><p>See a vet sooner if the lump grows quickly, bleeds or bothers your dog. Also check the mouth, eyes and toes, since growths there can be missed.</p><p>Finding a problem early usually means more treatment options.</p></div>
+    
+  <div class="review" aria-label="Review D35">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D36</span><h3>Test answer: “My dog got caught by the dog pound. How do I get him back?”</h3><span class="meta"><span class="tag">Accuracy test · philippines</span></span></header>
+    <div class="content">
+    
+    <p>Under Section 9 of RA 9482, unregistered, stray or unvaccinated dogs can be impounded by the LGU. Go to your city or municipal pound or veterinary office as soon as possible.</p><ul><li>Dogs not claimed within 3 days (72 hours) may be put up for adoption or otherwise disposed of</li><li>To claim your dog, you pay a fee to the LGU; the law sets the release fine at P500 to P1,000 (Section 11)</li><li>A dog impounded 3 times is released only after being spayed or neutered, at the owner's cost (Section 10)</li></ul><p>Bring proof of ownership and vaccination if you have it. These amounts are as written in the 2007 law. Your city or municipality may have its own ordinance, so check with your city or municipal veterinary office.</p></div>
+    
+  <div class="review" aria-label="Review D36">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D37</span><h3>Test answer: “My dog bit someone. What does the law say I need to do?”</h3><span class="meta"><span class="tag">Accuracy test · philippines</span></span></header>
+    <div class="content">
+    
+    <p>Under Section 5 of RA 9482, the owner must:</p><ul><li>Report the bite to the concerned officials (for example your barangay or city/municipal veterinary or health office) within 24 hours</li><li>Place the dog under observation by a government or private veterinarian</li><li>Help the person who was bitten right away, and pay for their medical and related expenses</li></ul><p>Tell the person to wash the wound and go to an Animal Bite Treatment Center promptly.</p><p>Refusing to have the dog observed carries a fine of P10,000, or P25,000 if you also refuse to pay the victim's medical costs (Section 11). Local amounts may differ, so check with your city or municipal veterinary office.</p></div>
+    
+  <div class="review" aria-label="Review D37">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D38</span><h3>Test answer: “how many days do i need to observe my dog after it bit someone?”</h3><span class="meta"><span class="tag">Accuracy test · philippines</span></span></header>
+    <div class="content">
+    
+    <p>The implementing rules of RA 9482 set a 14-day observation period. During those 14 days the dog must not be killed or put to sleep.</p><ul><li>Keep the dog confined and have it checked by a government or private vet (Section 5 of RA 9482)</li><li>If the dog dies during observation, the owner must bring it in right away for a rabies laboratory test</li></ul><p>The person who was bitten should not wait for the observation to finish before getting care. They should go to an Animal Bite Treatment Center promptly.</p></div>
+    
+  <div class="review" aria-label="Review D38">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D39</span><h3>Test answer: “When is Rabies Awareness Month in the Philippines?”</h3><span class="meta"><span class="tag">Accuracy test · rabies</span></span></header>
+    <div class="content">
+    
+    <p>March. Executive Order No. 84, signed in 1999, declared March of every year as Rabies Awareness Month. It calls for a nationwide rabies information drive and mass dog vaccination with free vaccines.</p><p>The implementing rules of RA 9482 also mark March as Rabies Awareness Month, and September 28 as World Rabies Day.</p><p>Many LGUs hold free vaccination and pet registration activities in March, so it's a good time to update your pet's shots.</p></div>
+    
+  <div class="review" aria-label="Review D39">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">D40</span><h3>Test answer: “What counts as animal cruelty under Philippine law?”</h3><span class="meta"><span class="tag">Accuracy test · philippines</span></span></header>
+    <div class="content">
+    
+    <p>Under Section 6 of the Animal Welfare Act (RA 8485, as amended by RA 10631), it is illegal to:</p><ul><li>Torture any animal</li><li>Neglect to give an animal enough care, food or shelter, or otherwise maltreat it</li><li>Use dogs or horses in dogfights or horsefights</li><li>Kill an animal other than livestock like cattle, pigs, goats, poultry and rabbits, except in cases the law allows</li><li>Use animals in research not approved by the Committee on Animal Welfare</li></ul><p>Abandoning a pet without arranging its care is also treated as maltreatment (Section 7, added by RA 10631).</p></div>
+    
+  <div class="review" aria-label="Review D40">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  
+  <h2 class="part">E. Researched answers</h2>
+  <p class="lead">Answers the team researched from public sources and wrote in plain words, for topics the open data barely covers. The assistant shows them to owners, so check each one against current veterinary practice. The source of each is listed under the question.</p>
+  
+  <section class="item">
+    <header><span class="id">E1</span><h3>“My dog was panting really hard after our walk in the heat and now he collapsed. What do I do?”</h3><span class="meta"><span class="tag">Emergencies</span></span></header>
+    <div class="content">
+    <p>This sounds like heatstroke, which is an emergency. Go to your vet or the nearest 24-hour veterinary clinic now.</p><p>Before you leave and on the way:</p><ul><li>Move him out of the sun into shade or an air-conditioned space.</li><li>Wet his body with cool (not ice-cold) water or wet towels, especially the belly, and use a fan or the car aircon.</li><li>Don't dunk him in a tub of cold water.</li><li>Offer small sips of water only once he is alert and starting to cool.</li></ul><p>Other heatstroke signs are hot skin, drooling, vomiting, and wobbly walking. Keep cooling him on the drive, and let the vet check him even if he seems to improve.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/what-to-do-in-a-dog-or-cat-emergency</p></div>
+    
+  <div class="review" aria-label="Review E1">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E2</span><h3>“my cat is gagging and pawing at her mouth like something is stuck, help”</h3><span class="meta"><span class="tag">Emergencies</span></span></header>
+    <div class="content">
+    <p>She may be choking, so treat this as an emergency and call or go to a vet right away.</p><ul><li>Don't reach into her mouth with your fingers. A frightened cat can bite hard.</li><li>If she can't breathe, give a few firm pats between the shoulder blades, or a few quick squeezes on both sides of the ribcage at the same time.</li><li>Even if the object comes out, still have a vet check her.</li></ul><p>On the way:</p><ul><li>Wrap her loosely in a towel and keep her calm.</li><li>Have someone else drive so you can watch her breathing.</li><li>If she stops breathing, call the clinic so they can guide you while you travel.</li></ul>
+    <p class="meta-line">Source: Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/what-to-do-in-a-dog-or-cat-emergency</p></div>
+    
+  <div class="review" aria-label="Review E2">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E3</span><h3>“My cat is breathing with her mouth open and sitting hunched up. Is that normal?”</h3><span class="meta"><span class="tag">Emergencies</span></span></header>
+    <div class="content">
+    <p>No. In cats, open-mouth breathing is a sign of serious trouble and means she may not be getting enough oxygen. Fast or hard breathing, sitting or crouching in a stiff upright position, and bluish gums are also warning signs.</p><p>This is an emergency. Go to your vet or the nearest 24-hour veterinary clinic now.</p><p>On the way:</p><ul><li>Keep her as calm and still as possible.</li><li>Put her in a carrier or box with good air holes, and cover it lightly with a cloth to help her feel safe.</li><li>Don't hold her tightly or press on her chest.</li><li>Call the clinic ahead so the team can get ready for her.</li></ul>
+    <p class="meta-line">Source: Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/evaluation-and-initial-treatment-of-dog-and-cat-emergencies; Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/what-to-do-in-a-dog-or-cat-emergency</p></div>
+    
+  <div class="review" aria-label="Review E3">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E4</span><h3>“My dog got hit by a motorcycle but he's walking and seems okay. Does he still need a vet?”</h3><span class="meta"><span class="tag">Emergencies</span></span></header>
+    <div class="content">
+    <p>Yes. Please take him to a vet now, even if he looks fine. Some injuries don't show their full effects for a day or two, and pale gums, fast breathing or weakness can be signs of shock or internal bleeding.</p><p>To get him there safely:</p><ul><li>Be careful, because a hurt dog may bite. Use a cloth muzzle only if he is breathing normally and has no chest injury.</li><li>If he can't walk well, slide him onto a firm, flat surface like a board or folded blanket, and keep his head, neck and back as still as possible.</li><li>Keep him calm and quiet, and have someone else drive.</li></ul><p>Call your vet or the nearest 24-hour clinic as you leave so they're ready for him.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/introduction-to-emergencies; Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/what-to-do-in-a-dog-or-cat-emergency; Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/evaluation-and-initial-treatment-of-dog-and-cat-emergencies</p></div>
+    
+  <div class="review" aria-label="Review E4">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E5</span><h3>“How do I safely move an injured dog or cat to the vet?”</h3><span class="meta"><span class="tag">Emergencies</span></span></header>
+    <div class="content">
+    <p>Call your vet first, then leave as soon as you can. To move your pet safely:</p><ul><li>Protect yourself. Pain can make any pet bite or scratch. Covering the head and eyes with a towel can calm them.</li><li>A cloth muzzle can help with dogs, but don't use one on flat-faced breeds or a dog with a chest injury, and never leave a muzzled dog alone.</li><li>Keep the head, neck and spine as still as possible. Use a board, thick cardboard or a folded blanket as a stretcher.</li><li>Put cats and small pets in a box or carrier with air holes.</li><li>If something is stuck in the body, don't pull it out. Keep it from moving.</li><li>Move slowly and avoid sudden jerks.</li></ul><p>On the way, have one person drive while another watches the pet.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/what-to-do-in-a-dog-or-cat-emergency; Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/introduction-to-emergencies</p></div>
+    
+  <div class="review" aria-label="Review E5">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E6</span><h3>“my dog is having a seizure right now what do i do”</h3><span class="meta"><span class="tag">Emergencies</span></span></header>
+    <div class="content">
+    <p>Stay calm and focus on keeping him safe.</p><p>While it's happening:</p><ul><li>Move furniture and hard objects away. Only move him if he's near stairs, water or another danger.</li><li>Keep your hands away from his mouth. He can't control his jaws and may bite without meaning to.</li><li>Don't try to hold him down.</li><li>Time the seizure, and take a short video for the vet if you can.</li></ul><p>Go to your vet or the nearest 24-hour clinic now if the seizure lasts more than about 3 minutes, if he has more than one in a row, or if he might have eaten something poisonous. Otherwise, call your vet soon after.</p><p>Afterward he may pace or seem confused. On the way to the vet, keep him calm, quiet and away from edges.</p>
+    <p class="meta-line">Source: Texas A&amp;M College of Veterinary Medicine, https://vetmed.tamu.edu/news/pet-talk/pet-seizure/; Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/introduction-to-emergencies</p></div>
+    
+  <div class="review" aria-label="Review E6">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E7</span><h3>“My German Shepherd ate a big meal and then ran around. Now he's restless and drooling. Can bloat wait until morning?”</h3><span class="meta"><span class="tag">Emergencies</span></span></header>
+    <div class="content">
+    <p>No. Bloat (GDV), where the stomach fills with gas and can twist, is a life-threatening emergency. Go to your vet or the nearest 24-hour veterinary clinic now. Quick treatment greatly improves the chance of survival.</p><p>Signs to watch for:</p><ul><li>Restlessness and seeming uncomfortable</li><li>Retching again and again with nothing coming up</li><li>Lots of drooling</li><li>A swollen, painful belly</li><li>Fast breathing, pale gums, weakness</li></ul><p>Large, deep-chested breeds like German Shepherds, Great Danes and Dobermans are at higher risk, especially when a big meal is followed by exercise.</p><p>On the way, keep him calm, don't give food or a lot of water, and call the clinic ahead so they can prepare.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (dog owner), https://www.merckvetmanual.com/dog-owners/digestive-disorders-of-dogs/disorders-of-the-stomach-and-intestines-in-dogs</p></div>
+    
+  <div class="review" aria-label="Review E7">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E8</span><h3>“My male cat keeps crying in the litter box and licking his private area. Can it wait until tomorrow?”</h3><span class="meta"><span class="tag">Emergencies</span></span></header>
+    <div class="content">
+    <p>Please don't wait. A male cat that strains and passes little or no urine may have a blocked urethra. This is an absolute emergency. When urine can't get out, toxins build up quickly, and a blocked cat can die in less than a day or two.</p><p>Go to your vet or the nearest 24-hour veterinary clinic now.</p><p>Other signs include blood in the urine, peeing outside the box, frequent trips to the box, and becoming more and more distressed.</p><p>On the way:</p><ul><li>Place him gently in a carrier and don't squeeze his belly.</li><li>Keep him calm and quiet.</li><li>Tell the clinic it's a male cat who can't pee, so they can be ready.</li></ul>
+    <p class="meta-line">Source: Cornell Feline Health Center, https://vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/feline-lower-urinary-tract-disease</p></div>
+    
+  <div class="review" aria-label="Review E8">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E9</span><h3>“My dog got bitten by a snake in the yard. What should I do?”</h3><span class="meta"><span class="tag">Emergencies</span></span></header>
+    <div class="content">
+    <p>Treat any snake bite as an emergency and go to your vet or the nearest 24-hour clinic now, even if the bite looks small. Some venoms, like cobra venom, cause little swelling but can affect breathing. Treatment works best when started early.</p><p>On the way:</p><ul><li>Keep your dog calm and limit his movement. Carry him if you can.</li><li>Don't cut the bite, try to suck out the venom, or tie a tourniquet.</li><li>Don't put ice, cold packs, heat or sprays on it.</li><li>Don't wait to see if signs appear.</li></ul><p>If the snake is already dead, you can bring it without damaging the head, which helps the vet identify it. Never try to catch a live snake. Call the clinic ahead so they can prepare.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/poisoning/snakebite</p></div>
+    
+  <div class="review" aria-label="Review E9">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E10</span><h3>“A bee stung my dog and his face is swelling up.”</h3><span class="meta"><span class="tag">Emergencies</span></span></header>
+    <div class="content">
+    <p>Swelling of the face, head or neck after a sting can become serious because it can block breathing. Go to your vet or the nearest 24-hour clinic now if the swelling is large or spreading, if he has any trouble breathing, or if he was stung inside the mouth or on the tongue.</p><p>While you get ready to go:</p><ul><li>If you can see the stinger, scrape it out sideways with a flat card. Don't squeeze it with tweezers.</li><li>Hold a cold pack wrapped in a cloth on the swollen spot.</li><li>On the way, watch his breathing closely.</li></ul><p>Don't give him any human allergy medicine unless your vet tells you to. Even if the swelling seems mild, call your vet for advice.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/minor-injuries-and-accidents; Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/poisoning/poisoning-from-human-over-the-counter-drugs</p></div>
+    
+  <div class="review" aria-label="Review E10">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E11</span><h3>“My cat got splashed with hot water/oil in the kitchen. How do I treat the burn?”</h3><span class="meta"><span class="tag">Emergencies</span></span></header>
+    <div class="content">
+    <p>Burns are often worse than they look, because fur hides the damage. Large or deep burns, burns on the face, and any chemical or electrical burn need a vet right away. To be safe, go to your vet or the nearest 24-hour clinic now.</p><p>Before and on the way:</p><ul><li>Gently flush the area with cool water.</li><li>Cover it loosely with a clean, non-stick dressing.</li><li>Don't put creams or home remedies on it unless the vet says so.</li><li>Wrap her in a towel and put her in a carrier to keep her calm.</li></ul><p>If a chemical caused the burn, rinse with lots of water and bring the product label to the vet.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/what-to-do-in-a-dog-or-cat-emergency; Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/poisoning/household-hazards</p></div>
+    
+  <div class="review" aria-label="Review E11">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E12</span><h3>“My Shih Tzu got into a fight and one eye looks like it's bulging out of the socket.”</h3><span class="meta"><span class="tag">Emergencies</span></span></header>
+    <div class="content">
+    <p>This is an emergency. Go to your vet or the nearest 24-hour clinic now. The longer the eye stays exposed, the more it dries out and gets damaged, which lowers the chance of saving his sight. Flat-faced breeds like Shih Tzus and Pugs are more prone to this.</p><p>On the way:</p><ul><li>Don't try to push the eye back in.</li><li>Keep it moist if you can, for example with a clean cloth dampened with saline. Ask the clinic how when you call.</li><li>Stop him from pawing or rubbing at it.</li><li>Keep him calm and still.</li></ul><p>For other eye injuries, also see a vet right away. Flush chemicals out with lots of water first, and never pull out an object stuck in the eye.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (professional), https://www.merckvetmanual.com/emergency-medicine-and-critical-care/ophthalmic-emergencies/proptosis-in-animals; Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/minor-injuries-and-accidents; Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/poisoning/household-hazards</p></div>
+    
+  <div class="review" aria-label="Review E12">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E13</span><h3>“My dog suddenly collapsed and isn't responding to me.”</h3><span class="meta"><span class="tag">Emergencies</span></span></header>
+    <div class="content">
+    <p>This needs a vet immediately. Call your vet or the nearest 24-hour clinic and leave right away.</p><p>Quick checks:</p><ul><li>Breathing: watch whether the chest rises and falls.</li><li>Heartbeat: put your hand flat on the chest to feel for it.</li></ul><p>If there's no breathing or heartbeat, ask the clinic on the phone to guide you through chest compressions. Keep going until your dog breathes on his own or the vet takes over.</p><p>On the way:</p><ul><li>Have someone else drive, especially if you're doing compressions.</li><li>Lay him on a firm, flat surface and keep his head level and neck straight.</li><li>Be careful when he wakes up, since a confused dog may bite.</li></ul>
+    <p class="meta-line">Source: Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/what-to-do-in-a-dog-or-cat-emergency; Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/evaluation-and-initial-treatment-of-dog-and-cat-emergencies</p></div>
+    
+  <div class="review" aria-label="Review E13">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E14</span><h3>“How can I tell if my pet's problem is a real emergency or can wait?”</h3><span class="meta"><span class="tag">Emergencies</span></span></header>
+    <div class="content">
+    <p>An emergency is any sudden, serious problem. If you're unsure, call your vet or the nearest 24-hour veterinary clinic now. They can tell you whether to come in.</p><p>Go immediately if your pet:</p><ul><li>Has trouble breathing, breathes with the mouth open (cats), or has blue or very pale gums</li><li>Is bleeding heavily</li><li>Collapses, is unresponsive, or has a seizure</li><li>Ate something poisonous</li><li>Was hit by a vehicle or fell, even if they seem fine</li><li>Is straining to pee with nothing coming out (especially male cats)</li><li>Has a swollen belly and keeps retching (dogs)</li><li>Suddenly acts very differently from normal</li></ul><p>Save your vet's number and the nearest 24-hour clinic in your phone today, and know the route.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/introduction-to-emergencies; Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/evaluation-and-initial-treatment-of-dog-and-cat-emergencies; Cornell Feline Health Center, https://vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/feline-lower-urinary-tract-disease; Merck Veterinary Manual (dog owner), https://www.merckvetmanual.com/dog-owners/digestive-disorders-of-dogs/disorders-of-the-stomach-and-intestines-in-dogs</p></div>
+    
+  <div class="review" aria-label="Review E14">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E15</span><h3>“What should I keep in a first aid kit for my dog and cat?”</h3><span class="meta"><span class="tag">Emergencies</span></span></header>
+    <div class="content">
+    <p>A basic kit helps in the first minutes, but it never replaces a vet. Useful items:</p><ul><li>Gauze, sterile pads, stretch bandage and adhesive tape</li><li>Small blunt-tipped scissors and tweezers</li><li>Saline solution for rinsing wounds and eyes</li><li>Cotton balls or swabs and disposable gloves</li><li>A muzzle for dogs, and a towel for wrapping or carrying</li><li>A rectal thermometer and lubricating jelly</li><li>Splint material</li><li>A small supply of your pet's regular medicines</li><li>Your vet's number, the nearest 24-hour clinic, and your pet's health records</li></ul><p>Keep it in a box with a secure lid you can grab fast, and check expiry dates every year. Ask your vet before giving any medicine, and only make your pet vomit if a vet tells you to. In an emergency, go to a vet now and use the kit on the way, not instead of going.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/first-aid-kit-for-a-pet; Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/emergencies/introduction-to-emergencies</p></div>
+    
+  <div class="review" aria-label="Review E15">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E16</span><h3>“My dog got into a plate of dark chocolate brownies. How worried should I be?”</h3><span class="meta"><span class="tag">Poisoning</span></span></header>
+    <div class="content">
+    <p>Call your vet or the nearest 24-hour clinic now and take him in. Dark chocolate, baking chocolate and cocoa powder are the most dangerous types because they contain the most theobromine, a stimulant dogs clear very slowly. Rich brownies are also fatty, which can trigger pancreatitis.</p><p>Signs can start within a few hours: vomiting, diarrhea, restlessness, panting, drinking and peeing more, a racing heart, tremors and seizures.</p><p>Before you go:</p><ul><li>Note your dog's weight, the type of chocolate and how much he ate, and bring the wrapper or recipe.</li><li>If the brownies were sugar-free, tell the vet, since xylitol is also dangerous.</li><li>Only make him vomit if a vet tells you to.</li><li>Don't wait for signs to appear.</li></ul><p>On the way, keep him calm and watch for shaking.</p>
+    <p class="meta-line">Source: FDA CVM, https://www.fda.gov/animal-veterinary/animal-health-literacy/leave-chocolate-out-rovers-celebrations; ASPCA Animal Poison Control, https://www.aspca.org/pet-care/animal-poison-control/people-foods-avoid-feeding-your-pets; Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/poisoning/food-hazards</p></div>
+    
+  <div class="review" aria-label="Review E16">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E17</span><h3>“My dog chewed up a whole pack of sugar-free gum.”</h3><span class="meta"><span class="tag">Poisoning</span></span></header>
+    <div class="content">
+    <p>Take him to your vet or the nearest 24-hour clinic now, even if he looks fine. Many sugar-free gums contain xylitol (also called birch sugar), which can make a dog's blood sugar crash within 10 to 60 minutes. It can also harm the liver a day or two later, so he may need to stay for monitoring.</p><p>Watch for vomiting, weakness, wobbling, collapse and seizures.</p><p>Before you go:</p><ul><li>Bring the pack so the vet can check the ingredients.</li><li>Only make him vomit if a vet tells you to.</li></ul><p>On the way, keep him close, watch for weakness or shaking, and call the clinic ahead.</p><p>Xylitol is also in some peanut butters, toothpastes, mouthwashes and vitamins, so check labels and use only pet toothpaste.</p>
+    <p class="meta-line">Source: FDA, https://www.fda.gov/consumers/consumer-updates/paws-xylitol-its-dangerous-dogs; Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/poisoning/food-hazards; ASPCA Animal Poison Control, https://www.aspca.org/pet-care/animal-poison-control/people-foods-avoid-feeding-your-pets</p></div>
+    
+  <div class="review" aria-label="Review E17">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E18</span><h3>“My dog ate a few slices of raisin bread but he seems totally fine.”</h3><span class="meta"><span class="tag">Poisoning</span></span></header>
+    <div class="content">
+    <p>Please don't wait for signs. Raisins and grapes can cause kidney failure in dogs, so treat any amount seriously. Call your vet or the nearest 24-hour clinic now and take him in.</p><p>Vomiting or diarrhea often starts within 6 to 12 hours. Later signs include low energy, not eating, belly pain, weakness and drinking a lot. Kidney failure can develop within 1 to 3 days, and it is often fatal.</p><p>Before you go:</p><ul><li>Bring the bread or packaging so the vet can estimate how many raisins he ate.</li><li>Only make him vomit if a vet tells you to.</li></ul><p>On the way, keep him calm and note any vomiting or diarrhea to tell the vet.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/poisoning/food-hazards; ASPCA Animal Poison Control, https://www.aspca.org/pet-care/animal-poison-control/people-foods-avoid-feeding-your-pets</p></div>
+    
+  <div class="review" aria-label="Review E18">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E19</span><h3>“My cat ate some leftover adobo cooked with lots of garlic and onion. Is that bad?”</h3><span class="meta"><span class="tag">Poisoning</span></span></header>
+    <div class="content">
+    <p>It can be. Onions, garlic and chives can upset the stomach and damage red blood cells, which can lead to anemia. Cats are more sensitive to them than dogs, so dishes cooked with them are risky for cats.</p><p>Call your vet or the nearest 24-hour clinic now and take her in, especially if she ate a fair amount or you're not sure how much.</p><p>Watch for vomiting, drooling, low energy, weakness and pale gums.</p><p>Before you go:</p><ul><li>Tell the vet what dish it was and roughly how much she ate.</li><li>Only make her vomit if a vet tells you to.</li></ul><p>On the way, keep her calm in her carrier. Avoid sharing seasoned human food with pets.</p>
+    <p class="meta-line">Source: ASPCA Animal Poison Control, https://www.aspca.org/pet-care/animal-poison-control/people-foods-avoid-feeding-your-pets; FDA CVM, https://www.fda.gov/animal-veterinary/animal-health-literacy/potentially-dangerous-items-your-pet</p></div>
+    
+  <div class="review" aria-label="Review E19">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E20</span><h3>“Lily pollen got on my cat's fur and she drank water from the flower vase. Is she in danger?”</h3><span class="meta"><span class="tag">Poisoning</span></span></header>
+    <div class="content">
+    <p>Yes, treat this as an emergency. For cats, every part of true lilies and daylilies is poisonous, including the pollen and the vase water. Even a small amount licked off the fur can cause deadly kidney failure. Go to your vet or the nearest 24-hour clinic now.</p><p>Early treatment makes a big difference. Waiting 18 hours or more often leads to kidney damage that can't be reversed.</p><p>Before you go:</p><ul><li>Wipe the pollen off her fur with a damp cloth so she can't lick more.</li><li>Bring the flower or a photo so the vet can identify it.</li><li>Only make her vomit if a vet tells you to.</li></ul><p>She may look fine at first. Early signs include drooling, vomiting, low energy and not eating. Keep lilies out of homes with cats.</p>
+    <p class="meta-line">Source: FDA CVM, https://www.fda.gov/animal-veterinary/animal-health-literacy/lovely-lilies-and-curious-cats-dangerous-combination; Cornell Feline Health Center, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/poisons</p></div>
+    
+  <div class="review" aria-label="Review E20">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E21</span><h3>“My cat swallowed one of my paracetamol (Biogesic) tablets that fell on the floor.”</h3><span class="meta"><span class="tag">Poisoning</span></span></header>
+    <div class="content">
+    <p>This is an emergency. Paracetamol (acetaminophen) can kill cats, and cats are far more sensitive to it than dogs. Go to your vet or the nearest 24-hour clinic now. Don't wait for signs.</p><p>Signs can start within a few hours:</p><ul><li>Brown or muddy-coloured gums</li><li>Fast or deep breathing, weakness</li><li>Swelling of the face or paws</li><li>Vomiting, or yellow eyes and gums</li></ul><p>Before you go:</p><ul><li>Bring the medicine pack and note when it happened and how many tablets may be missing.</li><li>Only make her vomit if a vet tells you to, and don't give milk, food or any other medicine.</li></ul><p>On the way, keep her calm in a carrier with good airflow. Keep all medicines where pets can't reach them.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/poisoning/poisoning-from-human-over-the-counter-drugs; FDA CVM, https://www.fda.gov/animal-veterinary/animal-health-literacy/potentially-dangerous-items-your-pet; Cornell Feline Health Center, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/poisons</p></div>
+    
+  <div class="review" aria-label="Review E21">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E22</span><h3>“My dog ate rat poison from under the sink but he's acting normal.”</h3><span class="meta"><span class="tag">Poisoning</span></span></header>
+    <div class="content">
+    <p>Go to your vet or the nearest 24-hour clinic now, even though he seems fine. Many rat poisons stop the blood from clotting, and bleeding may not show right away. Early treatment gives the best chance of recovery.</p><p>Signs to watch for: low energy, not eating, weakness, pale gums, fast breathing, nosebleeds, and blood in the urine, stool or eyes.</p><p>Before you go:</p><ul><li>Bring the package or a photo of the label. Rat poisons work in different ways and need different treatment.</li><li>Only make him vomit if a vet tells you to.</li><li>Check whether other pets could have eaten some.</li></ul><p>On the way, handle him gently and keep him calm. Dogs and cats can also be poisoned by eating a poisoned rat, so tell the vet if that's possible.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/poisoning/rodenticide-poisoning; Cornell Feline Health Center, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/poisons</p></div>
+    
+  <div class="review" aria-label="Review E22">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E23</span><h3>“I accidentally put my dog's flea spot-on on my cat.”</h3><span class="meta"><span class="tag">Poisoning</span></span></header>
+    <div class="content">
+    <p>This can be life-threatening, so treat it as an emergency. Many dog flea and tick products contain permethrin, which cats can't break down well. Call your vet or the nearest 24-hour clinic now and take her in, even if she seems fine.</p><p>Signs include drooling, restlessness, twitching or trembling, wobbliness, vomiting and seizures.</p><p>Before you go:</p><ul><li>Bring the product box.</li><li>Ask the vet on the phone whether to wash the spot first. They may tell you to use mild dish soap and plenty of water, then dry her well.</li><li>Stop her from licking the area.</li></ul><p>On the way, keep her calm in her carrier. Only use flea products labelled for cats, and keep cats away from newly treated dogs until the product dries.</p>
+    <p class="meta-line">Source: AAFP (Feline Veterinary Medical Association), https://catvets.com/resource/permethrin-poisoning-and-cats-endorsement/; FDA, https://www.fda.gov/forconsumers/consumerupdates/ucm169831.htm; Cornell Feline Health Center, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/poisons</p></div>
+    
+  <div class="review" aria-label="Review E23">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E24</span><h3>“My dog walked through insecticide our neighbor sprayed and now he's drooling and shaking.”</h3><span class="meta"><span class="tag">Poisoning</span></span></header>
+    <div class="content">
+    <p>This could be insecticide poisoning, which can get serious fast. Go to your vet or the nearest 24-hour clinic now.</p><p>Signs from many bug sprays, such as organophosphates and carbamates, include heavy drooling, tiny pupils, vomiting, diarrhea, peeing a lot, trembling, weakness, trouble breathing and seizures.</p><p>Before and on the way:</p><ul><li>If he's breathing well and it won't delay you, wear gloves and gently wash his paws and coat with mild dish soap and lots of water. Don't scrub with a brush.</li><li>If he's struggling to breathe, skip the bath and go straight away.</li><li>Bring the product label, or ask the neighbor what was used.</li><li>Only make him vomit if a vet tells you to, and don't rub oil on him.</li></ul><p>Keep pets off sprayed areas until they are dry.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/poisoning/insecticide-poisoning; FDA CVM, https://www.fda.gov/animal-veterinary/animal-health-literacy/potentially-dangerous-items-your-pet</p></div>
+    
+  <div class="review" aria-label="Review E24">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E25</span><h3>“My dog bit a big palaka (toad) in the yard and now he's foaming at the mouth.”</h3><span class="meta"><span class="tag">Poisoning</span></span></header>
+    <div class="content">
+    <p>Act fast. The big cane toad, now found on most Philippine islands, makes a venom that can affect the heart and nerves. Rinse his mouth, then go to your vet or the nearest 24-hour clinic now.</p><p>Right away, if he is awake and alert:</p><ul><li>Rinse his mouth with running water for 5 to 10 minutes. Aim the water from the back of the mouth toward the front, with his head tilted down so it runs out. Don't let him swallow it.</li><li>Only make him vomit if a vet tells you to.</li></ul><p>Serious signs can appear within 30 minutes to a few hours: vomiting, trembling, an irregular heartbeat, trouble breathing, bluish gums and seizures.</p><p>On the way, keep him calm, and take a photo of the toad if you can. Don't leave pet food or water outside, since it attracts toads.</p>
+    <p class="meta-line">Source: ASPCA, https://www.aspca.org/node/62251; Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/poisoning/toad-poisoning; Dela Cruz &amp; Abuid, SEAVR 2019, https://www.ecologyasia.com/pdf/2019/seavr2019-002(p007-008).pdf</p></div>
+    
+  <div class="review" aria-label="Review E25">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E26</span><h3>“My dog drank some beer someone left on the table during our party.”</h3><span class="meta"><span class="tag">Poisoning</span></span></header>
+    <div class="content">
+    <p>Alcohol is absorbed quickly and can be dangerous for pets. Call your vet or the nearest 24-hour clinic now and take him in.</p><p>Signs include vomiting, diarrhea, wobbling, sleepiness, trouble breathing and tremors, and in severe cases coma or death.</p><p>Before you go:</p><ul><li>Tell the vet what drink it was and roughly how much he had.</li><li>Only make him vomit if a vet tells you to.</li><li>Don't give coffee or anything else to &quot;sober him up&quot;. Caffeine is also toxic to pets.</li></ul><p>On the way, keep him calm and watch his breathing.</p><p>Raw bread dough with yeast can also make alcohol inside the stomach, so keep both drinks and dough out of reach.</p>
+    <p class="meta-line">Source: ASPCA Animal Poison Control, https://www.aspca.org/pet-care/animal-poison-control/people-foods-avoid-feeding-your-pets; FDA CVM, https://www.fda.gov/animal-veterinary/animal-health-literacy/potentially-dangerous-items-your-pet</p></div>
+    
+  <div class="review" aria-label="Review E26">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E27</span><h3>“My dog ate a handful of macadamia nuts from a cookie tin.”</h3><span class="meta"><span class="tag">Poisoning</span></span></header>
+    <div class="content">
+    <p>Macadamia nuts can make dogs sick, usually within 12 hours. Signs include weakness, vomiting, wobbling, tremors, fever and low energy. Most dogs get better within 1 to 3 days, but call your vet or the nearest 24-hour clinic now and take him in.</p><p>Cookies and nut mixes can also contain chocolate or raisins, which are more dangerous, so tell the vet everything that was in the tin.</p><p>Before you go:</p><ul><li>Bring the packaging and estimate how much he ate.</li><li>Only make him vomit if a vet tells you to.</li></ul><p>On the way, keep him calm and comfortable, and note any vomiting or shaking.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/poisoning/food-hazards; ASPCA Animal Poison Control, https://www.aspca.org/pet-care/animal-poison-control/people-foods-avoid-feeding-your-pets</p></div>
+    
+  <div class="review" aria-label="Review E27">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E28</span><h3>“My dog got into the trash and ate mouldy food. Now he's trembling.”</h3><span class="meta"><span class="tag">Poisoning</span></span></header>
+    <div class="content">
+    <p>Mouldy food, garbage and compost can contain mould toxins that cause tremors and seizures. Go to your vet or the nearest 24-hour clinic now.</p><p>Signs often start within 1 to 2 hours but can take several hours. They include vomiting, shaking, wobbliness, a fast heartbeat, overreacting to touch or noise, and seizures.</p><p>Before and on the way:</p><ul><li>Don't make him vomit, especially now that he's trembling, because he could inhale it or have a seizure.</li><li>Keep him in a quiet, safe spot away from stairs and edges.</li><li>Tell the vet what he got into, such as old bread, dairy or compost.</li></ul><p>With hospital care, tremors usually settle in 1 to 3 days. Use bins with secure lids and keep compost fenced off.</p>
+    <p class="meta-line">Source: ASPCA Pro, https://www.aspcapro.org/resource/moldy-food-dangers-pets</p></div>
+    
+  <div class="review" aria-label="Review E28">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E29</span><h3>“My dog licked toilet bowl cleaner and my cat stepped in spilled bleach. What do I do?”</h3><span class="meta"><span class="tag">Poisoning</span></span></header>
+    <div class="content">
+    <p>Strong cleaners can burn the mouth, throat, skin and eyes. Burns from drain cleaners may not hurt at first and can show up hours later. Cats often lick chemicals off their paws. Call your vet or the nearest 24-hour clinic now and go in.</p><p>Before and on the way:</p><ul><li>Don't make your pet vomit. It can cause more burns.</li><li>Ask the vet before giving anything to drink. They may tell you to offer water or milk.</li><li>Rinse skin and paws with lots of water, then wash with mild shampoo.</li><li>If it got in the eyes, flush with water or saline for a long time, ideally while someone else drives.</li><li>Move your pet to fresh air if there are fumes.</li><li>Bring the bottle.</li></ul><p>Never mix bleach with ammonia cleaners, as this makes a toxic gas.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/poisoning/household-hazards; Cornell Feline Health Center, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/poisons</p></div>
+    
+  <div class="review" aria-label="Review E29">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E30</span><h3>“My pet ate something poisonous. Should I make him throw up at home?”</h3><span class="meta"><span class="tag">Poisoning</span></span></header>
+    <div class="content">
+    <p>Only if a vet tells you to. Making a pet vomit can do more harm than good. It's dangerous with burning chemicals like drain cleaner or bleach, with batteries, if your pet is drowsy, trembling or having seizures, or if a few hours have passed. Home remedies like salt water can also poison pets.</p><p>Instead:</p><ul><li>Move your pet away from the poison.</li><li>Call your vet or the nearest 24-hour veterinary clinic now and go in.</li><li>Bring the package, label or a photo, and note what was eaten, how much and when.</li><li>If it's on the skin or fur, wash with mild soap and water.</li></ul><p>On the way, keep your pet calm and watch the breathing. Some poisons cause delayed signs, so go even if your pet seems fine.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/poisoning/general-treatment-of-poisoning; Merck Veterinary Manual (pet owner), https://www.merckvetmanual.com/special-pet-topics/poisoning/household-hazards; Cornell Feline Health Center, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/poisons; FDA CVM, https://www.fda.gov/animal-veterinary/animal-health-literacy/potentially-dangerous-items-your-pet</p></div>
+    
+  <div class="review" aria-label="Review E30">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E31</span><h3>“Which vaccines are core for dogs?”</h3><span class="meta"><span class="tag">Vaccines</span></span></header>
+    <div class="content">
+    <p>Core vaccines are the ones every dog should get, wherever it lives. For dogs these protect against:</p><ul><li>Distemper</li><li>Parvovirus</li><li>Adenovirus (infectious hepatitis)</li></ul><p>Rabies vaccine is also core anywhere the disease is present or the law requires it.</p><p>Global guidelines now say leptospirosis vaccine should be given to all dogs in places where the disease occurs, so in those areas it is treated as core too.</p><p>Other vaccines, like kennel cough (Bordetella and parainfluenza), are &quot;non-core&quot;. Your vet suggests them based on your dog's lifestyle, such as boarding or contact with many dogs. Ask your vet which vaccines suit your dog.</p>
+    <p class="meta-line">Source: WSAVA 2024 Guidelines for the Vaccination of Dogs and Cats, https://wsava.org/wp-content/uploads/2024/04/WSAVA-Vaccination-guidelines-2024.pdf; Merck Veterinary Manual (Dog Owners), Routine Health Care of Dogs, https://www.merckvetmanual.com/dog-owners/routine-care-of-dogs/routine-health-care-of-dogs</p></div>
+    
+  <div class="review" aria-label="Review E31">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E32</span><h3>“Does my dog really need the lepto vaccine?”</h3><span class="meta"><span class="tag">Vaccines</span></span></header>
+    <div class="content">
+    <p>Leptospirosis is a serious bacterial disease that can also infect people. Dogs and rats can carry it and pass it out in their urine. The germs can survive for weeks to months in water and soil, and the risk goes up after floods and heavy rain.</p><p>The 2024 WSAVA guidelines say all dogs should be vaccinated where leptospirosis occurs and suitable vaccines are available.</p><p>In general:</p><ul><li>The first course is two doses given 2 to 4 weeks apart</li><li>After that, a booster is usually needed every year</li></ul><p>Keep your dog out of floodwater and puddles when you can. Your vet will tell you if lepto vaccine is right for your dog and when to give it.</p>
+    <p class="meta-line">Source: WSAVA 2024 Guidelines for the Vaccination of Dogs and Cats, https://wsava.org/wp-content/uploads/2024/04/WSAVA-Vaccination-guidelines-2024.pdf; CDC, About Leptospirosis, https://www.cdc.gov/leptospirosis/about/index.html</p></div>
+    
+  <div class="review" aria-label="Review E32">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E33</span><h3>“When does my puppy start his shots, and why so many?”</h3><span class="meta"><span class="tag">Vaccines</span></span></header>
+    <div class="content">
+    <p>Puppies usually get their first core vaccine at 6 to 8 weeks old. Shots are then repeated every 2 to 4 weeks until the puppy is at least 16 weeks old.</p><p>Why a series? Antibodies from the mother's milk protect a young puppy, but they also block vaccines from working. These antibodies fade at a different age in each puppy, so repeat shots make sure one of them &quot;takes&quot;. The dose given at 16 weeks or later is the most important.</p><p>Global guidelines also advise another core dose at around 6 months old instead of waiting until 1 year, to catch puppies that did not respond earlier.</p><p>Your vet will set the exact schedule for your puppy.</p>
+    <p class="meta-line">Source: WSAVA 2024 Guidelines for the Vaccination of Dogs and Cats, https://wsava.org/wp-content/uploads/2024/04/WSAVA-Vaccination-guidelines-2024.pdf; Merck Veterinary Manual (Dog Owners), Disorders of the Stomach and Intestines in Dogs - canine parvovirus, https://www.merckvetmanual.com/dog-owners/digestive-disorders-of-dogs/disorders-of-the-stomach-and-intestines-in-dogs</p></div>
+    
+  <div class="review" aria-label="Review E33">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E34</span><h3>“What does 5-in-1 or 6-in-1 vaccine mean?”</h3><span class="meta"><span class="tag">Vaccines</span></span></header>
+    <div class="content">
+    <p>The number tells you how many diseases one shot protects against. Combining them means fewer injections.</p><p>Labels often use letters, for example:</p><ul><li>D = distemper</li><li>A2 = adenovirus type 2 (protects against hepatitis)</li><li>P = parvovirus</li><li>P = parainfluenza</li><li>L = leptospirosis</li></ul><p>So &quot;DA2PP&quot; covers four diseases, and adding L gives &quot;DA2LPP&quot;. Products differ in what they add, such as extra lepto strains or other germs, so the number alone doesn't tell you the exact mix.</p><p>For cats, the common combo is FVRCP: feline viral rhinotracheitis (herpesvirus), calicivirus and panleukopenia.</p><p>Ask your vet which diseases your pet's vaccine card covers.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual, Vaccine Abbreviations table, https://www.merckvetmanual.com/multimedia/table/vaccine-abbreviations-full-names-and-notes; WSAVA 2024 Guidelines for the Vaccination of Dogs and Cats, https://wsava.org/wp-content/uploads/2024/04/WSAVA-Vaccination-guidelines-2024.pdf</p></div>
+    
+  <div class="review" aria-label="Review E34">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E35</span><h3>“How often does my adult dog need booster shots?”</h3><span class="meta"><span class="tag">Vaccines</span></span></header>
+    <div class="content">
+    <p>It depends on the vaccine:</p><ul><li>Distemper, parvovirus and adenovirus: after the puppy series and an early booster (at about 6 months or 1 year old), modern vaccines protect for years. Global guidelines advise boosting no more often than every 3 years.</li><li>Leptospirosis: protection is shorter, so it is usually given every year.</li><li>Rabies: some vaccines last 1 year and some 3 years, but in the Philippines the rules of the Anti-Rabies Act (RA 9482) require a yearly anti-rabies shot.</li></ul><p>Your vet will make a booster plan based on your dog's age, health, lifestyle and the products used.</p>
+    <p class="meta-line">Source: WSAVA 2024 Guidelines for the Vaccination of Dogs and Cats, https://wsava.org/wp-content/uploads/2024/04/WSAVA-Vaccination-guidelines-2024.pdf; Merck Veterinary Manual (Dog Owners), Routine Health Care of Dogs, https://www.merckvetmanual.com/dog-owners/routine-care-of-dogs/routine-health-care-of-dogs; IRR of RA 9482 (AO No. 01 s. 2008), https://dev.lawyerly.ph/laws/56761</p></div>
+    
+  <div class="review" aria-label="Review E35">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E36</span><h3>“My pet seems sleepy after her shots. Normal or not?”</h3><span class="meta"><span class="tag">Vaccines</span></span></header>
+    <div class="content">
+    <p>Mild reactions are common and should be short-lived:</p><ul><li>Soreness or a small swelling where the shot was given</li><li>Tiredness or less appetite</li><li>Mild fever</li><li>Vomiting once</li></ul><p>Allergic reactions are less common but can be serious. Severe ones usually start within minutes to an hour, but other reactions can appear hours later. Go to a vet now if you see:</p><ul><li>Swelling of the face, lips or eyes</li><li>Hives (raised bumps on the skin)</li><li>Repeated vomiting or diarrhea</li><li>Trouble breathing</li><li>Weakness or collapse</li></ul><p>Call your vet if mild signs do not improve or you are unsure. Always tell your vet about any past reaction before the next vaccine.</p>
+    <p class="meta-line">Source: WSAVA 2024 Guidelines for the Vaccination of Dogs and Cats, https://wsava.org/wp-content/uploads/2024/04/WSAVA-Vaccination-guidelines-2024.pdf</p></div>
+    
+  <div class="review" aria-label="Review E36">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E37</span><h3>“Does my indoor cat need vaccines?”</h3><span class="meta"><span class="tag">Vaccines</span></span></header>
+    <div class="content">
+    <p>Yes. The American Association of Feline Practitioners recommends core vaccines even for cats that never go outside. Core vaccines for cats cover:<br>- Panleukopenia (feline distemper)<br>- Herpesvirus<br>- Calicivirus<br>(these three come together as FVRCP)<br>- Rabies, where the disease is present or the law requires it</p><p>Feline leukemia (FeLV) vaccine is advised for kittens under 1 year. For adults it depends on risk, such as going outdoors or living with cats that do.</p><p>Good news for indoor cats: global guidelines say low-risk indoor adults usually need core boosters only every 3 years or longer.</p><p>Your vet will choose the vaccines and timing that fit your cat.</p>
+    <p class="meta-line">Source: Cornell Feline Health Center, Feline Vaccines: Benefits and Risks, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/feline-vaccines-benefits-and-risks; WSAVA 2024 Guidelines for the Vaccination of Dogs and Cats, https://wsava.org/wp-content/uploads/2024/04/WSAVA-Vaccination-guidelines-2024.pdf</p></div>
+    
+  <div class="review" aria-label="Review E37">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E38</span><h3>“I adopted an adult cat with no vaccine records. What should I do?”</h3><span class="meta"><span class="tag">Vaccines</span></span></header>
+    <div class="content">
+    <p>If you don't know a cat's vaccine history, vets treat the cat as unvaccinated. That usually means starting a fresh set of core vaccines, much like a kitten's first series.</p><p>For kittens, the series begins at 6 to 8 weeks and is repeated every 2 to 4 weeks until about 16 weeks. Your vet will decide how many doses your adult cat needs.</p><p>When you visit, ask about:</p><ul><li>Core vaccines (FVRCP and rabies)</li><li>Testing for feline leukemia (FeLV) and FIV, especially if the cat lived outdoors</li><li>Deworming and flea control</li></ul><p>Book a vet visit within the first week after adoption.</p>
+    <p class="meta-line">Source: Cornell Feline Health Center, Feline Vaccines: Benefits and Risks, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/feline-vaccines-benefits-and-risks; WSAVA 2024 Guidelines for the Vaccination of Dogs and Cats, https://wsava.org/wp-content/uploads/2024/04/WSAVA-Vaccination-guidelines-2024.pdf; CDC Healthy Pets, Cats, https://www.cdc.gov/healthy-pets/about/cats.html</p></div>
+    
+  <div class="review" aria-label="Review E38">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E39</span><h3>“What is parvo and why is it an emergency?”</h3><span class="meta"><span class="tag">Vaccines</span></span></header>
+    <div class="content">
+    <p>Parvovirus is a very contagious virus that attacks a dog's gut. Puppies and unvaccinated dogs are most at risk. It spreads through infected poop and anything it touches, and it can survive in the environment for months or longer.</p><p>Signs usually start 5 to 7 days after exposure:</p><ul><li>Dullness, fever and not eating</li><li>Then vomiting and diarrhea, often bloody</li></ul><p>Dogs lose fluids fast and can go into shock. Some die within hours, but most dogs that get hospital care survive. See a vet now if your puppy has vomiting or bloody diarrhea. Call ahead so the clinic can protect other patients.</p><p>Keep sick dogs away from others. Ask your vet how to disinfect your home, because many cleaners don't kill parvo.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (Dog Owners), Disorders of the Stomach and Intestines in Dogs - canine parvovirus, https://www.merckvetmanual.com/dog-owners/digestive-disorders-of-dogs/disorders-of-the-stomach-and-intestines-in-dogs</p></div>
+    
+  <div class="review" aria-label="Review E39">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E40</span><h3>“A stray dog bit my dog. Should I worry about rabies?”</h3><span class="meta"><span class="tag">Vaccines</span></span></header>
+    <div class="content">
+    <p>Rabies spreads mainly through bites and scratches. Once signs appear, it is almost always fatal, so act quickly.</p><p>For your dog:</p><ul><li>Wear gloves and wash the wound with soap and water</li><li>Call your vet today, even if your dog is vaccinated. Your vet will check the wound and advise what to do next</li></ul><p>For people: if you or a family member is bitten or scratched, wash the wound right away with soap and water and see a doctor urgently. Treatment after exposure works very well when started early.</p><p>Worldwide, dogs cause most human rabies deaths. Keeping your pets' rabies vaccines up to date protects them and your family.</p>
+    <p class="meta-line">Source: CDC, About Rabies, https://www.cdc.gov/rabies/about/index.html; WSAVA 2024 Guidelines for the Vaccination of Dogs and Cats, https://wsava.org/wp-content/uploads/2024/04/WSAVA-Vaccination-guidelines-2024.pdf</p></div>
+    
+  <div class="review" aria-label="Review E40">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E41</span><h3>“How often should I deworm my kitten?”</h3><span class="meta"><span class="tag">Parasites</span></span></header>
+    <div class="content">
+    <p>Kittens often get roundworms from their mother's milk, so deworming starts early.</p><p>Parasite experts (CAPC) advise:</p><ul><li>Start at 2 weeks old</li><li>Repeat every 2 weeks until your kitten starts a monthly year-round parasite preventive</li><li>If a monthly preventive isn't used: every 2 weeks until 2 months old, then monthly until 6 months, then every 3 months</li><li>Have the kitten's poop checked by the vet several times in the first year</li></ul><p>Ask your vet for a product that suits your kitten's weight and age, and use only products made for cats.</p>
+    <p class="meta-line">Source: Companion Animal Parasite Council, General Guidelines, https://capcvet.org/guidelines/general-guidelines/; Cornell Feline Health Center, Gastrointestinal Parasites of Cats, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/gastrointestinal-parasites-cats</p></div>
+    
+  <div class="review" aria-label="Review E41">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E42</span><h3>“How often should adult dogs and cats be dewormed?”</h3><span class="meta"><span class="tag">Parasites</span></span></header>
+    <div class="content">
+    <p>Parasite experts (CAPC) recommend year-round protection for adult pets. Many monthly preventives cover worms together with heartworm, fleas or ticks.</p><p>If your pet isn't on a year-round preventive:</p><ul><li>Deworm about four times a year</li><li>Have a stool (fecal) test 2 to 4 times a year</li></ul><p>Even on prevention, healthy adults should have their poop checked at least twice a year. Pets that hunt, roam, travel or mix with many animals may need it more often.</p><p>Ask your vet for a product that suits your pet's weight and age, and which worms are common where you live.</p>
+    <p class="meta-line">Source: Companion Animal Parasite Council, General Guidelines, https://capcvet.org/guidelines/general-guidelines/; Merck Veterinary Manual (Dog Owners), Routine Health Care of Dogs, https://www.merckvetmanual.com/dog-owners/routine-care-of-dogs/routine-health-care-of-dogs</p></div>
+    
+  <div class="review" aria-label="Review E42">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E43</span><h3>“I saw little white things like rice in my cat's poop. What is it?”</h3><span class="meta"><span class="tag">Parasites</span></span></header>
+    <div class="content">
+    <p>Those are most likely tapeworm segments. They look like grains of rice or sesame seeds and may be stuck to the fur near the tail or in the poop. Cats usually get tapeworms by swallowing fleas while grooming or by eating mice or rats.</p><p>Other worm signs include:</p><ul><li>Vomiting or diarrhea</li><li>A dull coat or potbelly, mostly in kittens</li><li>Weight loss</li></ul><p>See a vet today if you notice black, tarry poop, pale gums or weakness. Heavy hookworm or roundworm loads can cause serious blood loss, especially in kittens.</p><p>Bring a fresh stool sample to your vet. Treat for fleas too, or the tapeworms will come back.</p>
+    <p class="meta-line">Source: Cornell Feline Health Center, Gastrointestinal Parasites of Cats, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/gastrointestinal-parasites-cats</p></div>
+    
+  <div class="review" aria-label="Review E43">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E44</span><h3>“How do I get rid of fleas in my house?”</h3><span class="meta"><span class="tag">Parasites</span></span></header>
+    <div class="content">
+    <p>Most of the flea problem lives in your home, not on your pet. Eggs fall off into carpets, bedding and corners, and flea cocoons can wait there for months.</p><p>What helps:</p><ul><li>Treat every dog and cat in the home, not just the itchy one, using products your vet recommends</li><li>Vacuum often</li><li>Wash pet bedding and blankets regularly</li><li>If you use a home spray, keep pets out of the room and follow the label</li><li>Never put a house or yard product directly on a pet</li></ul><p>Fleas can live indoors all year, so experts advise year-round flea prevention. It can take weeks to months of steady treatment to fully clear an infestation.</p>
+    <p class="meta-line">Source: Cornell Riney Canine Health Center, Fleas, https://www.vet.cornell.edu/departments-centers-and-institutes/riney-canine-health-center/canine-health-topics/fleas; FDA, Safe Use of Flea and Tick Products in Pets, https://www.fda.gov/consumers/consumer-updates/safe-use-flea-and-tick-products-pets; Companion Animal Parasite Council, General Guidelines, https://capcvet.org/guidelines/general-guidelines/</p></div>
+    
+  <div class="review" aria-label="Review E44">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E45</span><h3>“Can I use my dog's flea medicine on my cat?”</h3><span class="meta"><span class="tag">Parasites</span></span></header>
+    <div class="content">
+    <p>No. Some flea and tick products that are safe for dogs are toxic to cats.</p><p>Stay safe:</p><ul><li>Only use a product labeled for cats, and check that it fits your cat's age and weight</li><li>After treating your dog, keep your cat away from him until the product is dry</li><li>Read the label every time</li><li>Ask your vet before using any product on a kitten, a sick, old, pregnant or nursing pet</li></ul><p>Go to a vet right away if your pet shows drooling, shaking or trembling, wobbly walking, seizures, vomiting or unusual tiredness after a flea product. Remove a flea collar at once if it causes a reaction. Bring the package with you.</p>
+    <p class="meta-line">Source: FDA, Safe Use of Flea and Tick Products in Pets, https://www.fda.gov/consumers/consumer-updates/safe-use-flea-and-tick-products-pets; Cornell Riney Canine Health Center, Flea and Tick Prevention, https://www.vet.cornell.edu/departments-centers-and-institutes/riney-canine-health-center/canine-health-topics/flea-and-tick-prevention; CDC, Preventing Ticks on Pets, https://www.cdc.gov/ticks/prevention/preventing-ticks-on-pets.html</p></div>
+    
+  <div class="review" aria-label="Review E45">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E46</span><h3>“What are the signs of tick fever in dogs?”</h3><span class="meta"><span class="tag">Parasites</span></span></header>
+    <div class="content">
+    <p>&quot;Tick fever&quot; usually means germs like Ehrlichia, Anaplasma or Babesia spread by ticks. In the Philippines, the warm climate suits the brown dog tick, which can live in homes and kennels. Ehrlichia canis was the most common tick-borne germ found in a study of dogs in Metro Manila and Laguna.</p><p>Signs may show 1 to 3 weeks after a bite:</p><ul><li>Fever, low energy, poor appetite</li><li>Swollen glands, stiffness or limping</li><li>Nosebleeds, bruises on the skin or gums, or blood in urine or poop</li></ul><p>See a vet today if you notice bleeding, bruising, pale gums or weakness. A blood test is needed to confirm it.</p><p>Prevent it with year-round tick control your vet recommends and daily tick checks.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (Dog Owners), Ehrlichiosis and Related Infections in Dogs, https://www.merckvetmanual.com/dog-owners/disorders-affecting-multiple-body-systems-of-dogs/ehrlichiosis-and-related-infections-in-dogs; Galay et al. 2018, Parasites &amp; Vectors 11:643, tick-borne pathogens in dogs in Metro Manila and Laguna, Philippines, https://parasitesandvectors.biomedcentral.com/track/pdf/10.1186/s13071-018-3192-y; CDC, Preventing Ticks on Pets, https://www.cdc.gov/ticks/prevention/preventing-ticks-on-pets.html</p></div>
+    
+  <div class="review" aria-label="Review E46">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E47</span><h3>“What is heartworm and how does my dog get it?”</h3><span class="meta"><span class="tag">Parasites</span></span></header>
+    <div class="content">
+    <p>Heartworms are long worms that live in the heart and lung blood vessels. Dogs get them from mosquito bites, which pass on tiny larvae that grow into adult worms over about 6 months. Indoor pets are at risk too, because mosquitoes come inside.</p><p>Many dogs show no signs at first. Later signs include:</p><ul><li>A mild cough that won't go away</li><li>Tiring easily or not wanting to exercise</li><li>Weight loss and poor appetite</li><li>A swollen belly</li></ul><p>Sudden trouble breathing, collapse or dark brown urine is an emergency. See a vet now.</p><p>Experts advise prevention every month of the year and a heartworm test every year. Ask your vet for a preventive that suits your dog's weight and age.</p>
+    <p class="meta-line">Source: American Heartworm Society, Heartworm Basics, https://www.heartwormsociety.org/pet-owner-resources/heartworm-basics; Companion Animal Parasite Council, General Guidelines, https://capcvet.org/guidelines/general-guidelines/</p></div>
+    
+  <div class="review" aria-label="Review E47">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E48</span><h3>“Can cats get heartworm?”</h3><span class="meta"><span class="tag">Parasites</span></span></header>
+    <div class="content">
+    <p>Yes. Cats get heartworm the same way dogs do, from mosquito bites, and indoor cats can be bitten too.</p><p>Signs can be mild or sudden:</p><ul><li>Coughing or asthma-like breathing attacks</li><li>Vomiting, poor appetite, weight loss</li><li>Trouble walking, fainting or seizures</li></ul><p>Sometimes the first sign is sudden collapse. See a vet now if your cat has trouble breathing or collapses.</p><p>There is no approved medicine to cure heartworm in cats, and the dog treatment is not safe for them. That makes prevention the only real protection. Ask your vet for a heartworm preventive made for cats that suits your cat's weight and age.</p>
+    <p class="meta-line">Source: American Heartworm Society, Heartworm Basics, https://www.heartwormsociety.org/pet-owner-resources/heartworm-basics; Companion Animal Parasite Council, General Guidelines, https://capcvet.org/guidelines/general-guidelines/</p></div>
+    
+  <div class="review" aria-label="Review E48">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E49</span><h3>“My dog is losing hair and very itchy. Is it mange?”</h3><span class="meta"><span class="tag">Parasites</span></span></header>
+    <div class="content">
+    <p>Mange is caused by tiny mites. Dogs get two main types:</p><p>Sarcoptic mange (scabies):</p><ul><li>Sudden, intense itching</li><li>Bumps and crusts, often on the belly, chest, ears, elbows and legs</li><li>Very contagious to other dogs, and can cause itchy skin in people</li></ul><p>Demodectic mange (demodex):</p><ul><li>Bald, red, scaly patches, often with little itching</li><li>Common in young dogs; mild cases may clear on their own</li><li>The widespread form needs vet treatment</li></ul><p>Your vet will usually do a skin scraping to check. Treat all pets that have contact with each other at the same time, and clean bedding and grooming tools. Follow your vet's treatment plan, which can take a while.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (Dog Owners), Mite Infestation (Mange) in Dogs, https://www.merckvetmanual.com/dog-owners/skin-disorders-of-dogs/mite-infestation-mange-acariasis-scabies-in-dogs; CDC Healthy Pets, Dogs, https://www.cdc.gov/healthy-pets/about/dogs.html</p></div>
+    
+  <div class="review" aria-label="Review E49">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E50</span><h3>“My cat keeps shaking her head and scratching her ears. Ear mites?”</h3><span class="meta"><span class="tag">Parasites</span></span></header>
+    <div class="content">
+    <p>It could be. Ear mites are tiny parasites that live in the ear canal and are especially common in cats. Signs include:</p><ul><li>Head shaking</li><li>Scratching at the ears</li><li>Itching that can be mild or severe</li><li>A drooping ear</li></ul><p>Ear mites spread easily between pets, so every animal that has contact with your cat should be treated at the same time.</p><p>Other ear problems look similar, so let your vet confirm the cause and show you how to clean the ears. See a vet soon if the ear is swollen, has pus, or your cat seems to be in pain. Ask your vet for a product that suits your cat's weight and age.</p>
+    <p class="meta-line">Source: Merck Veterinary Manual (Cat Owners), Mite Infestation (Mange) of Cats, https://www.merckvetmanual.com/cat-owners/skin-disorders-of-cats/mite-infestation-mange-acariasis-scabies-of-cats; Merck Veterinary Manual (Dog Owners), Mite Infestation (Mange) in Dogs, https://www.merckvetmanual.com/dog-owners/skin-disorders-of-dogs/mite-infestation-mange-acariasis-scabies-in-dogs</p></div>
+    
+  <div class="review" aria-label="Review E50">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E51</span><h3>“My cat has round bald patches. Is it ringworm?”</h3><span class="meta"><span class="tag">Parasites</span></span></header>
+    <div class="content">
+    <p>It might be. Despite its name, ringworm is not a worm. It is a fungal skin infection. Signs include:</p><ul><li>Round patches of hair loss</li><li>Broken or stubbly hair</li><li>Scaly, crusty or red skin</li><li>Dandruff or extra grooming</li></ul><p>Ringworm spreads to people and other pets, and children are at higher risk. Its spores can stay in a home for many months.</p><p>What to do:</p><ul><li>See your vet, since flea allergy and other problems can look similar</li><li>Keep the cat in one easy-to-clean room during treatment</li><li>Wash hands after handling her</li><li>Clean and disinfect the home well</li></ul><p>Treatment often takes six weeks or more.</p>
+    <p class="meta-line">Source: Cornell Feline Health Center, Ringworm, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/ringworm-serious-readily-treatable-affliction; Cornell Feline Health Center, Zoonotic Disease: What Can I Catch from My Cat?, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/zoonotic-disease-what-can-i-catch-my-cat; CDC Healthy Pets, Cats, https://www.cdc.gov/healthy-pets/about/cats.html</p></div>
+    
+  <div class="review" aria-label="Review E51">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E52</span><h3>“At what age is my dog considered a senior?”</h3><span class="meta"><span class="tag">Senior pets</span></span></header>
+    <div class="content">
+    <p>There's no single age, because dogs age at different rates depending on breed and size. Vets often call a dog senior when it is in the last quarter of its expected lifespan. As a rough guide, many dogs reach this stage at around 7 to 8 years.</p><p>From that age:</p><ul><li>See the vet at least twice a year</li><li>Ask about blood and urine tests every 6 to 12 months to catch problems early</li><li>Have blood pressure and thyroid checked yearly</li></ul><p>Watch for changes at home, like slowing down, drinking more, weight change or confusion, and tell your vet. Old age is not a disease. Many changes can be treated.</p>
+    <p class="meta-line">Source: 2023 AAHA Senior Care Guidelines, Defining the Senior Patient, https://www.aaha.org/resources/2023-aaha-senior-care-guidelines-for-dogs-and-cats/defining-the-senior-patient/; Merck Veterinary Manual (Dog Owners), Routine Health Care of Dogs, https://www.merckvetmanual.com/dog-owners/routine-care-of-dogs/routine-health-care-of-dogs; 2023 AAHA Senior Care Guidelines, Table 1 Diagnostic Tests and Recommended Frequencies, https://www.aaha.org/globalassets/02-guidelines/2023-aaha-senior-care-guidelines-for-dogs-and-cats/resources/table-1-diagnostic-tests-and-recommended-frequencies-for-senior-dogs-and-cats.pdf</p></div>
+    
+  <div class="review" aria-label="Review E52">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E53</span><h3>“My cat is 11. Is she a senior, and how often should she see the vet?”</h3><span class="meta"><span class="tag">Senior pets</span></span></header>
+    <div class="content">
+    <p>Yes. Feline guidelines call cats seniors once they are over 10 years old.</p><p>Older cats are good at hiding illness, so regular checks matter. Many vets suggest a visit every 6 months, with blood tests, a urine test and a blood pressure check at least once a year. Cats with health problems may need visits more often.</p><p>Common problems in older cats include kidney disease, an overactive thyroid, high blood pressure, diabetes, arthritis and dental disease.</p><p>Tell your vet if you notice weight loss, drinking or peeing more, changes in eating, litter box accidents, hiding, or crying at night.</p>
+    <p class="meta-line">Source: 2023 AAHA Senior Care Guidelines, Defining the Senior Patient, https://www.aaha.org/resources/2023-aaha-senior-care-guidelines-for-dogs-and-cats/defining-the-senior-patient/; Cornell Feline Health Center, The Special Needs of the Senior Cat, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/special-needs-senior-cat; 2023 AAHA Senior Care Guidelines, Table 1 Diagnostic Tests and Recommended Frequencies, https://www.aaha.org/globalassets/02-guidelines/2023-aaha-senior-care-guidelines-for-dogs-and-cats/resources/table-1-diagnostic-tests-and-recommended-frequencies-for-senior-dogs-and-cats.pdf</p></div>
+    
+  <div class="review" aria-label="Review E53">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E54</span><h3>“How do I know if my old dog has arthritis?”</h3><span class="meta"><span class="tag">Senior pets</span></span></header>
+    <div class="content">
+    <p>Arthritis (joint wear and pain) is common in older dogs. Look for:</p><ul><li>Stiffness, especially after resting</li><li>Limping or a changed way of walking</li><li>Trouble with stairs, jumping into the car or onto the sofa, or getting up</li><li>Less interest in walks or play</li><li>Thinner leg muscles</li><li>Grumpiness or snapping when touched</li></ul><p>What helps:</p><ul><li>Keep your dog at a healthy weight</li><li>Gentle, regular exercise like leash walks</li><li>Non-slip rugs and ramps at home</li></ul><p>See your vet for a proper diagnosis and pain plan. Don't give any pain medicine, including human medicine, without your vet's advice.</p>
+    <p class="meta-line">Source: Cornell Riney Canine Health Center, Osteoarthritis, https://www.vet.cornell.edu/departments-centers-and-institutes/riney-canine-health-center/canine-health-information/osteoarthritis; 2023 AAHA Senior Care Guidelines, Pain Management, https://www.aaha.org/resources/2023-aaha-senior-care-guidelines-for-dogs-and-cats/pain-management/</p></div>
+    
+  <div class="review" aria-label="Review E54">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E55</span><h3>“How can I tell if my cat has arthritis?”</h3><span class="meta"><span class="tag">Senior pets</span></span></header>
+    <div class="content">
+    <p>Cats hide pain well, but arthritis is very common in older cats. Studies show more than 60% have it in at least one joint. Signs are often subtle:</p><ul><li>Not jumping up as high, or hesitating before jumping</li><li>Avoiding stairs</li><li>Trouble getting in and out of the litter box, or going outside it</li><li>Grooming less, so the coat looks messy</li><li>Sleeping more and being less active</li></ul><p>Ways to help at home:</p><ul><li>Use a litter box with a low side</li><li>Add steps or ramps to favorite spots</li><li>Keep her at a healthy weight</li></ul><p>Ask your vet for a check. Never give your cat human pain medicine unless your vet says so.</p>
+    <p class="meta-line">Source: Cornell Feline Health Center, Is Your Cat Slowing Down?, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/your-cat-slowing-down; 2023 AAHA Senior Care Guidelines, Evaluating the Healthy Senior Pet, https://www.aaha.org/resources/2023-aaha-senior-care-guidelines-for-dogs-and-cats/evaluating-the-healthy-senior-pet/; 2023 AAHA Senior Care Guidelines, Pain Management, https://www.aaha.org/resources/2023-aaha-senior-care-guidelines-for-dogs-and-cats/pain-management/; Cornell Feline Health Center, The Special Needs of the Senior Cat, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/special-needs-senior-cat</p></div>
+    
+  <div class="review" aria-label="Review E55">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E56</span><h3>“My old cat drinks a lot of water and pees a lot. Why?”</h3><span class="meta"><span class="tag">Senior pets</span></span></header>
+    <div class="content">
+    <p>Drinking and peeing more is a common early sign of kidney disease in older cats. Kidney disease affects up to 40% of cats over 10 and about 80% of cats over 15.</p><p>Other signs can follow:</p><ul><li>Weight loss</li><li>Poor appetite</li><li>Low energy and a messy coat</li></ul><p>The same signs can also come from diabetes or an overactive thyroid, so blood and urine tests are needed to find the cause.</p><p>Book a vet visit soon, and don't limit her water. Go to a vet today if she stops eating, vomits repeatedly or seems very weak. Catching kidney disease early, often with a special diet, can help your cat feel better for longer.</p>
+    <p class="meta-line">Source: Cornell Feline Health Center, Chronic Kidney Disease, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/chronic-kidney-disease; Cornell Feline Health Center, The Special Needs of the Senior Cat, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/special-needs-senior-cat</p></div>
+    
+  <div class="review" aria-label="Review E56">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E57</span><h3>“My senior dog seems confused and paces at night. What's wrong?”</h3><span class="meta"><span class="tag">Senior pets</span></span></header>
+    <div class="content">
+    <p>This can be a sign of cognitive dysfunction, a condition like dementia in people. It affects about 14 to 22% of dogs over 8 years old. Signs include:</p><ul><li>Getting lost or stuck in corners at home</li><li>Sleeping more in the day and restless at night</li><li>Less interest in family members</li><li>Toilet accidents in the house</li><li>Pacing, anxiety or barking for no clear reason</li></ul><p>Cats can get it too, and often meow more.</p><p>Pain, vision loss and other illnesses can cause similar changes, so see your vet for a full check. Treatment works best when started early. Gentle exercise, new toys and simple games can help keep your pet's mind active.</p>
+    <p class="meta-line">Source: 2023 AAHA Senior Care Guidelines, Managing Cognitive Dysfunction, https://www.aaha.org/resources/2023-aaha-senior-care-guidelines-for-dogs-and-cats/managing-cognitive-dysfunction-and-behavioral-anxiety/</p></div>
+    
+  <div class="review" aria-label="Review E57">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E58</span><h3>“My old pet has really bad breath. Is that dental disease?”</h3><span class="meta"><span class="tag">Senior pets</span></span></header>
+    <div class="content">
+    <p>Often, yes. Gum disease is very common in older pets, especially small dogs. Signs include:</p><ul><li>Bad breath that doesn't go away</li><li>Red or swollen gums</li><li>Trouble picking up, chewing or swallowing food</li></ul><p>Bad breath can also point to other illness. A sweet smell may mean diabetes, and a urine-like smell may mean kidney disease.</p><p>See your vet for a mouth check. Proper cleaning below the gumline needs anesthesia. Vets check older pets carefully first, and treating mouth pain often makes them much happier.</p><p>At home, brush your pet's teeth with pet toothpaste, never human toothpaste. See a vet soon if your pet stops eating or has a lump in the mouth.</p>
+    <p class="meta-line">Source: 2023 AAHA Senior Care Guidelines, Dentistry, https://www.aaha.org/resources/2023-aaha-senior-care-guidelines-for-dogs-and-cats/dentistry/; Cornell Feline Health Center, Bad Breath: Sign of Illness?, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/bad-breath-sign-illness; Merck Veterinary Manual (Dog Owners), Routine Health Care of Dogs, https://www.merckvetmanual.com/dog-owners/routine-care-of-dogs/routine-health-care-of-dogs</p></div>
+    
+  <div class="review" aria-label="Review E58">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E59</span><h3>“Should I change my senior pet's food?”</h3><span class="meta"><span class="tag">Senior pets</span></span></header>
+    <div class="content">
+    <p>Maybe. Older dogs and cats have different needs:</p><p>Senior dogs:</p><ul><li>Usually need fewer calories, and gain weight easily</li><li>May benefit from more fiber and good-quality protein to protect muscle</li></ul><p>Senior cats:</p><ul><li>Often digest food less well, and may lose weight and muscle</li><li>May need tasty, easy-to-digest, higher-protein food in smaller, more frequent meals</li></ul><p>For both, aim for a healthy body shape, not too thin and not too heavy. Extra weight strains joints, while weight loss can be a sign of illness such as kidney disease.</p><p>Change foods slowly over several days. Ask your vet to check your pet's weight and muscle and suggest a diet that suits its health.</p>
+    <p class="meta-line">Source: 2023 AAHA Senior Care Guidelines, Nutrition, https://www.aaha.org/resources/2023-aaha-senior-care-guidelines-for-dogs-and-cats/nutrition/; Cornell Feline Health Center, The Special Needs of the Senior Cat, https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/special-needs-senior-cat</p></div>
+    
+  <div class="review" aria-label="Review E59">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E60</span><h3>“How much exercise does my old dog need?”</h3><span class="meta"><span class="tag">Senior pets</span></span></header>
+    <div class="content">
+    <p>Older dogs still need daily activity to keep their muscles, joints, weight and mind healthy. The type matters more than the amount:</p><ul><li>Choose gentle, low-impact exercise like shorter, more frequent leash walks or swimming</li><li>Avoid lots of hard jumping and rough play</li><li>Add brain games, new toys and simple training to keep the mind sharp</li></ul><p>Make home easier:</p><ul><li>Non-slip rugs or yoga mats on smooth floors</li><li>Ramps for the bed, sofa or car</li><li>Block stairs or pools if eyesight or hearing is poor</li></ul><p>If your dog limps, stops often or is stiff after walks, he may be in pain. Ask your vet for a check and an exercise plan.</p>
+    <p class="meta-line">Source: Cornell Riney Canine Health Center, Osteoarthritis, https://www.vet.cornell.edu/departments-centers-and-institutes/riney-canine-health-center/canine-health-information/osteoarthritis; 2023 AAHA Senior Care Guidelines, Pain Management, https://www.aaha.org/resources/2023-aaha-senior-care-guidelines-for-dogs-and-cats/pain-management/; 2023 AAHA Senior Care Guidelines, Managing Cognitive Dysfunction, https://www.aaha.org/resources/2023-aaha-senior-care-guidelines-for-dogs-and-cats/managing-cognitive-dysfunction-and-behavioral-anxiety/</p></div>
+    
+  <div class="review" aria-label="Review E60">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E61</span><h3>“do i need to register my dog?”</h3><span class="meta"><span class="tag">Philippine rules</span></span></header>
+    <div class="content">
+    <p>Yes. Under Section 5 of RA 9482 (Anti-Rabies Act of 2007), dog owners must submit their dogs for registration with the local government unit (LGU).</p><p>The implementing rules (Joint Administrative Order No. 1, s. 2008) say registration must be renewed every year. The LGU gives each registered and vaccinated dog a dog tag (Section 7).</p><p>Ask your city or municipal veterinary office or barangay where and when they register dogs. Spayed or neutered dogs get a discounted registration fee under Section 10.</p>
+    <p class="meta-line">Source: Republic Act No. 9482, Sections 5, 7 and 10, https://lawphil.net/statutes/repacts/ra2007/ra_9482_2007.html; IRR of RA 9482 (Joint DA-DOH-DepEd-DILG AO No. 01 s. 2008), Rule 5(b), https://dev.lawyerly.ph/laws/56761</p></div>
+    
+  <div class="review" aria-label="Review E61">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E62</span><h3>“What are my legal responsibilities as a dog owner in the Philippines?”</h3><span class="meta"><span class="tag">Philippine rules</span></span></header>
+    <div class="content">
+    <p>Section 5 of RA 9482 lists the duties of pet owners:</p><ul><li>Have your dog vaccinated against rabies regularly and keep a registration card with its vaccination records</li><li>Register your dog with the LGU</li><li>Don't let your dog roam public places without a leash</li><li>Give your dog proper grooming, food and shelter</li><li>Report any bite within 24 hours and have the dog observed by a vet</li><li>Help the bite victim right away and pay for their medical costs</li></ul><p>Breaking these rules can lead to fines under Section 11.</p>
+    <p class="meta-line">Source: Republic Act No. 9482, Sections 5 and 11, https://lawphil.net/statutes/repacts/ra2007/ra_9482_2007.html</p></div>
+    
+  <div class="review" aria-label="Review E62">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E63</span><h3>“How often does my dog need the anti-rabies shot by law?”</h3><span class="meta"><span class="tag">Philippine rules</span></span></header>
+    <div class="content">
+    <p>Every year. Section 5 of RA 9482 says owners must have their dogs &quot;regularly&quot; vaccinated against rabies. The implementing rules make it clearer: a properly immunized dog is one vaccinated yearly, and LGUs register and vaccinate dogs annually.</p><p>The shot must be given by a licensed veterinarian, or by a trained vaccinator under a vet's direct supervision during government mass vaccination drives.</p><p>Keep the record of each shot on your dog's vaccination or registration card.</p>
+    <p class="meta-line">Source: Republic Act No. 9482, Sections 3 and 5, https://lawphil.net/statutes/repacts/ra2007/ra_9482_2007.html; IRR of RA 9482 (AO No. 01 s. 2008), Rules 3.2(s), 4.2.1 and 7(1).1, https://dev.lawyerly.ph/laws/56761</p></div>
+    
+  <div class="review" aria-label="Review E63">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E64</span><h3>“pwede ba i-walk ang aso ko without a leash?”</h3><span class="meta"><span class="tag">Philippine rules</span></span></header>
+    <div class="content">
+    <p>Not in public. Section 5 of RA 9482 says owners must keep their dogs under control and not let them roam public places without a leash. LGUs must also make sure dogs are leashed or kept inside the owner's property (Section 7).</p><p>The implementing rules add:</p><ul><li>The leash should be no longer than 1.5 meters</li><li>The dog tag should be on the collar or harness</li><li>Aggressive dogs should wear a muzzle in public</li></ul><p>The law sets a fine of P500 per incident for not leashing a dog outside the house (Section 11). These amounts are as written in the 2007 law. Your city or municipality may have its own ordinance, so check with your city or municipal veterinary office.</p>
+    <p class="meta-line">Source: Republic Act No. 9482, Sections 5, 7 and 11, https://lawphil.net/statutes/repacts/ra2007/ra_9482_2007.html; IRR of RA 9482 (AO No. 01 s. 2008), Rule 5(c), https://dev.lawyerly.ph/laws/56761</p></div>
+    
+  <div class="review" aria-label="Review E64">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E65</span><h3>“How much is the fine if my dog is not registered or vaccinated?”</h3><span class="meta"><span class="tag">Philippine rules</span></span></header>
+    <div class="content">
+    <p>Section 11 of RA 9482 sets these fines for pet owners:</p><ul><li>Not registering or not vaccinating your dog: P2,000</li><li>Not leashing your dog outside the house: P500 per incident</li><li>Claiming your dog from the pound: P500 to P1,000</li><li>Refusing to have a biting dog observed: P10,000</li><li>Refusing observation and not paying the bite victim's medical costs: P25,000</li></ul><p>An owner who refuses to have the dog vaccinated must also pay for the vaccination of the dog and of anyone it bites. The LGU collects most of these fines.</p><p>These amounts are as written in the 2007 law. Your city or municipality may have its own ordinance, so check with your city or municipal veterinary office.</p>
+    <p class="meta-line">Source: Republic Act No. 9482, Sections 7(12) and 11, https://lawphil.net/statutes/repacts/ra2007/ra_9482_2007.html</p></div>
+    
+  <div class="review" aria-label="Review E65">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E66</span><h3>“My dog was bitten by a stray that might have rabies. What happens now?”</h3><span class="meta"><span class="tag">Rabies</span></span></header>
+    <div class="content">
+    <p>Take your dog to a vet right away and tell them about the bite. The implementing rules of RA 9482 say:</p><ul><li>A previously vaccinated dog that can be identified should be revaccinated immediately and confined for at least 90 days</li><li>A dog bitten by a suspected rabid or unknown animal should be confined under a vet's supervision for 6 months</li><li>An unvaccinated dog bitten by a confirmed rabid animal must be put to sleep right away</li></ul><p>Wear gloves if you need to handle wounds, and avoid contact with your dog's saliva. Your city or municipal veterinary office can guide you.</p>
+    <p class="meta-line">Source: IRR of RA 9482 (AO No. 01 s. 2008), Rule 5(e), https://dev.lawyerly.ph/laws/56761</p></div>
+    
+  <div class="review" aria-label="Review E66">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E67</span><h3>“Is there free anti-rabies vaccine for dogs from the government?”</h3><span class="meta"><span class="tag">Philippine rules</span></span></header>
+    <div class="content">
+    <p>Often, yes. Section 6 of RA 9482 tells the Department of Agriculture to lead free anti-rabies vaccination of dogs, with priority for high-risk, low-income areas. LGUs must fund vaccines and run registration and vaccination (Section 7).</p><p>Executive Order No. 84 (1999) also calls for mass dog vaccination with free vaccines every March, Rabies Awareness Month.</p><p>Schedules differ by place, so watch for announcements from your barangay or ask your city or municipal veterinary office about the next free vaccination drive.</p>
+    <p class="meta-line">Source: Republic Act No. 9482, Sections 6 and 7, https://lawphil.net/statutes/repacts/ra2007/ra_9482_2007.html; Executive Order No. 84 (1999), Section 1, https://lawphil.net/executive/execord/eo1999/eo_84_1999.html; DOH Ilocos CHD, https://ro1.doh.gov.ph/doh-ilocos-pushes-for-community-action-to-stop-the-spread-of-rabies-in-pangasinan/</p></div>
+    
+  <div class="review" aria-label="Review E67">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E68</span><h3>“Do I need to keep my dog's vaccination card?”</h3><span class="meta"><span class="tag">Philippine rules</span></span></header>
+    <div class="content">
+    <p>Yes. Section 5 of RA 9482 requires owners to keep a registration card that records all of their dog's vaccinations. The implementing rules say the card should show the registration number, the dog's description, and vaccination details.</p><p>Keep it safe because you may need it:</p><ul><li>To show your dog is registered and vaccinated if asked by the LGU</li><li>To get a BAI shipping permit when travelling with your pet</li><li>If your dog bites someone and its rabies status is checked</li></ul><p>Taking a photo of the card is a handy backup.</p>
+    <p class="meta-line">Source: Republic Act No. 9482, Section 5, https://lawphil.net/statutes/repacts/ra2007/ra_9482_2007.html; IRR of RA 9482 (AO No. 01 s. 2008), Rule 5(a), https://dev.lawyerly.ph/laws/56761; BAI NVQSD Citizen's Charter, https://www.bai.gov.ph/cc/citizens%20charter%20(nvqsd).pdf</p></div>
+    
+  <div class="review" aria-label="Review E68">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E69</span><h3>“Is it legal to sell or eat dog meat in the Philippines?”</h3><span class="meta"><span class="tag">Philippine rules</span></span></header>
+    <div class="content">
+    <p>No. RA 9482 bans the trade of dog meat. LGUs must enforce this ban (Section 7).</p><p>Under Section 11, anyone caught trading dog meat faces a fine of at least P5,000 per dog and 1 to 4 years in prison. The same penalty applies to using electrocution to put dogs to sleep. Foreigners who break these rules are deported after serving their sentence.</p><p>Killing dogs for food is also not among the allowed reasons for killing animals under the Animal Welfare Act (RA 8485, Section 6).</p>
+    <p class="meta-line">Source: Republic Act No. 9482, Sections 7 and 11, https://lawphil.net/statutes/repacts/ra2007/ra_9482_2007.html; Republic Act No. 8485, Section 6, https://lawphil.net/statutes/repacts/ra1998/ra_8485_1998.html</p></div>
+    
+  <div class="review" aria-label="Review E69">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E70</span><h3>“nakagat ako ng aso, what do i do?”</h3><span class="meta"><span class="tag">Rabies</span></span></header>
+    <div class="content">
+    <p>Act right away, even if the dog looks healthy.</p><ul><li>Wash the wound with soap and running water for about 15 minutes</li><li>Don't put garlic or other home remedies on it, and don't rely on &quot;tandok&quot; or &quot;tambal&quot; healers</li><li>Go to the nearest Animal Bite Treatment Center (ABTC) or Animal Bite Center promptly for post-exposure prophylaxis (PEP)</li><li>Finish the full vaccine schedule the health workers give you</li></ul><p>Don't wait for symptoms. Once rabies symptoms appear, it is almost always fatal. If the dog has an owner, they should report the bite and have the dog observed for 14 days.</p>
+    <p class="meta-line">Source: DOH Bicol CHD, https://bicol.doh.gov.ph/news-releases/doh-bicol-chd-urges-immediate-treatment-after-animal-bites-scratches-responsible-pet-ownership-key-to-rabies-prevention/; WHO Rabies fact sheet, https://www.who.int/news-room/fact-sheets/detail/rabies; IRR of RA 9482 (AO No. 01 s. 2008), Rule 5(e), https://dev.lawyerly.ph/laws/56761</p></div>
+    
+  <div class="review" aria-label="Review E70">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E71</span><h3>“My cat scratched me. Do I need to go to the animal bite center?”</h3><span class="meta"><span class="tag">Rabies</span></span></header>
+    <div class="content">
+    <p>Yes, it's safest to get checked. Rabies can spread through scratches as well as bites, and cats can carry rabies.</p><ul><li>Wash the scratch with soap and running water for about 15 minutes</li><li>Go to the nearest Animal Bite Treatment Center (ABTC) promptly so a health worker can decide if you need post-exposure prophylaxis</li></ul><p>The WHO counts even minor scratches without bleeding as an exposure that may need vaccination. Don't wait to see if the cat gets sick first.</p>
+    <p class="meta-line">Source: DOH Bicol CHD, https://bicol.doh.gov.ph/news-releases/doh-bicol-chd-urges-immediate-treatment-after-animal-bites-scratches-responsible-pet-ownership-key-to-rabies-prevention/; WHO Rabies fact sheet, https://www.who.int/news-room/fact-sheets/detail/rabies</p></div>
+    
+  <div class="review" aria-label="Review E71">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E72</span><h3>“Do I still need anti-rabies shots if the dog that bit me is vaccinated?”</h3><span class="meta"><span class="tag">Rabies</span></span></header>
+    <div class="content">
+    <p>Still go to an Animal Bite Treatment Center (ABTC) promptly after washing the wound. The health workers there will look at the bite and the dog's vaccination record and decide what treatment you need.</p><p>Don't skip the visit or wait for the dog to finish its 14-day observation first. DOH offices urge immediate consultation after any bite or scratch, because rabies is almost always fatal once symptoms appear.</p><p>Bring the dog's vaccination card or a photo of it if you can.</p>
+    <p class="meta-line">Source: DOH Bicol CHD, https://bicol.doh.gov.ph/news-releases/doh-bicol-chd-urges-immediate-treatment-after-animal-bites-scratches-responsible-pet-ownership-key-to-rabies-prevention/; WHO Rabies fact sheet, https://www.who.int/news-room/fact-sheets/detail/rabies; IRR of RA 9482 (AO No. 01 s. 2008), Rule 5(e), https://dev.lawyerly.ph/laws/56761</p></div>
+    
+  <div class="review" aria-label="Review E72">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E73</span><h3>“How is rabies spread?”</h3><span class="meta"><span class="tag">Rabies</span></span></header>
+    <div class="content">
+    <p>Rabies spreads through the saliva of an infected animal, mostly through:</p><ul><li>Bites</li><li>Scratches</li><li>Saliva getting into open wounds, eyes, nose or mouth</li></ul><p>Dogs cause up to 99% of human rabies cases worldwide, according to the WHO. In the Philippines, the DOH said 45% of rabies cases in 2024 came from the saliva of household pets.</p><p>Touching or feeding an animal, or a lick on unbroken skin, is not considered an exposure. Still, wash the area with soap and water.</p>
+    <p class="meta-line">Source: WHO Rabies fact sheet, https://www.who.int/news-room/fact-sheets/detail/rabies; DOH data reported by Inquirer (15 March 2025), https://newsinfo.inquirer.net/2044154/rabies-cases-in-ph-almost-doubled-between-2020-and-2024</p></div>
+    
+  <div class="review" aria-label="Review E73">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E74</span><h3>“Can rabies be cured?”</h3><span class="meta"><span class="tag">Rabies</span></span></header>
+    <div class="content">
+    <p>Once symptoms show, rabies is almost always fatal, in both people and animals. That's why acting before symptoms appear is so important.</p><p>Rabies is fully preventable:</p><ul><li>After a bite or scratch, wash the wound well and get post-exposure prophylaxis at an Animal Bite Treatment Center right away</li><li>Vaccinate your dogs and cats every year</li></ul><p>In people, symptoms can appear about one week to one year after exposure, usually after 2 to 3 months. So don't wait to see if you feel sick.</p>
+    <p class="meta-line">Source: WHO Rabies fact sheet, https://www.who.int/news-room/fact-sheets/detail/rabies; DOH Bicol CHD, https://bicol.doh.gov.ph/news-releases/doh-bicol-chd-urges-immediate-treatment-after-animal-bites-scratches-responsible-pet-ownership-key-to-rabies-prevention/; DOH data reported by Inquirer (15 March 2025), https://newsinfo.inquirer.net/2044154/rabies-cases-in-ph-almost-doubled-between-2020-and-2024</p></div>
+    
+  <div class="review" aria-label="Review E74">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E75</span><h3>“What are the signs of rabies in a dog or cat?”</h3><span class="meta"><span class="tag">Rabies</span></span></header>
+    <div class="content">
+    <p>The DOH lists these signs of rabies in animals:</p><ul><li>Change in behavior</li><li>Aggressive behavior</li><li>Excessive drooling</li><li>Paralysis</li><li>Fear of water</li></ul><p>You can't confirm rabies just by looking at an animal; only a lab test can. If your pet shows these signs, keep away from its saliva, keep it confined, and call your vet or city or municipal veterinary office right away. If it bit or scratched anyone, they should go to an Animal Bite Treatment Center.</p>
+    <p class="meta-line">Source: DOH data reported by Inquirer (15 March 2025), https://newsinfo.inquirer.net/2044154/rabies-cases-in-ph-almost-doubled-between-2020-and-2024; IRR of RA 9482 (AO No. 01 s. 2008), Rule 9(2), https://dev.lawyerly.ph/laws/56761</p></div>
+    
+  <div class="review" aria-label="Review E75">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E76</span><h3>“Can cats get rabies too, or only dogs?”</h3><span class="meta"><span class="tag">Rabies</span></span></header>
+    <div class="content">
+    <p>Cats can get rabies and pass it to people through bites and scratches. Rabies can infect all mammals.</p><p>The Anti-Rabies Act (RA 9482) mainly talks about dogs, but DOH offices urge owners to vaccinate both dogs and cats against rabies regularly and not let them roam freely. The national campaign theme is &quot;Rabies-free na pusa't aso, kaligtasan ng pamilyang Pilipino.&quot;</p><p>Ask your vet about your cat's yearly anti-rabies shot, and treat any cat bite or scratch seriously.</p>
+    <p class="meta-line">Source: WHO Rabies fact sheet, https://www.who.int/news-room/fact-sheets/detail/rabies; DOH Bicol CHD, https://bicol.doh.gov.ph/news-releases/doh-bicol-chd-urges-immediate-treatment-after-animal-bites-scratches-responsible-pet-ownership-key-to-rabies-prevention/; DOH Ilocos CHD, https://ro1.doh.gov.ph/doh-ilocos-pushes-for-community-action-to-stop-the-spread-of-rabies-in-pangasinan/</p></div>
+    
+  <div class="review" aria-label="Review E76">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E77</span><h3>“Is anti-rabies treatment for people free?”</h3><span class="meta"><span class="tag">Rabies</span></span></header>
+    <div class="content">
+    <p>Under Section 6 of RA 9482, the DOH must provide post-exposure treatment for bite victims at minimum cost, and free pre-exposure shots for high-risk workers. Free routine shots are also given to schoolchildren aged 5 to 14 in high-risk areas (Section 4).</p><p>Costs can still differ between government and private Animal Bite Treatment Centers, so ask your local health center or ABTC. Never skip treatment because of cost. And if a dog bit you, its owner is required by law to pay your medical expenses (Section 5).</p>
+    <p class="meta-line">Source: Republic Act No. 9482, Sections 4, 5 and 6, https://lawphil.net/statutes/repacts/ra2007/ra_9482_2007.html</p></div>
+    
+  <div class="review" aria-label="Review E77">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E78</span><h3>“Is it illegal to abandon my pet?”</h3><span class="meta"><span class="tag">Philippine rules</span></span></header>
+    <div class="content">
+    <p>Yes. RA 10631, which amended the Animal Welfare Act, added a rule against abandoning animals.</p><ul><li>Leaving your pet, for good or even for a while, without a good reason and without arranging for its care counts as maltreatment</li><li>If abandonment leads to the animal suffering or dying, the owner faces the maximum penalty</li></ul><p>If you can no longer care for your pet, look for a new home or ask a rescue group or shelter for help instead of leaving it on the street.</p>
+    <p class="meta-line">Source: Republic Act No. 10631, Section 7 (new Section 7 of RA 8485), https://lawphil.net/statutes/repacts/ra2013/ra_10631_2013.html</p></div>
+    
+  <div class="review" aria-label="Review E78">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E79</span><h3>“What's the penalty for animal cruelty in the Philippines?”</h3><span class="meta"><span class="tag">Philippine rules</span></span></header>
+    <div class="content">
+    <p>Section 9 of the Animal Welfare Act, as amended by RA 10631, sets penalties after conviction:</p><ul><li>Animal dies: 1 year, 6 months and 1 day to 2 years in prison, and/or a fine up to P100,000</li><li>Animal survives but is severely injured and can't survive without human help: 1 year and 1 day to 1 year and 6 months, and/or up to P50,000</li><li>Other cruelty or neglect: 6 months to 1 year, and/or up to P30,000</li></ul><p>Penalties go up to 2 years and 1 day to 3 years and/or up to P250,000 if the offense involves a syndicate, a business, a public officer, or 3 or more animals.</p>
+    <p class="meta-line">Source: Republic Act No. 10631, Section 9 (formerly Section 8 of RA 8485), https://lawphil.net/statutes/repacts/ra2013/ra_10631_2013.html</p></div>
+    
+  <div class="review" aria-label="Review E79">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E80</span><h3>“Where can I report animal abuse or neglect?”</h3><span class="meta"><span class="tag">Philippine rules</span></span></header>
+    <div class="content">
+    <p>Under the Animal Welfare Act as amended by RA 10631 (Section 10):</p><ul><li>The Philippine National Police (PNP), the NBI and other law enforcement agencies have animal welfare enforcement officers</li><li>The Secretary of Agriculture can deputize trained volunteers and members of NGOs and community groups as enforcement officers</li><li>These officers can rescue maltreated animals and arrest violators</li></ul><p>LGUs are also required to enforce the anti-cruelty rules of RA 8485 (RA 9482, Section 7). You can report to the police, your LGU, or an animal welfare group. Take photos or videos and note the date and place to help your report.</p>
+    <p class="meta-line">Source: Republic Act No. 10631, Section 10, https://lawphil.net/statutes/repacts/ra2013/ra_10631_2013.html; Republic Act No. 9482, Section 7, https://lawphil.net/statutes/repacts/ra2007/ra_9482_2007.html</p></div>
+    
+  <div class="review" aria-label="Review E80">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E81</span><h3>“Can a pet legally be put to sleep in the Philippines?”</h3><span class="meta"><span class="tag">Philippine rules</span></span></header>
+    <div class="content">
+    <p>Only for reasons the Animal Welfare Act allows. Section 6 of RA 8485 permits killing a pet when, for example:</p><ul><li>A licensed vet certifies it has an incurable communicable disease</li><li>A licensed vet certifies it is needed to end the animal's suffering</li><li>It is needed to prevent immediate danger to human life or limb</li></ul><p>It must be done humanely, using methods approved by the Committee on Animal Welfare. Electrocution of dogs is banned under RA 9482. Talk to your vet if you're facing this decision.</p>
+    <p class="meta-line">Source: Republic Act No. 8485, Section 6, https://lawphil.net/statutes/repacts/ra1998/ra_8485_1998.html; Republic Act No. 10631, Section 6, https://lawphil.net/statutes/repacts/ra2013/ra_10631_2013.html; Republic Act No. 9482, Sections 7 and 11, https://lawphil.net/statutes/repacts/ra2007/ra_9482_2007.html</p></div>
+    
+  <div class="review" aria-label="Review E81">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E82</span><h3>“What papers do I need to bring my dog or cat to another island or province?”</h3><span class="meta"><span class="tag">Philippine rules</span></span></header>
+    <div class="content">
+    <p>You need a local shipping permit from the Bureau of Animal Industry (BAI), applied for online at nvqsd.bai.gov.ph. Under the BAI Citizen's Charter, dogs and cats need:</p><ul><li>A veterinary health certificate from a licensed vet, showing rabies vaccine details (brand, batch/lot number, date given, next due date)</li><li>A rabies vaccination certificate signed by the vet with their PRC number</li><li>The pet should be about 3 to 4 months old or older</li><li>The rabies shot should be at least 14 days and not more than 1 year old (annual boosters can ship right away)</li></ul><p>The permit is free; processing takes up to 3 working days. Rules may change, so confirm with BAI before your trip.</p>
+    <p class="meta-line">Source: BAI NVQSD Citizen's Charter, Service 8 (Local Shipping Permit), https://www.bai.gov.ph/cc/citizens%20charter%20(nvqsd).pdf; BAI One-Time Local Shipping Permit guide, https://nvqsd.bai.gov.ph/Admin/ONE%20TIME%20LOCAL%20PDF.pdf</p></div>
+    
+  <div class="review" aria-label="Review E82">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
+  <section class="item">
+    <header><span class="id">E83</span><h3>“Are there rules on how my pet should be transported, like by van or boat?”</h3><span class="meta"><span class="tag">Philippine rules</span></span></header>
+    <div class="content">
+    <p>Yes. Section 4 of the Animal Welfare Act (RA 8485) sets rules for transporting animals:</p><ul><li>Carriers must provide clean, sanitary facilities for animals</li><li>Animals must get food and water on trips longer than 12 hours, or when needed</li><li>Overcrowding, cruel confinement and putting animals in vehicle trunks count as cruelty</li></ul><p>A BAI permit is required to transport animals. For pets, apply for a BAI local shipping permit before your trip, and prepare a vet health certificate and rabies vaccination certificate.</p>
+    <p class="meta-line">Source: Republic Act No. 8485, Section 4, https://lawphil.net/statutes/repacts/ra1998/ra_8485_1998.html; BAI NVQSD Citizen's Charter, https://www.bai.gov.ph/cc/citizens%20charter%20(nvqsd).pdf</p></div>
+    
+  <div class="review" aria-label="Review E83">
+    <span class="box">☐ OK</span><span class="box">☐ Change</span><span class="box">☐ Remove</span>
+    <div class="lines"><span>Corrections:</span><i></i><i></i></div>
+  </div>
+  </section>
   <section class="signoff">
     <h2 class="part" style="break-before:auto">Sign-off</h2>
-    <div class="stmt">I have reviewed the content in this pack (items A1–A19, B1–B29, C1–C2 and D1–D25). Subject to the corrections I have marked, it is appropriate as general educational information for pet owners. It does not replace a veterinary examination.</div>
+    <div class="stmt">I have reviewed the content in this pack (items A1–A19, B1–B29, C1–C2, D1–D40, E1–E83). Subject to the corrections I have marked, it is appropriate as general educational information for pet owners. It does not replace a veterinary examination.</div>
     <p>☐ Approved with no changes &nbsp;&nbsp; ☐ Approved after the marked changes are made &nbsp;&nbsp; ☐ Not approved (see comments)</p>
     <div class="sign"><div>Signature</div><div>Date</div><div>Printed name</div><div>PRC license no.</div></div>
     <h4 style="margin-top:22px">General comments</h4>

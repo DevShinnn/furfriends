@@ -49,7 +49,7 @@ const URGENT = [
   ["cpr", /not breathing|no heartbeat|unconscious|won'?t wake|unresponsive/],
   ["breathing", /can'?t breathe|cannot breathe|trouble breathing|struggling to breathe|gasping|blue gums|grey gums|gray gums/],
   ["heatstroke", /heat ?stroke|overheat|too hot/],
-  ["poisoning", /poison|chocolate|grape|raisin|xylitol|onion|garlic|rat bait|rodenticide|antifreeze|bleach|paracetamol|ibuprofen|insecticide/],
+  ["poisoning", /poison|chocolate|grape|raisin|xylitol|onion|garlic|rat bait|rodenticide|antifreeze|coolant|radiator|bleach|paracetamol|ibuprofen|insecticide/],
   ["toad", /\btoads?\b|palaka/],
   ["choking", /chok/],
   ["bleeding", /bleeding|won'?t stop bleed/],

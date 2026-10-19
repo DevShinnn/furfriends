@@ -29,12 +29,13 @@ export const searchText = (e) => `${e.q} ${e.keys || ""} ${e.a.split(/\s+/).slic
    Checked before searching. FurFriends never gives medicine doses, whatever the data says. */
 const DOSE_ASK = /\b(how (much|many)|what|which)\b.*\b(mg|ml|milligrams?|dosage|doses?|tablets?|pills?|capsules?)\b|\bdos(e|age|ing)\b/i;
 const MEDICINE = /\b(medicines?|medications?|antibiotics?|amoxicillin|paracetamol|ibuprofen|aspirin|benadryl|tablets?|pills?|capsules?|drugs?|mg)\b/i;
+export const DOSE_REPLY = "I can't give medicine doses. The right medicine and dose depend on your pet's weight, health and what's wrong, "
+  + "so only a vet can prescribe them.\n\n- Don't give human medicines or leftover prescriptions\n- Call your vet and tell them your pet's weight and symptoms\n\n"
+  + "If your pet is very weak, not eating, or has trouble breathing, go to a vet now.";
 export function safetyReply(question) {
   if (DOSE_ASK.test(question) && MEDICINE.test(question)) {
     return {
-      reply: "I can't give medicine doses. The right medicine and dose depend on your pet's weight, health and what's wrong, "
-        + "so only a vet can prescribe them.\n\n- Don't give human medicines or leftover prescriptions\n- Call your vet and tell them your pet's weight and symptoms\n\n"
-        + "If your pet is very weak, not eating, or has trouble breathing, go to a vet now.",
+      reply: DOSE_REPLY,
       sure: true, match: { q: "Medicine doses", source: "FurFriends safety rule", url: "", kind: "rule", score: 1 }, related: [],
     };
   }
@@ -43,11 +44,18 @@ export function safetyReply(question) {
 
 /* Questions about symptoms always end with vet advice, even when the matched answer has none. */
 const SYMPTOM = /\b(not eat|won'?t eat|stopped eating|hasn'?t eaten|isn'?t eating|vomit|throw(ing)? up|diarrh|blood|letharg|weak|limp|cough|sneez|wheez|discharge|swollen|lump|pain|hurt|fever|seiz|not drinking|peeing a lot|drinking a lot)/i;
-const VET_NOTE = "If this has lasted more than a day, keeps coming back, or your pet seems unwell, see your vet. Go now if your pet is very weak, can't keep water down, or has trouble breathing.";
+export const VET_NOTE = "If this has lasted more than a day, keeps coming back, or your pet seems unwell, see your vet. Go now if your pet is very weak, can't keep water down, or has trouble breathing.";
+/* Questions about something a pet ate or touched get poison advice, even when the matched answer has none. */
+const SWALLOWED = /\b(ate|eaten|eats|swallow(ed)?|licked|chewed|drank|got into|ingest(ed)?|bit a)\b/i;
+export const POISON_NOTE = "If your pet may have eaten, licked or touched something harmful, call your vet or the nearest 24-hour clinic now, "
+  + "even if your pet seems fine. Bring the package or label, and only make your pet vomit if a vet tells you to.";
 const SAYS_VET = /\b(vet|vets|veterinarian|clinic)\b/i;
 const SAYS_SOON = /\b(now|immediately|right away|straight away|urgent|urgently|today|as soon as)\b/i;
-const withVetAdvice = (question, answer) =>
-  SYMPTOM.test(question) && !(SAYS_VET.test(answer) && SAYS_SOON.test(answer)) ? `${answer}\n\n${VET_NOTE}` : answer;
+function withVetAdvice(question, answer) {
+  if (SAYS_VET.test(answer) && SAYS_SOON.test(answer)) return answer;
+  if (SWALLOWED.test(question)) return `${answer}\n\n${POISON_NOTE}`;
+  return SYMPTOM.test(question) ? `${answer}\n\n${VET_NOTE}` : answer;
+}
 
 /* ------------------------------------------------------------------ keywords (BM25) */
 const STOP = new Set(("a an the and or but if of to in on at for with is are was be it its this that your you i my me can do does so as by "

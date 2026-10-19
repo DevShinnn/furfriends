@@ -43,7 +43,7 @@ Collect your Q&As in a spreadsheet, so the whole team can add to it:
    ```
    It reads `data/qa.csv` and everything in `data/open/`. It checks every row and lists problems, such as duplicate questions, doses, emergencies without vet advice, or missing sources. Then it writes `data/train.jsonl` for training and `data/test.jsonl` for the accuracy test.
    - About 15% of your own blank-set rows go to the test set.
-   - The open data always goes to training, so the test set stays made of answers your vet adviser checked.
+   - The Stack Exchange rows always go to training. The researched answers in `data/open/researched_qa.csv` (98 Q&As on emergencies, poisons, vaccines, parasites, senior pets and Philippine rules, with sources) are split like your own rows, so the test set covers those topics too.
    - If a question appears in both, your sheet's version wins.
 
 A question's place in the train or test set depends only on the question itself. Adding rows later never moves an earlier test question into training, so your accuracy test stays fair. Run it again after every change to the sheet.

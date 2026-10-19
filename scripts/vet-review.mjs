@@ -17,18 +17,42 @@ const OUT_DIR = join(ROOT, "docs", "vet-review");
 /* ---------------------------------------------------------------- load the app's content */
 const tmp = mkdtempSync(join(tmpdir(), "ff-vet-"));
 const entry = join(tmp, "entry.js");
-writeFileSync(entry, ["emergency", "breeds", "breedCare", "care", "utils"]
+writeFileSync(entry, ["emergency", "breeds", "breedCare", "care", "utils", "knowledge"]
   .map((m) => `export * as ${m} from ${JSON.stringify(join(ROOT, "src/lib", m + ".js").replace(/\\/g, "/"))};`).join("\n"));
 await build({ entryPoints: [entry], bundle: true, format: "esm", platform: "node", outfile: join(tmp, "content.mjs"), logLevel: "error" });
-const { emergency, breeds, breedCare, care, utils } = await import(pathToFileURL(join(tmp, "content.mjs")).href);
+const { emergency, breeds, breedCare, care, utils, knowledge } = await import(pathToFileURL(join(tmp, "content.mjs")).href);
 
-// The AI's instructions and sample answers live with the AI server.
-const py = readFileSync(join(ROOT, "ai-server/prompting.py"), "utf8");
-const systemPrompt = [...py.match(/SYSTEM_PROMPT = \(([\s\S]*?)\n\)/)[1].matchAll(/"((?:[^"\\]|\\.)*)"/g)].map((m) => m[1].replace(/\\'/g, "'")).join("");
+// The team's sample answers live with the AI server.
 const jsonl = (f) => readFileSync(join(ROOT, "ai-server/data", f), "utf8").trim().split("\n").map((l) => JSON.parse(l));
 const samples = jsonl("sample_train.jsonl");
 // Reference answers the AI is graded against (evaluate.py): the team's test set once it exists.
 const tests = jsonl(existsSync(join(ROOT, "ai-server/data/test.jsonl")) ? "test.jsonl" : "sample_test.jsonl");
+// Answers researched from public sources (ai-server/data/open/researched_qa.csv). The ones in the test set are in D.
+const RESEARCHED = join(ROOT, "ai-server/data/open/researched_qa.csv");
+const tested = new Set(tests.map((t) => t.messages.at(-2).content.trim()));
+const researched = existsSync(RESEARCHED) ? readCsv(RESEARCHED).filter((r) => r.question && !tested.has(r.question.trim())) : [];
+
+/* Minimal CSV reader (quoted fields, doubled quotes, newlines inside quotes). */
+function readCsv(path) {
+  const text = readFileSync(path, "utf8").replace(/^﻿/, "");
+  const rows = []; let row = [], field = "", quoted = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (quoted) {
+      if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
+      else if (c === '"') quoted = false;
+      else field += c;
+    } else if (c === '"') quoted = true;
+    else if (c === ",") { row.push(field); field = ""; }
+    else if (c === "\n" || c === "\r") {
+      if (c === "\r" && text[i + 1] === "\n") i++;
+      row.push(field); rows.push(row); row = []; field = "";
+    } else field += c;
+  }
+  if (field || row.length) { row.push(field); rows.push(row); }
+  const [head, ...body] = rows.filter((r) => r.some((x) => x.trim()));
+  return body.map((r) => Object.fromEntries(head.map((h, i) => [h, r[i] ?? ""])));
+}
 
 /* ---------------------------------------------------------------- html helpers */
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -101,8 +125,11 @@ const sectionC = `
 
 const sectionD = `
   <h2 class="part">D. AI assistant</h2>
-  <p class="lead">The assistant is a pilot model the team is training. These are the rules it is given for every answer, example answers it is trained on, and the reference answers its accuracy is graded against. Every answer in the app is labelled “It isn't a vet. In an emergency, go to a vet now.”</p>
-  ${item("D1", "Rules given to the AI", `<p>${esc(systemPrompt)}</p>`)}
+  <p class="lead">The assistant finds the closest checked answer to the owner's question, using an open-source AI model on the owner's phone. It does not write its own answers. Below are its fixed safety messages, the team's example answers, and the reference answers its accuracy is graded against. Every answer in the app is labelled “It isn't a vet. In an emergency, go to a vet now.”</p>
+  ${item("D1", "Fixed safety messages", `
+    <h4>Shown for any question asking for a medicine dose</h4>${para(knowledge.DOSE_REPLY)}
+    <h4>Added to answers about something a pet ate, licked or touched, if they don't already say to see a vet soon</h4><p>${esc(knowledge.POISON_NOTE)}</p>
+    <h4>Added to answers about symptoms that don't already say to see a vet soon</h4><p>${esc(knowledge.VET_NOTE)}</p>`)}
   ${samples.map((s, i) => item(`D${i + 2}`, `Example answer: “${s.messages.at(-2).content}”`, `
     ${s.pet ? `<p class="meta-line">About: ${esc([s.pet.name, s.pet.species, s.pet.breed, s.pet.age, s.pet.weightKg && s.pet.weightKg + " kg"].filter(Boolean).join(", "))}</p>` : ""}
     ${para(s.messages.at(-1).content)}`)).join("")}
@@ -110,8 +137,18 @@ const sectionD = `
     ${t.pet ? `<p class="meta-line">About: ${esc([t.pet.name, t.pet.species, t.pet.breed, t.pet.age, t.pet.weightKg && t.pet.weightKg + " kg"].filter(Boolean).join(", "))}</p>` : ""}
     ${para(t.messages.at(-1).content)}`, `<span class="meta"><span class="tag">Accuracy test · ${esc(t.category || "general")}</span></span>`)).join("")}`;
 
+const CAT_LABEL = { emergency: "Emergencies", poison: "Poisoning", vaccines: "Vaccines", parasites: "Parasites",
+  senior: "Senior pets", philippines: "Philippine rules", rabies: "Rabies" };
+const sectionE = researched.length ? `
+  <h2 class="part">E. Researched answers</h2>
+  <p class="lead">Answers the team researched from public sources and wrote in plain words, for topics the open data barely covers. The assistant shows them to owners, so check each one against current veterinary practice. The source of each is listed under the question.</p>
+  ${researched.map((r, i) => item(`E${i + 1}`, `“${r.question}”`, `
+    ${para(r.answer)}
+    <p class="meta-line">Source: ${esc(r.source)}</p>`, `<span class="meta"><span class="tag">${esc(CAT_LABEL[r.category] || r.category)}</span></span>`)).join("")}` : "";
+
 const nD = 1 + samples.length + tests.length;
-const count = 3 + GUIDES.length + BREED_DB.length + 2 + nD;
+const nE = researched.length;
+const count = 3 + GUIDES.length + BREED_DB.length + 2 + nD + nE;
 const today = new Date().toLocaleDateString("en-PH", { year: "numeric", month: "long", day: "numeric" });
 
 const html = `<!doctype html>
@@ -183,15 +220,16 @@ const html = `<!doctype html>
       <div>Reviewer name</div><div>PRC license no.</div>
       <div>Clinic / institution</div><div>Date received</div>
     </div>
-    <p class="lead">Contents: A. Emergency first aid (${GUIDES.length + 3} items) · B. Breed guide (${BREED_DB.length}) · C. Reminders and record-keeping (2) · D. AI assistant (${nD})</p>
+    <p class="lead">Contents: A. Emergency first aid (${GUIDES.length + 3} items) · B. Breed guide (${BREED_DB.length}) · C. Reminders and record-keeping (2) · D. AI assistant (${nD})${nE ? ` · E. Researched answers (${nE})` : ""}</p>
   </section>
   ${sectionA}
   ${sectionB}
   ${sectionC}
   ${sectionD}
+  ${sectionE}
   <section class="signoff">
     <h2 class="part" style="break-before:auto">Sign-off</h2>
-    <div class="stmt">I have reviewed the content in this pack (items A1–A${GUIDES.length + 3}, B1–B${BREED_DB.length}, C1–C2 and D1–D${nD}). Subject to the corrections I have marked, it is appropriate as general educational information for pet owners. It does not replace a veterinary examination.</div>
+    <div class="stmt">I have reviewed the content in this pack (items A1–A${GUIDES.length + 3}, B1–B${BREED_DB.length}, C1–C2, D1–D${nD}${nE ? `, E1–E${nE}` : ""}). Subject to the corrections I have marked, it is appropriate as general educational information for pet owners. It does not replace a veterinary examination.</div>
     <p>☐ Approved with no changes &nbsp;&nbsp; ☐ Approved after the marked changes are made &nbsp;&nbsp; ☐ Not approved (see comments)</p>
     <div class="sign"><div>Signature</div><div>Date</div><div>Printed name</div><div>PRC license no.</div></div>
     <h4 style="margin-top:22px">General comments</h4>
