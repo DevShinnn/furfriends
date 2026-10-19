@@ -10,7 +10,7 @@ grades into tables. All commands run in the `ai-server` folder.
   {"id": "t01", "category": "emergency", "messages": [{"role": "user", "content": "My dog is breathing very fast..."}, {"role": "assistant", "content": "<the correct answer>"}]}
   ```
   The last message is the **reference answer**: what a good answer should say. Add `"pet": {...}` to test answers about a specific pet.
-- **Start from** `data/sample_test.jsonl`: 16 questions across 10 categories. Copy it to `test.jsonl` and add your own.
+- **Easiest way:** collect all your Q&As in the team spreadsheet (`data/qa.csv`) and run `python prepare_data.py`, which writes `test.jsonl` for you (see the `ai-server` README, step 1). The sheet starts with 16 sample test questions across 10 categories.
 - **Size:** set aside 10–20% of all your questions, and at least 40–50 in total, so one answer doesn't swing the result much. Cover every category.
 - **Keep them out of training.** Never copy a test question into `train.jsonl`. The script warns you if it finds one there.
 - **Categories the script knows:**

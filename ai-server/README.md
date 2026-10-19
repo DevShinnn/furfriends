@@ -8,6 +8,7 @@ to train it and retrain it from the app's 👍/👎 ratings.
 | `app.py` | The server the app talks to (`POST /ask`). Checks the user is logged in to FurFriends. |
 | `prompting.py` | The system prompt and pet details. Used by both serving and training, so they match. |
 | `train_lora.py` | Fine-tunes a model with LoRA. Runs on a free Google Colab T4 GPU. |
+| `prepare_data.py` | Checks the team's Q&A spreadsheet (`data/qa.csv`) and splits it into training and test files. |
 | `export_feedback.py` | Downloads app ratings as new training data, and prints the helpful rate per model version. |
 | `evaluate.py` | Accuracy test: asks the model held-out questions, makes a grading sheet, and scores it. |
 | `data/sample_train.jsonl` | 8 example Q&As showing the data format. |
@@ -15,15 +16,30 @@ to train it and retrain it from the app's 👍/👎 ratings.
 | `data/SOURCES.md` | Where each piece of training data came from. Fill this in. |
 
 ## 1. Prepare the data
-One JSON object per line. Each example is a short conversation ending with the correct answer:
+Collect your Q&As in a spreadsheet, so the whole team can add to it:
+1. In Google Sheets, go to **File → Import → Upload** and choose `data/qa.csv`. It already has the 24 sample Q&As.
+2. Add one row per question:
 
-```json
-{"messages": [{"role": "user", "content": "How often should I deworm my puppy?"}, {"role": "assistant", "content": "Puppies are dewormed more often than adults..."}]}
-```
+   | Column | What to write |
+   |---|---|
+   | `question` | The owner's question, the way an owner would ask it |
+   | `answer` | The correct answer in your own words: under 200 words, no medicine doses, and "go to a vet now" for emergencies |
+   | `category` | For example `emergency`, `poison`, `vaccines`, `feeding`, `grooming`, `behavior`, `medicine` (see `docs/ai-evaluation-guide.md`) |
+   | `set` | Leave it blank. Write `test` or `train` only to force a row into one set. |
+   | `pet_name` … `pet_weight_kg` | Optional. Fill these in when the answer is about one specific pet. |
+   | `source` | Where the information came from (name and link). Also list each source in `data/SOURCES.md`. |
+   | `checked_by` | Who checked the answer, for example your vet adviser |
 
-You can add `"pet": {"name": "Mochi", "species": "Cat", "breed": "Puspin", "weightKg": 4.2}` so the model learns to use the pet's details, the same way the app sends them. Don't add a system message: `train_lora.py` adds the FurFriends one itself.
+3. Go to **File → Download → Comma-separated values (.csv)**, and save the file over `data/qa.csv`.
+4. Run:
+   ```
+   python prepare_data.py
+   ```
+   It checks every row and lists problems, such as duplicate questions, doses, emergencies without vet advice, or missing sources. Then it writes `data/train.jsonl` for training and `data/test.jsonl` for the accuracy test. About 15% of the rows go to the test set.
 
-Keep about 10–20% of your questions out of training as a **test set**, so you can measure accuracy honestly. Record every source in `data/SOURCES.md`.
+A question's place in the train or test set depends only on the question itself. Adding rows later never moves an earlier test question into training, so your accuracy test stays fair. Run it again after every change to the sheet.
+
+`data/sample_train.jsonl` shows the file format, if you want to write JSONL yourself. Don't add a system message: `train_lora.py` adds the FurFriends one itself.
 
 ## 2. Train (Google Colab, free GPU)
 1. Upload this `ai-server` folder to Colab or Google Drive, and choose **Runtime → Change runtime type → T4 GPU**.

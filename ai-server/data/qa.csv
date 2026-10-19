@@ -1,0 +1,154 @@
+﻿question,answer,category,set,pet_name,pet_species,pet_breed,pet_age,pet_weight_kg,source,checked_by
+How often should I deworm my puppy?,"Puppies pick up worms easily, so they're dewormed more often than adults. A common schedule is:
+- Every 2 weeks from about 2 weeks old until 12 weeks
+- Then monthly until 6 months old
+- Then every 3 months for adults
+
+Your vet will choose the right product and dose for your puppy's weight, so ask them before giving anything. Keep the yard clean and treat fleas too, since fleas can spread tapeworm.",parasites,train,,,,,,"FurFriends sample, written for this project",
+My dog ate a chocolate bar. What should I do?,"Chocolate is poisonous to dogs, especially dark and baking chocolate. Call or go to a vet now, even if your dog seems fine, because signs can take hours to show.
+
+While you get there:
+- Note the type of chocolate, how much, and when it was eaten
+- Bring the wrapper if you can
+- Don't make your dog vomit unless the vet tells you to
+
+Watch for vomiting, restlessness, fast breathing, shaking or seizures, and tell the vet straight away if you see them.",poison,train,,,,,,"FurFriends sample, written for this project",
+How do I keep my cat cool during hot days?,"Cats handle heat better than many dogs, but hot, humid days can still be dangerous.
+- Keep fresh water in several places, and add wet food for extra fluids
+- Give them a shaded, airy spot, and use a fan or air-con in the hottest hours
+- Brush long-haired cats often to remove loose fur
+- Never leave a cat in a parked car
+
+Open-mouth panting, drooling, wobbliness or collapse can mean heatstroke. Move them somewhere cool and go to a vet now.",heat,train,,,,,,"FurFriends sample, written for this project",
+Is Mochi's weight healthy?,"At 4.2 kg, Mochi is within the usual range for an adult Puspin, which is about 3 to 5.5 kg. Weight alone doesn't tell the whole story, though. A healthy cat has:
+- Ribs you can feel easily under a thin layer of fat
+- A visible waist when you look from above
+- A belly that doesn't hang or swing
+
+If you can't feel Mochi's ribs, or she's gaining weight, ask your vet about portion sizes and a target weight.",pet_context,train,Mochi,Cat,Puspin,3 yrs,4.2,"FurFriends sample, written for this project",
+What vaccines does my kitten need?,"Most kittens get these core vaccines:
+- FVRCP (cat flu and panleukopenia), usually starting at 6 to 8 weeks and repeated every 3 to 4 weeks until about 16 weeks
+- Rabies, given from around 12 weeks, which is required in the Philippines
+
+Your vet may also suggest FeLV if your kitten will go outdoors or live with other cats. Keep the vaccine card, and add each shot in FurFriends so you get reminders for boosters.",vaccines,train,,,,,,"FurFriends sample, written for this project",
+My male cat keeps going to the litter box but nothing comes out.,"This can be a blocked bladder, which is an emergency in male cats. Take him to a vet now. A blockage can become life-threatening within a day.
+
+Other signs include crying in the litter box, licking his genitals, vomiting, or hiding. Don't wait to see if it passes, and don't press on his belly. The vet can check his bladder and relieve the blockage.",emergency,train,,,,,,"FurFriends sample, written for this project",
+Can I give my dog paracetamol for pain?,"Please don't give human pain medicine to your dog without your vet's advice. Many common ones, including paracetamol and ibuprofen, can cause serious harm to dogs, and paracetamol is deadly to cats.
+
+Call your vet and describe where your dog seems sore and since when. They can examine your dog and prescribe a pain medicine that's safe for pets, at the right dose for their weight.",medicine,train,,,,,,"FurFriends sample, written for this project",
+How often should I bathe my Shih Tzu?,"Most Shih Tzus do well with a bath every 3 to 4 weeks. Bathing too often can dry out their skin.
+- Use a dog shampoo, not human shampoo
+- Brush before the bath to remove tangles, then dry them fully, especially the ears
+- Wipe the eyes and face daily, as tear stains and food build up there
+
+Many owners keep a short ""puppy cut"" with a groom every 4 to 6 weeks, which makes daily care much easier.",grooming,train,,,,,,"FurFriends sample, written for this project",
+My dog is breathing very fast and his gums look pale. What should I do?,"Fast breathing with pale gums can mean shock, blood loss or a heart or lung problem. Go to a vet now.
+
+While you get there:
+- Keep him calm and still, and carry him if you can
+- Keep him at a comfortable temperature, not too hot
+- Don't give food, water or any medicine
+
+Call the clinic on the way so they're ready for you.",emergency,test,,,,,,"FurFriends sample, written for this project",
+My cat had a seizure that lasted about 2 minutes. She seems okay now.,"A seizure always needs a vet check, even if she seems fine now. Call your vet today, and go straight away if she has another one, or if a seizure lasts more than 5 minutes.
+
+Until then:
+- Keep her somewhere quiet and dim, away from stairs
+- If it happens again, don't hold her or put anything in her mouth
+- Time it and, if you can, take a video for the vet
+
+Tell the vet about anything she could have eaten, such as medicines, insecticides or plants.",emergency,test,,,,,,"FurFriends sample, written for this project",
+My dog's belly is swollen and he keeps trying to vomit but nothing comes out.,"A swollen belly with retching that brings nothing up can be bloat (stomach twisting). It can kill within hours. Go to a vet now.
+
+- Don't wait to see if it passes
+- Don't give food, water or medicine
+- Call the clinic on the way so they can prepare
+
+Bloat is more common in large, deep-chested dogs, and after a big meal or exercise.",emergency,test,,,,,,"FurFriends sample, written for this project",
+My cat licked a lily flower. Is that dangerous?,"Yes. Lilies are very poisonous to cats. Even licking the pollen or drinking the vase water can cause kidney failure. Go to a vet now, even if she seems fine, because treatment works best in the first hours.
+
+- Bring the plant or a photo of it
+- Wipe pollen off her fur and face with a damp cloth so she doesn't lick more
+- Don't make her vomit unless the vet tells you to
+
+Keep lilies out of any home with cats.",poison,test,,,,,,"FurFriends sample, written for this project",
+Can dogs eat grapes?,"No. Grapes and raisins can cause sudden kidney failure in dogs, and even a few can be dangerous for some dogs. There's no safe amount.
+
+If your dog ate grapes or raisins:
+- Go to a vet now, even if they seem fine
+- Tell the vet how many and when
+
+Safer treats include small pieces of plain cooked chicken, carrot or apple without the seeds.",poison,test,,,,,,"FurFriends sample, written for this project",
+When should my puppy get the anti-rabies vaccine?,"Puppies usually get their first anti-rabies shot at about 3 months old, then boosters as your vet advises, usually every year. In the Philippines, the Anti-Rabies Act requires dogs to be vaccinated against rabies.
+
+- Many LGUs hold free anti-rabies vaccination drives, so ask your barangay or city vet
+- Keep the vaccination card, because you may need it for travel or boarding
+- Your puppy also needs the core puppy shots (such as 5-in-1), which your vet will schedule",vaccines,test,,,,,,"FurFriends sample, written for this project",
+How do I know if my dog has ticks?,"Check your dog by running your hands slowly over the whole body. Ticks feel like small bumps and like to hide:
+- In and around the ears
+- Between the toes
+- Around the neck, armpits and groin
+
+Other signs are scratching, small scabs, or ticks in your dog's bed. Ticks can spread serious blood diseases such as ehrlichiosis, which is common in the Philippines. See a vet if your dog is weak, has pale gums, a fever or nosebleeds.
+
+Ask your vet for a tick prevention product that suits your dog's weight, and treat the yard and bedding too.",parasites,test,,,,,,"FurFriends sample, written for this project",
+How many times a day should I feed my kitten?,"Kittens have small stomachs and grow fast, so feed small meals often:
+- Up to about 6 months: 3-4 meals a day
+- After 6 months: 2 meals a day
+
+Use food made for kittens, and follow the amount on the pack for their weight. Always leave fresh water. Don't give cow's milk, because many cats can't digest it and get diarrhea.
+
+Ask your vet to check their weight at each vaccination visit.",feeding,test,,,,,,"FurFriends sample, written for this project",
+Is it okay to give my dog leftover rice and fish bones?,"Plain rice is fine now and then, but fish bones are not. Cooked bones can splinter and get stuck in the mouth, throat or gut.
+
+- Remove all bones before sharing fish
+- Avoid salty, oily or spicy leftovers, and anything with onion or garlic
+- Leftovers alone aren't a complete diet, so base meals on a balanced dog food
+
+If your dog swallowed a bone and is gagging, drooling, vomiting or seems in pain, see a vet.",feeding,test,,,,,,"FurFriends sample, written for this project",
+How do I clean my dog's ears?,"Clean only when the ears look dirty, often about once every 1-2 weeks.
+- Use an ear cleaner for dogs, not alcohol or hydrogen peroxide
+- Fill the ear canal as the label says, massage the base of the ear, and let your dog shake
+- Wipe the outer part with cotton or gauze
+- Don't push cotton buds into the canal
+
+See a vet if you notice a bad smell, redness, swelling, dark discharge, head shaking or pain, which can mean an infection.",grooming,test,,,,,,"FurFriends sample, written for this project",
+My cat scratches the sofa. How can I stop it?,"Scratching is normal for cats. It keeps their claws healthy and marks their space, so give them a better place to do it.
+- Put a sturdy scratching post next to the sofa, tall enough for a full stretch
+- Try both upright posts and flat cardboard scratchers
+- Reward your cat with treats or play when they use it
+- Cover the sofa spots with a throw or double-sided tape for a while
+- Trim the claws regularly
+
+Don't punish or declaw your cat.",behavior,test,,,,,,"FurFriends sample, written for this project",
+My dog barks a lot when I leave the house.,"This is often separation anxiety: your dog is stressed being alone.
+- Give a good walk and play before you leave
+- Practise short absences, then make them slowly longer
+- Leave a safe chew toy or a food puzzle
+- Keep leaving and coming home calm and low-key
+- Don't punish the barking, because it adds to the stress
+
+If your dog also destroys things, soils the house or hurts themselves, talk to your vet or a trainer. Some dogs need a behavior plan.",behavior,test,,,,,,"FurFriends sample, written for this project",
+How many mg of amoxicillin can I give my 10 kg dog?,"I can't give medicine doses. Antibiotics need a vet's exam and prescription, because the right medicine and dose depend on what the infection is and on your dog's health.
+
+- Don't use leftover or human antibiotics, as the wrong one or the wrong dose can make things worse
+- See your vet, who can examine your dog and prescribe the right treatment
+
+If your dog is very weak, not eating, or has trouble breathing, go to a vet now.",medicine,test,,,,,,"FurFriends sample, written for this project",
+Can I give my cat ibuprofen?,"No. Ibuprofen and other human pain medicines, such as paracetamol and aspirin, are poisonous to cats. Even one tablet can cause stomach bleeding and kidney failure.
+
+If your cat already took some, go to a vet now. If your cat seems to be in pain, see your vet, who can give a medicine that is safe for cats.",medicine,test,,,,,,"FurFriends sample, written for this project",
+Bantay is getting older. What should I change in his care?,"At 9 years, Bantay is a senior dog, so some changes help him stay healthy:
+- See the vet every 6 months, including blood tests if the vet advises
+- Keep him at a healthy weight to protect his joints, and ask your vet about a senior diet
+- Keep up daily walks, but make them shorter and gentler if he tires
+- Check his teeth, and give him a soft, warm place to sleep
+
+Tell your vet if you notice stiffness, drinking or peeing more, weight loss, lumps, or confusion.",pet_context,test,Bantay,Dog,Aspin,9 yrs,22,"FurFriends sample, written for this project",
+My cat hasn't eaten for 2 days.,"Two days without food is serious for a cat. Cats can quickly develop a liver problem (hepatic lipidosis) when they stop eating. Take her to a vet today.
+
+- Note anything else you've seen, such as vomiting, hiding, drooling or litter box changes
+- Don't force-feed her
+
+Go now if she is also vomiting, very weak, breathing hard, or is a male cat straining to pee.",when_to_see_vet,test,,,,,,"FurFriends sample, written for this project",
