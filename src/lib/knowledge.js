@@ -119,11 +119,33 @@ export function search(index, queryVector, queryText, { species = "", limit = 3 
 }
 
 /* The text searched for: the latest question, plus the one before if it's a short follow-up
-   ("what about kittens?"). */
+   ("what about kittens?"), with common Tagalog words explained in English (the model reads English). */
 export function queryText(messages) {
   const asked = messages.filter((m) => m.role === "user" && !m.error).map((m) => m.content.trim());
   const last = asked.at(-1) || "";
-  return last.split(/\s+/).length < 5 && asked.length > 1 ? `${asked.at(-2)} ${last}` : last;
+  return withEnglish(last.split(/\s+/).length < 5 && asked.length > 1 ? `${asked.at(-2)} ${last}` : last);
+}
+
+const TAGALOG = [
+  [/\baso\b|\bmga aso\b|\btuta\b/, "dog"], [/\bpusa\b|\bkuting\b/, "cat"],
+  [/\bnakagat\b|\bkinagat\b|\bkagat\b/, "bitten bite"], [/\bkalmot\b|\bnakalmot\b|\bkinalmot\b/, "scratched scratch"],
+  [/\bnagsusuka\b|\bsuka\b|\bsumuka\b/, "vomiting"], [/\bnagtatae\b|\bpagtatae\b/, "diarrhea"], [/\btae\b|\bdumi\b/, "poop"],
+  [/\bayaw kumain\b|\bhindi kumakain\b|\bwalang gana\b/, "not eating"], [/\blagnat\b|\bmainit\b/, "fever"],
+  [/\bubo\b|\binuubo\b/, "cough"], [/\bsipon\b|\bbumabahing\b/, "sneezing"], [/\bdugo\b|\bdumudugo\b/, "blood bleeding"],
+  [/\bsugat\b/, "wound"], [/\bpilay\b|\bpiang\b|\bpaika\b/, "limping"], [/\bmatamlay\b|\bnanghihina\b/, "weak lethargic"],
+  [/\bnalason\b|\blason\b/, "poison poisoned"], [/\bnakain\b|\bkinain\b|(?<!(ayaw|hindi) )\bkumain ng\b/, "ate"],
+  [/\btsokolate\b/, "chocolate"], [/\bubas\b|\bpasas\b/, "grapes raisins"], [/\bsibuyas\b/, "onion"], [/\bbawang\b/, "garlic"],
+  [/\bgarapata\b/, "ticks"], [/\bpulgas\b/, "fleas"], [/\bbulate\b|\buod\b/, "worms"], [/\bgalis\b/, "mange itchy skin"],
+  [/\bbakuna\b|\bturok\b|\bbinakunahan\b/, "vaccine shot"], [/\bpurga\b|\bpurgahin\b/, "deworm"],
+  [/\bkumbulsyon\b|\bnangingisay\b/, "seizure"], [/\bhirap huminga\b|\bhinihingal\b/, "trouble breathing"],
+  [/\bmatanda na\b|\bmatandang\b/, "old senior"], [/\bpalaka\b/, "toad"], [/\bahas\b/, "snake"],
+  [/\bpagkain\b|\bpakain\b/, "food feeding"], [/\bpaliguan\b|\bligo\b/, "bath"], [/\bkapitbahay\b/, "neighbor"],
+  [/\bnaligaw\b|\bnawala\b/, "lost"], [/\bbuntis\b/, "pregnant"], [/\bkapon\b|\bkinapon\b/, "neuter spay"],
+];
+export function withEnglish(text) {
+  const t = text.toLowerCase();
+  const extra = TAGALOG.filter(([re]) => re.test(t)).map(([, en]) => en);
+  return extra.length ? `${text} (${extra.join(", ")})` : text;
 }
 
 /* ------------------------------------------------------------------ reply */

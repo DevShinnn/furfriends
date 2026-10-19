@@ -14,7 +14,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { pipeline } from "@huggingface/transformers";
 import { GUIDES } from "../src/lib/emergency.js";
-import { EMBED_MODEL, EMBED_OPTIONS, compose, decodeIndex, encodeVectors, safetyReply, search, searchText, speciesOf } from "../src/lib/knowledge.js";
+import { EMBED_MODEL, EMBED_OPTIONS, compose, decodeIndex, encodeVectors, safetyReply, search, searchText, speciesOf, withEnglish } from "../src/lib/knowledge.js";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const DATA = join(ROOT, "ai-server", "data");
@@ -23,7 +23,7 @@ const EVAL = args.includes("--eval");
 const VERSION = args.find((a) => a.startsWith("--version="))?.split("=")[1] || "search-v1";
 
 const jsonl = (f) => readFileSync(join(DATA, f), "utf8").split("\n").filter((l) => l.trim()).map((l) => JSON.parse(l));
-const firstUrl = (s = "") => s.match(/https?:\/\/\S+?(?=[\s),]|$)/)?.[0] || "";
+const firstUrl = (s = "") => s.match(/https?:\/\/\S+?(?=[\s),;]|$)/)?.[0] || "";
 
 /* ---------------------------------------------------------------- what can be found */
 /* Short credit shown under the answer. Stack Exchange's license (CC BY-SA) requires the author and license. */
@@ -109,10 +109,10 @@ if (!EVAL) {
 } else {
   // The test questions are NOT in this index, so the score is honest.
   const index = asLoaded(await toIndex([...qaEntries(train), ...guideEntries()]));
-  const queries = await embed(test.map((t) => t.messages.at(-2).content));
+  const queries = await embed(test.map((t) => withEnglish(t.messages.at(-2).content)));
   const lines = test.map((t, i) => {
     const t0 = performance.now();
-    const question = t.messages.at(-2).content;
+    const question = withEnglish(t.messages.at(-2).content);
     const results = search(index, queries[i], question, { species: (t.pet?.species || "").toLowerCase() || speciesOf(question) });
     const r = safetyReply(question) || compose(results, question);
     const seconds = Math.round((performance.now() - t0) / 100) / 10;
