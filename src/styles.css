@@ -1360,6 +1360,7 @@ table.data td.actions { text-align: right; white-space: nowrap; }
 .ai-start-ic { width: 60px; height: 60px; border-radius: 20px; background: var(--primary-soft); color: var(--primary); display: grid; place-items: center; margin: 0 auto 14px; }
 .ai-start h3 { font-size: 21px; margin-bottom: 6px; }
 .ai-start p { color: var(--ink-2); font-size: 14px; }
+.ai-start .ai-lang { display: inline-flex; align-items: center; gap: 6px; margin: 2px auto 6px; padding: 4px 10px; border-radius: 8px; background: var(--primary-soft); color: var(--primary); font-size: 13px; font-weight: 600; }
 .ai-suggest { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; text-align: left; }
 .ai-suggestion { text-align: left; border: 1.5px solid var(--line); background: var(--bg); border-radius: var(--r); padding: 12px 14px; font: inherit; font-size: 14px; font-weight: 600; color: var(--ink); cursor: pointer; transition: border-color .15s, background .15s; }
 .ai-suggestion:hover:not(:disabled) { border-color: var(--primary); background: var(--primary-soft); }

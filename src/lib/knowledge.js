@@ -13,6 +13,7 @@ export const EMBED_MODEL = "Xenova/all-MiniLM-L6-v2";
 export const EMBED_OPTIONS = { pooling: "mean", normalize: true };
 export const KEYWORD_WEIGHT = 0.15;                // how much the keyword match adds (0–0.15)
 export const MATCH = { sure: 0.68, maybe: 0.58 };   // score needed to answer / to offer a "closest answer"
+const OPEN_SURE = 0.76;                             // open Stack Exchange posts must match more closely to be shown as the answer
 const LEAD_WORDS = 60;                              // words of each answer that are searched, with its question
 
 const DOG = /\b(dogs?|pupp(y|ies)|pups?|canines?|aspin)\b/i;
@@ -125,12 +126,15 @@ export function decodeIndex(raw) {
 export function search(index, queryVector, queryText, { species = "", limit = 3 } = {}) {
   const { dims, data, entries, keywords } = index;
   const kw = keywords(queryText);
+  const named = speciesOf(queryText);
   const scored = entries.map((e, i) => {
     let dot = 0;
     for (let j = 0, o = i * dims; j < dims; j++) dot += queryVector[j] * data[o + j];
     let score = dot / 127 + KEYWORD_WEIGHT * kw[i];
     // Prefer answers about the pet's own species, and keep the other species' answers back.
     if (species && e.sp) score += e.sp === species ? 0.03 : -0.08;
+    // When the question itself names an animal ("my cat howls"), an answer about the other one is wrong.
+    if (named && e.sp && e.sp !== named) score -= 0.15;
     return { ...e, score };
   });
   // An answer can be found by several wordings of its question; keep only its best one.
@@ -161,12 +165,15 @@ export function queryText(messages) {
 
 const TAGALOG = [   // phrases first, so "nakagat ako" (bit me) isn't read as just "bite"
   [/\b(nakagat|kinagat) ako\b/, "bit me what do i do"], [/\b(nakalmot|kinalmot) ako\b/, "scratched me what do i do"],
+  [/\bdila nang dila\b|\bdila ng dila\b/, "licking"], [/\bkamot nang kamot\b|\bkamot ng kamot\b/, "scratching a lot itchy"],
+  [/\bnalalagas\b|\bnagkakalagas\b|\bnagkalagas\b|\bpagkalagas\b|\blagas\b/, "hair loss shedding"], [/\bkalbo\b/, "bald patches"],
+  [/\bbalahibo\b|\bbuhok\b/, "fur hair"], [/\bmakati\b|\bkati\b|\bnangangati\b|\bkinakamot\b|\bkamot\b/, "itchy scratching"],
   [/\bkailangan\b/, "need"], [/\b(iparehistro|irehistro|parehistro|rehistro)\b/, "register"],
   [/\baso\b|\bmga aso\b|\btuta\b/, "dog"], [/\bpusa\b|\bkuting\b/, "cat"],
   [/\bnakagat\b|\bkinagat\b|\bkagat\b/, "bitten bite"], [/\bkalmot\b|\bnakalmot\b|\bkinalmot\b/, "scratched scratch"],
   [/\bnagsusuka\b|\bsuka\b|\bsumuka\b/, "vomiting"], [/\bnagtatae\b|\bpagtatae\b/, "diarrhea"], [/\btae\b|\bdumi\b/, "poop"],
   [/\bayaw kumain\b|\bhindi kumakain\b|\bwalang gana\b/, "not eating"], [/\blagnat\b|\bmainit\b/, "fever"],
-  [/\bubo\b|\binuubo\b/, "cough"], [/\bsipon\b|\bbumabahing\b/, "sneezing"], [/\bdugo\b|\bdumudugo\b/, "blood bleeding"],
+  [/\bubo\b|\binuubo\b/, "cough"], [/\bsipon\b|\bbumabahing\b/, "sneezing"], [/\bdugo\b|\bdumudugo\b|\bnagdudugo\b|\bdinudugo\b|\bdurugo\b|\bpagdurugo\b/, "blood bleeding"],
   [/\bsugat\b/, "wound"], [/\bpilay\b|\bpiang\b|\bpaika\b/, "limping"], [/\bmatamlay\b|\bnanghihina\b/, "weak lethargic"],
   [/\bnalason\b|\blason\b/, "poison poisoned"], [/\bnakain\b|\bkinain\b|(?<!(ayaw|hindi) )\bkumain ng\b/, "ate"],
   [/\btsokolate\b/, "chocolate"], [/\bubas\b|\bpasas\b/, "grapes raisins"], [/\bsibuyas\b/, "onion"], [/\bbawang\b/, "garlic"],
@@ -189,24 +196,32 @@ export function withEnglish(text) {
 }
 
 /* ------------------------------------------------------------------ reply */
+const isOpen = (r) => /^Pets Stack Exchange/.test(r.src || "");
+// Tap-able questions: short ones only, since many open posts are long personal stories.
+const tappable = (r) => !isOpen(r) || r.q.length <= 90;
 export function compose(results, question = "") {
   const [best, ...rest] = results;
-  const related = rest.filter((r) => r.score >= MATCH.maybe && r.q !== best?.q).map(pick);
-  if (best && best.score >= MATCH.sure) {
+  const related = rest.filter((r) => r.score >= MATCH.maybe && r.q !== best?.q && tappable(r)).map(pick);
+  if (best && best.score >= (isOpen(best) ? OPEN_SURE : MATCH.sure)) {
     return { reply: withVetAdvice(question, best.a), sure: true, match: pick(best), related };
   }
-  if (best && best.score >= MATCH.maybe) {
+  // A loose match to an open Stack Exchange post is often long, rambling or about something else, so it is
+  // offered as a question to tap instead of being shown as the answer. Checked FurFriends answers still are.
+  if (best && best.score >= MATCH.maybe && !isOpen(best)) {
     return {
-      reply: `I'm not sure I have an answer for exactly that. This is the closest one I have, to the question "${short(best.q)}":\n\n${withVetAdvice(question, best.a)}`,
+      reply: `I'm not sure I have an answer for exactly that. This is the closest one I have, to the question "${pick(best).q}":\n\n${withVetAdvice(question, best.a)}`,
       sure: false, match: pick(best), related,
     };
   }
+  const similar = results.filter((r) => r.score >= MATCH.maybe - 0.08 && tappable(r)).map(pick);
   return {
-    reply: "I don't have a checked answer for that yet. Try asking in another way, with a few more details. "
+    reply: "I don't have a checked answer for that yet. Try asking in another way, with a few more details"
+      + (similar.length ? ", or tap a similar question below if one fits. " : ". ")
       + "If your pet seems unwell, your vet is the best person to ask.",
-    sure: false, match: null, related: results.filter((r) => r.score >= MATCH.maybe - 0.08).map(pick),
+    sure: false, match: null, related: similar,
   };
 }
 
-const pick = (r) => ({ q: short(r.q), source: r.src || "", url: r.url || "", kind: r.kind, score: Math.round(r.score * 100) / 100 });
+// A first-aid guide is shown by its title ("Bleeding & wounds"), not its whole summary sentence.
+const pick = (r) => ({ q: short(r.kind === "guide" ? r.q.split(":")[0] : r.q), source: r.src || "", url: r.url || "", kind: r.kind, score: Math.round(r.score * 100) / 100 });
 const short = (t, n = 110) => (t.length > n ? t.slice(0, n).replace(/\s+\S*$/, "") + "…" : t);

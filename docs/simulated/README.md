@@ -28,8 +28,8 @@ python evaluate.py score ../docs/simulated/SIMULATED-ai-grader1.csv ../docs/simu
 - **Usability:** run the sessions in `docs/usability-test-guide.md`. Then in Supabase open Table Editor →
   `usability_responses` → Export → Export as CSV, and run `node scripts/survey-results.mjs <that file>`.
 - **AI accuracy:** two team members each fill in their own copy in `ai-server/results/`
-  (`answers-search-v2-grader1.csv`, `-grader2.csv`) without talking to each other, then run
-  `python evaluate.py score results/answers-search-v2-grader1.csv results/answers-search-v2-grader2.csv`.
+  (`answers-search-v4-grader1.csv`, `-grader2.csv`) without talking to each other, then run
+  `python evaluate.py score results/answers-search-v4-grader1.csv results/answers-search-v4-grader2.csv`.
 - **Content:** the team checks `docs/content-check/FurFriends-content-check.pdf` against the sources it lists.
 
 ## One thing the practice run shows

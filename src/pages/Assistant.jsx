@@ -15,13 +15,13 @@ const loadChat = (user) => { try { return JSON.parse(sessionStorage.getItem(chat
 const REASONS = ["Wrong or inaccurate", "Not about my pet", "Unsafe advice", "Didn't answer my question", "Hard to understand", "Other"];
 
 function suggestions(pet) {
-  if (!pet) return ["What vaccines does a puppy need?", "How do I keep my cat cool in hot weather?", "How often should I deworm my dog?", "What human foods are toxic to pets?"];
+  if (!pet) return ["What vaccines does a puppy need?", "How do I keep my cat cool in hot weather?", "How often should I deworm my dog?", "Ayaw kumain ng aso ko, ano ang gagawin?"];
   const kind = pet.species === "Cat" ? "cat" : "dog";
   return [
     pet.weight ? `Is ${pet.weight} kg a healthy weight for ${pet.name}?` : `What's a healthy weight for ${pet.name}?`,
     `What health problems should I watch for${pet.breed ? ` in a ${pet.breed}` : ""}?`,
     `How do I keep ${pet.name} cool on hot days?`,
-    `How much should I feed a ${kind} like ${pet.name}?`,
+    `Ayaw kumain ng ${kind === "cat" ? "pusa" : "aso"} ko, ano ang gagawin?`,
   ];
 }
 
@@ -99,7 +99,7 @@ export default function Assistant() {
   return (
     <>
       <div className="topbar">
-        <div><h1>Ask FurFriends</h1><p>Questions about food, care, behavior or symptoms, answered from checked pet-care answers.</p></div>
+        <div><h1>Ask FurFriends</h1><p>Ask in English, Tagalog or Taglish about food, care, behavior or symptoms. Answers come from checked pet-care sources.</p></div>
         {chat.length > 0 && <div className="actions"><button className="btn btn-ghost" onClick={clear}><Icon name="plus" /> New chat</button></div>}
       </div>
 
@@ -123,6 +123,7 @@ export default function Assistant() {
             <div className="ai-start">
               <div className="ai-start-ic"><Icon name="sparkle" size={28} /></div>
               <h3>{pet ? `What would you like to know about ${pet.name}?` : "What would you like to know?"}</h3>
+              <p className="ai-lang"><Icon name="check" size={14} /> Understands Tagalog too, like "nagsusuka ang pusa ko".</p>
               {pet && <p>Answers are picked for {pet.species === "Cat" ? "cats" : "dogs"}, and weight and breed questions use {pet.name}'s breed guide.</p>}
               <div className="ai-suggest">
                 {suggestions(pet).map((s) => <button key={s} className="ai-suggestion" onClick={() => send(s)}>{s}</button>)}
