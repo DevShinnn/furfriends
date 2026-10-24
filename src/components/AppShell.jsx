@@ -82,12 +82,12 @@ export default function AppShell() {
       <div style={{ minWidth: 0 }}>
         <div className="mobile-bar">
           <Brand to="/app" size={19} />
-          <div style={{ display: "flex", gap: 4 }}>
-            {install && <button className="icon-btn" onClick={install} aria-label="Install app"><Icon name="download" size={20} /></button>}
+          <div className="mobile-actions">
+            <Link className="ai-pill" to="/app/assistant" aria-label="Ask FurFriends"><Icon name="sparkle" size={17} /><span>Ask AI</span></Link>
+            {install && <button className="icon-btn quiet" onClick={install} aria-label="Install app"><Icon name="download" size={17} /></button>}
             <BellButton />
-            <Link className="icon-btn" to="/app/assistant" aria-label="Ask FurFriends"><Icon name="sparkle" size={21} /></Link>
             <Link className="mobile-avatar" to="/app/profile" aria-label="My profile">{initials(user.name)}</Link>
-            <button className="icon-btn" onClick={onLogout} aria-label="Log out"><Icon name="logout" /></button>
+            <button className="icon-btn quiet" onClick={onLogout} aria-label="Log out"><Icon name="logout" size={17} /></button>
           </div>
         </div>
         <main className="main"><Outlet /></main>
