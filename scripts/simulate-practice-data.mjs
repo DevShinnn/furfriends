@@ -19,7 +19,7 @@ import { TASKS, susScore } from "../src/lib/survey.js";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "docs", "simulated");
-const SHEET = join(ROOT, "ai-server", "results", "answers-search-v2.csv");
+const SHEET = join(ROOT, "ai-server", "results", "answers-search-v3.csv");
 const NOTE = "SIMULATED practice grade, not a real judgement.";
 
 /* Small seeded random generator (mulberry32). */

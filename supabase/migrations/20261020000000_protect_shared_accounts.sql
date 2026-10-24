@@ -13,6 +13,7 @@ create function public.is_shared_account(p_email text)
 returns boolean
 language sql
 immutable
+set search_path = ''
 as $$
   select lower(coalesce(p_email, '')) = 'demo@furfriends.app'
       or lower(coalesce(p_email, '')) like 'sample.%@example.com';
@@ -35,6 +36,9 @@ begin
   return new;
 end;
 $$;
+
+-- A trigger function, never meant to be called through the API.
+revoke execute on function public.protect_shared_account() from public, anon, authenticated;
 
 create trigger protect_shared_account
   before update on auth.users
