@@ -25,7 +25,8 @@ language plpgsql
 security definer set search_path = ''
 as $$
 begin
-  if public.is_shared_account(old.email) and current_user <> 'postgres'
+  -- session_user, not current_user: inside a security definer function current_user is always the owner.
+  if public.is_shared_account(old.email) and session_user <> 'postgres'
      and (new.encrypted_password is distinct from old.encrypted_password
           or new.email is distinct from old.email
           or coalesce(new.email_change, '') <> '') then
