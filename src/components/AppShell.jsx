@@ -8,7 +8,7 @@ import { BellButton, ReminderWatcher } from "./Reminders";
 import { initials } from "../lib/utils";
 
 /* Captures the browser's PWA install prompt so we can offer our own button. */
-function useInstallPrompt() {
+export function useInstallPrompt() {
   const [evt, setEvt] = useState(() => window.__furfriendsInstall || null);
   useEffect(() => {
     const on = (e) => { e.preventDefault(); window.__furfriendsInstall = e; setEvt(e); };
@@ -84,10 +84,8 @@ export default function AppShell() {
           <Brand to="/app" size={19} />
           <div className="mobile-actions">
             <Link className="ai-pill" to="/app/assistant" aria-label="Ask FurFriends"><Icon name="sparkle" size={17} /><span>Ask AI</span></Link>
-            {install && <button className="icon-btn quiet" onClick={install} aria-label="Install app"><Icon name="download" size={17} /></button>}
             <BellButton />
-            <Link className="mobile-avatar" to="/app/profile" aria-label="My profile">{initials(user.name)}</Link>
-            <button className="icon-btn quiet" onClick={onLogout} aria-label="Log out"><Icon name="logout" size={17} /></button>
+            <Link className="profile-btn" to="/app/profile" aria-label="My profile"><Icon name="user" size={18} /></Link>
           </div>
         </div>
         <main className="main"><Outlet /></main>

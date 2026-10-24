@@ -6,10 +6,12 @@ import { useStore } from "../store/StoreContext";
 import { useUI } from "../components/UIContext";
 import Icon from "../components/Icon";
 import { initials } from "../lib/utils";
+import { useInstallPrompt } from "../components/AppShell";
 
 export default function Profile() {
-  const { user, pets, updateUser, changePassword, resetDemo, setNotifications, savePushSubscription, removePushSubscription } = useStore();
+  const { user, pets, logout, updateUser, changePassword, resetDemo, setNotifications, savePushSubscription, removePushSubscription } = useStore();
   const { toast, confirm } = useUI();
+  const install = useInstallPrompt();
   const [info, setInfo] = useState({ name: user.name, email: user.email, phone: user.phone || "", city: user.city || "" });
   const [pw, setPw] = useState({ current: "", next: "", confirm: "" });
   const [infoErr, setInfoErr] = useState("");
@@ -80,6 +82,13 @@ export default function Profile() {
           <section className="card survey-invite">
             <div><h3>Help test FurFriends</h3><p>Took part in our usability test? Tell us how it went in a 5-minute survey.</p></div>
             <Link className="btn btn-soft" to="/app/survey"><Icon name="clip" size={16} /> Take the survey</Link>
+          </section>
+          <section className="card survey-invite">
+            <div><h3>This device</h3><p>{install ? "Add FurFriends to your home screen, or log out of this account." : "Log out of this account on this device."}</p></div>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              {install && <button className="btn btn-soft" type="button" onClick={install}><Icon name="download" size={16} /> Install app</button>}
+              <button className="btn btn-soft" type="button" onClick={() => { logout(); toast("You've been logged out"); }}><Icon name="logout" size={16} /> Log out</button>
+            </div>
           </section>
           <NotificationSettings user={user} on={user.notificationsEnabled}
             setOn={async (on) => {
