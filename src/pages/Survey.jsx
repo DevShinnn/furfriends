@@ -54,7 +54,7 @@ export default function Survey() {
   return (
     <form className="survey" onSubmit={submit} noValidate>
       <div className="topbar"><div><h1>Usability survey</h1><p>Tell us how FurFriends worked for you. It takes about 5 minutes and helps our capstone research.</p></div></div>
-      {user.isDemo && <div className="survey-note"><Icon name="info" size={16} /> You're using the demo account. Log in with your own account to send answers.</div>}
+      {user.isShared && <div className="survey-note"><Icon name="info" size={16} /> You're using a shared demo account. Log in with your own account to send answers.</div>}
 
       <section className="card survey-part">
         <h3><span className="survey-num">1</span> About you</h3>
@@ -118,7 +118,7 @@ export default function Survey() {
       {error && <div className="error-msg" role="alert">{error}</div>}
       <div className="survey-foot">
         <small>Your answers are saved with your account and read only by the FurFriends research team.</small>
-        <button className="btn btn-primary" type="submit" disabled={busy || user.isDemo}>{busy ? "Sending…" : "Send answers"}</button>
+        <button className="btn btn-primary" type="submit" disabled={busy || user.isShared}>{busy ? "Sending…" : "Send answers"}</button>
       </div>
     </form>
   );

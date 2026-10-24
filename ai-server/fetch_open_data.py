@@ -17,8 +17,11 @@ These answers come from owners, not vets: the team checks a sample against trust
 import argparse
 import ast
 import csv
+import gzip
 import html
+import json
 import os
+import time
 import re
 import urllib.request
 from collections import Counter
@@ -28,6 +31,10 @@ from evaluate import DOSE, SOON, URGENT, VET, words
 PARQUET = ("https://huggingface.co/datasets/HuggingFaceH4/stack-exchange-preferences/resolve/main/"
            "data/pets.stackexchange.com/train-00000-of-00001.parquet")
 CACHE = "data/open/cache/pets_stackexchange.parquet"
+# Which question each answer really belongs to, from the Stack Exchange API. Hugging Face's copy pairs
+# some questions with another question's answers (e.g. a rabbit question with an answer about a cat),
+# so every kept answer is checked against the live site. Saved so later runs work offline.
+PARENTS = "data/open/cache/answer_parents.json"
 COLUMNS = ["question", "answer", "category", "set", "pet_name", "pet_species", "pet_breed", "pet_age",
            "pet_weight_kg", "source", "checked_by"]
 
@@ -89,6 +96,27 @@ def pick_answer(answers):
     return None
 
 
+def answer_parents(answer_ids):
+    """{answer id: question id} from the Stack Exchange API (100 per request), cached in PARENTS."""
+    known = json.load(open(PARENTS)) if os.path.exists(PARENTS) else {}
+    todo = [a for a in map(str, answer_ids) if a not in known]
+    if todo:
+        print(f"Checking {len(todo)} answers against pets.stackexchange.com ...")
+    for i in range(0, len(todo), 100):
+        url = "https://api.stackexchange.com/2.3/answers/" + ";".join(todo[i:i + 100]) + "?site=pets&pagesize=100"
+        raw = urllib.request.urlopen(url).read()
+        data = json.loads(gzip.decompress(raw) if raw[:2] == bytes([0x1F, 0x8B]) else raw)   # the API usually gzips
+        for a in todo[i:i + 100]:
+            known[a] = None   # deleted from the site unless the API returns it
+        for item in data["items"]:
+            known[str(item["answer_id"])] = item["question_id"]
+        time.sleep(0.5)   # the API allows a few requests per second
+    if todo:
+        os.makedirs(os.path.dirname(PARENTS), exist_ok=True)
+        json.dump(known, open(PARENTS, "w"), indent=0)
+    return known
+
+
 def download(path):
     if os.path.exists(path):
         return
@@ -138,11 +166,20 @@ def main():
             continue
         qid, aid = r["qid"], best.get("answer_id")
         kept_species.append(sp)
-        rows.append({"question": q, "answer": a, "category": cat, "set": "train",
+        rows.append({"_qid": qid, "_aid": aid, "question": q, "answer": a, "category": cat, "set": "train",
                      "source": f"Pets Stack Exchange, https://pets.stackexchange.com/a/{aid} (question "
                                f"https://pets.stackexchange.com/q/{qid}), answer by {best.get('author', 'unknown')}, "
                                f"{license_for(str(r['date']))}",
                      "checked_by": ""})
+
+    parents = answer_parents(r["_aid"] for r in rows)
+    for r in rows:
+        if parents.get(str(r["_aid"])) != r["_qid"]:
+            why["answer belongs to another question" if parents.get(str(r["_aid"])) else "answer deleted from the site"] += 1
+    rows = [r for r in rows if parents.get(str(r["_aid"])) == r["_qid"]]
+    kept_species = [species(r["question"]) for r in rows]
+    for r in rows:
+        del r["_qid"], r["_aid"]
 
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     with open(args.out, "w", encoding="utf-8-sig", newline="") as f:

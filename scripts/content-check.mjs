@@ -29,10 +29,10 @@ const jsonl = (f) => readFileSync(join(ROOT, "ai-server/data", f), "utf8").trim(
 const samples = jsonl("sample_train.jsonl");
 // Reference answers the AI is graded against (evaluate.py): the team's test set once it exists.
 const tests = jsonl(existsSync(join(ROOT, "ai-server/data/test.jsonl")) ? "test.jsonl" : "sample_test.jsonl");
-// Answers researched from public sources (ai-server/data/open/researched_qa.csv). The ones in the test set are in D.
-const RESEARCHED = join(ROOT, "ai-server/data/open/researched_qa.csv");
+// Answers researched from public sources (ai-server/data/open/researched_*.csv). The ones in the test set are in D.
+const RESEARCHED = ["researched_qa.csv", "researched_basics.csv"].map((f) => join(ROOT, "ai-server/data/open", f));
 const tested = new Set(tests.map((t) => t.messages.at(-2).content.trim()));
-const researched = existsSync(RESEARCHED) ? readCsv(RESEARCHED).filter((r) => r.question && !tested.has(r.question.trim())) : [];
+const researched = RESEARCHED.filter(existsSync).flatMap(readCsv).filter((r) => r.question && !tested.has(r.question.trim()));
 
 /* Sources the team checks items against. Section E items already name theirs. */
 const REFERENCES = [

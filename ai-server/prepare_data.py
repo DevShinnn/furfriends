@@ -93,6 +93,9 @@ def to_example(r):
         ex["pet"] = pet
     if (r.get("source") or "").strip():
         ex["source"] = r["source"].strip()   # shown with the answer in the app (credit the license requires)
+    also = [s.strip() for s in (r.get("also_asked") or "").split("|") if s.strip()]
+    if also:
+        ex["also"] = also   # other ways owners ask it; the app's search finds the answer by these too
     return ex
 
 

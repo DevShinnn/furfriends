@@ -22,11 +22,13 @@ who taps a demo button, so:
 - anyone's changes show up for everyone until it's reset;
 - **Profile → Reset demo data** puts its pets back for everyone (or run `npm run seed`);
 - it can't change its password or email, send survey answers or rate the assistant, so the shared login
-  keeps working and the research data only holds real people.
+  keeps working and the research data only holds real people. The three sample accounts have the same
+  limits. The database enforces them too (`supabase/migrations/20261020000000_protect_shared_accounts.sql`),
+  so they hold even for someone calling the API directly with the public password.
 
-If the demo button ever says "The demo account isn't available right now", someone changed its
-password outside the app. Fix it in Supabase → Authentication → Users: delete `demo@furfriends.app`,
-then run `npm run seed` to make it again.
+If the demo button ever says "The demo account isn't available right now", its password was changed
+(possible only before that migration was run). Fix it in Supabase → Authentication → Users: delete
+`demo@furfriends.app`, then run `npm run seed` to make it again.
 
 ## Refresh them
 Before a demo, run this in the project folder:

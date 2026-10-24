@@ -28,7 +28,7 @@ Give one task at a time, read exactly as written. **Don't help** unless they're 
 
 For each task, note on your sheet: **result** (done alone / needed help / couldn't do it), **time** in seconds, and **where they hesitated or said something** (quote them).
 
-Task 9 needs the AI server running. If it isn't, skip the task and write "not run".
+Task 9: the assistant runs on the tester's phone. The first question downloads it once (about 30 MB), so connect the phone to Wi-Fi before the session and ask one practice question beforehand if you can.
 
 ## After the tasks
 1. Ask them to open **Profile → Help test FurFriends → Take the survey** (or go to https://furfriends-black.vercel.app/#/app/survey).

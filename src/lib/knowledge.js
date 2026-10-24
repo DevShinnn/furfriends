@@ -22,8 +22,9 @@ export const speciesOf = (text) => {
   return d && !c ? "dog" : c && !d ? "cat" : "";
 };
 
-/* What each entry is searched by: its question plus the start of its answer. */
-export const searchText = (e) => withEnglish(`${e.q} ${e.keys || ""} ${e.a.split(/\s+/).slice(0, LEAD_WORDS).join(" ")}`);
+/* What each entry is searched by: its question (or one of the other ways owners ask it) plus the
+   start of its answer. */
+export const searchText = (e) => withEnglish(`${e.ask || e.q} ${e.keys || ""} ${e.a.split(/\s+/).slice(0, LEAD_WORDS).join(" ")}`);
 
 /* ------------------------------------------------------------------ safety rules
    Checked before searching. FurFriends never gives medicine doses, whatever the data says. */
@@ -39,7 +40,21 @@ export function safetyReply(question) {
       sure: true, match: { q: "Medicine doses", source: "FurFriends safety rule", url: "", kind: "rule", score: 1 }, related: [],
     };
   }
-  return null;
+  return chatReply(question);
+}
+
+/* Greetings, thanks and "what can you do?" get a short reply instead of the closest pet-care answer. */
+const GREETING = /^(hi+|hello+|hey+|helo|good (morning|afternoon|evening|day)|kumusta|kamusta|musta|magandang (umaga|hapon|gabi)|yo|sup)\b[\s!.,?]*(po|there|furfriends)?[\s!.,?]*$/i;
+const THANKS = /^(thanks?|thank you|thank u|ty|salamat( po)?|maraming salamat|ok(ay)?|got it|noted|sige)\b[\s\w!.,]{0,20}$/i;
+const ABOUT = /^(what can you do|what do you do|who are you|what are you|how do (i|you) use (this|you)|help|ano(ng)? (kaya mong gawin|ginagawa mo))\b[\s!.,?]*$/i;
+export const INTRO = "Hi! I answer common questions about caring for cats and dogs, from FurFriends' first-aid guides and checked pet-care answers. For example:\n\n"
+  + "- My dog ate chocolate, what do I do?\n- How often should I deworm my kitten?\n- When does my puppy need the anti-rabies shot?\n- Ayaw kumain ng pusa ko\n\n"
+  + "Ask about one thing at a time, and say if it's a cat or a dog. I'm not a vet: in an emergency, go to a vet now.";
+export function chatReply(question) {
+  const q = question.trim();
+  const reply = THANKS.test(q) ? "You're welcome! Ask me anything else about your pet's care."
+    : GREETING.test(q) || ABOUT.test(q) ? INTRO : null;
+  return reply && { reply, sure: true, match: null, related: [] };
 }
 
 /* Questions about symptoms always end with vet advice, even when the matched answer has none. */
@@ -100,7 +115,10 @@ export function decodeIndex(raw) {
   const bin = atob(raw.vectors);
   const bytes = new Int8Array(bin.length);
   for (let i = 0; i < bin.length; i++) bytes[i] = (bin.charCodeAt(i) << 24) >> 24;
-  return { ...raw, data: bytes, keywords: keywordIndex(raw.entries.map(searchText)) };
+  // Another wording of a question is stored as { id, of, ask }: fill in the answer it leads to.
+  const byId = new Map(raw.entries.map((e) => [e.id, e]));
+  const entries = raw.entries.map((e) => (e.of && !e.a ? { ...byId.get(e.of), ...e } : e));
+  return { ...raw, entries, data: bytes, keywords: keywordIndex(entries.map(searchText)) };
 }
 
 /* ------------------------------------------------------------------ search */
@@ -115,15 +133,27 @@ export function search(index, queryVector, queryText, { species = "", limit = 3 
     if (species && e.sp) score += e.sp === species ? 0.03 : -0.08;
     return { ...e, score };
   });
-  return scored.sort((a, b) => b.score - a.score).slice(0, limit);
+  // An answer can be found by several wordings of its question; keep only its best one.
+  const seen = new Set();
+  return scored.sort((a, b) => b.score - a.score)
+    .filter((e) => !seen.has(e.of || e.id) && seen.add(e.of || e.id))
+    .slice(0, limit);
 }
 
 /* The text searched for: the latest question, plus the one before if it's a short follow-up
-   ("what about kittens?"), with common Tagalog words explained in English (the model reads English). */
+   ("what about kittens?", "is it safe?"), with common Tagalog words explained in English (the model
+   reads English). A short question that names its own animal ("my cat is vomiting") is a new question. */
+const FOLLOW_UP = /^(what about|how about|and|also|but|what if|paano naman|pano naman|paano kung|pano kung|e kung|eh kung|e sa|eh sa)\b/i;
 export function queryText(messages) {
   const asked = messages.filter((m) => m.role === "user" && !m.error).map((m) => m.content.trim());
   const last = asked.at(-1) || "";
-  return withEnglish(last.split(/\s+/).length < 5 && asked.length > 1 ? `${asked.at(-2)} ${last}` : last);
+  const own = withEnglish(last);
+  const names = DOG.test(own) || CAT.test(own);
+  if (asked.length < 2 || last.split(/\s+/).length >= 5 || (names && !FOLLOW_UP.test(last))) return own;
+  // "What about kittens?" after a puppy question: the new animal replaces the old one.
+  const before = withEnglish(asked.at(-2));
+  const topic = names ? before.replace(new RegExp(DOG.source, "gi"), " ").replace(new RegExp(CAT.source, "gi"), " ") : before;
+  return `${topic} ${own}`.replace(/\s+/g, " ").trim();
 }
 
 const TAGALOG = [   // phrases first, so "nakagat ako" (bit me) isn't read as just "bite"

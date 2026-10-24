@@ -7,8 +7,9 @@ import { addDemoPets, browserFiles, clearPets } from "../lib/seedDemo";
 
 /* Accounts live in Supabase (Auth + Postgres + Storage, see supabase/migrations).
    The demo account is a real, shared account (made by scripts/seed-sample-accounts.mjs) that
-   the demo buttons log into. It can't change its password or email, send survey answers or
-   rate the assistant, so the shared login keeps working and the research data stays clean.
+   the demo buttons log into. It and the sample accounts (isShared) can't change their password or
+   email, send survey answers or rate the assistant, so the shared logins keep working and the
+   research data stays clean. The database enforces the same (20261020000000_protect_shared_accounts.sql).
 
    Pet-data mutations stay synchronous for the UI: state updates immediately, and the
    matching Supabase write is queued so writes reach the server in order. If a write
@@ -137,6 +138,8 @@ async function fetchAll(authUser) {
     id: authUser.id, email: authUser.email, name: p.name || "", phone: p.phone || "", city: p.city || "",
     notificationsEnabled: p.notifications_enabled ?? true, createdAt: Date.parse(authUser.created_at),
     isDemo: authUser.email === DEMO_EMAIL,
+    // the demo and sample accounts, whose passwords are public (docs/sample-accounts.md); the database enforces this too
+    isShared: authUser.email === DEMO_EMAIL || /^sample\..+@example\.com$/.test(authUser.email || ""),
   };
   return { user, pets };
 }
@@ -318,7 +321,7 @@ export function StoreProvider({ children }) {
         name = name.trim(); phone = phone.trim(); city = city.trim();
         if (!name) return { error: "Name can't be empty." };
         if (!isEmail(email)) return { error: "Please enter a valid email address." };
-        if (user.isDemo && email !== user.email) return { error: "The demo account's email can't be changed." };
+        if (user.isShared && email !== user.email) return { error: "This shared account's email can't be changed." };
         const r = await supabase.from("profiles").update({ name, phone, city }).eq("id", user.id);
         if (r.error) return { error: r.error.message };
         let notice = null;
@@ -349,7 +352,7 @@ export function StoreProvider({ children }) {
       /* ------------------------------------------------ usability survey (thesis)
          Resolves to an error message or null. The demo account can't take part. */
       async submitSurvey({ participantCode, device, tasks, sus, liked, improve }) {
-        if (!user || user.isDemo) return "The demo account can't send survey answers. Log in with a real account to take part.";
+        if (!user || user.isShared) return "This shared account can't send survey answers. Log in with your own account to take part.";
         const { error } = await supabase.from("usability_responses").insert({
           participant_code: participantCode.trim(), device, tasks, sus, liked: liked.trim(), improve: improve.trim(),
         });
@@ -357,7 +360,7 @@ export function StoreProvider({ children }) {
       },
       // How many responses this account has sent (0 for the demo, or if the table isn't set up).
       async surveyCount() {
-        if (!user || user.isDemo) return 0;
+        if (!user || user.isShared) return 0;
         const { count, error } = await supabase.from("usability_responses").select("id", { count: "exact", head: true });
         return error ? 0 : count || 0;
       },
@@ -369,7 +372,7 @@ export function StoreProvider({ children }) {
       },
 
       async changePassword({ current, next, confirm }) {
-        if (user.isDemo) return "The demo account's password can't be changed.";
+        if (user.isShared) return "This shared account's password can't be changed.";
         if ((next || "").length < 8) return "New password must be at least 8 characters.";
         if (next !== confirm) return "New passwords don't match.";
         const check = await supabase.auth.signInWithPassword({ email: user.email, password: current || "" });
@@ -507,7 +510,7 @@ export function StoreProvider({ children }) {
          Written directly (not through the sync queue) so a failure only affects the rating.
          Demo ratings stay in the chat. Both resolve to an error message or null. */
       async rateAnswer(f) {
-        if (!user || user.isDemo) return null;
+        if (!user || user.isShared) return null;
         const { error } = await supabase.from("assistant_feedback").upsert({
           id: f.id, pet_id: f.petId || null, question: f.question, answer: f.answer,
           conversation: f.conversation || [], pet_context: f.petContext || null, model: f.model || null,
@@ -516,7 +519,7 @@ export function StoreProvider({ children }) {
         return error ? error.message : null;
       },
       async clearRating(id) {
-        if (!user || user.isDemo) return null;
+        if (!user || user.isShared) return null;
         const { error } = await supabase.from("assistant_feedback").delete().eq("id", id);
         return error ? error.message : null;
       },

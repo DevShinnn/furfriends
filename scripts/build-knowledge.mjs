@@ -37,13 +37,15 @@ function qaEntries(rows) {
   return rows
     // Answers about one named pet ("Is Mochi's weight healthy?") would mislead other owners.
     .filter((r) => !r.pet?.name)
-    .map((r) => {
+    .flatMap((r) => {
       const q = r.messages.at(-2).content, a = r.messages.at(-1).content;
-      return {
+      const main = {
         id: r.id, kind: "qa", cat: r.category || "", q, a,
         sp: (r.pet?.species || "").toLowerCase() || speciesOf(q),
         src: credit(r.source), url: firstUrl(r.source),
       };
+      // Other ways owners ask the same thing ("my dog has fleas", "may pulgas ang aso ko") find the same answer.
+      return [main, ...(r.also || []).map((ask, i) => ({ ...main, id: `${r.id}-${i + 1}`, of: r.id, ask }))];
     });
 }
 
@@ -56,14 +58,14 @@ function guideEntries() {
 function listEntries(g) {
   const main = guideEntry(g);
   return (g.lists || []).flatMap((l) => l.items.map((item, i) => ({
-    ...main, id: `${main.id}-${l.title.toLowerCase().replace(/\W+/g, "-")}-${i}`, keys: "",
+    ...main, id: `${main.id}-${l.title.toLowerCase().replace(/\W+/g, "-")}-${i}`, of: main.id, keys: "",
     q: `${item.split(/[.:]/)[0]} (${l.title.toLowerCase()}, see the ${g.title} guide)`,
   })));
 }
 
 function guideEntry(g) {
   return {
-    id: `guide-${g.slug}`, kind: "guide", cat: g.category, sp: g.species === "both" ? "" : g.species,
+    id: `guide-${g.slug}`, kind: "guide", cat: g.category, sp: g.species === "both" ? "" : g.species.toLowerCase(),
     q: `${g.title}: ${g.summary}`,
     // extra words it can be found by: the signs, and lists such as the common poisons
     keys: [...g.signs, ...(g.lists || []).flatMap((l) => l.items)].join(", "),
@@ -90,7 +92,8 @@ const toIndex = async (entries) => {
   const vectors = await embed(entries.map(searchText));
   return {
     version: VERSION, model: EMBED_MODEL, dims: vectors[0].length, built: new Date().toISOString(), count: entries.length,
-    entries, vectors: encodeVectors(vectors),
+    // other wordings keep only the wording and the answer they lead to (see decodeIndex)
+    entries: entries.map((e) => (e.ask ? { id: e.id, of: e.of, ask: e.ask } : e)), vectors: encodeVectors(vectors),
   };
 };
 // Same decoding as the app, so search runs on exactly what is shipped.
@@ -104,8 +107,8 @@ if (!EVAL) {
   const out = join(ROOT, "public", "knowledge", "index.json");
   mkdirSync(dirname(out), { recursive: true });
   writeFileSync(out, JSON.stringify(index));
-  const n = (kind) => entries.filter((e) => e.kind === kind).length;
-  console.log(`${entries.length} entries (${n("qa")} Q&As, ${n("guide")} from ${GUIDES.length} guides) → ${out} (${(JSON.stringify(index).length / 1024).toFixed(0)} KB)`);
+  const n = (kind) => entries.filter((e) => e.kind === kind && !e.ask).length;
+  console.log(`${entries.length} entries (${n("qa")} Q&As, ${entries.filter((e) => e.ask).length} other wordings, ${n("guide")} from ${GUIDES.length} guides) → ${out} (${(JSON.stringify(index).length / 1024).toFixed(0)} KB)`);
 } else {
   // The test questions are NOT in this index, so the score is honest.
   const index = asLoaded(await toIndex([...qaEntries(train), ...guideEntries()]));
