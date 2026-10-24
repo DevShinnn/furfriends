@@ -2,7 +2,7 @@ import { supabase } from "./supabase";
 import { GUIDES } from "./emergency";
 import { breedFor } from "./breeds";
 import { ageText, byDateDesc, vaxStatus } from "./utils";
-import { chatReply, compose, decodeIndex, queryText, safetyReply, search } from "./knowledge";
+import { chatReply, compose, decodeIndex, queryText, safetyReply, search, withEnglish } from "./knowledge";
 
 /* Client for the FurFriends assistant.
 
@@ -133,7 +133,7 @@ async function askKnowledge({ messages, pet, signal, onStatus }) {
   const q = queryText(messages);
   const ready = loadIndex();
   const last = messages.filter((m) => m.role === "user" && !m.error).at(-1)?.content || "";
-  const rule = chatReply(last) || safetyReply(q) || breedReply(q, pet);
+  const rule = chatReply(last) || safetyReply(q) || breedReply(withEnglish(last), pet);
   const index = await ready;
   const answer = rule || compose(search(index, await embed(q, onStatus), q, { species: (pet?.species || "").toLowerCase() }), q);
   if (signal?.aborted) throw new Error("Cancelled");

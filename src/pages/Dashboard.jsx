@@ -49,7 +49,7 @@ export default function Dashboard() {
           <div className="cta">
             <button className="btn btn-coral" onClick={() => openModal(<PetForm />)}><Icon name="plus" /> Add pet</button>
             {pets.length > 0 && <button className="btn btn-ghost-w" onClick={() => openModal(<DocForm />)}><Icon name="upload" size={16} /> Upload document</button>}
-            <Link className="btn btn-ghost-w" to="/app/assistant"><Icon name="chat" size={16} /> Ask FurFriends</Link>
+            <Link className="btn btn-ghost-w" to="/app/assistant"><Icon name="sparkle" size={16} /> Ask FurFriends</Link>
           </div>
         </div>
         {pets.length > 0 && (

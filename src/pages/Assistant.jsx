@@ -121,7 +121,7 @@ export default function Assistant() {
         <div className="ai-log" aria-live="polite">
           {!chat.length ? (
             <div className="ai-start">
-              <div className="ai-start-ic"><Icon name="chat" size={28} /></div>
+              <div className="ai-start-ic"><Icon name="sparkle" size={28} /></div>
               <h3>{pet ? `What would you like to know about ${pet.name}?` : "What would you like to know?"}</h3>
               {pet && <p>Answers are picked for {pet.species === "Cat" ? "cats" : "dogs"}, and weight and breed questions use {pet.name}'s breed guide.</p>}
               <div className="ai-suggest">
@@ -146,7 +146,12 @@ export default function Assistant() {
               placeholder={pet ? `Ask about ${pet.name}…` : "Ask a question…"} aria-label="Your question" disabled={busy} />
             <button className="btn btn-primary ai-send" type="submit" disabled={busy || !text.trim()} aria-label="Send"><Icon name="send" size={18} /></button>
           </div>
-          <p className="ai-foot">Pilot version: an open-source AI on your device picks the closest answer from FurFriends' guides and open pet-care Q&As. It can pick the wrong one, so check the question it matched. Rating an answer shares it with the FurFriends team to improve the assistant. It isn't a vet. In an emergency, go to a vet now.</p>
+          <div className="ai-foot">Pilot: it can pick the wrong answer, and it isn't a vet. In an emergency, go to a vet now.
+            <details className="ai-foot-more">
+              <summary>How it works</summary>
+              An open-source AI on your device picks the closest answer from FurFriends' guides and open pet-care Q&As. Check the question it matched. Rating an answer shares it with the FurFriends team to improve the assistant.
+            </details>
+          </div>
         </form>
       </section>
     </>
@@ -175,7 +180,7 @@ function Message({ m, onRate, onExplain, onAsk }) {
   }
   return (
     <div className="ai-msg bot">
-      <span className="ai-avatar" aria-hidden="true"><Icon name="paw" size={16} /></span>
+      <span className="ai-avatar" aria-hidden="true"><Icon name="sparkle" size={17} /></span>
       <div className="ai-turn">
         <div className={`ai-bubble ${m.error ? "is-error" : ""}`}><Reply text={m.content} /></div>
         {m.match && <Source match={m.match} />}

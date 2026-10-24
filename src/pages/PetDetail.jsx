@@ -53,7 +53,7 @@ function PetView({ pet, tab, setTab }) {
           </div>
           <div className="actions">
             <button className="btn btn-sm glass-btn" onClick={() => openModal(<EmergencyCard pet={pet} />)}><Icon name="idcard" /> Emergency card</button>
-            <Link className="btn btn-sm glass-btn" to={`/app/assistant?pet=${pet.id}`} aria-label={`Ask about ${pet.name}`}><Icon name="chat" size={16} /><span className="ph-lbl"> Ask</span></Link>
+            <Link className="btn btn-sm glass-btn" to={`/app/assistant?pet=${pet.id}`} aria-label={`Ask about ${pet.name}`}><Icon name="sparkle" size={16} /><span className="ph-lbl"> Ask</span></Link>
             <button className="btn btn-sm glass-btn" onClick={edit} aria-label="Edit"><Icon name="edit" /><span className="ph-lbl"> Edit</span></button>
             <button className="btn btn-sm glass-btn" onClick={() => deletePet(pet, true)} aria-label="Delete"><Icon name="trash" /><span className="ph-lbl"> Delete</span></button>
           </div>

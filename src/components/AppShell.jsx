@@ -47,7 +47,7 @@ export default function AppShell() {
     { to: "/app/appointments", icon: "stetho", label: "Vet visits", short: "Visits", count: upcomingVisits || null },
     { to: "/app/emergency", icon: "firstaid", label: "Emergency", short: "Emergency", cls: "nav-sos" },
     { to: "/app/breeds", icon: "book", label: "Breed guide", short: "Breeds" },
-    { to: "/app/assistant", icon: "chat", label: "Ask FurFriends", desktopOnly: true },
+    { to: "/app/assistant", icon: "sparkle", label: "Ask FurFriends", desktopOnly: true },
     { to: "/app/profile", icon: "user", label: "Profile", desktopOnly: true },
   ];
   const onLogout = () => { logout(); toast("You've been logged out"); };
@@ -85,7 +85,7 @@ export default function AppShell() {
           <div style={{ display: "flex", gap: 4 }}>
             {install && <button className="icon-btn" onClick={install} aria-label="Install app"><Icon name="download" size={20} /></button>}
             <BellButton />
-            <Link className="icon-btn" to="/app/assistant" aria-label="Ask FurFriends"><Icon name="chat" size={21} /></Link>
+            <Link className="icon-btn" to="/app/assistant" aria-label="Ask FurFriends"><Icon name="sparkle" size={21} /></Link>
             <Link className="mobile-avatar" to="/app/profile" aria-label="My profile">{initials(user.name)}</Link>
             <button className="icon-btn" onClick={onLogout} aria-label="Log out"><Icon name="logout" /></button>
           </div>

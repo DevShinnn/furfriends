@@ -140,16 +140,19 @@ export function search(index, queryVector, queryText, { species = "", limit = 3 
     .slice(0, limit);
 }
 
-/* The text searched for: the latest question, plus the one before if it's a short follow-up
-   ("what about kittens?", "is it safe?"), with common Tagalog words explained in English (the model
-   reads English). A short question that names its own animal ("my cat is vomiting") is a new question. */
-const FOLLOW_UP = /^(what about|how about|and|also|but|what if|paano naman|pano naman|paano kung|pano kung|e kung|eh kung|e sa|eh sa)\b/i;
+/* The text searched for: the latest question, plus the one before if it is a short follow-up, with
+   common Tagalog words explained in English (the model reads English). */
+const FOLLOW_UP = /^(what about|how about|and|also|but|what if|how much|how many|how long|how often|why|when|which|is it|can i|should i|what should|what do|paano naman|pano naman|paano kung|pano kung|e kung|eh kung|e sa|eh sa)\b/i;
+const REFERS_BACK = /\b(it|its|that|this|they|them|those|these)\b/i;
 export function queryText(messages) {
   const asked = messages.filter((m) => m.role === "user" && !m.error).map((m) => m.content.trim());
   const last = asked.at(-1) || "";
   const own = withEnglish(last);
+  // Only a short message that leans on the one before it ("is it safe?", "what about kittens?") is
+  // joined to it. A new symptom or topic ("she is not eating") stands alone, even when it is short.
   const names = DOG.test(own) || CAT.test(own);
-  if (asked.length < 2 || last.split(/\s+/).length >= 5 || (names && !FOLLOW_UP.test(last))) return own;
+  const leans = FOLLOW_UP.test(last) || (!names && REFERS_BACK.test(last));
+  if (asked.length < 2 || last.split(/\s+/).length >= 5 || !leans) return own;
   // "What about kittens?" after a puppy question: the new animal replaces the old one.
   const before = withEnglish(asked.at(-2));
   const topic = names ? before.replace(new RegExp(DOG.source, "gi"), " ").replace(new RegExp(CAT.source, "gi"), " ") : before;
