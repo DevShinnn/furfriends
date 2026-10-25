@@ -26,6 +26,11 @@ const HISTORY = 10;   // earlier messages sent along as context
 /* The messages actually sent to the model: no error notes, only the last few, only role and text. */
 export const conversation = (messages) =>
   messages.filter((m) => !m.error).slice(-HISTORY).map(({ role, content }) => ({ role, content }));
+
+/* The chat lives in sessionStorage (see pages/Assistant.jsx); this wipes it, e.g. on log in, log out or a demo reset. */
+export function clearChats() {
+  try { Object.keys(sessionStorage).filter((k) => k.startsWith("ff-ai-chat:")).forEach((k) => sessionStorage.removeItem(k)); } catch { /* ignore */ }
+}
 const TIMEOUT = 60000;  // small models on a CPU can take a while
 
 /* ------------------------------------------------------------------ pet context

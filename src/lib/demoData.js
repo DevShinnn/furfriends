@@ -99,3 +99,12 @@ export function demoPets(ownerId) {
     ]),
   ];
 }
+
+/* Every practice login in the live app (docs/sample-accounts.md). Passwords are public; the data is made up. */
+export const SAMPLE_PASS = "FurFriends2026";
+export const DEMO_ACCOUNTS = [
+  { email: DEMO_EMAIL, password: DEMO_PASS, name: "Alex Rivera", city: "Quezon City", pets: ["mochi-1", "bori-1", "ginger-1", "kong-1"], about: "All 4 pets: Mochi, Bori, Ginger & Kong. The one-click demo, shared by everyone.", main: true },
+  { email: "sample.maria@example.com", password: SAMPLE_PASS, name: "Maria Santos", city: "Quezon City", pets: ["mochi-1", "ginger-1"], about: "2 cats (Mochi, Ginger) with full records." },
+  { email: "sample.juan@example.com", password: SAMPLE_PASS, name: "Juan Dela Cruz", city: "Pasig City", pets: ["bori-1", "kong-1"], about: "2 dogs (Bori, Kong) with full records." },
+  { email: "sample.ana@example.com", password: SAMPLE_PASS, name: "Ana Reyes", city: "Makati City", pets: [], about: "No pets yet. Start here to show “Add a pet”." },
+];

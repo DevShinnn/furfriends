@@ -3,6 +3,7 @@ import { supabase } from "../lib/supabase";
 import { isEmail, todayISO, mimeOf, newId } from "../lib/utils";
 import { shiftISO } from "../lib/care";
 import { DEMO_EMAIL, DEMO_PASS, DEMO_PROFILE } from "../lib/demoData";
+import { clearChats } from "../lib/assistant";
 import { addDemoPets, browserFiles, clearPets } from "../lib/seedDemo";
 
 /* Accounts live in Supabase (Auth + Postgres + Storage, see supabase/migrations).
@@ -257,6 +258,7 @@ export function StoreProvider({ children }) {
       setPets((ps) => mapPet(ps, petId, (p) => ({ ...p, [list]: p[list].map((x) => (x.id === id ? { ...x, ...fields } : x)) })));
 
     async function enter(authUser) {
+      clearChats();
       try { set(await fetchAll(authUser)); return null; }
       catch (e) { await supabase.auth.signOut(); return `Couldn't load your data (${e.message}).`; }
     }
@@ -280,6 +282,7 @@ export function StoreProvider({ children }) {
       // Puts the demo account back to its original pets, profile and records. Resolves to an error message or null.
       async resetDemo() {
         if (!user?.isDemo) return null;
+        clearChats();
         try {
           await clearPets(supabase, user.id);
           await addDemoPets(supabase, user.id, browserFiles);
@@ -312,6 +315,7 @@ export function StoreProvider({ children }) {
 
       logout() {
         supabase.auth.signOut();
+        clearChats();
         set(EMPTY);
       },
 

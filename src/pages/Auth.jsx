@@ -4,6 +4,7 @@ import { useStore } from "../store/StoreContext";
 import { useUI } from "../components/UIContext";
 import Icon, { Stars } from "../components/Icon";
 import { Brand } from "../components/AppShell";
+import { useDemoAccounts } from "../components/DemoAccounts";
 import { DEMO_EMAIL, DEMO_PASS } from "../lib/demoData";
 
 const PET = (f) => `/assets/pets/${f}.jpg`;
@@ -31,6 +32,7 @@ export function Login() {
   const [f, setF] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const showAccounts = useDemoAccounts();
   if (user) return <Navigate to="/app" replace />;
 
   const demo = async () => {
@@ -59,6 +61,7 @@ export function Login() {
         </div>
         <button type="button" className="btn btn-coral btn-block" onClick={demo} disabled={busy}>{busy ? "Logging in…" : <>Log in with demo account <Icon name="arrowR" className="arrow" /></>}</button>
         <small style={{ display: "block", marginTop: 10, textAlign: "center" }}><code>{DEMO_EMAIL}</code> / <code>{DEMO_PASS}</code></small>
+        <button type="button" className="btn btn-white btn-block btn-sm" style={{ marginTop: 12 }} onClick={showAccounts}>See all 4 demo accounts</button>
       </div>
       <div className="divider">or log in with email</div>
       <form onSubmit={submit} noValidate>

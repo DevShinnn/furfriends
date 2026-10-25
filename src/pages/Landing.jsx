@@ -4,6 +4,7 @@ import { useStore } from "../store/StoreContext";
 import { useUI } from "../components/UIContext";
 import Icon, { Stars } from "../components/Icon";
 import { Brand } from "../components/AppShell";
+import { useDemoAccounts } from "../components/DemoAccounts";
 import { isEmail, peso } from "../lib/utils";
 
 const S = (f) => `/assets/site/${f}.jpg`;
@@ -65,6 +66,7 @@ export default function Landing() {
   const [menu, setMenu] = useState(false);
   const [yearly, setYearly] = useState(true);
   const [nl, setNl] = useState({ email: "", msg: "", ok: false });
+  const showAccounts = useDemoAccounts();
   useReveal();
 
   useEffect(() => {
@@ -314,7 +316,7 @@ export default function Landing() {
               </form>
               <div className="nl-msg" style={{ color: nl.ok ? "var(--ok)" : "var(--danger)" }}>{nl.msg}</div>
             </div>
-            <div><h4>Product</h4><ul><li><button onClick={() => go("features")}>Features</button></li><li><button onClick={() => go("pricing")}>Pricing</button></li><li><button onClick={demo}>Live demo</button></li></ul></div>
+            <div><h4>Product</h4><ul><li><button onClick={() => go("features")}>Features</button></li><li><button onClick={() => go("pricing")}>Pricing</button></li><li><button onClick={demo}>Live demo</button></li><li><button onClick={showAccounts}>Demo accounts</button></li></ul></div>
             <div><h4>Company</h4><ul><li><button onClick={() => go("stories")}>Stories</button></li><li><button onClick={() => go("faq")}>FAQ</button></li><li><Link to="/register">Sign up</Link></li></ul></div>
             <div><h4>Account</h4><ul><li><Link to="/login">Log in</Link></li><li><Link to="/register">Create account</Link></li><li><button onClick={() => go("how")}>How it works</button></li></ul></div>
           </div>
