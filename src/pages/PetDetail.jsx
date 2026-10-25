@@ -41,7 +41,7 @@ function PetView({ pet, tab, setTab }) {
       <section className="pet-hero">
         {pet.photo
           ? <img src={pet.photo} alt={pet.name} />
-          : <div style={{ height: "100%", display: "grid", placeItems: "center", color: "rgba(255,255,255,.3)" }}><Icon name={pet.species === "Cat" ? "cat" : "dog"} size={120} /></div>}
+          : <div className="ph-fallback"><Icon name={pet.species === "Cat" ? "cat" : "dog"} size={120} /></div>}
         <div className="ph-top">
           <Link className="btn btn-sm glass-btn" to="/app/pets"><Icon name="arrowL" /> All pets</Link>
           <button className="btn btn-sm glass-btn" onClick={edit}><Icon name="camera" size={15} /> {pet.photo ? "Change photo" : "Add photo"}</button>
@@ -127,16 +127,16 @@ function VaccinesTab({ pet }) {
       <div className="tab-head"><h3>Vaccination records</h3><button className="btn btn-primary btn-sm" onClick={() => openModal(<VaxForm pet={pet} />)}><Icon name="plus" size={15} /> Add vaccine</button></div>
       {vax.length ? (
         <div className="table-wrap">
-          <table className="data">
+          <table className="data stack">
             <thead><tr><th>Vaccine</th><th>Date given</th><th>Next due</th><th>Status</th><th>Clinic</th><th /></tr></thead>
             <tbody>
               {vax.map((v) => (
                 <tr key={v.id}>
-                  <td><b>{v.name}</b>{v.lot && <><br /><small style={{ color: "var(--ink-3)" }}>Lot {v.lot}</small></>}</td>
-                  <td>{fmtDate(v.dateGiven)}</td>
-                  <td>{fmtDate(v.nextDue)}</td>
-                  <td><StatusPill s={vaxStatus(v)} /></td>
-                  <td>{v.vet || "—"}</td>
+                  <td data-label="Vaccine"><b>{v.name}</b>{v.lot && <><br /><small style={{ color: "var(--ink-3)" }}>Lot {v.lot}</small></>}</td>
+                  <td data-label="Date given">{fmtDate(v.dateGiven)}</td>
+                  <td data-label="Next due">{fmtDate(v.nextDue)}</td>
+                  <td data-label="Status"><StatusPill s={vaxStatus(v)} /></td>
+                  <td data-label="Clinic">{v.vet || "—"}</td>
                   <td className="actions">
                     <button className="icon-btn" onClick={() => openModal(<VaxForm pet={pet} rec={v} />)} aria-label="Edit vaccination"><Icon name="edit" /></button>
                     <button className="icon-btn danger" aria-label="Delete vaccination" onClick={() => confirm({
