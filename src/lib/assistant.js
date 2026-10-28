@@ -160,8 +160,12 @@ async function askKnowledge({ messages, pet, signal, onStatus, onText }) {
   if (write) {
     try {
       const { reply, model } = await write();
-      // Both passages are credited: the model may have used either (CC BY-SA asks for credit).
-      return { reply, model, match: used[0] ? pickSource(used[0]) : null, sources: used.map(pickSource), related: answer.related, generated: true };
+      // The model says so when the 2 passages don't answer the question. The search's own reply is then
+      // more useful: the closest checked answer if it's close enough, or similar questions to tap.
+      if (!reply.startsWith(PROMPT.notFound.slice(0, 40))) {
+        // Both passages are credited: the model may have used either (CC BY-SA asks for credit).
+        return { reply, model, match: used[0] ? pickSource(used[0]) : null, sources: used.map(pickSource), related: answer.related, generated: true };
+      }
     } catch (e) {
       if (e.message === "Cancelled") throw e;
       console.warn("FurFriends AI failed, using the checked answer instead:", e);

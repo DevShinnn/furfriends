@@ -173,6 +173,7 @@ const TAGALOG = [   // phrases first, so "nakagat ako" (bit me) isn't read as ju
   [/\bnakagat\b|\bkinagat\b|\bkagat\b/, "bitten bite"], [/\bkalmot\b|\bnakalmot\b|\bkinalmot\b/, "scratched scratch"],
   [/\bnagsusuka\b|\bsuka\b|\bsumuka\b/, "vomiting"], [/\bnagtatae\b|\bpagtatae\b/, "diarrhea"], [/\btae\b|\bdumi\b/, "poop"],
   [/\bayaw kumain\b|\bhindi kumakain\b|\bwalang gana\b/, "not eating"], [/\blagnat\b|\bmainit\b/, "fever"],
+  [/\b(isang|dalawang|tatlong|ilang) araw\b/, "days"], [/\b(isang|dalawang|tatlong|ilang) linggo\b/, "weeks"],
   [/\bubo\b|\binuubo\b/, "cough"], [/\bsipon\b|\bbumabahing\b/, "sneezing"], [/\bdugo\b|\bdumudugo\b|\bnagdudugo\b|\bdinudugo\b|\bdurugo\b|\bpagdurugo\b/, "blood bleeding"],
   [/\bsugat\b/, "wound"], [/\bpilay\b|\bpiang\b|\bpaika\b/, "limping"], [/\bmatamlay\b|\bnanghihina\b/, "weak lethargic"],
   [/\bnalason\b|\blason\b/, "poison poisoned"], [/\bnakain\b|\bkinain\b|(?<!(ayaw|hindi) )\bkumain ng\b/, "ate"],
