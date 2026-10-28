@@ -1,0 +1,9 @@
+{
+  "functions": {
+    "api/ask.py": {
+      "maxDuration": 300,
+      "includeFiles": "{ai-server/onnx_chat.py,ai-server/prompting.py,src/lib/aiPrompt.json}",
+      "excludeFiles": "{node_modules/**,public/**,dist/**,docs/**,scripts/**,supabase/**,src/components/**,src/pages/**,src/store/**}"
+    }
+  }
+}

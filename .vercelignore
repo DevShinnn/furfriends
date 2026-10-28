@@ -7,4 +7,7 @@ node_modules/
 dist/
 dev-dist/
 .vercel/
-ai-server/
+# The AI's training files stay out; the Vercel function api/ask.py needs only these two.
+ai-server/*
+!ai-server/onnx_chat.py
+!ai-server/prompting.py

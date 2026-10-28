@@ -170,7 +170,7 @@ export default function Assistant() {
             <details className="ai-foot-more">
               <summary>How it works</summary>
               {ASSISTANT_URL
-                ? "FurFriends' own AI model, trained by the team, finds the best-matching checked sources (FurFriends' guides, CDC and FDA pages, open pet-care Q&As) and writes the answer from them. It runs on the FurFriends server, so there's nothing to download. It can still get things wrong, so check the source. "
+                ? "FurFriends' own AI model, trained by the team, finds the best-matching checked sources (FurFriends' guides, CDC and FDA pages, open pet-care Q&As) and writes the answer from them. It runs on FurFriends' own server, so there's nothing to download. It can still get things wrong, so check the source. "
                 : aiChoice === "yes"
                 ? "FurFriends' own AI model, trained by the team, runs on your device. It finds the best-matching checked sources (FurFriends' guides, CDC and FDA pages, open pet-care Q&As) and writes the answer from them. It can still get things wrong, so check the source. "
                 : "An open-source AI on your device picks the closest answer from FurFriends' guides and open pet-care Q&As. Check the question it matched. "}

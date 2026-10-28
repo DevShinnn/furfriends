@@ -5,7 +5,8 @@ to train it and retrain it from the app's 👍/👎 ratings.
 
 | File | What it does |
 |---|---|
-| `app.py` | The server the app talks to (`POST /ask`): writes the answer from the app's checked passages and streams it. Checks the user is logged in to FurFriends. |
+| `onnx_chat.py` | Runs the exported model with only onnxruntime, numpy and tokenizers (used by the Vercel function `api/ask.py`). |
+| `app.py` | The same server for other hosts (`POST /ask`): writes the answer from the app's checked passages and streams it. Checks the user is logged in to FurFriends. |
 | `deploy_space.py` | Puts `app.py` on a free Hugging Face Space (with `space/`), with the model and settings. |
 | `prompting.py` | Builds the prompt: system instructions (from `src/lib/aiPrompt.json`, shared with the app), pet details and checked sources. Used by serving, training and the app's copy in `src/lib/assistant.js`, so they match. |
 | `FurFriends_train.ipynb` | Google Colab notebook: prepare data, train, test accuracy and download, with one click. |
@@ -25,10 +26,17 @@ to train it and retrain it from the app's 👍/👎 ratings.
 ## The FurFriends AI in the app
 Since October 2026 the app's assistant uses the team's own trained model: the app finds the 2 best-matching
 checked passages (a first-aid guide first, when the emergency check matches) and sends them with the question
-to the team's free Hugging Face Space (`app.py`, put there by `deploy_space.py`), which writes the answer from
-them and streams it back. Owners download nothing, and only logged-in FurFriends users get answers. Vercel
-serves the app; the model files and the server live on Hugging Face. Steps, all on a laptop (no GPU needed):
+to a Vercel function next to the app (`api/ask.py`), which writes the answer from them with `onnx_chat.py`
+and streams it back. Owners download nothing, and only logged-in FurFriends users get answers.
 
+Vercel's free plan includes 4 CPU-hours per 30 days and **pauses the whole account (the app too)** past that.
+An answer costs about 25-50 CPU-seconds, so the function records each answer's CPU time in Supabase
+(`public.ai_usage`, from `supabase/migrations/20261028000000_ai_usage.sql`) and stops at 3 hours; owners then
+get the closest checked answer. If the counter isn't there, the AI doesn't answer at all. To check the total:
+`select round(public.ai_cpu_seconds_30d() / 3600, 2);` in the Supabase SQL editor.
+(`app.py` + `deploy_space.py` run the same thing on a Hugging Face Space instead, which now needs HF PRO.)
+
+Steps, all on a laptop (no GPU needed):
 ```
 python fetch_open_data.py          # Pets Stack Exchange data dump  -> data/open/pets_stackexchange.csv
 python fetch_gov_guides.py         # CDC + FDA pages                -> data/passages/gov_guides.csv
@@ -40,14 +48,13 @@ python evaluate.py run --answers results/rag-v3-answers.jsonl --version rag-v3  
 python export_onnx.py --adapter adapters/rag-v3 --out exports/furfriends-rag-v3 --only q4   # ~430 MB
 ```
 Then upload `exports/furfriends-rag-v3` to a public Hugging Face model repo (name it `furfriends-...`, see
-`vite.config.js`), point the Space at it, rebuild the app's index (`npm run knowledge`) and redeploy the app:
+`vite.config.js`), set `MODEL` in `api/ask.py` to it, rebuild the app's index (`npm run knowledge`) and push:
 ```
 hf upload <account>/furfriends-rag-v3 ai-server/exports/furfriends-rag-v3 . --repo-type model --exclude "_merged/*" --exclude "_onnx_full/*"
-python ai-server/deploy_space.py --model <account>/furfriends-rag-v3 --version rag-v3
 ```
-The free Space sleeps after 2 days without questions; the app wakes it when the assistant opens, and says
-"Waking up the FurFriends AI" if it's still starting. If the Space can't answer, the closest checked answer
-shows instead. If training stops, run the same command again: it resumes from the last saved step.
+To try the function on a laptop: `uvicorn api.ask:app --port 8001` from the PET folder (with SUPABASE_URL and
+SUPABASE_PUBLISHABLE_KEY set, and AI_USAGE_CHECK=off if the counter table isn't reachable), then `npm run dev`:
+the dev server sends `/api` to it. If training stops, run the same command again: it resumes from the last saved step.
 
 The model can also run on the owner's device instead (no server): set `VITE_ASSISTANT_URL=` (empty) and
 `VITE_CHAT_MODEL=<account>/furfriends-rag-v3`. The owner is then asked once before the ~430 MB download.

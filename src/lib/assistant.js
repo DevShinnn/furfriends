@@ -9,21 +9,23 @@ import PROMPT from "./aiPrompt.json";
 
    1. An open-source sentence model on the owner's device (about 30 MB, downloaded once) finds the best-matching
       checked passages in public/knowledge/index.json (see knowledge.js and scripts/build-knowledge.mjs).
-   2. FurFriends' own trained model writes the answer from the 2 best passages. It runs on the team's free
-      Hugging Face Space (ai-server/app.py, deployed by ai-server/deploy_space.py), so owners download nothing.
-      Contract:
+   2. FurFriends' own trained model writes the answer from the 2 best passages. It runs in a Vercel function
+      next to the app (api/ask.py), so owners download nothing. ai-server/app.py implements the same contract
+      for other hosts (a Hugging Face Space: ai-server/deploy_space.py). Contract:
         POST  ASSISTANT_URL
         Authorization: Bearer <Supabase access token>   (only logged-in FurFriends users get answers)
         body  { messages: [{ role, content }], pet: petContext(pet) | null, sources: [{ label, text }], stream: true }
         200 → the answer as plain text, streamed as it's written; header X-Model: the model version
-   3. If the server can't answer (asleep too long, offline...), the closest checked answer shows instead.
+   3. If the server can't answer (offline, the monthly free allowance used up...), the closest checked
+      answer shows instead.
 
    VITE_ASSISTANT_URL replaces the server (empty: no server). VITE_CHAT_MODEL can instead run a model on the
    device (ai-server/export_onnx.py): the owner is asked before its ~430 MB download.
 
    This is a thesis pilot: answers are only as accurate as the model's training data, and the UI says so. */
 
-export const ASSISTANT_URL = import.meta.env.VITE_ASSISTANT_URL ?? "https://devshin00-furfriends-ai.hf.space/ask";
+export const ASSISTANT_URL = import.meta.env.VITE_ASSISTANT_URL ?? "/api/ask";
+const SLEEPS = /\.hf\.space\//.test(ASSISTANT_URL);   // a free Hugging Face Space sleeps when unused
 const HISTORY = 10;   // earlier messages sent along as context
 
 /* The messages actually sent to the model: no error notes, only the last few, only role and text. */
@@ -59,18 +61,20 @@ export async function askAssistant({ messages, pet, signal, onStatus, onText }) 
   return askKnowledge({ messages, pet, signal, onStatus, onText });
 }
 
-/* A free Space sleeps after 2 days without questions. Opening the assistant wakes it, so it's ready by the
-   time the owner has typed a question. */
+/* A Hugging Face Space sleeps after 2 days without questions. Opening the assistant wakes it, so it's ready
+   by the time the owner has typed a question. */
 export function wakeServer() {
-  if (ASSISTANT_URL) fetch(ASSISTANT_URL.replace(/\/ask$/, "/health")).catch(() => { /* asleep or offline */ });
+  if (SLEEPS) fetch(ASSISTANT_URL.replace(/\/ask$/, "/health")).catch(() => { /* asleep or offline */ });
 }
 
-/* The server writes the answer from the passages; it arrives piece by piece. While the Space wakes up it
-   answers 502/503 (or not at all), so this keeps trying for a while and says so (onStatus("waking")). */
+/* The server writes the answer from the passages; it arrives piece by piece. A Space that is waking up
+   answers 502/503 (or not at all), so for a Space this keeps trying for a while and says so
+   (onStatus("waking")). Anywhere else, or offline, a failure shows the checked answer straight away. */
 async function askServer(messages, pet, used, { signal, onStatus, onText }) {
   const { data } = await supabase.auth.getSession();
   const token = data.session?.access_token;
   if (!token) throw new Error("signed out");
+  if (typeof navigator !== "undefined" && navigator.onLine === false) throw new Error("offline");
   const ctrl = new AbortController();
   const stop = () => ctrl.abort();
   signal?.addEventListener("abort", stop);
@@ -81,8 +85,8 @@ async function askServer(messages, pet, used, { signal, onStatus, onText }) {
       const res = await fetch(ASSISTANT_URL, {
         method: "POST", signal: ctrl.signal, body,
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      }).catch((e) => { if (ctrl.signal.aborted) throw e; return null; });   // no reply: still waking up
-      if (!res || res.status === 502 || res.status === 503) {
+      }).catch((e) => { if (ctrl.signal.aborted || !SLEEPS) throw e; return null; });   // no reply: still waking up
+      if (SLEEPS && (!res || res.status === 502 || res.status === 503)) {
         onStatus?.("waking");
         await new Promise((r) => setTimeout(r, 8000));
         continue;
@@ -108,7 +112,7 @@ async function askServer(messages, pet, used, { signal, onStatus, onText }) {
     signal?.removeEventListener("abort", stop);
   }
 }
-const SERVER_TIMEOUT = 180000;   // waking a sleeping Space can take a minute or two, then the answer
+const SERVER_TIMEOUT = 300000;   // Vercel's limit; a sleeping Space can also take a minute or two to wake
 
 /* ------------------------------------------------------------------ on-device knowledge search */
 let indexPromise = null;

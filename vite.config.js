@@ -57,5 +57,6 @@ export default defineConfig({
     }),
   ],
   worker: { format: "es" },   // the assistant's model runs in a module worker (src/lib/embedWorker.js)
-  server: { port: 5173 },
+  // In development, /api/ask goes to the AI function run locally: uvicorn api.ask:app --port 8001 (api/ask.py).
+  server: { port: 5173, proxy: { "/api": "http://127.0.0.1:8001" } },
 });

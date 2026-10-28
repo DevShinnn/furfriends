@@ -1,0 +1,6 @@
+# For the Vercel function api/ask.py (the FurFriends AI). The app itself is built with npm.
+fastapi>=0.115
+httpx>=0.27
+numpy>=2.0
+onnxruntime==1.31.1
+tokenizers==0.22.1
