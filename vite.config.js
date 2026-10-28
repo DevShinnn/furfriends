@@ -33,7 +33,7 @@ export default defineConfig({
         runtimeCaching: [
           {
             // The assistant's open-source search model and its runtime, downloaded the first time it's used.
-            // Not the team's chat model (VITE_CHAT_MODEL, a repo named furfriends-…): it's about 380 MB and
+            // Not the team's chat model (VITE_CHAT_MODEL, a repo named furfriends-…): it's about 430 MB and
             // Transformers.js already keeps its own copy, so caching it here too would double the space used.
             urlPattern: ({ url }) => /^https:\/\/(huggingface\.co|[a-z0-9-]+\.(aws\.)?cdn\.hf\.co|cdn\.jsdelivr\.net)\//i.test(url.href)
               && !/furfriends/i.test(url.pathname),

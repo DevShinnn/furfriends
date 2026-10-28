@@ -146,9 +146,9 @@ function withUrgent(index, question, results) {
 }
 
 /* ------------------------------------------------------------------ the trained model
-   Optional: set VITE_CHAT_MODEL to the Hugging Face folder made by ai-server/export_onnx.py
-   (e.g. "team-name/furfriends-rag-v1"). The owner chooses once whether to download it (about 380 MB). */
-export const CHAT_MODEL = import.meta.env.VITE_CHAT_MODEL || "";
+   The team's model on Hugging Face, made by ai-server/export_onnx.py. VITE_CHAT_MODEL replaces it
+   (an empty value turns the AI off). The owner chooses once whether to download it (about 430 MB). */
+export const CHAT_MODEL = import.meta.env.VITE_CHAT_MODEL ?? "DevShin00/furfriends-rag-v2";
 // For trying a model on this computer before it's uploaded: a local server with the export folder,
 // e.g. VITE_CHAT_HOST=http://localhost:8090/ (see ai-server/README.md). Unset: Hugging Face.
 const CHAT_HOST = import.meta.env.VITE_CHAT_HOST || "";
@@ -159,7 +159,7 @@ const CHOICE = "ff-ai-model";            // "yes" | "no": the owner's choice, on
 export const chatChoice = () => { try { return localStorage.getItem(CHOICE) || ""; } catch { return ""; } };
 export function setChatChoice(v) { try { localStorage.setItem(CHOICE, v); } catch { /* ignore */ } }
 
-/* What this device can run. Every device gets the same 4-bit model with full-precision maths (about 380 MB):
+/* What this device can run. Every device gets the same 4-bit model with full-precision maths (about 430 MB):
    on the graphics chip with WebGPU, otherwise on the CPU. The half-precision version was tried and dropped:
    on WebGPU its numbers overflow and the answers turn to nonsense. Small phones keep the checked answers. */
 let supportPromise = null;

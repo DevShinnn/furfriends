@@ -148,7 +148,7 @@ export default function Assistant() {
           {CHAT_MODEL && aiSupported && !aiChoice && (
             <div className="ai-optin">
               <b>Turn on the FurFriends AI?</b>
-              <p>It writes answers from FurFriends' checked sources, and runs on this device. It downloads once (about 380 MB), so use Wi-Fi. Without it, you get the closest checked answer.</p>
+              <p>It writes answers from FurFriends' checked sources, and runs on this device. It downloads once (about 430 MB), so use Wi-Fi. Without it, you get the closest checked answer.</p>
               <div className="ai-why-acts">
                 <button type="button" className="btn btn-ghost btn-sm" onClick={() => chooseAi("no")}>Not now</button>
                 <button type="button" className="btn btn-primary btn-sm" onClick={() => chooseAi("yes")}><Icon name="download" size={15} /> Download the AI</button>

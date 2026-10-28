@@ -1,5 +1,5 @@
 /* Runs FurFriends' trained chat model (ai-server/, exported by export_onnx.py) on the owner's device,
-   off the main thread. It downloads once from Hugging Face (about 380 MB) and is then kept in the
+   off the main thread. It downloads once from Hugging Face (about 430 MB) and is then kept in the
    browser's cache. It runs on the graphics chip with WebGPU, otherwise on the CPU, which is slower.
 
    Messages in:  { type: "load", model, host?, device, dtype } | { type: "ask", id, messages, maxTokens } | { type: "stop" }

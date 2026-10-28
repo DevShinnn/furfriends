@@ -9,9 +9,9 @@ to train it and retrain it from the app's 👍/👎 ratings.
 | `prompting.py` | Builds the prompt: system instructions (from `src/lib/aiPrompt.json`, shared with the app), pet details and checked sources. Used by serving, training and the app's copy in `src/lib/assistant.js`, so they match. |
 | `FurFriends_train.ipynb` | Google Colab notebook: prepare data, train, test accuracy and download, with one click. |
 | `train_lora.py` | Fine-tunes a model with LoRA, on a free Google Colab T4 GPU or (small models) a laptop CPU. |
-| `build_rag_data.py` | Makes `data/rag_train.jsonl`: each question with its best-matching checked passages and the right answer, so the model learns to answer from sources. |
+| `build_rag_data.py` | Makes the training set: each question with its best-matching checked passages and the right answer, so the model learns to answer from sources. `data/rag_train.jsonl` (v1) and `_v2` are kept for the record; `_v3` is current. |
 | `answer_rag.py` | Answers the test questions the way the app does (find passages, then generate), for `evaluate.py`. |
-| `export_onnx.py` | Turns the trained model into the files the app runs in the browser (4-bit for WebGPU, 8-bit for CPU). |
+| `export_onnx.py` | Turns the trained model into the file the app runs in the browser (4-bit, on WebGPU or the CPU). |
 | `fetch_gov_guides.py` | Downloads public-domain CDC and FDA pet health pages into `data/passages/gov_guides.csv`. |
 | `fetch_open_data.py` | Downloads openly licensed cat and dog Q&As from the Pets Stack Exchange data dump into `data/open/` (2,447 answers in October 2026). |
 | `prepare_data.py` | Checks the team's Q&A spreadsheet (`data/qa.csv`) plus `data/open/`, and splits them into training and test files. |
@@ -23,24 +23,40 @@ to train it and retrain it from the app's 👍/👎 ratings.
 
 ## The FurFriends AI in the app (no server)
 Since October 2026 the app's assistant can run the team's own trained model on the owner's device: it finds
-the 2 best-matching checked passages and the model writes the answer from them. Vercel only serves the app;
-the model files live on Hugging Face. Steps, all on a laptop (no GPU needed):
+the 2 best-matching checked passages (a first-aid guide first, when the emergency check matches) and the
+model writes the answer from them. Vercel only serves the app; the model files live on Hugging Face. Steps,
+all on a laptop (no GPU needed):
 
 ```
 python fetch_open_data.py          # Pets Stack Exchange data dump  -> data/open/pets_stackexchange.csv
 python fetch_gov_guides.py         # CDC + FDA pages                -> data/passages/gov_guides.csv
 python prepare_data.py             # all Q&As                       -> data/train.jsonl, data/test.jsonl
-python build_rag_data.py           # question + sources -> answer   -> data/rag_train.jsonl (994 examples)
-python train_lora.py --data data/rag_train.jsonl --base Qwen/Qwen2.5-0.5B-Instruct --out adapters/rag-v1     --layers attention --max-length 800 --epochs 1 --no-checkpointing --save-steps 100   # ~2 h on a Ryzen 5, needs ~7 GB free RAM
-python answer_rag.py --adapter adapters/rag-v1 --out results/rag-v1-answers.jsonl
-python evaluate.py run --answers results/rag-v1-answers.jsonl --version rag-v1   # grading sheet
-python export_onnx.py --adapter adapters/rag-v1 --out exports/furfriends-rag-v1
+python build_rag_data.py --out data/rag_train_v3.jsonl     # question + sources -> answer (833 examples)
+python train_lora.py --data data/rag_train_v3.jsonl --base Qwen/Qwen2.5-0.5B-Instruct --out adapters/rag-v3 --layers attention --max-length 800 --epochs 1 --no-checkpointing --save-steps 100   # ~1.5 h on a Ryzen 5, needs ~7 GB free RAM
+python answer_rag.py --adapter adapters/rag-v3 --out results/rag-v3-answers.jsonl
+python evaluate.py run --answers results/rag-v3-answers.jsonl --version rag-v3   # grading sheet
+python export_onnx.py --adapter adapters/rag-v3 --out exports/furfriends-rag-v3 --only q4   # ~430 MB
 ```
-Then upload `exports/furfriends-rag-v1` to a public Hugging Face model repo (its name must contain
-"furfriends", see `vite.config.js`), set `VITE_CHAT_MODEL=<account>/furfriends-rag-v1` in Vercel, rebuild the
-app's index (`npm run knowledge`) and redeploy. Owners are asked once before the ~470 MB download; devices that
+Then upload `exports/furfriends-rag-v3` to a public Hugging Face model repo (its name must contain
+"furfriends", see `vite.config.js`), set `CHAT_MODEL` in `src/lib/assistant.js` to `<account>/furfriends-rag-v3`, rebuild the
+app's index (`npm run knowledge`) and redeploy. Owners are asked once before the download; devices that
 can't run it, or owners who say no, get the closest checked answer as before. If training stops, run the same
 command again: it resumes from the last saved step.
+
+To try a model in the app before uploading it, serve the `exports` folder with CORS on port 8090 and start
+the app with `VITE_CHAT_MODEL=furfriends-rag-v3 VITE_CHAT_HOST=http://localhost:8090/ npm run dev`.
+
+What we learned (keep these when retraining):
+- **Both passages must be cut to the same length in training.** v1 always had the right passage long and
+  the other short, so it learned "copy the long one" and copied the wrong topic in the app (bloat got
+  "one vomit is often not serious").
+- **The first-aid guides must be the right passage in some examples**, next to a look-alike Q&A, or the
+  model skips them. v2 added these; v3 shows the guides in full (with the list of common poisons), as the app does.
+- **Use the 4-bit, full-precision version (`model_q4.onnx`) on every device.** The 8-bit version made the
+  model repeat itself, and the half-precision one (`q4f16`) overflowed on WebGPU and wrote nonsense.
+  The word table is 8-bit, because the browser's CPU engine has no 4-bit Gather.
+- **The held-out test is harder than the app**: each test question's own checked answer is left out of the
+  sources, so the model must answer from other passages. In the app that answer is there.
 
 ## 1. Prepare the data
 The training data has two parts:
