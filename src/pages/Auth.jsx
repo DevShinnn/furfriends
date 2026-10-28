@@ -3,7 +3,7 @@ import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { useStore } from "../store/StoreContext";
 import { useUI } from "../components/UIContext";
 import Icon, { Stars } from "../components/Icon";
-import { Brand } from "../components/AppShell";
+import { Brand, useInstallPrompt } from "../components/AppShell";
 import { useDemoAccounts } from "../components/DemoAccounts";
 import { DEMO_EMAIL, DEMO_PASS } from "../lib/demoData";
 
@@ -20,7 +20,31 @@ function AuthShell({ img, quote, by, children }) {
       <main className="auth-main"><div className="auth-card">
         <div className="auth-brand"><Brand to="/login" /></div>
         {children}
+        <InstallBox />
       </div></main>
+    </div>
+  );
+}
+
+/* Install FurFriends on the phone from the login and sign-up pages. Chrome, Edge and Samsung Internet
+   offer the install prompt (our button); iPhone Safari has none, so it gets the Share steps instead.
+   Hidden when the app is already open as an installed app. */
+const standalone = () => window.matchMedia?.("(display-mode: standalone)").matches || navigator.standalone === true;
+const iPhone = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+function InstallBox() {
+  const install = useInstallPrompt();
+  if (standalone() || (!install && !iPhone())) return null;
+  return (
+    <div className="auth-install">
+      <Icon name="phone" />
+      <div>
+        <b>Get the FurFriends app</b>
+        {install
+          ? <small>Install it on this device. It opens like an app and works offline.</small>
+          : <small>In Safari, tap <b>Share</b> <Icon name="share" size={13} style={{ verticalAlign: "-2px" }} /> then <b>Add to Home Screen</b>. Open FurFriends from your Home Screen and log in there.</small>}
+      </div>
+      {install && <button type="button" className="btn btn-primary btn-sm" onClick={install}><Icon name="download" size={16} /> Install</button>}
     </div>
   );
 }

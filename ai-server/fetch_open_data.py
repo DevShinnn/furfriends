@@ -35,6 +35,9 @@ CACHE = "data/open/cache/pets_stackexchange.parquet"
 # some questions with another question's answers (e.g. a rabbit question with an answer about a cat),
 # so every kept answer is checked against the live site. Saved so later runs work offline.
 PARENTS = "data/open/cache/answer_parents.json"
+# The official data dump (all questions up to April 2024), used by --source dump.
+DUMP_URL = "https://archive.org/download/stackexchange/pets.stackexchange.com.7z"
+DUMP = "data/open/cache/pets.stackexchange.com.7z"
 COLUMNS = ["question", "answer", "category", "set", "pet_name", "pet_species", "pet_breed", "pet_age",
            "pet_weight_kg", "source", "checked_by"]
 
@@ -42,7 +45,8 @@ DOG = re.compile(r"\b(dogs?|pupp(y|ies)|pups?|canines?)\b", re.I)
 CAT = re.compile(r"\b(cats?|kittens?|kitty|kitties|felines?)\b", re.I)
 # Questions or answers that only make sense with a picture or the rest of the thread
 NEEDS_CONTEXT = re.compile(r"\b(this (photo|picture|pic|image|video)|see (the )?(photo|picture|image)|pictured|attached|"
-                           r"other answers?|accepted answer|@\w+|as (others|someone) (said|mentioned)|edit:|update:)", re.I)
+                           r"other answers?|accepted answer|as (others|someone) (said|mentioned)|edit:|update:|"
+                           r"(excellent|great|good) (post|answer)|answer above|post above)|@\w+", re.I)   # \b can't come before @
 TOPICS = [   # first match wins, so the most important topics come first
     ("poison", r"\b(poison|toxic|ate (a|some|the)|swallowed|chocolate|xylitol|grapes?|raisins?|lil(y|ies)|onions?|antifreeze|rat bait)"),
     ("emergency", r"\b(seizure|collaps|can'?t breathe|trouble breathing|bleeding|hit by a car|unconscious|bloat|heat ?stroke|straining to (pee|urinate)|blocked)"),
@@ -87,13 +91,12 @@ def topic(text):
     return next((name for name, rx in TOPICS if rx.search(text)), "general")
 
 
-def pick_answer(answers):
-    """The accepted answer if the community agreed with it, else the highest-voted one."""
+def pick_answers(answers, n=1):
+    """Up to n good answers: the accepted one if the community agreed with it, then the highest-voted
+    ones with 3+ votes."""
     accepted = [a for a in answers if a.get("selected") and a.get("pm_score", 0) >= 1]
-    best = accepted[0] if accepted else max(answers, key=lambda a: a.get("pm_score", 0), default=None)
-    if best and (best.get("pm_score", 0) >= 3 or best in accepted):
-        return best
-    return None
+    voted = sorted((a for a in answers if a.get("pm_score", 0) >= 3 and a not in accepted), key=lambda a: -a.get("pm_score", 0))
+    return (accepted + voted)[:n]
 
 
 def answer_parents(answer_ids):
@@ -117,13 +120,45 @@ def answer_parents(answer_ids):
     return known
 
 
-def download(path):
+def download(path, url=PARQUET, what="Pets Stack Exchange from Hugging Face"):
     if os.path.exists(path):
         return
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    print("Downloading Pets Stack Exchange from Hugging Face ...")
-    urllib.request.urlretrieve(PARQUET, path + ".part")
+    print(f"Downloading {what} ...")
+    urllib.request.urlretrieve(url, path + ".part")
     os.replace(path + ".part", path)
+
+
+def read_dump():
+    """Every question with its answers from the official data dump, in the same shape as the parquet rows.
+    In the dump each answer names its own question (ParentId), so no API check is needed."""
+    import py7zr
+    import xml.etree.ElementTree as ET
+    download(DUMP, DUMP_URL, "the Pets Stack Exchange data dump from archive.org (27 MB)")
+    folder = os.path.join(os.path.dirname(DUMP), "pets_dump")
+    if not os.path.exists(os.path.join(folder, "Posts.xml")):
+        with py7zr.SevenZipFile(DUMP) as z:
+            z.extract(folder, targets=["Posts.xml", "Users.xml"])
+    names = {u.get("Id"): u.get("DisplayName") for _, u in ET.iterparse(os.path.join(folder, "Users.xml")) if u.tag == "row"}
+    questions, answers = {}, {}
+    for _, p in ET.iterparse(os.path.join(folder, "Posts.xml")):
+        if p.tag != "row":
+            continue
+        author = names.get(p.get("OwnerUserId")) or p.get("OwnerDisplayName") or "unknown"
+        if p.get("PostTypeId") == "1":
+            questions[p.get("Id")] = {"qid": int(p.get("Id")), "title": p.get("Title") or "", "body": p.get("Body") or "",
+                                      "tags": p.get("Tags") or "", "accepted": p.get("AcceptedAnswerId"), "date": p.get("CreationDate")[:10]}
+        elif p.get("PostTypeId") == "2":
+            answers.setdefault(p.get("ParentId"), []).append(
+                {"answer_id": int(p.get("Id")), "text": p.get("Body") or "", "pm_score": int(p.get("Score") or 0), "author": author,
+                 "date": p.get("CreationDate")[:10]})
+        p.clear()
+    for qid, q in questions.items():
+        ans = answers.get(qid, [])
+        for a in ans:
+            a["selected"] = str(a["answer_id"]) == q["accepted"]
+        # Title + body, the way the owner asked it. Tags like "dogs" / "cats" help when the text doesn't say.
+        yield {"qid": q["qid"], "question": f"<p>{html.escape(q['title'])}</p>{q['body']}", "tags": q["tags"], "date": q["date"], "answers": ans}
 
 
 def main():
@@ -132,61 +167,69 @@ def main():
     p.add_argument("--max-answer-words", type=int, default=260, help="longer answers get cut off: the server stops at about 260 words")
     p.add_argument("--min-answer-words", type=int, default=25)
     p.add_argument("--max-question-words", type=int, default=350)
+    p.add_argument("--source", choices=["dump", "hf"], default="dump",
+                   help="dump: the official archive.org data dump (all questions to April 2024); hf: Hugging Face's older copy")
+    p.add_argument("--answers-per-question", type=int, default=2, help="keep up to this many good answers per question")
     args = p.parse_args()
 
-    import pandas as pd   # installed with the training requirements (datasets)
-    download(CACHE)
-    df = pd.read_parquet(CACHE)
+    if args.source == "dump":
+        posts = list(read_dump())
+    else:
+        import pandas as pd   # installed with the training requirements (datasets)
+        download(CACHE)
+        posts = [{"qid": r["qid"], "question": r["question"], "tags": "", "date": str(r["date"]),
+                  "answers": ast.literal_eval(r["answers"]) if isinstance(r["answers"], str) else list(r["answers"])}
+                 for _, r in pd.read_parquet(CACHE).iterrows()]
     why = Counter()
-    rows, kept_species = [], []
-    for _, r in df.iterrows():
+    rows = []
+    for r in posts:
         q = to_text(r["question"])
-        answers = ast.literal_eval(r["answers"]) if isinstance(r["answers"], str) else list(r["answers"])
-        sp = species(q)
+        sp = species(q + " " + r["tags"].replace("<", " ").replace(">", " "))
         if not sp:
             why["not about cats or dogs"] += 1
             continue
-        best = pick_answer(answers)
+        best = pick_answers(r["answers"], args.answers_per_question)
         if not best:
             why["no well-voted answer"] += 1
             continue
-        a = to_text(best["text"])
-        qn, an = len(words(q)), len(words(a))
-        cat = topic(q)
-        reason = (
-            "question too long" if qn > args.max_question_words else
-            "answer too short" if an < args.min_answer_words else
-            "answer too long" if an > args.max_answer_words else
-            "needs a photo or the thread" if NEEDS_CONTEXT.search(q) or NEEDS_CONTEXT.search(a) or "<img" in r["question"] else
-            "mentions a medicine dose" if DOSE.search(a) else
-            "urgent, but no vet advice" if cat in URGENT and not (VET.search(a) and SOON.search(a)) else
-            "")
-        if reason:
-            why[reason] += 1
-            continue
-        qid, aid = r["qid"], best.get("answer_id")
-        kept_species.append(sp)
-        rows.append({"_qid": qid, "_aid": aid, "question": q, "answer": a, "category": cat, "set": "train",
-                     "source": f"Pets Stack Exchange, https://pets.stackexchange.com/a/{aid} (question "
-                               f"https://pets.stackexchange.com/q/{qid}), answer by {best.get('author', 'unknown')}, "
-                               f"{license_for(str(r['date']))}",
-                     "checked_by": ""})
+        for ans in best:
+            a = to_text(ans["text"])
+            qn, an = len(words(q)), len(words(a))
+            cat = topic(q)
+            reason = (
+                "question too long" if qn > args.max_question_words else
+                "answer too short" if an < args.min_answer_words else
+                "answer too long" if an > args.max_answer_words else
+                "needs a photo or the thread" if NEEDS_CONTEXT.search(q) or NEEDS_CONTEXT.search(a) or "<img" in r["question"] else
+                "mentions a medicine dose" if DOSE.search(a) else
+                "urgent, but no vet advice" if cat in URGENT and not (VET.search(a) and SOON.search(a)) else
+                "")
+            if reason:
+                why[reason] += 1
+                continue
+            qid, aid = r["qid"], ans.get("answer_id")
+            rows.append({"_qid": qid, "_aid": aid, "_sp": sp, "question": q, "answer": a, "category": cat, "set": "train",
+                         "source": f"Pets Stack Exchange, https://pets.stackexchange.com/a/{aid} (question "
+                                   f"https://pets.stackexchange.com/q/{qid}), answer by {ans.get('author', 'unknown')}, "
+                                   f"{license_for(str(ans.get('date') or r['date']))}",
+                         "checked_by": ""})
 
-    parents = answer_parents(r["_aid"] for r in rows)
+    if args.source == "hf":   # Hugging Face's copy pairs some questions with other questions' answers
+        parents = answer_parents(r["_aid"] for r in rows)
+        for r in rows:
+            if parents.get(str(r["_aid"])) != r["_qid"]:
+                why["answer belongs to another question" if parents.get(str(r["_aid"])) else "answer deleted from the site"] += 1
+        rows = [r for r in rows if parents.get(str(r["_aid"])) == r["_qid"]]
+    kept_species = [r["_sp"] for r in rows]
     for r in rows:
-        if parents.get(str(r["_aid"])) != r["_qid"]:
-            why["answer belongs to another question" if parents.get(str(r["_aid"])) else "answer deleted from the site"] += 1
-    rows = [r for r in rows if parents.get(str(r["_aid"])) == r["_qid"]]
-    kept_species = [species(r["question"]) for r in rows]
-    for r in rows:
-        del r["_qid"], r["_aid"]
+        del r["_qid"], r["_aid"], r["_sp"]
 
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     with open(args.out, "w", encoding="utf-8-sig", newline="") as f:
         w = csv.DictWriter(f, COLUMNS)
         w.writeheader()
         w.writerows(rows)
-    print(f"{len(df)} questions read. Kept {len(rows)}. Left out:")
+    print(f"{len(posts)} questions read. Kept {len(rows)} answers to {len({re.search(r'/q/(\d+)', r['source'])[1] for r in rows})} questions. Left out:")
     for k, n in why.most_common():
         print(f"  {n:>5}  {k}")
     print("\nKept, by category:")

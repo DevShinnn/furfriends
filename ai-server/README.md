@@ -6,16 +6,41 @@ to train it and retrain it from the app's 👍/👎 ratings.
 | File | What it does |
 |---|---|
 | `app.py` | The server the app talks to (`POST /ask`). Checks the user is logged in to FurFriends. |
-| `prompting.py` | The system prompt and pet details. Used by both serving and training, so they match. |
+| `prompting.py` | Builds the prompt: system instructions (from `src/lib/aiPrompt.json`, shared with the app), pet details and checked sources. Used by serving, training and the app's copy in `src/lib/assistant.js`, so they match. |
 | `FurFriends_train.ipynb` | Google Colab notebook: prepare data, train, test accuracy and download, with one click. |
-| `train_lora.py` | Fine-tunes a model with LoRA. Runs on a free Google Colab T4 GPU. |
-| `fetch_open_data.py` | Downloads 722 openly licensed cat and dog Q&As from Pets Stack Exchange into `data/open/`. |
+| `train_lora.py` | Fine-tunes a model with LoRA, on a free Google Colab T4 GPU or (small models) a laptop CPU. |
+| `build_rag_data.py` | Makes `data/rag_train.jsonl`: each question with its best-matching checked passages and the right answer, so the model learns to answer from sources. |
+| `answer_rag.py` | Answers the test questions the way the app does (find passages, then generate), for `evaluate.py`. |
+| `export_onnx.py` | Turns the trained model into the files the app runs in the browser (4-bit for WebGPU, 8-bit for CPU). |
+| `fetch_gov_guides.py` | Downloads public-domain CDC and FDA pet health pages into `data/passages/gov_guides.csv`. |
+| `fetch_open_data.py` | Downloads openly licensed cat and dog Q&As from the Pets Stack Exchange data dump into `data/open/` (2,447 answers in October 2026). |
 | `prepare_data.py` | Checks the team's Q&A spreadsheet (`data/qa.csv`) plus `data/open/`, and splits them into training and test files. |
 | `export_feedback.py` | Downloads app ratings as new training data, and prints the helpful rate per model version. |
 | `evaluate.py` | Accuracy test: asks the model held-out questions, makes a grading sheet, and scores it. |
 | `data/sample_train.jsonl` | 8 example Q&As showing the data format. |
 | `data/sample_test.jsonl` | 16 test questions with reference answers, to start your test set. |
 | `data/SOURCES.md` | Where each piece of training data came from. Fill this in. |
+
+## The FurFriends AI in the app (no server)
+Since October 2026 the app's assistant can run the team's own trained model on the owner's device: it finds
+the 2 best-matching checked passages and the model writes the answer from them. Vercel only serves the app;
+the model files live on Hugging Face. Steps, all on a laptop (no GPU needed):
+
+```
+python fetch_open_data.py          # Pets Stack Exchange data dump  -> data/open/pets_stackexchange.csv
+python fetch_gov_guides.py         # CDC + FDA pages                -> data/passages/gov_guides.csv
+python prepare_data.py             # all Q&As                       -> data/train.jsonl, data/test.jsonl
+python build_rag_data.py           # question + sources -> answer   -> data/rag_train.jsonl (994 examples)
+python train_lora.py --data data/rag_train.jsonl --base Qwen/Qwen2.5-0.5B-Instruct --out adapters/rag-v1     --layers attention --max-length 800 --epochs 1 --no-checkpointing --save-steps 100   # ~2 h on a Ryzen 5, needs ~7 GB free RAM
+python answer_rag.py --adapter adapters/rag-v1 --out results/rag-v1-answers.jsonl
+python evaluate.py run --answers results/rag-v1-answers.jsonl --version rag-v1   # grading sheet
+python export_onnx.py --adapter adapters/rag-v1 --out exports/furfriends-rag-v1
+```
+Then upload `exports/furfriends-rag-v1` to a public Hugging Face model repo (its name must contain
+"furfriends", see `vite.config.js`), set `VITE_CHAT_MODEL=<account>/furfriends-rag-v1` in Vercel, rebuild the
+app's index (`npm run knowledge`) and redeploy. Owners are asked once before the ~470 MB download; devices that
+can't run it, or owners who say no, get the closest checked answer as before. If training stops, run the same
+command again: it resumes from the last saved step.
 
 ## 1. Prepare the data
 The training data has two parts:

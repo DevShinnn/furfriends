@@ -6,3 +6,4 @@ __pycache__/
 data/feedback_*.jsonl
 data/open/cache/
 logs/
+exports/

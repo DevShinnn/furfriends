@@ -28,11 +28,15 @@ export default defineConfig({
         importScripts: ["sw-notify.js"], // opens the app when a reminder notification is tapped
         // Precache the app shell, demo images and the assistant's answers so the app works offline.
         globPatterns: ["**/*.{js,css,html,svg,png,jpg,webmanifest}", "knowledge/index.json"],
-        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+        // The assistant's index (knowledge/index.json) is about 6 MB, 2.3 MB compressed as served.
+        maximumFileSizeToCacheInBytes: 8 * 1024 * 1024,
         runtimeCaching: [
           {
-            // The assistant's open-source model and its runtime, downloaded the first time it's used.
-            urlPattern: /^https:\/\/(huggingface\.co|[a-z0-9-]+\.(aws\.)?cdn\.hf\.co|cdn\.jsdelivr\.net)\/.*/i,
+            // The assistant's open-source search model and its runtime, downloaded the first time it's used.
+            // Not the team's chat model (VITE_CHAT_MODEL, a repo named furfriends-…): it's about 380 MB and
+            // Transformers.js already keeps its own copy, so caching it here too would double the space used.
+            urlPattern: ({ url }) => /^https:\/\/(huggingface\.co|[a-z0-9-]+\.(aws\.)?cdn\.hf\.co|cdn\.jsdelivr\.net)\//i.test(url.href)
+              && !/furfriends/i.test(url.pathname),
             handler: "CacheFirst",
             options: { cacheName: "assistant-model", expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 90 } },
           },

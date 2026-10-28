@@ -396,3 +396,30 @@ export const GUIDES = [
 ];
 
 export const findGuide = (slug) => GUIDES.find((g) => g.slug === slug) || null;
+
+/* ------------------------------------------------------------------ emergencies
+   Checked on the device before anything is sent, so the first-aid guide shows even offline. */
+const URGENT = [
+  ["cpr", /not breathing|no heartbeat|unconscious|won'?t wake|unresponsive/],
+  ["breathing", /can'?t breathe|cannot breathe|trouble breathing|struggling to breathe|gasping|blue gums|grey gums|gray gums|pale gums|white gums|breathing (very |really |so )?(fast|hard|heavily|quickly)|(fast|rapid|heavy) breathing/],
+  ["heatstroke", /heat ?stroke|overheat|too hot/],
+  ["poisoning", /poison|chocolate|grape|raisin|xylitol|onion|garlic|rat bait|rodenticide|antifreeze|coolant|radiator|bleach|paracetamol|ibuprofen|insecticide/],
+  ["toad", /\btoads?\b|palaka/],
+  ["choking", /chok/],
+  ["bleeding", /bleeding|won'?t stop bleed/],
+  ["accident", /hit by|run over|fell (from|off)|fall from/],
+  ["seizure", /seiz|convuls|fitting/],
+  ["bloat", /bloat|swollen (belly|stomach)|distended/],
+  ["urinary", /can'?t pee|cannot pee|can'?t urinate|straining to (pee|urinate)|no urine|not peeing/],
+  ["snake", /snake/],
+  ["burns", /\bburn|electric shock|electrocut/],
+  ["eye", /eye (injur|bulg|popped|out)/],
+  ["stings", /\bstung\b|\bsting|\bbee\b|wasp|face (is )?swollen|swollen face|hives/],
+  ["vomiting", /vomit|throwing up|diarrh|blood in (the )?(stool|poop)/],
+];
+
+export function urgentGuides(text) {
+  const t = text.toLowerCase();
+  const slugs = URGENT.filter(([, re]) => re.test(t)).map(([s]) => s);
+  return GUIDES.filter((g) => slugs.includes(g.slug)).slice(0, 3);
+}

@@ -36,7 +36,10 @@ def load_examples(path):
             msgs = ex["messages"]
             if not msgs or msgs[-1]["role"] != "assistant":
                 raise ValueError(f"{path}:{n}: the last message must be the assistant's answer")
-            rows.append({"messages": build_messages(msgs, ex.get("pet"))})
+            # Prompt (system + pet + checked sources + question) and completion (the answer), so the loss is
+            # only on the answer: the model learns to answer, not to repeat the sources.
+            full = build_messages(msgs, ex.get("pet"), ex.get("sources"))
+            rows.append({"prompt": full[:-1], "completion": full[-1:]})
     return Dataset.from_list(rows)
 
 
@@ -59,6 +62,10 @@ def main():
     p.add_argument("--max-steps", type=int, default=-1, help="for a quick test run")
     p.add_argument("--save-steps", type=int, default=0,
                    help="save progress every N steps, so a long run (e.g. on a laptop CPU) can resume after a stop")
+    p.add_argument("--layers", choices=["all", "attention"], default="all",
+                   help="attention: train only the attention layers, about 40%% faster on a CPU")
+    p.add_argument("--max-length", type=int, default=1024, help="longer examples are cut; shorter is faster")
+    p.add_argument("--no-checkpointing", action="store_true", help="faster, but needs more memory")
     args = p.parse_args()
     keep_awake()
 
@@ -83,13 +90,14 @@ def main():
         fp16=gpu,
         bf16=False,            # the free Colab T4 GPU has no bf16
         use_cpu=not gpu,
-        max_length=1024,
-        assistant_only_loss=False,
+        max_length=args.max_length,
+        completion_only_loss=True,
+        gradient_checkpointing=not args.no_checkpointing,
         report_to=[],
         model_init_kwargs={"dtype": torch.float16 if gpu else torch.float32},
     )
-    lora = LoraConfig(r=16, lora_alpha=32, lora_dropout=0.05, task_type="CAUSAL_LM",
-                      target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"])
+    targets = ["q_proj", "k_proj", "v_proj", "o_proj"] + (["gate_proj", "up_proj", "down_proj"] if args.layers == "all" else [])
+    lora = LoraConfig(r=16, lora_alpha=32, lora_dropout=0.05, task_type="CAUSAL_LM", target_modules=targets)
     trainer = SFTTrainer(model=args.base, args=config, train_dataset=train, eval_dataset=evals, peft_config=lora)
     resume = bool(args.save_steps and glob.glob(os.path.join(args.out, "checkpoint-*")))
     if resume:

@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useStore } from "../store/StoreContext";
 import { useUI } from "../components/UIContext";
 import Icon from "../components/Icon";
-import { askAssistant, conversation, petContext, urgentGuides } from "../lib/assistant";
+import { CHAT_MODEL, askAssistant, chatChoice, chatSupport, conversation, petContext, setChatChoice, urgentGuides } from "../lib/assistant";
 import { uid } from "../lib/utils";
 
 /* Chat with the FurFriends assistant, optionally about one pet.
@@ -35,6 +35,11 @@ export default function Assistant() {
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
   const [preparing, setPreparing] = useState(null);   // % of the model downloaded, the first time only
+  const [draft, setDraft] = useState("");              // the trained model's answer as it's being written
+  const [aiChoice, setAiChoice] = useState(chatChoice);
+  const [aiSupported, setAiSupported] = useState(false);
+  useEffect(() => { chatSupport().then((s) => setAiSupported(!!s)); }, []);
+  const chooseAi = (v) => { setChatChoice(v); setAiChoice(v); };
   const abort = useRef(null);
   const saving = useRef(Promise.resolve());
   const end = useRef(null);
@@ -54,19 +59,19 @@ export default function Assistant() {
     setChat(next); setText(""); setBusy(true);
     abort.current = new AbortController();
     try {
-      const { reply, model, match, related } = await askAssistant({
-        user, messages: next.filter((m) => !m.error), pet, signal: abort.current.signal, onStatus: setPreparing,
+      const { reply, model, match, related, generated, sources } = await askAssistant({
+        user, messages: next.filter((m) => !m.error), pet, signal: abort.current.signal, onStatus: setPreparing, onText: setDraft,
       });
       // Keep what the assistant saw alongside the answer, in case it's rated later.
       setChat((c) => [...c, {
-        id: uid(), fid: crypto.randomUUID(), role: "assistant", content: reply, model, match, related,
+        id: uid(), fid: crypto.randomUUID(), role: "assistant", content: reply, model, match, related, generated, sources,
         q, petId: pet?.id || null, ctx: petContext(pet), convo: conversation(chat), rating: 0,
       }]);
     } catch (e) {
       if (e.message === "Cancelled") return;
       setChat((c) => [...c, { id: uid(), role: "assistant", error: true, content: e.message }]);
     } finally {
-      setBusy(false); setPreparing(null);
+      setBusy(false); setPreparing(null); setDraft("");
       input.current?.focus();
     }
   };
@@ -134,8 +139,20 @@ export default function Assistant() {
           )}
           {busy && (
             <div className="ai-msg bot">
-              <div className="ai-bubble ai-typing" aria-label="The assistant is looking for an answer"><span /><span /><span /></div>
+              {draft
+                ? <><span className="ai-avatar" aria-hidden="true"><Icon name="sparkle" size={17} /></span><div className="ai-turn"><div className="ai-bubble"><Reply text={draft} /></div></div></>
+                : <div className="ai-bubble ai-typing" aria-label="The assistant is looking for an answer"><span /><span /><span /></div>}
               {preparing !== null && <small className="ai-preparing">Getting the assistant ready on your device ({preparing}%). This only happens the first time.</small>}
+            </div>
+          )}
+          {CHAT_MODEL && aiSupported && !aiChoice && (
+            <div className="ai-optin">
+              <b>Turn on the FurFriends AI?</b>
+              <p>It writes answers from FurFriends' checked sources, and runs on this device. It downloads once (about 380 MB), so use Wi-Fi. Without it, you get the closest checked answer.</p>
+              <div className="ai-why-acts">
+                <button type="button" className="btn btn-ghost btn-sm" onClick={() => chooseAi("no")}>Not now</button>
+                <button type="button" className="btn btn-primary btn-sm" onClick={() => chooseAi("yes")}><Icon name="download" size={15} /> Download the AI</button>
+              </div>
             </div>
           )}
           <div ref={end} className="ai-end" />
@@ -150,7 +167,13 @@ export default function Assistant() {
           <div className="ai-foot">Pilot: it can pick the wrong answer, and it isn't a vet. In an emergency, go to a vet now.
             <details className="ai-foot-more">
               <summary>How it works</summary>
-              An open-source AI on your device picks the closest answer from FurFriends' guides and open pet-care Q&As. Check the question it matched. Rating an answer shares it with the FurFriends team to improve the assistant.
+              {aiChoice === "yes"
+                ? "FurFriends' own AI model, trained by the team, runs on your device. It finds the best-matching checked sources (FurFriends' guides, CDC and FDA pages, open pet-care Q&As) and writes the answer from them. It can still get things wrong, so check the source. "
+                : "An open-source AI on your device picks the closest answer from FurFriends' guides and open pet-care Q&As. Check the question it matched. "}
+              Rating an answer shares it with the FurFriends team to improve the assistant.
+              {CHAT_MODEL && aiSupported && aiChoice && (
+                <> <button type="button" className="linkish" onClick={() => chooseAi(aiChoice === "yes" ? "no" : "yes")}>{aiChoice === "yes" ? "Use checked answers only" : "Turn on the FurFriends AI"}</button></>
+              )}
             </details>
           </div>
         </form>
@@ -184,7 +207,9 @@ function Message({ m, onRate, onExplain, onAsk }) {
       <span className="ai-avatar" aria-hidden="true"><Icon name="sparkle" size={17} /></span>
       <div className="ai-turn">
         <div className={`ai-bubble ${m.error ? "is-error" : ""}`}><Reply text={m.content} /></div>
-        {m.match && <Source match={m.match} />}
+        {m.generated && m.sources?.length
+          ? <small className="ai-source">Written by the FurFriends AI from: {m.sources.map((s, i) => <span key={i}>{i > 0 && " · "}<SourceLink match={s} /></span>)}</small>
+          : m.match && <Source match={m.match} />}
         {m.related?.length > 0 && (
           <div className="ai-related">
             <span>Similar questions:</span>
@@ -199,15 +224,18 @@ function Message({ m, onRate, onExplain, onAsk }) {
 
 /* Where the answer came from: owners can check it, and Stack Exchange's license requires the credit. */
 function Source({ match }) {
-  const inApp = match.url?.startsWith("#/");
-  const label = match.source || "FurFriends";
   return (
     <small className="ai-source">
       {match.kind === "qa" && <>Matched: “{match.q}” · </>}
-      {inApp ? <Link to={match.url.slice(1)}>{label}</Link>
-        : match.url ? <a href={match.url} target="_blank" rel="noopener noreferrer">{label}</a> : label}
+      <SourceLink match={match} />
     </small>
   );
+}
+
+function SourceLink({ match }) {
+  const label = match.source || "FurFriends";
+  if (match.url?.startsWith("#/")) return <Link to={match.url.slice(1)}>{label}</Link>;
+  return match.url ? <a href={match.url} target="_blank" rel="noopener noreferrer">{label}</a> : label;
 }
 
 function Rating({ m, onRate, onExplain }) {

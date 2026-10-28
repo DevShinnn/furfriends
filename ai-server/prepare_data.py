@@ -59,13 +59,18 @@ def check(rows):
             errors.append(f"{n}: set must be empty, train or test")
         if key(q) in seen:
             first = seen[key(q)]
-            if first["_file"] == r["_file"]:
+            # Downloaded files can hold a second good answer to the same question: keep it as another example.
+            if first["_file"] == r["_file"] and "open" in first["_file"].replace("\\", "/").split("/") and key(a) != key(first["answer"]):
+                r["_nth"] = first.setdefault("_answers", 1) + 1
+                first["_answers"] = r["_nth"]
+            elif first["_file"] == r["_file"]:
                 errors.append(f"{n}: same question as {first['_where']}")
             else:
                 warnings.append(f"{n}: skipped, same question as {first['_where']}")
                 r["_skip"] = True
-            continue
-        seen[key(q)] = r
+            if not r.get("_nth"):
+                continue
+        seen.setdefault(key(q), r)
         if len(words(a)) > 200:
             warnings.append(f"{n}: answer is {len(words(a))} words (the assistant is told to stay under 200)")
         if cat in MEDICINE and DOSE.search(a):
@@ -83,7 +88,8 @@ def check(rows):
 
 def to_example(r):
     q, a = r["question"].strip(), r["answer"].strip()
-    ex = {"id": "q" + hashlib.sha1(key(q).encode()).hexdigest()[:6], "category": r["category"].strip(),
+    nth = f"-{r['_nth']}" if r.get("_nth") else ""   # second answer to the same question
+    ex = {"id": "q" + hashlib.sha1(key(q).encode()).hexdigest()[:6] + nth, "category": r["category"].strip(),
           "messages": [{"role": "user", "content": q}, {"role": "assistant", "content": a}]}
     pet = {"name": r.get("pet_name"), "species": r.get("pet_species"), "breed": r.get("pet_breed"), "age": r.get("pet_age")}
     pet = {k: v.strip() for k, v in pet.items() if (v or "").strip()}

@@ -7,13 +7,15 @@
                                                  with an index built WITHOUT them, then writes
                                                  ai-server/results/search-answers.jsonl for evaluate.py
 
-   Data: ai-server/data/train.jsonl and test.jsonl, made by `python prepare_data.py`.
+   Data: ai-server/data/train.jsonl and test.jsonl, made by `python prepare_data.py`, and the CDC/FDA passages in
+   ai-server/data/passages/gov_guides.csv, made by `python fetch_gov_guides.py`.
    Model: Xenova/all-MiniLM-L6-v2 (Apache 2.0), downloaded once from Hugging Face (about 23 MB). */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { pipeline } from "@huggingface/transformers";
 import { GUIDES } from "../src/lib/emergency.js";
+import { readCsv } from "./csv.mjs";
 import { EMBED_MODEL, EMBED_OPTIONS, compose, decodeIndex, encodeVectors, safetyReply, search, searchText, speciesOf, withEnglish } from "../src/lib/knowledge.js";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -47,6 +49,14 @@ function qaEntries(rows) {
       // Other ways owners ask the same thing ("my dog has fleas", "may pulgas ang aso ko") find the same answer.
       return [main, ...(r.also || []).map((ask, i) => ({ ...main, id: `${r.id}-${i + 1}`, of: r.id, ask }))];
     });
+}
+
+/* Public-domain CDC and FDA passages. src is the label the trained model saw in training (build_rag_data.py). */
+function govEntries() {
+  return readCsv(join(DATA, "passages", "gov_guides.csv")).map((r, i) => ({
+    id: `gov-${i}`, kind: "gov", cat: r.category || "", q: r.title + (r.section ? ` — ${r.section}` : ""), a: r.text,
+    sp: r.species === "Both" ? "" : (r.species || "").toLowerCase(), src: r.source.split(", http")[0], url: r.url,
+  }));
 }
 
 function guideEntries() {
@@ -102,16 +112,16 @@ const asLoaded = (index) => decodeIndex(JSON.parse(JSON.stringify(index)));
 /* ---------------------------------------------------------------- build or evaluate */
 const train = jsonl("train.jsonl"), test = jsonl("test.jsonl");
 if (!EVAL) {
-  const entries = [...qaEntries(train), ...qaEntries(test), ...guideEntries()];
+  const entries = [...qaEntries(train), ...qaEntries(test), ...govEntries(), ...guideEntries()];
   const index = await toIndex(entries);
   const out = join(ROOT, "public", "knowledge", "index.json");
   mkdirSync(dirname(out), { recursive: true });
   writeFileSync(out, JSON.stringify(index));
   const n = (kind) => entries.filter((e) => e.kind === kind && !e.ask).length;
-  console.log(`${entries.length} entries (${n("qa")} Q&As, ${entries.filter((e) => e.ask).length} other wordings, ${n("guide")} from ${GUIDES.length} guides) → ${out} (${(JSON.stringify(index).length / 1024).toFixed(0)} KB)`);
+  console.log(`${entries.length} entries (${n("qa")} Q&As, ${entries.filter((e) => e.ask).length} other wordings, ${n("gov")} CDC/FDA passages, ${n("guide")} from ${GUIDES.length} guides) → ${out} (${(JSON.stringify(index).length / 1024).toFixed(0)} KB)`);
 } else {
   // The test questions are NOT in this index, so the score is honest.
-  const index = asLoaded(await toIndex([...qaEntries(train), ...guideEntries()]));
+  const index = asLoaded(await toIndex([...qaEntries(train), ...govEntries(), ...guideEntries()]));
   const queries = await embed(test.map((t) => withEnglish(t.messages.at(-2).content)));
   const lines = test.map((t, i) => {
     const t0 = performance.now();

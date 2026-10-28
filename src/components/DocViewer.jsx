@@ -21,6 +21,24 @@ function useFileUrl(src) {
   return url;
 }
 
+/* Phones save through the share sheet (Save to Files, Save Image...): an app installed on the home screen
+   can't download files on iPhone. The file is fetched when the document opens, because iPhones only allow
+   sharing straight from the tap. null where sharing files isn't possible, so Save downloads as before. */
+function useShareFile(src, name) {
+  const [file, setFile] = useState(null);
+  useEffect(() => {
+    setFile(null);
+    if (!src || !navigator.canShare || !window.matchMedia?.("(pointer: coarse)").matches) return;
+    let alive = true;
+    fetch(src).then((r) => r.blob()).then((b) => {
+      const f = new File([b], name, { type: b.type });
+      if (alive && navigator.canShare({ files: [f] })) setFile(f);
+    }).catch(() => { /* keep the download link */ });
+    return () => { alive = false; };
+  }, [src, name]);
+  return file;
+}
+
 /* PDFs show inline where the browser can; phones that can't get the fallback with an Open button. */
 function PdfView({ doc, url }) {
   if (!url) return null;
@@ -60,6 +78,8 @@ export default function DocViewer({ state, setState }) {
 
   const current = n ? getPet(items[i].petId)?.documents.find((d) => d.id === items[i].docId) : null;
   const fileUrl = useFileUrl(current?.src);
+  const fileName = current ? `${getPet(items[i].petId).name} - ${current.title}${isPdf(current) ? ".pdf" : ""}` : "";
+  const shareFile = useShareFile(fileUrl || current?.src, fileName);
   useEffect(() => { if (!n) closeViewer(); }, [n, closeViewer]);
   if (!n) return null;
 
@@ -99,7 +119,12 @@ export default function DocViewer({ state, setState }) {
         </div>
         <div className="acts">
           {pdf && fileUrl && <a className="btn btn-sm" href={fileUrl} target="_blank" rel="noreferrer"><Icon name="file" size={15} /> Open</a>}
-          <a className="btn btn-sm" href={fileUrl || doc.src} download={`${pet.name} - ${doc.title}${pdf ? ".pdf" : ""}`}><Icon name="download" size={15} /> Save</a>
+          <a className="btn btn-sm" href={fileUrl || doc.src} download={fileName}
+            onClick={(e) => {
+              if (!shareFile) return;
+              e.preventDefault();
+              navigator.share({ files: [shareFile], title: doc.title }).catch((err) => { if (err.name !== "AbortError") window.open(fileUrl || doc.src, "_blank"); });
+            }}><Icon name="download" size={15} /> Save</a>
           <button className="btn btn-sm" onClick={() => openModal(<DocForm petId={pet.id} doc={doc} />)}><Icon name="edit" /> Edit details</button>
           <button className="btn btn-sm dang" onClick={() => deleteDoc(pet, doc)}><Icon name="trash" /> Delete</button>
         </div>
