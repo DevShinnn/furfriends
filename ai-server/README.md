@@ -71,6 +71,11 @@ What we learned (keep these when retraining):
 - **Use the 4-bit, full-precision version (`model_q4.onnx`) on every device.** The 8-bit version made the
   model repeat itself, and the half-precision one (`q4f16`) overflowed on WebGPU and wrote nonsense.
   The word table is 8-bit, because the browser's CPU engine has no 4-bit Gather.
+- **v3 (full guides, 17 poison questions, "go now" signs) answered more but was wrong more often**: on the
+  31 held-out questions it said "couldn't find" 5 times (v2: 14), but gave heatstroke first aid for coolant,
+  the dog-bite answer for a lump, and once leaked its instructions. v2 stays live: when it's unsure it says so,
+  and the app then shows the closest checked answer. Next time, keep the poison questions few and varied,
+  and add look-alike guides (poisoning next to heatstroke) as the wrong passage.
 - **The held-out test is harder than the app**: each test question's own checked answer is left out of the
   sources, so the model must answer from other passages. In the app that answer is there.
 
