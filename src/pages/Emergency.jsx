@@ -47,6 +47,9 @@ export default function Emergency() {
         <div className="grow">
           <h1>Emergency</h1>
           <p>If your pet is in danger, <b>call your vet or the nearest 24-hour animal hospital now</b>. Use these steps while you get there.</p>
+          <div className="em-cards" style={{ marginBottom: 8 }}>
+            <Link className="btn btn-sm em-card-btn" to="/app/clinics"><Icon name="pin" size={16} /> Find a vet near me</Link>
+          </div>
           <CardButtons light />
           <small>Show the emergency card to the vet: allergies, medicines and vaccines in one place.</small>
         </div>

@@ -12,7 +12,7 @@ export default function Profile() {
   const { user, pets, logout, updateUser, changePassword, resetDemo, setNotifications, savePushSubscription, removePushSubscription } = useStore();
   const { toast, confirm } = useUI();
   const install = useInstallPrompt();
-  const [info, setInfo] = useState({ name: user.name, email: user.email, phone: user.phone || "", city: user.city || "" });
+  const [info, setInfo] = useState({ name: user.name, email: user.email, phone: user.phone || "", city: user.city || "", address: user.address || "" });
   const [pw, setPw] = useState({ current: "", next: "", confirm: "" });
   const [infoErr, setInfoErr] = useState("");
   const [pwErr, setPwErr] = useState("");
@@ -76,6 +76,11 @@ export default function Profile() {
             <div className="row">
               <div className="field"><label htmlFor="p-phone">Phone</label><input className="input" id="p-phone" placeholder="Optional" {...bindI("phone")} /></div>
               <div className="field"><label htmlFor="p-city">City</label><input className="input" id="p-city" placeholder="Optional" {...bindI("city")} /></div>
+            </div>
+            <div className="field">
+              <label htmlFor="p-address">Address</label>
+              <input className="input" id="p-address" placeholder="Optional: street, barangay, city" maxLength={200} autoComplete="street-address" {...bindI("address")} />
+              <div className="hint">Used to find vet clinics near you when your phone's location is off. Only you can see it.</div>
             </div>
             <div style={{ display: "flex", justifyContent: "flex-end" }}><button className="btn btn-primary" type="submit">Save changes</button></div>
           </form>

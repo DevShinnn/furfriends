@@ -1,9 +1,37 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
-export default defineConfig({
+/* For trying the Clinics page before the find-clinics edge function is deployed: run
+   VITE_CLINICS_URL=/__clinics npm run dev, with TOMTOM_API_KEY in .env.local. Development only, no login check. */
+const localClinics = (key) => ({
+  name: "furfriends-local-clinics",
+  apply: "serve",
+  configureServer(server) {
+    server.middlewares.use("/__clinics", async (req, res) => {
+      const send = (status, body) => { res.statusCode = status; res.setHeader("Content-Type", "application/json"); res.end(JSON.stringify(body)); };
+      if (!key) return send(503, { error: "Add TOMTOM_API_KEY to .env.local to try the clinic search locally." });
+      let body = "";
+      for await (const chunk of req) body += chunk;
+      try {
+        const { findClinics, geocode, memoryCache } = await server.ssrLoadModule("/supabase/functions/find-clinics/clinics.js");
+        const cache = (globalThis.__clinicCache ||= memoryCache());
+        const q = JSON.parse(body || "{}");
+        let point = { lat: Number(q.lat), lon: Number(q.lon) }, place;
+        if (!Number.isFinite(point.lat)) {
+          const found = await geocode(String(q.address || ""), { key, cache });
+          if (found.notFound) return send(404, { error: "We couldn't find that address. Try adding the barangay and city." });
+          point = { lat: found.lat, lon: found.lon }; place = found.label;
+        }
+        send(200, { ...(await findClinics(point, { key, cache })), place, from: place ? point : undefined });
+      } catch (e) { send(502, { error: e.message }); }
+    });
+  },
+});
+
+export default defineConfig(({ mode }) => ({
   plugins: [
+    localClinics(loadEnv(mode, process.cwd(), "").TOMTOM_API_KEY),
     react(),
     VitePWA({
       registerType: "autoUpdate",
@@ -59,4 +87,4 @@ export default defineConfig({
   worker: { format: "es" },   // the assistant's model runs in a module worker (src/lib/embedWorker.js)
   // In development, /api/ask goes to the AI function run locally: uvicorn api.ask:app --port 8001 (api/ask.py).
   server: { port: 5173, proxy: { "/api": "http://127.0.0.1:8001" } },
-});
+}));

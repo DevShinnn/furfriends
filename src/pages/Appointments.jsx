@@ -24,7 +24,10 @@ export default function Appointments() {
     <>
       <div className="topbar">
         <div><h1>Vet appointments</h1><p>Book visits, get them on your care list, and log what the vet said afterwards.</p></div>
-        {pets.length > 0 && <div className="actions"><button className="btn btn-primary" onClick={book}><Icon name="plus" /> Book appointment</button></div>}
+        <div className="actions">
+          <Link className="btn btn-soft" to="/app/clinics"><Icon name="pin" size={17} /> Find a vet</Link>
+          {pets.length > 0 && <button className="btn btn-primary" onClick={book}><Icon name="plus" /> Book appointment</button>}
+        </div>
       </div>
 
       {!pets.length ? <div className="card"><EmptyPets /></div> : (

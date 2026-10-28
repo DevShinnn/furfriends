@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { StoreProvider } from "./store/StoreContext";
 import { UIProvider } from "./components/UIContext";
@@ -13,6 +14,8 @@ import Emergency, { EmergencyGuide } from "./pages/Emergency";
 import Breeds, { BreedDetail } from "./pages/Breeds";
 import Assistant from "./pages/Assistant";
 import Survey from "./pages/Survey";
+// The clinic finder brings the map library, so it only downloads when the page opens.
+const Clinics = lazy(() => import("./pages/Clinics"));
 
 // HashRouter keeps deep links working on any static host without rewrite rules.
 export default function App() {
@@ -34,6 +37,7 @@ export default function App() {
               <Route path="emergency/:slug" element={<EmergencyGuide />} />
               <Route path="breeds" element={<Breeds />} />
               <Route path="breeds/:slug" element={<BreedDetail />} />
+              <Route path="clinics" element={<Suspense fallback={<div className="card empty small"><span className="spinner" /> Loading the map…</div>}><Clinics /></Suspense>} />
               <Route path="assistant" element={<Assistant />} />
               <Route path="survey" element={<Survey />} />
               <Route path="profile" element={<Profile />} />

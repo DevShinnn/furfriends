@@ -136,7 +136,7 @@ async function fetchAll(authUser) {
 
   const p = prof.data || {};
   const user = {
-    id: authUser.id, email: authUser.email, name: p.name || "", phone: p.phone || "", city: p.city || "",
+    id: authUser.id, email: authUser.email, name: p.name || "", phone: p.phone || "", city: p.city || "", address: p.address || "",
     notificationsEnabled: p.notifications_enabled ?? true, createdAt: Date.parse(authUser.created_at),
     isDemo: authUser.email === DEMO_EMAIL,
     // the demo and sample accounts, whose passwords are public (docs/sample-accounts.md); the database enforces this too
@@ -320,13 +320,13 @@ export function StoreProvider({ children }) {
       },
 
       // Resolves to { error } or { notice } (email changes need confirming from the new inbox).
-      async updateUser({ name, email, phone, city }) {
+      async updateUser({ name, email, phone, city, address = "" }) {
         email = (email || "").trim().toLowerCase();
-        name = name.trim(); phone = phone.trim(); city = city.trim();
+        name = name.trim(); phone = phone.trim(); city = city.trim(); address = address.trim().slice(0, 200);
         if (!name) return { error: "Name can't be empty." };
         if (!isEmail(email)) return { error: "Please enter a valid email address." };
         if (user.isShared && email !== user.email) return { error: "This shared account's email can't be changed." };
-        const r = await supabase.from("profiles").update({ name, phone, city }).eq("id", user.id);
+        const r = await supabase.from("profiles").update({ name, phone, city, address }).eq("id", user.id);
         if (r.error) return { error: r.error.message };
         let notice = null;
         if (email !== user.email) {
@@ -334,7 +334,7 @@ export function StoreProvider({ children }) {
           if (error) return { error: authMessage(error) };
           notice = `We sent a confirmation link to ${email}. Your email changes once you click it.`;
         }
-        commit((d) => ({ ...d, user: { ...d.user, name, phone, city } }));
+        commit((d) => ({ ...d, user: { ...d.user, name, phone, city, address } }));
         return { notice };
       },
 

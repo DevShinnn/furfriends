@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>FurFriends system design</title>
+<style>
+  @page { size: A4 landscape; margin: 11mm 13mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 11pt/1.45 "Segoe UI", Arial, sans-serif; color: #1b1f1d; }
+  .page { page-break-after: always; break-after: page; height: 182mm; overflow: hidden; display: flex; flex-direction: column; }
+  section.page:last-of-type { page-break-after: auto; break-after: auto; }
+  h1 { font-size: 30pt; margin: 0 0 4px; color: #123d33; letter-spacing: -0.5px; }
+  h2 { font-size: 17pt; margin: 0 0 2px; color: #123d33; border-bottom: 2px solid #ffc94d; padding-bottom: 4px; }
+  .lead { margin: 6px 0 8px; color: #4a524e; font-size: 10.5pt; }
+  .diagram { flex: none; height: 142mm; }
+  .diagram .mermaid { width: 100%; height: 100%; margin: 0; }
+  .diagram svg { width: 100% !important; height: 100% !important; max-width: none !important; }
+  .cover { justify-content: center; }
+  .cover .sub { font-size: 14pt; color: #4a524e; margin: 0 0 22px; }
+  .cover .tag { display: inline-block; background: #123d33; color: #fff; border-radius: 6px; padding: 3px 10px; font-size: 10pt; margin-bottom: 14px; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 8px; }
+  .card { border: 1px solid #ded7cb; border-radius: 8px; padding: 10px 12px; background: #fbf8f3; }
+  .card b { color: #123d33; display: block; margin-bottom: 3px; }
+  .card span { font-size: 10pt; color: #3b423f; }
+  table { width: 100%; border-collapse: collapse; font-size: 9.2pt; }
+  th { text-align: left; background: #123d33; color: #fff; padding: 5px 8px; }
+  td { padding: 4px 8px; border-bottom: 1px solid #e5dfd4; vertical-align: top; }
+  td.k { font-weight: 700; color: #123d33; white-space: nowrap; }
+  tr:nth-child(even) td { background: #faf7f1; }
+  ul { margin: 6px 0 0 18px; padding: 0; } li { margin: 4px 0; }
+  .note { margin-top: 8px; font-size: 9.5pt; color: #5b625e; }
+  .foot { margin-top: auto; padding-top: 6px; font-size: 8.5pt; color: #7a817c; }
+</style></head><body>
+
+<section class="page cover">
+  <span class="tag">System design</span>
+  <h1>FurFriends</h1>
+  <p class="sub">System architecture, database (ERD) and flows</p>
+  <p>FurFriends is an installable web app where cat and dog owners in the Philippines keep their pets' health records, get care reminders, read first-aid guides, find nearby vet clinics, and ask the FurFriends AI, in English or Tagalog.</p>
+  <div class="cols">
+    <div class="card"><b>What owners can do</b><span>Keep profiles, medical history, vaccinations and documents for each pet; plan feeding and care with reminders; read first-aid and breed guides; find nearby vet clinics with hours and directions; ask the assistant.</span></div>
+    <div class="card"><b>How it is built</b><span>A React web app that works offline, a Supabase backend with private per-owner data, push reminders, and the team's own trained AI, running in a free Vercel function.</span></div>
+    <div class="card"><b>What this document shows</b><span>1. Architecture 2. Technology 3. ERD and data dictionary 4. Flows: sign-in and sync, the assistant, reminders, research data, deployment 5. Security and limits.</span></div>
+  </div>
+  <p class="note">Live at furfriends-black.vercel.app. The database section matches supabase/migrations: 14 tables, 15 relationships (checked against the live project on 2026-10-24; ai_usage added 2026-10-28, clinic_search_cache 2026-10-29). Document date: 2026-10-29.</p>
+</section>
+
+<section class="page"><h2>1. System architecture</h2><p class="lead">Three places do the work: the owner's device (app, offline cache and the search), Vercel (serves the app and runs the AI that writes answers) and Supabase (accounts, data, files, sync, reminders and the AI's usage limit).</p><div class="diagram"><svg viewBox="0 0 1080 570" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4a524e"/></marker></defs><rect x="10" y="92" width="480" height="372" rx="12" fill="#faf7f1" stroke="#cfc7b8" stroke-width="1.4" stroke-dasharray="6 5"/><text x="24" y="114" font-size="14" font-weight="700" fill="#5b625e" font-family="Segoe UI, Arial, sans-serif">Owner's phone or computer</text><rect x="30" y="135" width="205" height="84" rx="8" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="132.5" y="154.7" font-weight="700">React app</tspan><tspan x="132.5" y="173.0">Home, Pets, Care, Visits,</tspan><tspan x="132.5" y="191.3">Emergency, Breeds,</tspan><tspan x="132.5" y="209.6">Ask AI, Profile, Survey</tspan></text><rect x="265" y="135" width="205" height="84" rx="8" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="367.5" y="163.8" font-weight="700">App store</tspan><tspan x="367.5" y="182.1">screen updates at once,</tspan><tspan x="367.5" y="200.4">saves queued in order</tspan></text><rect x="30" y="255" width="205" height="168" rx="8" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="132.5" y="298.4" font-weight="700">AI search on the device</tspan><tspan x="132.5" y="316.7"></tspan><tspan x="132.5" y="335.0">safety rules first, then</tspan><tspan x="132.5" y="353.3">the MiniLM model finds</tspan><tspan x="132.5" y="371.6">the 2 closest of 2,997</tspan><tspan x="132.5" y="389.9">checked passages</tspan></text><rect x="265" y="315" width="205" height="84" rx="8" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="367.5" y="343.8" font-weight="700">Service worker</tspan><tspan x="367.5" y="362.1">offline cache and</tspan><tspan x="367.5" y="380.4">notifications</tspan></text><rect x="30" y="8" width="200" height="62" rx="8" fill="#fff4d6" stroke="#c99a1c" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="130" y="35.0" font-weight="700">Vercel</tspan><tspan x="130" y="53.3">app hosting and CDN</tspan></text><rect x="255" y="8" width="235" height="62" rx="8" fill="#fff4d6" stroke="#c99a1c" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="372.5" y="35.0" font-weight="700">AI function (Vercel)</tspan><tspan x="372.5" y="53.3">FurFriends' own model</tspan></text><rect x="560" y="8" width="510" height="456" rx="12" fill="#faf7f1" stroke="#cfc7b8" stroke-width="1.4" stroke-dasharray="6 5"/><text x="574" y="30" font-size="14" font-weight="700" fill="#5b625e" font-family="Segoe UI, Arial, sans-serif">Supabase (cloud backend)</text><rect x="585" y="48" width="220" height="62" rx="8" fill="#fff4d6" stroke="#c99a1c" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="695" y="74.9" font-weight="700">Auth</tspan><tspan x="695" y="93.2">email and password</tspan></text><rect x="585" y="128" width="220" height="62" rx="8" fill="#fff4d6" stroke="#c99a1c" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="695" y="154.9" font-weight="700">Private storage</tspan><tspan x="695" y="173.3">photos and documents</tspan></text><rect x="585" y="208" width="220" height="62" rx="8" fill="#fff4d6" stroke="#c99a1c" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="695" y="234.9" font-weight="700">Realtime</tspan><tspan x="695" y="253.3">sync between devices</tspan></text><rect x="840" y="48" width="210" height="222" rx="8" fill="#fff4d6" stroke="#c99a1c" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="945" y="127.5" font-weight="700">Postgres database</tspan><tspan x="945" y="145.8">14 tables</tspan><tspan x="945" y="164.1">Row Level Security:</tspan><tspan x="945" y="182.4">each owner sees only</tspan><tspan x="945" y="200.7">their own rows</tspan></text><rect x="585" y="330" width="220" height="62" rx="8" fill="#fff4d6" stroke="#c99a1c" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="695" y="357.0" font-weight="700">pg_cron</tspan><tspan x="695" y="375.3">every 5 minutes</tspan></text><rect x="840" y="330" width="210" height="62" rx="8" fill="#fff4d6" stroke="#c99a1c" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="945" y="357.0" font-weight="700">Edge function</tspan><tspan x="945" y="375.3">send-reminders</tspan></text><rect x="585" y="404" width="220" height="52" rx="8" fill="#fff4d6" stroke="#c99a1c" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="695" y="426.0" font-weight="700">Edge function</tspan><tspan x="695" y="444.3">find-clinics</tspan></text><rect x="960" y="498" width="110" height="62" rx="8" fill="#f1ece4" stroke="#8a8272" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="1015" y="525.0" font-weight="700">TomTom</tspan><tspan x="1015" y="543.3">clinics, hours</tspan></text><rect x="30" y="498" width="300" height="62" rx="8" fill="#f1ece4" stroke="#8a8272" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="180" y="525.0" font-weight="700">Hugging Face</tspan><tspan x="180" y="543.3">search model, downloaded once</tspan></text><rect x="400" y="498" width="250" height="62" rx="8" fill="#f1ece4" stroke="#8a8272" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="525" y="525.0" font-weight="700">Browser push service</tspan><tspan x="525" y="543.3">Web Push, VAPID keys</tspan></text><path d="M130,70 L130,135" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><text x="200" y="86" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">loads the app</text><path d="M235,177 L265,177" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M235,285 L250,285 L250,70" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)" marker-start="url(#ah)"/><text x="385" y="85" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">question + 2 passages, answer back</text><path d="M490,59 L585,59" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><text x="538" y="46" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">login, CPU limit</text><path d="M130,219 L130,255" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M470,177 L560,177" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)" marker-start="url(#ah)"/><text x="515" y="163" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">HTTPS and Realtime</text><path d="M130,498 L130,423" fill="none" stroke="#4a524e" stroke-width="1.8" stroke-dasharray="6 5" marker-end="url(#ah)"/><text x="190" y="480" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">first use only</text><path d="M805,361 L840,361" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M945,330 L945,270" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M945,392 L945,529 L650,529" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><text x="800" y="520" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">sends</text><path d="M805,430 L1015,430 L1015,498" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><text x="880" y="422" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">searches</text><path d="M400,529 L367,529 L367,399" fill="none" stroke="#4a524e" stroke-width="1.8" stroke-dasharray="6 5" marker-end="url(#ah)"/><text x="250" y="440" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">notification, even when closed</text></svg></div></section>
+
+<section class="page"><h2>2. Technology and why</h2><p class="lead">Each layer and the reason it was chosen.</p>
+<table><thead><tr><th>Layer</th><th>Technology</th><th>Why</th></tr></thead><tbody><tr><td class="k">App</td><td>React 19, React Router, Vite</td><td>One codebase for phone and computer; fast to build and to test.</td></tr><tr><td class="k">Installable and offline</td><td>PWA with a Workbox service worker</td><td>Works from the home screen; the app and answers keep working without a connection.</td></tr><tr><td class="k">Accounts and data</td><td>Supabase Auth and Postgres with Row Level Security</td><td>Each owner can only read and change their own rows, enforced in the database itself.</td></tr><tr><td class="k">Files</td><td>Supabase Storage (private buckets)</td><td>Photos and documents kept under the owner's folder, opened with signed links.</td></tr><tr><td class="k">Sync between devices</td><td>Supabase Realtime</td><td>A change on one device reaches the others without a manual refresh.</td></tr><tr><td class="k">Nearby vet clinics</td><td>TomTom Places Search API through a Supabase edge function (find-clinics); Leaflet map with OpenStreetMap tiles</td><td>Free with no card (5,000 searches a month), with opening hours for about half of Batangas clinics; the key stays secret; directions open Google Maps.</td></tr><tr><td class="k">Reminders</td><td>pg_cron, an edge function, Web Push (VAPID)</td><td>Notifications arrive even when the app is closed, and are never sent twice.</td></tr><tr><td class="k">AI search</td><td>Open-source MiniLM model in a Web Worker (transformers.js)</td><td>Finds the 2 checked passages closest to the question on the owner's device; it also works offline.</td></tr><tr><td class="k">AI that writes the answer</td><td>FurFriends' own model (Qwen2.5-0.5B trained with LoRA, 4-bit ONNX) in a Vercel Python function, api/ask.py</td><td>Trained by the team on checked text; runs next to the app, so owners download nothing and there is no paid AI service.</td></tr><tr><td class="k">Hosting</td><td>Vercel, deployed from GitHub</td><td>Every push to main publishes the new version.</td></tr><tr><td class="k">Team tooling</td><td>Node scripts and Python (ai-server)</td><td>Builds the answer index, runs the accuracy test, content check, survey results and the secret scan.</td></tr></tbody></table>
+</section>
+
+<section class="page"><h2>3. Entity relationship diagram (1 of 2): owners, pets and their records</h2><p class="lead">Every owner owns pets, and every health record, document, schedule and task belongs to a pet. Key columns are shown; the data dictionary lists every table.</p><div class="diagram"><pre class="mermaid">erDiagram
+  AUTH_USERS ||--o{ PETS : "owns"
+  PETS ||--o{ MEDICAL_RECORDS : "has"
+  PETS ||--o{ VACCINATIONS : "has"
+  PETS ||--o{ DOCUMENTS : "has"
+  PETS ||--o{ FEEDING_SCHEDULES : "has"
+  PETS ||--o{ CARE_TASKS : "has"
+  FEEDING_SCHEDULES ||--o{ FEEDING_LOG : "ticked as fed"
+  PETS ||--o{ FEEDING_LOG : "has"
+
+  AUTH_USERS {
+    uuid id PK
+    text email UK
+  }
+  PETS {
+    uuid id PK
+    uuid owner_id FK
+    text name
+    text species "Cat or Dog"
+    text breed
+    numeric weight_kg
+    text photo_path
+  }
+  MEDICAL_RECORDS {
+    uuid id PK
+    uuid pet_id FK
+    date date
+    text type
+    text title
+  }
+  VACCINATIONS {
+    uuid id PK
+    uuid pet_id FK
+    text name
+    date date_given
+    date next_due
+  }
+  DOCUMENTS {
+    uuid id PK
+    uuid pet_id FK
+    text title
+    text file_path
+    text mime_type
+  }
+  FEEDING_SCHEDULES {
+    uuid id PK
+    uuid pet_id FK
+    time time
+    text food
+    text amount
+  }
+  FEEDING_LOG {
+    uuid feeding_id PK, FK
+    date fed_on PK
+    uuid pet_id FK
+  }
+  CARE_TASKS {
+    uuid id PK
+    uuid pet_id FK
+    text kind
+    date next_due
+    integer repeat_days
+    boolean done
+  }</pre></div><p class="note">PK = primary key, FK = foreign key, UK = unique. Deleting an account deletes its pets, and deleting a pet deletes everything under it.</p></section>
+
+<section class="page"><h2>3. Entity relationship diagram (2 of 2): accounts, reminders and research</h2><p class="lead">The profile, reminder devices, survey answers and assistant ratings hang off the owner's login. A rating may also point to the pet it was about.</p><div class="diagram"><pre class="mermaid">erDiagram
+  AUTH_USERS ||--|| PROFILES : "has"
+  AUTH_USERS ||--o{ PETS : "owns"
+  AUTH_USERS ||--o{ PUSH_SUBSCRIPTIONS : "has devices"
+  AUTH_USERS ||--o{ PUSH_LOG : "was sent"
+  AUTH_USERS ||--o{ ASSISTANT_FEEDBACK : "rates"
+  AUTH_USERS ||--o{ USABILITY_RESPONSES : "submits"
+  AUTH_USERS ||--o{ AI_USAGE : "used AI time"
+  PETS |o--o{ ASSISTANT_FEEDBACK : "asked about"
+
+  AUTH_USERS {
+    uuid id PK
+    text email UK
+    text encrypted_password
+  }
+  PETS {
+    uuid id PK
+    uuid owner_id FK
+  }
+  PROFILES {
+    uuid id PK, FK
+    text name
+    text phone
+    text city
+    text address
+    boolean notifications_enabled
+  }
+  PUSH_SUBSCRIPTIONS {
+    uuid id PK
+    uuid user_id FK
+    text endpoint UK
+    text timezone
+  }
+  PUSH_LOG {
+    uuid user_id PK, FK
+    text key PK
+    timestamptz sent_at
+  }
+  ASSISTANT_FEEDBACK {
+    uuid id PK
+    uuid user_id FK
+    uuid pet_id FK "optional"
+    text question
+    text answer
+    text model
+    smallint rating "1 or -1"
+  }
+  USABILITY_RESPONSES {
+    uuid id PK
+    uuid user_id FK
+    text participant_code
+    smallint_array sus "10 answers"
+    numeric sus_score "0 to 100"
+  }
+  CLINIC_SEARCH_CACHE {
+    text key PK
+    jsonb value
+    timestamptz saved_at
+  }
+  AI_USAGE {
+    bigint id PK
+    uuid user_id FK
+    real cpu_seconds
+    text model
+  }</pre></div><p class="note">Ratings keep their question and answer if the pet is deleted (the pet link is cleared). One profile per login; the profile shares the login's id. clinic_search_cache stands alone: shared saved clinic searches that only the find-clinics function writes.</p></section>
+
+<section class="page"><h2>4. Data dictionary</h2><p class="lead">14 tables in the public schema, plus Supabase's own auth.users. Every table has Row Level Security on.</p>
+<table><thead><tr><th>Table</th><th>One row is</th><th>Key</th><th>Rules</th></tr></thead><tbody><tr><td class="k">profiles</td><td>an owner's name, phone, city, address and reminder setting</td><td>id (the user's id)</td><td>One per user, created at sign-up.</td></tr><tr><td class="k">pets</td><td>a cat or a dog</td><td>id</td><td>Species is Cat or Dog; age months 0 to 11; weight above 0.</td></tr><tr><td class="k">medical_records</td><td>a checkup, illness, injury, surgery, medication or allergy</td><td>id</td><td>Belongs to a pet.</td></tr><tr><td class="k">vaccinations</td><td>a vaccine given, with its next due date</td><td>id</td><td>Next due date is after the date given.</td></tr><tr><td class="k">documents</td><td>an uploaded photo or PDF</td><td>id</td><td>The file is in private storage; the row keeps its path.</td></tr><tr><td class="k">feeding_schedules</td><td>a meal time with food and amount</td><td>id</td><td>Days 0 to 6, empty means every day.</td></tr><tr><td class="k">feeding_log</td><td>a meal ticked as fed on one day</td><td>feeding_id + fed_on</td><td>Only the last 14 days are loaded.</td></tr><tr><td class="k">care_tasks</td><td>grooming, deworming, vaccination or a vet appointment</td><td>id</td><td>Repeat in days (0 = once); vet appointments are rows here, not a separate table.</td></tr><tr><td class="k">assistant_feedback</td><td>a thumbs up or down on one assistant answer</td><td>id</td><td>Keeps the question, answer and model version; rating is 1 or -1.</td></tr><tr><td class="k">push_subscriptions</td><td>a phone or browser that allowed notifications</td><td>id</td><td>Endpoint is unique; keeps the device's time zone.</td></tr><tr><td class="k">push_log</td><td>a reminder already pushed</td><td>user_id + key</td><td>Stops the same reminder going out twice.</td></tr><tr><td class="k">usability_responses</td><td>one tester's survey</td><td>id</td><td>Exactly 10 answers from 1 to 5; SUS score computed.</td></tr><tr><td class="k">clinic_search_cache</td><td>one saved TomTom clinic search for a ~1 km area, or a typed address's location</td><td>key</td><td>Kept a week. Only the find-clinics function reads or writes it (no user policies); addresses are stored as a hash.</td></tr><tr><td class="k">ai_usage</td><td>the CPU time one AI answer used</td><td>id</td><td>No question text. Users can add rows but not read them; the AI stops at 3 CPU-hours per 30 days.</td></tr></tbody></table>
+<p class="note">Not in the database on purpose: the first-aid guides, breed guide and the assistant's answers are built into the app, so they work offline. There is no clinics table: nearby clinics come live from TomTom, and clinic_search_cache only keeps each search for a week.</p>
+</section>
+
+<section class="page"><h2>5. Flow: sign-in, loading and sync</h2><p class="lead">How an owner's data reaches the screen, stays private, and appears on a second device.</p><div class="diagram"><pre class="mermaid">sequenceDiagram
+  autonumber
+  actor O as Owner
+  participant A as App on phone
+  participant AU as Supabase Auth
+  participant DB as Postgres (RLS)
+  participant ST as Storage
+  participant D2 as Owner's other device
+  O->>A: Log in (or tap the demo button)
+  A->>AU: Email and password
+  AU-->>A: Session token (JWT)
+  A->>DB: Load profile, pets, records, schedules
+  Note over DB: Row Level Security returns only this owner's rows
+  DB-->>A: Data
+  A->>ST: Ask for signed links to photos and documents
+  ST-->>A: Links that last a week
+  O->>A: Add or edit a record
+  A-->>O: Screen updates immediately
+  A->>DB: Save (queued, in order)
+  alt save fails
+    A->>DB: Reload everything from the server
+  end
+  DB-->>D2: Realtime change event
+  D2->>DB: Reload once its own saves are done</pre></div></section>
+
+<section class="page"><h2>6. Flow: asking the assistant</h2><p class="lead">Rules run first. Then the device finds the 2 closest checked passages, and FurFriends' own model on Vercel writes the answer from them. If it can't, the closest checked answer shows, only when it is close enough.</p><div class="diagram"><svg viewBox="0 0 1060 630" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4a524e"/></marker></defs><rect x="5" y="115" width="150" height="70" rx="8" fill="#f1ece4" stroke="#8a8272" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="80" y="136.8" font-weight="700">Owner asks</tspan><tspan x="80" y="155.1">(English, Tagalog</tspan><tspan x="80" y="173.4">or Taglish)</tspan></text><polygon points="160,150 250,90 340,150 250,210" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="14" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="250" y="137.7">Greeting, thanks,</tspan><tspan x="250" y="154.8">dose or emergency</tspan><tspan x="250" y="171.8">wording?</tspan></text><polygon points="350,150 440,90 530,150 440,210" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="14" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="440" y="137.7">Weight or breed</tspan><tspan x="440" y="154.8">question, and a</tspan><tspan x="440" y="171.8">pet selected?</tspan></text><rect x="550" y="105" width="160" height="90" rx="8" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="630" y="127.6" font-weight="700">Search on the device</tspan><tspan x="630" y="145.9">2 closest of 2,997</tspan><tspan x="630" y="164.3">checked passages;</tspan><tspan x="630" y="182.6">emergency guide first</tspan></text><rect x="735" y="105" width="145" height="90" rx="8" fill="#fff4d6" stroke="#c99a1c" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="807.5" y="127.6" font-weight="700">FurFriends AI</tspan><tspan x="807.5" y="145.9">on Vercel writes</tspan><tspan x="807.5" y="164.3">the answer from</tspan><tspan x="807.5" y="182.6">the 2 passages</tspan></text><polygon points="885,150 970,90 1055,150 970,210" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="14" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="970" y="137.7">Did the AI</tspan><tspan x="970" y="154.8">answer from the</tspan><tspan x="970" y="171.8">passages?</tspan></text><rect x="160" y="255" width="180" height="72" rx="8" fill="#fff4d6" stroke="#c99a1c" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="250" y="277.8" font-weight="700">Friendly reply, a</tspan><tspan x="250" y="296.1">'no doses' note, or</tspan><tspan x="250" y="314.4">the first-aid guide</tspan></text><rect x="350" y="255" width="180" height="72" rx="8" fill="#fff4d6" stroke="#c99a1c" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="440" y="277.8" font-weight="700">Answer from the breed</tspan><tspan x="440" y="296.1">guide, using the pet's</tspan><tspan x="440" y="314.4">own weight</tspan></text><rect x="875" y="0" width="180" height="72" rx="8" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="965" y="22.8" font-weight="700">Show the AI's answer</tspan><tspan x="965" y="41.1">with both sources</tspan><tspan x="965" y="59.4">and rating buttons</tspan></text><polygon points="885,320 970,255 1055,320 970,385" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="14" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="970" y="307.7">Score 0.68</tspan><tspan x="970" y="324.8">or more? (0.76</tspan><tspan x="970" y="341.8">for open posts)</tspan></text><rect x="690" y="285" width="170" height="70" rx="8" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="775" y="306.8" font-weight="700">Show the checked</tspan><tspan x="775" y="325.1">answer with</tspan><tspan x="775" y="343.4">its source</tspan></text><polygon points="885,470 970,405 1055,470 970,535" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="14" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="970" y="457.7">0.58 or more and</tspan><tspan x="970" y="474.8">a checked FurFriends</tspan><tspan x="970" y="491.8">answer?</tspan></text><rect x="690" y="435" width="170" height="70" rx="8" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="775" y="456.8" font-weight="700">Show the closest</tspan><tspan x="775" y="475.1">answer with a</tspan><tspan x="775" y="493.4">'not sure' note</tspan></text><rect x="875" y="555" width="180" height="70" rx="8" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="965" y="576.8" font-weight="700">Say there is no checked</tspan><tspan x="965" y="595.1">answer yet; offer</tspan><tspan x="965" y="613.4">similar questions</tspan></text><path d="M155,150 L160,150" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M340,150 L350,150" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><text x="345" y="136" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">no</text><path d="M530,150 L550,150" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><text x="540" y="136" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">no</text><path d="M710,150 L735,150" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M880,150 L885,150" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M250,210 L250,255" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><text x="270" y="237" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">yes</text><path d="M440,210 L440,255" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><text x="460" y="237" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">yes</text><path d="M970,90 L970,72" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><text x="995" y="86" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">yes</text><path d="M970,210 L970,255" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><text x="988" y="237" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">no</text><path d="M885,320 L860,320" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><text x="872" y="306" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">yes</text><path d="M970,385 L970,405" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><text x="988" y="400" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">no</text><path d="M885,470 L860,470" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><text x="872" y="456" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">yes</text><path d="M970,535 L970,555" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><text x="988" y="550" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">no</text><text font-size="14" fill="#5b625e" font-family="Segoe UI, Arial, sans-serif"><tspan x="10" y="400">Safety first: the assistant never gives medicine doses, and in an</tspan><tspan x="10" y="420.3">emergency the first-aid guide is put in front of the AI.</tspan><tspan x="10" y="440.6">'No' at the AI also covers: offline, not logged in, or this month's free</tspan><tspan x="10" y="460.9">AI allowance used up. The checked answer then shows instead.</tspan><tspan x="10" y="481.2">Open posts must match more closely than FurFriends' own answers.</tspan></text></svg></div></section>
+
+<section class="page"><h2>7. Flow: reminder notifications</h2><p class="lead">A schedule in the database wakes an edge function every 5 minutes. Reminders arrive even when the app is closed.</p><div class="diagram"><pre class="mermaid">sequenceDiagram
+  autonumber
+  participant C as pg_cron (every 5 min)
+  participant F as Edge function send-reminders
+  participant DB as Postgres
+  participant P as Browser push service
+  participant S as Service worker on phone
+  actor O as Owner
+  C->>F: Call with the secret kept in Vault
+  F->>DB: Read devices, care tasks, feeding times, vaccines
+  Note over F: Works in each device's own time zone.<br/>Due if its time fell in the last 10 minutes.<br/>Morning 8:00, vet visit 2 hours before and the evening before
+  F->>DB: Check push_log: already sent?
+  F->>P: Send Web Push (VAPID keys)
+  P-->>S: Deliver, even if the app is closed
+  S-->>O: Show the notification
+  F->>DB: Record it in push_log (no repeats)
+  O->>S: Tap the notification
+  S-->>O: App opens at the right page</pre></div></section>
+
+<section class="page"><h2>8. Flow: research data and improving the assistant</h2><p class="lead">Survey answers and ratings are collected from real testers only, then used to measure usability and to fix wrong answers.</p><div class="diagram"><svg viewBox="0 0 1060 570" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4a524e"/></marker></defs><text x="10" y="30" font-size="15" font-weight="700" fill="#123d33" font-family="Segoe UI, Arial, sans-serif">Usability testing</text><rect x="10" y="50" width="230" height="90" rx="8" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="125" y="81.8" font-weight="700">Survey page</tspan><tspan x="125" y="100.1">10 SUS questions,</tspan><tspan x="125" y="118.4">tasks and comments</tspan></text><rect x="290" y="50" width="230" height="90" rx="8" fill="#fff4d6" stroke="#c99a1c" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="405" y="90.9" font-weight="700">usability_responses</tspan><tspan x="405" y="109.2">own rows only</tspan></text><rect x="570" y="50" width="230" height="90" rx="8" fill="#f1ece4" stroke="#8a8272" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="685" y="90.9" font-weight="700">survey-results script</tspan><tspan x="685" y="109.2">SUS score and tables</tspan></text><rect x="850" y="50" width="200" height="90" rx="8" fill="#f1ece4" stroke="#8a8272" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="950" y="90.9" font-weight="700">Usability results</tspan><tspan x="950" y="109.2">for the thesis</tspan></text><text x="10" y="290" font-size="15" font-weight="700" fill="#123d33" font-family="Segoe UI, Arial, sans-serif">Improving the assistant</text><rect x="10" y="310" width="230" height="90" rx="8" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="125" y="341.8" font-weight="700">Thumbs up or down</tspan><tspan x="125" y="360.1">on an answer,</tspan><tspan x="125" y="378.4">with a reason</tspan></text><rect x="290" y="310" width="230" height="90" rx="8" fill="#fff4d6" stroke="#c99a1c" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="405" y="341.8" font-weight="700">assistant_feedback</tspan><tspan x="405" y="360.1">question, answer,</tspan><tspan x="405" y="378.4">model version</tspan></text><rect x="570" y="310" width="230" height="90" rx="8" fill="#f1ece4" stroke="#8a8272" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="685" y="341.8" font-weight="700">Wrong answers reviewed;</tspan><tspan x="685" y="360.1">new sourced Q&amp;A</tspan><tspan x="685" y="378.4">rows written in CSV</tspan></text><rect x="850" y="310" width="200" height="90" rx="8" fill="#f1ece4" stroke="#8a8272" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="950" y="341.8" font-weight="700">prepare_data.py,</tspan><tspan x="950" y="360.1">then build-knowledge</tspan><tspan x="950" y="378.4">(new answer index)</tspan></text><rect x="850" y="460" width="200" height="90" rx="8" fill="#f1ece4" stroke="#8a8272" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="950" y="491.8" font-weight="700">evaluate.py</tspan><tspan x="950" y="510.1">31 held-out questions,</tspan><tspan x="950" y="528.4">two graders, kappa</tspan></text><rect x="570" y="460" width="230" height="90" rx="8" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="685" y="501.0" font-weight="700">Better index ships</tspan><tspan x="685" y="519.3">to the live app</tspan></text><rect x="290" y="190" width="230" height="76" rx="8" fill="#fff4d6" stroke="#c99a1c" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="405" y="214.8" font-weight="700">Demo and sample accounts</tspan><tspan x="405" y="233.1">are blocked from writing</tspan><tspan x="405" y="251.4">these two tables</tspan></text><path d="M240,95 L290,95" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M520,95 L570,95" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M800,95 L850,95" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M240,355 L290,355" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M520,355 L570,355" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M800,355 L850,355" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M950,400 L950,460" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M850,505 L800,505" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M405,190 L405,140" fill="none" stroke="#4a524e" stroke-width="1.8" stroke-dasharray="6 5" marker-end="url(#ah)"/><path d="M405,266 L405,310" fill="none" stroke="#4a524e" stroke-width="1.8" stroke-dasharray="6 5" marker-end="url(#ah)"/></svg></div></section>
+
+<section class="page"><h2>9. Flow: deployment</h2><p class="lead">Code and data go through local checks, then GitHub, then Vercel. Database changes are SQL migrations applied to Supabase.</p><div class="diagram"><svg viewBox="0 0 1060 570" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4a524e"/></marker></defs><rect x="10" y="60" width="200" height="90" rx="8" fill="#f1ece4" stroke="#8a8272" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="110" y="91.8" font-weight="700">Developer</tspan><tspan x="110" y="110.1">edits code, data</tspan><tspan x="110" y="128.4">or migrations</tspan></text><rect x="270" y="60" width="240" height="90" rx="8" fill="#f1ece4" stroke="#8a8272" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="390" y="91.8" font-weight="700">Local checks</tspan><tspan x="390" y="110.1">build, content check,</tspan><tspan x="390" y="128.4">secret scan before every push</tspan></text><rect x="570" y="60" width="200" height="90" rx="8" fill="#f1ece4" stroke="#8a8272" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="670" y="100.9" font-weight="700">git push</tspan><tspan x="670" y="119.2">to GitHub (main)</tspan></text><rect x="830" y="60" width="220" height="90" rx="8" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="940" y="91.8" font-weight="700">Vercel</tspan><tspan x="940" y="110.1">builds the app (Vite, PWA)</tspan><tspan x="940" y="128.4">and the AI function</tspan></text><rect x="830" y="250" width="220" height="90" rx="8" fill="#e3f1ec" stroke="#1f6f5a" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="940" y="281.8" font-weight="700">Live site</tspan><tspan x="940" y="300.1">furfriends-black</tspan><tspan x="940" y="318.4">.vercel.app</tspan></text><rect x="10" y="250" width="300" height="100" rx="8" fill="#fff4d6" stroke="#c99a1c" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="160" y="277.7" font-weight="700">Supabase changes</tspan><tspan x="160" y="296.0">migrations (SQL, run in the</tspan><tspan x="160" y="314.3">Supabase SQL editor) and the</tspan><tspan x="160" y="332.6">send-reminders edge function</tspan></text><rect x="400" y="250" width="260" height="100" rx="8" fill="#fff4d6" stroke="#c99a1c" stroke-width="1.6"/><text text-anchor="middle" font-size="15" fill="#1b1f1d" font-family="Segoe UI, Arial, sans-serif"><tspan x="530" y="286.8" font-weight="700">Supabase project</tspan><tspan x="530" y="305.1">tables, policies,</tspan><tspan x="530" y="323.4">reminder schedule</tspan></text><path d="M210,105 L270,105" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M510,105 L570,105" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M770,105 L830,105" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M940,150 L940,250" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><text x="940" y="205" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">every push goes live by itself</text><path d="M110,150 L110,250" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M310,300 L400,300" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)"/><path d="M830,295 L660,295" fill="none" stroke="#4a524e" stroke-width="1.8" marker-end="url(#ah)" marker-start="url(#ah)"/><text x="745" y="281" text-anchor="middle" font-size="13" font-weight="600" fill="#3b423f" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" font-family="Segoe UI, Arial, sans-serif">HTTPS</text><text font-size="14.5" fill="#5b625e" font-family="Segoe UI, Arial, sans-serif"><tspan x="10" y="450">Database changes are written as numbered SQL files in supabase/migrations and applied in order.</tspan><tspan x="10" y="471.025">The reminder schedule and push keys live in Supabase (Vault and edge function secrets), never in the app.</tspan></text></svg></div></section>
+
+<section class="page"><h2>10. Security, privacy and limits</h2>
+<div style="display:grid;grid-template-columns:1.35fr 1fr;gap:18px;margin-top:6px">
+<div><table><thead><tr><th>Area</th><th>How it is handled</th></tr></thead><tbody><tr><td class="k">Each owner sees only their own data</td><td>Row Level Security on all 14 tables; a pet's rows are visible only when its owner is the logged-in user. Visitors who are not logged in see nothing.</td></tr><tr><td class="k">Files are private</td><td>Photos and documents sit under a folder named with the owner's user id, locked by a storage policy, and are opened with links that expire after a week.</td></tr><tr><td class="k">Secrets stay on the server</td><td>The app holds only the public Supabase key. The service-role key and push private key live in the edge function's secrets. A secret scan runs before every push and passed on the whole history.</td></tr><tr><td class="k">Locations aren't kept</td><td>The phone's location is used for one search and never saved. Searches are saved per ~1 km area, and a typed address only as a hash. The TomTom key is an edge-function secret, and only logged-in owners can search.</td></tr><tr><td class="k">Questions go only to FurFriends' own AI</td><td>Only logged-in owners can use it. The question and 2 checked passages go to the team's function on Vercel, not to a paid AI service, and are not stored. A question is shared with the team only when the owner rates the answer.</td></tr><tr><td class="k">The free plan can't be overrun</td><td>Each answer's CPU time is logged in Supabase. Above 3 of the free 4 CPU-hours per 30 days, the AI stops and the checked answer shows instead, so the app is never paused.</td></tr><tr><td class="k">Shared demo accounts are protected</td><td>The demo and sample logins have public passwords, so the database refuses changes to their password or email, and refuses their survey answers and ratings.</td></tr><tr><td class="k">The assistant is cautious</td><td>It writes only from 2 checked passages, never gives medicine doses, puts the first-aid guide first in an emergency, shows its sources, and says when the passages don't answer the question.</td></tr></tbody></table></div>
+<div><b style="color:#123d33">Limits to state honestly</b><ul><li>The AI is a small model (0.5 billion parameters). It writes from the 2 closest checked passages but can still pick the wrong ones or word an answer wrongly, and the screen says so. It is not a vet.</li><li>There is no vet adviser. Answers are written from public sources (VCA, Merck, Cornell, ASPCA, WSAVA, Philippine laws) and checked against them by the team, which is a limitation to state.</li><li>Tagalog and Taglish work through a word list that turns common words into English before the search. Unusual wording can still be missed.</li><li>The search model (about 30 MB) downloads once, on the first question. Writing answers needs internet; offline, the closest checked answer shows instead.</li><li>The AI shares Vercel's free plan: about 25 to 50 CPU-seconds per answer, so roughly 200 to 400 answers per 30 days before it falls back to checked answers.</li><li>Clinic listings and hours come from TomTom and can be wrong or out of date; about half of Batangas clinics have no hours listed, and small towns have few listings. The app says to call before going.</li><li>Survey and grading results shown anywhere as SIMULATED are practice data only, not research results.</li></ul></div>
+</div>
+<p class="foot">FurFriends system design. Generated by scripts/system-design.mjs.</p>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, securityLevel: "loose", theme: "base", fontFamily: "Segoe UI, Arial, sans-serif",
+    themeVariables: { primaryColor: "#e3f1ec", primaryBorderColor: "#1f6f5a", primaryTextColor: "#123d33", lineColor: "#5b625e", fontSize: "16px" },
+    flowchart: { htmlLabels: true, curve: "basis", nodeSpacing: 30, rankSpacing: 42, useMaxWidth: false }, sequence: { mirrorActors: false, wrap: true, useMaxWidth: false, width: 170, messageFontSize: 15, noteFontSize: 14, actorFontSize: 15 }, er: { useMaxWidth: false, fontSize: 15, minEntityWidth: 150, entityPadding: 14, layoutDirection: "TB" } });
+</script>
+</body></html>

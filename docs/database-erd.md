@@ -1,8 +1,9 @@
 # FurFriends database (ERD)
 
 The live Supabase database, as built by `supabase/migrations/`. Checked against the live project on
-2026-10-20: all 12 tables exist, each account sees only its own rows, and visitors who aren't logged
-in see nothing. Use this to check the ERD in the thesis manuscript. Every table, key and relationship
+2026-10-20: all 12 tables then existed, each account sees only its own rows, and visitors who aren't logged
+in see nothing. `ai_usage` (the AI's CPU-time counter) was added on 2026-10-28, and `clinic_search_cache` (saved clinic
+searches) plus `profiles.address` on 2026-10-29, making 14 tables. Use this to check the ERD in the thesis manuscript. Every table, key and relationship
 below should appear there.
 
 ```mermaid
@@ -21,6 +22,7 @@ erDiagram
     AUTH_USERS ||--o{ PUSH_SUBSCRIPTIONS : "has devices"
     AUTH_USERS ||--o{ PUSH_LOG : "was sent"
     AUTH_USERS ||--o{ USABILITY_RESPONSES : "submits"
+    AUTH_USERS ||--o{ AI_USAGE : "used AI time"
 
     AUTH_USERS {
         uuid id PK
@@ -33,6 +35,7 @@ erDiagram
         text name
         text phone
         text city
+        text address "optional, finds nearby clinics"
         boolean notifications_enabled
         timestamptz created_at
     }
@@ -151,6 +154,18 @@ erDiagram
         text improve
         timestamptz created_at
     }
+    CLINIC_SEARCH_CACHE {
+        text key PK "area or hashed address"
+        jsonb value "clinics with hours, or a point"
+        timestamptz saved_at
+    }
+    AI_USAGE {
+        bigint id PK
+        uuid user_id FK
+        real cpu_seconds "0 to 600"
+        text model
+        timestamptz created_at
+    }
 ```
 
 ## Tables
@@ -170,6 +185,8 @@ erDiagram
 | `push_subscriptions` | a phone or browser that allowed notifications | `id` | user |
 | `push_log` | a reminder already pushed, so it isn't sent twice | `user_id` + `key` | user |
 | `usability_responses` | one tester's survey answers and SUS score | `id` | user |
+| `ai_usage` | the CPU seconds one AI answer used on Vercel (no question text) | `id` | user |
+| `clinic_search_cache` | one saved TomTom clinic search for a ~1 km area, or a typed address's location (keyed by its hash) | `key` | — (shared, written only by the find-clinics function) |
 
 ## Rules worth showing in the manuscript
 - **Deleting cascades.** Deleting an account deletes its profile, pets and everything below them.
@@ -180,16 +197,21 @@ erDiagram
   locked the same way.
 - **Checks.** Species is Cat or Dog; months 0–11; weight above 0; a vaccine's next due date is after
   the date given; a rating is 1 or -1; the survey has exactly 10 answers from 1 to 5.
+- **AI allowance.** Users can add `ai_usage` rows but not read or change them; the function
+  `ai_cpu_seconds_30d()` gives the 30-day total, and the AI stops answering at 3 CPU-hours so the
+  Vercel free plan (4 CPU-hours per 30 days) is never passed.
 - **Not in the database, on purpose.** The first-aid guides, breed guide and the assistant's checked
   answers are built into the app (`src/lib/emergency.js`, `src/lib/breeds.js`,
   `public/knowledge/index.json`), so they work offline. Vet appointments are `care_tasks` rows with
-  kind "Vet appointment", not a separate table. There is no clinic table (the clinic locator was
-  removed from the scope).
+  kind "Vet appointment", not a separate table. There is no clinics table: nearby clinics come live
+  from TomTom (through the `find-clinics` edge function), and `clinic_search_cache` only keeps each
+  search for a week so the free monthly searches last.
 
 ## Common ERD mistakes to check for
 - `profiles` drawn as a separate entity with its own id: it shares the user's id (1 to 1).
 - `feeding_log` missing, or drawn without its two-column key.
-- An "appointments" or "clinics" table that doesn't exist.
+- An "appointments" or "clinics" table that doesn't exist (`clinic_search_cache` is a cache, not a clinic list).
+- `clinic_search_cache` drawn with a line to users or pets: it's shared and belongs to no one.
 - Missing the research tables (`assistant_feedback`, `usability_responses`) and the reminder tables
   (`push_subscriptions`, `push_log`).
 - Lines from child tables to the user instead of to `pets`: records belong to a pet, and the pet to the user.

@@ -47,6 +47,7 @@ export default function AppShell() {
     { to: "/app/appointments", icon: "stetho", label: "Vet visits", short: "Visits", count: upcomingVisits || null },
     { to: "/app/emergency", icon: "firstaid", label: "Emergency", short: "Emergency", cls: "nav-sos" },
     { to: "/app/breeds", icon: "book", label: "Breed guide", short: "Breeds" },
+    { to: "/app/clinics", icon: "pin", label: "Find a vet", desktopOnly: true },
     { to: "/app/assistant", icon: "sparkle", label: "Ask FurFriends", desktopOnly: true },
     { to: "/app/profile", icon: "user", label: "Profile", desktopOnly: true },
   ];
