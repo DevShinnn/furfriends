@@ -7,21 +7,23 @@ import PROMPT from "./aiPrompt.json";
 
 /* Client for the FurFriends assistant.
 
-   By default it runs entirely on the owner's device, with nothing to host: an open-source sentence
-   model finds the closest checked answer in public/knowledge/index.json (see knowledge.js and
-   scripts/build-knowledge.mjs). Answers come only from checked text, never generated.
+   1. An open-source sentence model on the owner's device (about 30 MB, downloaded once) finds the best-matching
+      checked passages in public/knowledge/index.json (see knowledge.js and scripts/build-knowledge.mjs).
+   2. FurFriends' own trained model writes the answer from the 2 best passages. It runs on the team's free
+      Hugging Face Space (ai-server/app.py, deployed by ai-server/deploy_space.py), so owners download nothing.
+      Contract:
+        POST  ASSISTANT_URL
+        Authorization: Bearer <Supabase access token>   (only logged-in FurFriends users get answers)
+        body  { messages: [{ role, content }], pet: petContext(pet) | null, sources: [{ label, text }], stream: true }
+        200 → the answer as plain text, streamed as it's written; header X-Model: the model version
+   3. If the server can't answer (asleep too long, offline...), the closest checked answer shows instead.
 
-   Optionally, a team-trained model can answer instead (ai-server/). Set VITE_ASSISTANT_URL to use it.
-   Contract the team's server implements:
-     POST  VITE_ASSISTANT_URL
-     Authorization: Bearer <Supabase access token>   (so the server knows who is asking)
-     body  { messages: [{ role: "user" | "assistant", content }], pet: petContext(pet) | null }
-     200 → { reply: "…", model?: "v1" }   (model: a version label, saved with ratings so retrains can be compared)
-     any other status → an error, optionally { message } or { detail } (FastAPI) to show the user
+   VITE_ASSISTANT_URL replaces the server (empty: no server). VITE_CHAT_MODEL can instead run a model on the
+   device (ai-server/export_onnx.py): the owner is asked before its ~430 MB download.
 
    This is a thesis pilot: answers are only as accurate as the model's training data, and the UI says so. */
 
-export const ASSISTANT_URL = import.meta.env.VITE_ASSISTANT_URL || "";
+export const ASSISTANT_URL = import.meta.env.VITE_ASSISTANT_URL ?? "https://devshin00-furfriends-ai.hf.space/ask";
 const HISTORY = 10;   // earlier messages sent along as context
 
 /* The messages actually sent to the model: no error notes, only the last few, only role and text. */
@@ -32,7 +34,6 @@ export const conversation = (messages) =>
 export function clearChats() {
   try { Object.keys(sessionStorage).filter((k) => k.startsWith("ff-ai-chat:")).forEach((k) => sessionStorage.removeItem(k)); } catch { /* ignore */ }
 }
-const TIMEOUT = 60000;  // small models on a CPU can take a while
 
 /* ------------------------------------------------------------------ pet context
    A short summary of the pet's records, so answers can be about this pet. */
@@ -54,35 +55,60 @@ export { urgentGuides } from "./emergency";
 
 /* ------------------------------------------------------------------ asking
    Resolves to { reply, model, match?, related? }. match is the checked answer used (with its source). */
-export async function askAssistant({ user, messages, pet, signal, onStatus, onText }) {
-  if (!ASSISTANT_URL) return askKnowledge({ messages, pet, signal, onStatus, onText });
+export async function askAssistant({ messages, pet, signal, onStatus, onText }) {
+  return askKnowledge({ messages, pet, signal, onStatus, onText });
+}
 
+/* A free Space sleeps after 2 days without questions. Opening the assistant wakes it, so it's ready by the
+   time the owner has typed a question. */
+export function wakeServer() {
+  if (ASSISTANT_URL) fetch(ASSISTANT_URL.replace(/\/ask$/, "/health")).catch(() => { /* asleep or offline */ });
+}
+
+/* The server writes the answer from the passages; it arrives piece by piece. While the Space wakes up it
+   answers 502/503 (or not at all), so this keeps trying for a while and says so (onStatus("waking")). */
+async function askServer(messages, pet, used, { signal, onStatus, onText }) {
   const { data } = await supabase.auth.getSession();
   const token = data.session?.access_token;
-  if (!token) throw new Error("You've been signed out. Log in again to use the assistant.");
-
+  if (!token) throw new Error("signed out");
   const ctrl = new AbortController();
   const stop = () => ctrl.abort();
   signal?.addEventListener("abort", stop);
-  const timer = setTimeout(stop, TIMEOUT);
+  const timer = setTimeout(stop, SERVER_TIMEOUT);
+  const body = JSON.stringify({ messages: conversation(messages), pet: petContext(pet), sources: sourcesFor(used), stream: true });
   try {
-    const res = await fetch(ASSISTANT_URL, {
-      method: "POST", signal: ctrl.signal,
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ messages: conversation(messages), pet: petContext(pet) }),
-    });
-    const body = await res.json().catch(() => ({}));
-    if (!res.ok || typeof body.reply !== "string") throw new Error(body.message || body.detail || "The assistant couldn't answer just now. Try again in a moment.");
-    return { reply: body.reply.trim(), model: typeof body.model === "string" ? body.model : null };
+    for (;;) {
+      const res = await fetch(ASSISTANT_URL, {
+        method: "POST", signal: ctrl.signal, body,
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      }).catch((e) => { if (ctrl.signal.aborted) throw e; return null; });   // no reply: still waking up
+      if (!res || res.status === 502 || res.status === 503) {
+        onStatus?.("waking");
+        await new Promise((r) => setTimeout(r, 8000));
+        continue;
+      }
+      if (!res.ok || !res.body) throw new Error(`server ${res.status}`);
+      onStatus?.(null);
+      const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
+      let text = "";
+      for (;;) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        text += value;
+        onText?.(text);
+      }
+      if (!text.trim()) throw new Error("empty answer");
+      return { reply: text.trim(), model: res.headers.get("X-Model") || "server" };
+    }
   } catch (e) {
-    if (e.name === "AbortError") throw new Error(signal?.aborted ? "Cancelled" : "The assistant took too long to answer. Try again.");
-    if (e instanceof TypeError) throw new Error("Couldn't reach the assistant. Check your connection.");
+    if (signal?.aborted) throw new Error("Cancelled");
     throw e;
   } finally {
     clearTimeout(timer);
     signal?.removeEventListener("abort", stop);
   }
 }
+const SERVER_TIMEOUT = 180000;   // waking a sleeping Space can take a minute or two, then the answer
 
 /* ------------------------------------------------------------------ on-device knowledge search */
 let indexPromise = null;
@@ -121,14 +147,17 @@ async function askKnowledge({ messages, pet, signal, onStatus, onText }) {
   const results = search(index, await embed(q, onStatus), q, { species: (pet?.species || "").toLowerCase() });
   const answer = compose(results, q);
   if (signal?.aborted) throw new Error("Cancelled");
-  // With the trained model on: it writes the answer from the 2 best checked passages. Without it, or if it
-  // fails, the closest checked answer is shown as before.
-  if (await chatReady()) {
+  // FurFriends' trained model writes the answer from the 2 best checked passages: on the server, or on this
+  // device if the owner turned that on. If it fails, the closest checked answer is shown as before.
+  const used = withUrgent(index, last, results).slice(0, SOURCES);
+  const write = ASSISTANT_URL ? () => askServer(messages, pet, used, { signal, onStatus, onText })
+    : (await chatReady()) ? () => generate(chatMessages(messages, pet, used), { signal, onStatus, onText }).then((reply) => ({ reply, model: CHAT_VERSION }))
+      : null;
+  if (write) {
     try {
-      const used = withUrgent(index, last, results).slice(0, SOURCES);
-      const reply = await generate(chatMessages(messages, pet, used), { signal, onStatus, onText });
+      const { reply, model } = await write();
       // Both passages are credited: the model may have used either (CC BY-SA asks for credit).
-      return { reply, model: CHAT_VERSION, match: used[0] ? pickSource(used[0]) : null, sources: used.map(pickSource), related: answer.related, generated: true };
+      return { reply, model, match: used[0] ? pickSource(used[0]) : null, sources: used.map(pickSource), related: answer.related, generated: true };
     } catch (e) {
       if (e.message === "Cancelled") throw e;
       console.warn("FurFriends AI failed, using the checked answer instead:", e);
@@ -145,10 +174,11 @@ function withUrgent(index, question, results) {
   return [...urgent, ...results.filter((e) => !ids.has(e.of || e.id))];
 }
 
-/* ------------------------------------------------------------------ the trained model
-   The team's model on Hugging Face, made by ai-server/export_onnx.py. VITE_CHAT_MODEL replaces it
-   (an empty value turns the AI off). The owner chooses once whether to download it (about 430 MB). */
-export const CHAT_MODEL = import.meta.env.VITE_CHAT_MODEL ?? "DevShin00/furfriends-rag-v2";
+/* ------------------------------------------------------------------ the trained model, on the device
+   Optional, instead of the server: set VITE_CHAT_MODEL to the Hugging Face folder made by
+   ai-server/export_onnx.py (e.g. "DevShin00/furfriends-rag-v2"). The owner chooses once whether to
+   download it (about 430 MB). */
+export const CHAT_MODEL = ASSISTANT_URL ? "" : import.meta.env.VITE_CHAT_MODEL || "";
 // For trying a model on this computer before it's uploaded: a local server with the export folder,
 // e.g. VITE_CHAT_HOST=http://localhost:8090/ (see ai-server/README.md). Unset: Hugging Face.
 const CHAT_HOST = import.meta.env.VITE_CHAT_HOST || "";
@@ -197,13 +227,14 @@ function describePet(c) {
   if (c.vaccines?.length) lines.push(`Vaccines: ${c.vaccines.map((v) => `${v.name} (${v.status})`).join(", ")}.`);
   return lines.join(" ");
 }
+// First-aid guides are short and checked: never cut, so all the steps are always there.
+const sourcesFor = (results) => results.map((e) => { const s = sourceOf(e); return e.kind === "guide" ? s : { ...s, text: clipWords(s.text, SOURCE_WORDS) }; });
 export function chatMessages(messages, pet, results) {
   let system = PROMPT.system;
   const about = describePet(petContext(pet));
   if (about) system += `\n\n${about}`;
   if (results.length) {
-    // First-aid guides are short and checked: never cut, so all the steps are always there.
-    const sources = results.map((e) => { const s = sourceOf(e); return e.kind === "guide" ? s : { ...s, text: clipWords(s.text, SOURCE_WORDS) }; });
+    const sources = sourcesFor(results);
     system += `\n\n${PROMPT.sourcesIntro}\n${sources.map((s, i) => `[${i + 1}] ${s.label}\n${s.text}`).join("\n\n")}`;
   }
   return [{ role: "system", content: system }, ...conversation(messages)];

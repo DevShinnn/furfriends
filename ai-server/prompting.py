@@ -5,7 +5,11 @@ import json
 import os
 
 # The instructions live in the app (src/lib/aiPrompt.json), so the app and training always use the same text.
-_PROMPT = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src", "lib", "aiPrompt.json"), encoding="utf-8"))
+# The Hugging Face Space has a copy next to this file (deploy_space.py puts it there).
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_PROMPT_FILE = next(p for p in (os.path.join(_HERE, "aiPrompt.json"), os.path.join(_HERE, "..", "src", "lib", "aiPrompt.json"))
+                    if os.path.exists(p))
+_PROMPT = json.load(open(_PROMPT_FILE, encoding="utf-8"))
 SYSTEM_PROMPT = _PROMPT["system"]
 SOURCES_INTRO = _PROMPT["sourcesIntro"]   # shown above the checked sources
 NOT_FOUND = _PROMPT["notFound"]           # what the model says when the sources don't answer the question

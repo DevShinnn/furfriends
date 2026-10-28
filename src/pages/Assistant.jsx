@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useStore } from "../store/StoreContext";
 import { useUI } from "../components/UIContext";
 import Icon from "../components/Icon";
-import { CHAT_MODEL, askAssistant, chatChoice, chatSupport, conversation, petContext, setChatChoice, urgentGuides } from "../lib/assistant";
+import { ASSISTANT_URL, CHAT_MODEL, askAssistant, chatChoice, chatSupport, conversation, petContext, setChatChoice, urgentGuides, wakeServer } from "../lib/assistant";
 import { uid } from "../lib/utils";
 
 /* Chat with the FurFriends assistant, optionally about one pet.
@@ -34,11 +34,11 @@ export default function Assistant() {
   const [chat, setChat] = useState(() => loadChat(user));
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
-  const [preparing, setPreparing] = useState(null);   // % of the model downloaded, the first time only
+  const [preparing, setPreparing] = useState(null);   // % of the search model downloaded (first time only), or "waking"
   const [draft, setDraft] = useState("");              // the trained model's answer as it's being written
   const [aiChoice, setAiChoice] = useState(chatChoice);
   const [aiSupported, setAiSupported] = useState(false);
-  useEffect(() => { chatSupport().then((s) => setAiSupported(!!s)); }, []);
+  useEffect(() => { chatSupport().then((s) => setAiSupported(!!s)); wakeServer(); }, []);
   const chooseAi = (v) => { setChatChoice(v); setAiChoice(v); };
   const abort = useRef(null);
   const saving = useRef(Promise.resolve());
@@ -142,7 +142,9 @@ export default function Assistant() {
               {draft
                 ? <><span className="ai-avatar" aria-hidden="true"><Icon name="sparkle" size={17} /></span><div className="ai-turn"><div className="ai-bubble"><Reply text={draft} /></div></div></>
                 : <div className="ai-bubble ai-typing" aria-label="The assistant is looking for an answer"><span /><span /><span /></div>}
-              {preparing !== null && <small className="ai-preparing">Getting the assistant ready on your device ({preparing}%). This only happens the first time.</small>}
+              {preparing === "waking"
+                ? <small className="ai-preparing">Waking up the FurFriends AI. After a quiet day this takes a minute or two.</small>
+                : preparing !== null && <small className="ai-preparing">Getting the assistant ready on your device ({preparing}%). This only happens the first time.</small>}
             </div>
           )}
           {CHAT_MODEL && aiSupported && !aiChoice && (
@@ -167,7 +169,9 @@ export default function Assistant() {
           <div className="ai-foot">Pilot: it can pick the wrong answer, and it isn't a vet. In an emergency, go to a vet now.
             <details className="ai-foot-more">
               <summary>How it works</summary>
-              {aiChoice === "yes"
+              {ASSISTANT_URL
+                ? "FurFriends' own AI model, trained by the team, finds the best-matching checked sources (FurFriends' guides, CDC and FDA pages, open pet-care Q&As) and writes the answer from them. It runs on the FurFriends server, so there's nothing to download. It can still get things wrong, so check the source. "
+                : aiChoice === "yes"
                 ? "FurFriends' own AI model, trained by the team, runs on your device. It finds the best-matching checked sources (FurFriends' guides, CDC and FDA pages, open pet-care Q&As) and writes the answer from them. It can still get things wrong, so check the source. "
                 : "An open-source AI on your device picks the closest answer from FurFriends' guides and open pet-care Q&As. Check the question it matched. "}
               Rating an answer shares it with the FurFriends team to improve the assistant.

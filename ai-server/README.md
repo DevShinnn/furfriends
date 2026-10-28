@@ -5,7 +5,8 @@ to train it and retrain it from the app's 👍/👎 ratings.
 
 | File | What it does |
 |---|---|
-| `app.py` | The server the app talks to (`POST /ask`). Checks the user is logged in to FurFriends. |
+| `app.py` | The server the app talks to (`POST /ask`): writes the answer from the app's checked passages and streams it. Checks the user is logged in to FurFriends. |
+| `deploy_space.py` | Puts `app.py` on a free Hugging Face Space (with `space/`), with the model and settings. |
 | `prompting.py` | Builds the prompt: system instructions (from `src/lib/aiPrompt.json`, shared with the app), pet details and checked sources. Used by serving, training and the app's copy in `src/lib/assistant.js`, so they match. |
 | `FurFriends_train.ipynb` | Google Colab notebook: prepare data, train, test accuracy and download, with one click. |
 | `train_lora.py` | Fine-tunes a model with LoRA, on a free Google Colab T4 GPU or (small models) a laptop CPU. |
@@ -21,11 +22,12 @@ to train it and retrain it from the app's 👍/👎 ratings.
 | `data/sample_test.jsonl` | 16 test questions with reference answers, to start your test set. |
 | `data/SOURCES.md` | Where each piece of training data came from. Fill this in. |
 
-## The FurFriends AI in the app (no server)
-Since October 2026 the app's assistant can run the team's own trained model on the owner's device: it finds
-the 2 best-matching checked passages (a first-aid guide first, when the emergency check matches) and the
-model writes the answer from them. Vercel only serves the app; the model files live on Hugging Face. Steps,
-all on a laptop (no GPU needed):
+## The FurFriends AI in the app
+Since October 2026 the app's assistant uses the team's own trained model: the app finds the 2 best-matching
+checked passages (a first-aid guide first, when the emergency check matches) and sends them with the question
+to the team's free Hugging Face Space (`app.py`, put there by `deploy_space.py`), which writes the answer from
+them and streams it back. Owners download nothing, and only logged-in FurFriends users get answers. Vercel
+serves the app; the model files and the server live on Hugging Face. Steps, all on a laptop (no GPU needed):
 
 ```
 python fetch_open_data.py          # Pets Stack Exchange data dump  -> data/open/pets_stackexchange.csv
@@ -37,11 +39,18 @@ python answer_rag.py --adapter adapters/rag-v3 --out results/rag-v3-answers.json
 python evaluate.py run --answers results/rag-v3-answers.jsonl --version rag-v3   # grading sheet
 python export_onnx.py --adapter adapters/rag-v3 --out exports/furfriends-rag-v3 --only q4   # ~430 MB
 ```
-Then upload `exports/furfriends-rag-v3` to a public Hugging Face model repo (its name must contain
-"furfriends", see `vite.config.js`), set `CHAT_MODEL` in `src/lib/assistant.js` to `<account>/furfriends-rag-v3`, rebuild the
-app's index (`npm run knowledge`) and redeploy. Owners are asked once before the download; devices that
-can't run it, or owners who say no, get the closest checked answer as before. If training stops, run the same
-command again: it resumes from the last saved step.
+Then upload `exports/furfriends-rag-v3` to a public Hugging Face model repo (name it `furfriends-...`, see
+`vite.config.js`), point the Space at it, rebuild the app's index (`npm run knowledge`) and redeploy the app:
+```
+hf upload <account>/furfriends-rag-v3 ai-server/exports/furfriends-rag-v3 . --repo-type model --exclude "_merged/*" --exclude "_onnx_full/*"
+python ai-server/deploy_space.py --model <account>/furfriends-rag-v3 --version rag-v3
+```
+The free Space sleeps after 2 days without questions; the app wakes it when the assistant opens, and says
+"Waking up the FurFriends AI" if it's still starting. If the Space can't answer, the closest checked answer
+shows instead. If training stops, run the same command again: it resumes from the last saved step.
+
+The model can also run on the owner's device instead (no server): set `VITE_ASSISTANT_URL=` (empty) and
+`VITE_CHAT_MODEL=<account>/furfriends-rag-v3`. The owner is then asked once before the ~430 MB download.
 
 To try a model in the app before uploading it, serve the `exports` folder with CORS on port 8090 and start
 the app with `VITE_CHAT_MODEL=furfriends-rag-v3 VITE_CHAT_HOST=http://localhost:8090/ npm run dev`.

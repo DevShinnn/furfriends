@@ -409,7 +409,7 @@ const URGENT = [
   ["bleeding", /bleeding|won'?t stop bleed/],
   ["accident", /hit by|run over|fell (from|off)|fall from/],
   ["seizure", /seiz|convuls|fitting/],
-  ["bloat", /bloat|swollen (belly|stomach)|distended/],
+  ["bloat", /bloat|swollen (belly|stomach|tummy)|(belly|stomach|tummy) (is |looks |got )?(swollen|swelling|hard|tight|big)|distended|retch|dry heav|trying to vomit/],
   ["urinary", /can'?t pee|cannot pee|can'?t urinate|straining to (pee|urinate)|no urine|not peeing/],
   ["snake", /snake/],
   ["burns", /\bburn|electric shock|electrocut/],
