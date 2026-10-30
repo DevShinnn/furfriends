@@ -77,7 +77,7 @@ function withVetAdvice(question, answer) {
 const STOP = new Set(("a an the and or but if of to in on at for with is are was be it its this that your you i my me can do does so as by "
   + "from not no they them their he she his her him we our have has had what how when why which should would could will just about there "
   + "been very get got").split(" "));
-const tokens = (t) => (t.toLowerCase().match(/[a-z0-9']+/g) || [])
+export const tokens = (t) => (t.toLowerCase().match(/[a-z0-9']+/g) || [])
   .filter((w) => w.length > 2 && !STOP.has(w))
   .map((w) => w.replace(/ies$/, "y").replace(/(ss|x|ch|sh)es$/, "$1").replace(/([^s])s$/, "$1"));   // lilies → lily, ticks → tick
 
@@ -88,17 +88,20 @@ function keywordIndex(texts) {
   const len = tf.map((m) => [...m.values()].reduce((a, b) => a + b, 0));
   const avg = len.reduce((a, b) => a + b, 0) / Math.max(1, len.length);
   const N = texts.length;
-  return (query) => {
+  // How rare a word is in the library (a word found nowhere counts as rarest). evidence.js uses it too.
+  const idf = (w) => Math.log(1 + (N - (df.get(w) || 0) + 0.5) / ((df.get(w) || 0) + 0.5));
+  const search = (query) => {
     const q = [...new Set(tokens(query))];
     const s = tf.map((m, i) => q.reduce((sum, w) => {
       const f = m.get(w);
       if (!f) return sum;
-      const idf = Math.log(1 + (N - df.get(w) + 0.5) / (df.get(w) + 0.5));
-      return sum + idf * (f * 2.2) / (f + 1.2 * (0.25 + 0.75 * len[i] / avg));
+      return sum + idf(w) * (f * 2.2) / (f + 1.2 * (0.25 + 0.75 * len[i] / avg));
     }, 0));
     const max = Math.max(...s) || 1;
     return s.map((x) => x / max);   // 0–1, relative to the best keyword match
   };
+  search.idf = idf;
+  return search;
 }
 
 /* ------------------------------------------------------------------ index
@@ -200,10 +203,14 @@ export function withEnglish(text) {
 const isOpen = (r) => /^Pets Stack Exchange/.test(r.src || "");
 // Tap-able questions: short ones only, since many open posts are long personal stories.
 const tappable = (r) => !isOpen(r) || r.q.length <= 90;
-export function compose(results, question = "") {
-  const [best, ...rest] = results;
-  const related = rest.filter((r) => r.score >= MATCH.maybe && r.q !== best?.q && tappable(r)).map(pick);
-  if (best && best.score >= (isOpen(best) ? OPEN_SURE : MATCH.sure)) {
+/* fits(r): may r be shown, as the closest answer? sure(r): may it be shown as the answer, without "I'm not
+   sure"? near(r): may it be offered as a similar question? They come from selectEvidence() in evidence.js,
+   so a passage that isn't about the question is never shown as its answer. */
+export function compose(results, question = "", { fits = () => true, sure = fits, near = () => true } = {}) {
+  const best = results.find(fits);
+  const rest = results.filter((r) => r !== best);
+  const related = rest.filter((r) => r.score >= MATCH.maybe && r.q !== best?.q && tappable(r) && near(r)).map(pick);
+  if (best && sure(best) && best.score >= (isOpen(best) ? OPEN_SURE : MATCH.sure)) {
     return { reply: withVetAdvice(question, best.a), sure: true, match: pick(best), related };
   }
   // A loose match to an open Stack Exchange post is often long, rambling or about something else, so it is
@@ -214,9 +221,9 @@ export function compose(results, question = "") {
       sure: false, match: pick(best), related,
     };
   }
-  const similar = results.filter((r) => r.score >= MATCH.maybe - 0.08 && tappable(r)).map(pick);
+  const similar = results.filter((r) => r.score >= MATCH.maybe - 0.08 && tappable(r) && near(r)).map(pick);
   return {
-    reply: "I don't have a checked answer for that yet. Try asking in another way, with a few more details"
+    reply: "I don't have a checked answer for that yet, so I'd rather not guess. Try asking in another way, with a few more details"
       + (similar.length ? ", or tap a similar question below if one fits. " : ". ")
       + "If your pet seems unwell, your vet is the best person to ask.",
     sure: false, match: null, related: similar,
@@ -224,5 +231,5 @@ export function compose(results, question = "") {
 }
 
 // A first-aid guide is shown by its title ("Bleeding & wounds"), not its whole summary sentence.
-const pick = (r) => ({ q: short(r.kind === "guide" ? r.q.split(":")[0] : r.q), source: r.src || "", url: r.url || "", kind: r.kind, score: Math.round(r.score * 100) / 100 });
+const pick = (r) => ({ id: r.of || r.id, q: short(r.kind === "guide" ? r.q.split(":")[0] : r.q), source: r.src || "", url: r.url || "", kind: r.kind, score: Math.round(r.score * 100) / 100 });
 const short = (t, n = 110) => (t.length > n ? t.slice(0, n).replace(/\s+\S*$/, "") + "…" : t);

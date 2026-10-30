@@ -1,0 +1,2599 @@
+{
+ "index": {
+  "version": "search-v1",
+  "built": "2026-10-28T12:44:53.360Z"
+ },
+ "rule": {
+  "strong": 0.84,
+  "min": 0.68,
+  "cover": 0.45
+ },
+ "report": {
+  "baseline/dev": {
+   "cases": 48,
+   "precision": 44.8,
+   "recall": 93.9,
+   "falseAbstain": 0,
+   "correctAbstain": 0,
+   "wrongOnly": 35.4,
+   "shownWrong": 12.5,
+   "shownWrongSure": 8.3,
+   "balanced": 47
+  },
+  "baseline/test": {
+   "cases": 46,
+   "precision": 48.9,
+   "recall": 88.2,
+   "falseAbstain": 0,
+   "correctAbstain": 0,
+   "wrongOnly": 34.8,
+   "shownWrong": 13,
+   "shownWrongSure": 6.5,
+   "balanced": 44.1
+  },
+  "baseline/all": {
+   "cases": 94,
+   "precision": 46.8,
+   "recall": 91,
+   "falseAbstain": 0,
+   "correctAbstain": 0,
+   "wrongOnly": 35.1,
+   "shownWrong": 12.8,
+   "shownWrongSure": 7.4,
+   "balanced": 45.5
+  },
+  "baseline/rows": [
+   {
+    "id": "r01",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q93dbf2",
+     "q33e3e7"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q93dbf2",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r02",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qb9e0e6",
+     "qb27a0e"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "qb9e0e6",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r03",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "guide-poisoning",
+     "q37381b"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q37381b",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r04",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q440e51",
+     "qb986b7"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q440e51",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r05",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "guide-heatstroke",
+     "qc7a9fc"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "guide-heatstroke",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r06",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qc53cec",
+     "q846781"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "qc53cec",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r07",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qea8856",
+     "q852262"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qea8856",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r08",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q0c19b6",
+     "q36cff2"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q0c19b6",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r09",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qd08bcf",
+     "q11a9bd-2"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qd08bcf",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r10",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q95d19a",
+     "q418554"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q95d19a",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r11",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qab5df5",
+     "qd6c542"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qab5df5",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r12",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qd0b9a8",
+     "qf707e3"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "qd0b9a8",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r13",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q285fc9",
+     "qb0335e-2"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q285fc9",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r14",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q105b9d",
+     "q105b9d-2"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q105b9d",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r15",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "guide-poisoning",
+     "q7bf34c"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q7bf34c",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r16",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "guide-poisoning",
+     "q35ca1b"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "guide-poisoning",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r17",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q474c6e",
+     "q13a0aa"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q474c6e",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r18",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q76440a",
+     "qf8b878"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "r19",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q0f70da",
+     "q395097"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "r20",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q8ca789",
+     "gov-84"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q8ca789",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r21",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qbf4a31",
+     "qbb00ce"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "qbf4a31",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r22",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q2c18ab",
+     "qac2864"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q2c18ab",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r23",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q8f9f9a",
+     "q0e0a11"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q8f9f9a",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r24",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q12ca1f",
+     "qb6653f"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q12ca1f",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r25",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q4e6b63",
+     "gov-170"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q4e6b63",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r26",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qe3c2e2",
+     "qa9bf28"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qe3c2e2",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r27",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qc6c64c",
+     "q2ad0be-2"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qc6c64c",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r28",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "guide-vomiting",
+     "qecf1bf"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qecf1bf",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r29",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qec4e0c",
+     "q33e3e7"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qec4e0c",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r30",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q8559cb",
+     "qd88b08"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q8559cb",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r31",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q163a45",
+     "q4eae64"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q163a45",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r32",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qe0efd4",
+     "qb9e0e6"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "qe0efd4",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r33",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qd5ddf6",
+     "qf8abd3"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "t01",
+    "category": "tl",
+    "answerable": true,
+    "sent": [
+     "q33e3e7",
+     "q881818"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q33e3e7",
+    "shownOk": false,
+    "shownSure": true
+   },
+   {
+    "id": "t02",
+    "category": "tl",
+    "answerable": true,
+    "sent": [
+     "qbd63fb",
+     "qab5df5"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "t03",
+    "category": "tl",
+    "answerable": true,
+    "sent": [
+     "q0c19b6",
+     "qca693b"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "t04",
+    "category": "tl",
+    "answerable": true,
+    "sent": [
+     "q7bf34c",
+     "qa6febf"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q7bf34c",
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "t05",
+    "category": "tl",
+    "answerable": true,
+    "sent": [
+     "q394ce7",
+     "q2169dc"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q394ce7",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "t06",
+    "category": "tl",
+    "answerable": true,
+    "sent": [
+     "qa9bf28",
+     "q16da13"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qa9bf28",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "t07",
+    "category": "tl",
+    "answerable": true,
+    "sent": [
+     "q1eee29",
+     "qe8e3b0"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q1eee29",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "t08",
+    "category": "tl",
+    "answerable": true,
+    "sent": [
+     "qb07598",
+     "q6c078c"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qb07598",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "s01",
+    "category": "species",
+    "answerable": true,
+    "sent": [
+     "q30fa04",
+     "q29c30f"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q30fa04",
+    "shownOk": false,
+    "shownSure": true
+   },
+   {
+    "id": "s02",
+    "category": "species",
+    "answerable": true,
+    "sent": [
+     "q22374b",
+     "q22374b-2"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q22374b",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "s03",
+    "category": "species",
+    "answerable": true,
+    "sent": [
+     "qce12f1",
+     "qac9c76"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "qce12f1",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "s06",
+    "category": "species",
+    "answerable": true,
+    "sent": [
+     "q3566c8",
+     "q3288c2"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q3566c8",
+    "shownOk": false,
+    "shownSure": true
+   },
+   {
+    "id": "l01",
+    "category": "legal",
+    "answerable": true,
+    "sent": [
+     "q3739a7",
+     "qf64f4d"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q3739a7",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "l02",
+    "category": "legal",
+    "answerable": true,
+    "sent": [
+     "q3776b6",
+     "gov-96"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q3776b6",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "l03",
+    "category": "legal",
+    "answerable": true,
+    "sent": [
+     "q3776b6",
+     "gov-102"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": "q3776b6",
+    "shownOk": false,
+    "shownSure": true
+   },
+   {
+    "id": "l04",
+    "category": "legal",
+    "answerable": true,
+    "sent": [
+     "q8a1865",
+     "q28d471"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q8a1865",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "l05",
+    "category": "legal",
+    "answerable": true,
+    "sent": [
+     "q41a64b",
+     "q4ed026"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q41a64b",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "l06",
+    "category": "legal",
+    "answerable": true,
+    "sent": [
+     "gov-52",
+     "gov-55"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "gov-52",
+    "shownOk": false,
+    "shownSure": true
+   },
+   {
+    "id": "l07",
+    "category": "legal",
+    "answerable": true,
+    "sent": [
+     "qab5df5",
+     "gov-36"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qab5df5",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "l08",
+    "category": "legal",
+    "answerable": true,
+    "sent": [
+     "q210342",
+     "q3739a7"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q210342",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "e01",
+    "category": "emergency",
+    "answerable": true,
+    "sent": [
+     "guide-poisoning",
+     "q2028dc"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "guide-poisoning",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "e02",
+    "category": "emergency",
+    "answerable": true,
+    "sent": [
+     "q6ea1d7",
+     "q285fc9"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q6ea1d7",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "e03",
+    "category": "emergency",
+    "answerable": true,
+    "sent": [
+     "guide-bloat",
+     "guide-vomiting"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q28f7a3",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "e04",
+    "category": "emergency",
+    "answerable": true,
+    "sent": [
+     "guide-snake",
+     "q5784bd"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q5784bd",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "e05",
+    "category": "emergency",
+    "answerable": true,
+    "sent": [
+     "guide-seizure",
+     "q5faf86"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q5faf86",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "e06",
+    "category": "emergency",
+    "answerable": true,
+    "sent": [
+     "guide-accident",
+     "qa1d4d7"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "qa1d4d7",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "o01",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "q0f7a59",
+     "qb3053f"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o02",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "q4d5d6d",
+     "qfe281c"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o03",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "q874015",
+     "qb29977"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o04",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "qa87a36-2",
+     "qa87a36"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o05",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "q3abd2e",
+     "q3abd2e-2"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o06",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "qb3053f",
+     "q0f7a59"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o08",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "qca693b",
+     "qf35222"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": "qca693b",
+    "shownOk": false,
+    "shownSure": false
+   },
+   {
+    "id": "o09",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "q724041",
+     "qce2b43"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o10",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "q29fd1d",
+     "qb3053f"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": "q29fd1d",
+    "shownOk": false,
+    "shownSure": true
+   },
+   {
+    "id": "o11",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "q29fd1d",
+     "qb3053f"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": "q29fd1d",
+    "shownOk": false,
+    "shownSure": false
+   },
+   {
+    "id": "o12",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "qd9d83e-2",
+     "qd9d83e"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o13",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "q33b5a4",
+     "q352e89-2"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o14",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "q1a1d8f",
+     "qf3cd77"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o16",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "q0f7a59",
+     "q29fd1d"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": "q0f7a59",
+    "shownOk": false,
+    "shownSure": true
+   },
+   {
+    "id": "o17",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "q6cdb1a",
+     "qffc240"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o18",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "qe63044-2",
+     "qe63044"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o19",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "qf3599a",
+     "guide-breathing"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o20",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "qcb7675",
+     "q2d7ee6"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o21",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "qab5a0e",
+     "q0f7a59"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o22",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "q0f7a59",
+     "q445460"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": "q0f7a59",
+    "shownOk": false,
+    "shownSure": false
+   },
+   {
+    "id": "o23",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "q3374af",
+     "q4dd1f5"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o24",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "qb3053f",
+     "q518ff4"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o25",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "qf3425e",
+     "q3fda18"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o27",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "qb07598",
+     "q29fd1d"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o28",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "q3776b6",
+     "q29fd1d"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": "q3776b6",
+    "shownOk": false,
+    "shownSure": false
+   },
+   {
+    "id": "m01",
+    "category": "multi-turn",
+    "answerable": false,
+    "sent": [
+     "qe78236-2",
+     "qe78236"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "m02",
+    "category": "multi-turn",
+    "answerable": true,
+    "sent": [
+     "q733a2d",
+     "qac59c6"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "m03",
+    "category": "multi-turn",
+    "answerable": true,
+    "sent": [
+     "qe0efd4",
+     "qb9e0e6"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "qe0efd4",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "m04",
+    "category": "multi-turn",
+    "answerable": true,
+    "sent": [
+     "q36ef23",
+     "q08f7b2"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "m05",
+    "category": "multi-turn",
+    "answerable": true,
+    "sent": [
+     "guide-poisoning",
+     "q7bf34c"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q7bf34c",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "m06",
+    "category": "multi-turn",
+    "answerable": true,
+    "sent": [
+     "qd72a58",
+     "q3776b6"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "m07",
+    "category": "multi-turn",
+    "answerable": true,
+    "sent": [
+     "q0ca850",
+     "q26f0db"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q0ca850",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "m08",
+    "category": "multi-turn",
+    "answerable": true,
+    "sent": [
+     "qa5df51",
+     "qc01447"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "m09",
+    "category": "multi-turn",
+    "answerable": false,
+    "sent": [
+     "q0f7a59",
+     "q29fd1d"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "m10",
+    "category": "multi-turn",
+    "answerable": true,
+    "sent": [
+     "q05288f",
+     "qa40283"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": "q05288f",
+    "shownOk": false,
+    "shownSure": false
+   }
+  ],
+  "evidence/dev": {
+   "cases": 48,
+   "precision": 78.2,
+   "recall": 90.9,
+   "falseAbstain": 9.1,
+   "correctAbstain": 86.7,
+   "wrongOnly": 4.2,
+   "shownWrong": 6.3,
+   "shownWrongSure": 2.1,
+   "balanced": 88.8
+  },
+  "evidence/test": {
+   "cases": 46,
+   "precision": 78,
+   "recall": 73.5,
+   "falseAbstain": 20.6,
+   "correctAbstain": 83.3,
+   "wrongOnly": 8.7,
+   "shownWrong": 8.7,
+   "shownWrongSure": 6.5,
+   "balanced": 78.4
+  },
+  "evidence/all": {
+   "cases": 94,
+   "precision": 78.1,
+   "recall": 82.1,
+   "falseAbstain": 14.9,
+   "correctAbstain": 85.2,
+   "wrongOnly": 6.4,
+   "shownWrong": 7.4,
+   "shownWrongSure": 4.3,
+   "balanced": 83.7
+  },
+  "evidence/rows": [
+   {
+    "id": "r01",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q93dbf2",
+     "q33e3e7"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q93dbf2",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r02",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qb9e0e6",
+     "qb27a0e"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "qb9e0e6",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r03",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "guide-poisoning",
+     "q37381b"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q37381b",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r04",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q440e51"
+    ],
+    "good": 1,
+    "bad": 0,
+    "shown": "q440e51",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r05",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "guide-heatstroke"
+    ],
+    "good": 1,
+    "bad": 0,
+    "shown": "guide-heatstroke",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r06",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qc53cec",
+     "q846781"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "qc53cec",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r07",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qea8856",
+     "q852262"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qea8856",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r08",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q0c19b6",
+     "q36cff2"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q0c19b6",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r09",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qd08bcf"
+    ],
+    "good": 1,
+    "bad": 0,
+    "shown": "qd08bcf",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r10",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q95d19a",
+     "q418554"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q95d19a",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r11",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qab5df5",
+     "qd6c542"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qab5df5",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r12",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qd0b9a8",
+     "qf707e3"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "qd0b9a8",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r13",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q285fc9",
+     "qb0335e-2"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q285fc9",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r14",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q105b9d",
+     "q105b9d-2"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q105b9d",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r15",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "guide-poisoning",
+     "q7bf34c"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q7bf34c",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r16",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "guide-poisoning"
+    ],
+    "good": 1,
+    "bad": 0,
+    "shown": "guide-poisoning",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r17",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q474c6e",
+     "q13a0aa"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q474c6e",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r18",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q76440a",
+     "qf8b878"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "r19",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q66f1a7"
+    ],
+    "good": 1,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "r20",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q8ca789",
+     "gov-84"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q8ca789",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r21",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qbf4a31",
+     "qbb00ce"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "qbf4a31",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r22",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q2c18ab",
+     "qac2864"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q2c18ab",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r23",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q8f9f9a",
+     "q0e0a11"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q8f9f9a",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r24",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q12ca1f",
+     "qb6653f"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q12ca1f",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r25",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q4e6b63",
+     "gov-170"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q4e6b63",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r26",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qe3c2e2",
+     "qa9bf28"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qe3c2e2",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r27",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qc6c64c"
+    ],
+    "good": 1,
+    "bad": 0,
+    "shown": "qc6c64c",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r28",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "guide-vomiting",
+     "qecf1bf"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qecf1bf",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r29",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qec4e0c",
+     "q33e3e7"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qec4e0c",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r30",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q8559cb",
+     "qd88b08"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q8559cb",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r31",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "q163a45",
+     "qfc1a24"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q163a45",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r32",
+    "category": "en",
+    "answerable": true,
+    "sent": [
+     "qe0efd4",
+     "qb9e0e6"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "qe0efd4",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "r33",
+    "category": "en",
+    "answerable": true,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "t01",
+    "category": "tl",
+    "answerable": true,
+    "sent": [
+     "q881818"
+    ],
+    "good": 1,
+    "bad": 0,
+    "shown": "q881818",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "t02",
+    "category": "tl",
+    "answerable": true,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "t03",
+    "category": "tl",
+    "answerable": true,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "t04",
+    "category": "tl",
+    "answerable": true,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": "q7bf34c",
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "t05",
+    "category": "tl",
+    "answerable": true,
+    "sent": [
+     "q394ce7",
+     "q2169dc"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q394ce7",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "t06",
+    "category": "tl",
+    "answerable": true,
+    "sent": [
+     "qa9bf28"
+    ],
+    "good": 1,
+    "bad": 0,
+    "shown": "qa9bf28",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "t07",
+    "category": "tl",
+    "answerable": true,
+    "sent": [
+     "q1eee29",
+     "qe8e3b0"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q1eee29",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "t08",
+    "category": "tl",
+    "answerable": true,
+    "sent": [
+     "qb07598"
+    ],
+    "good": 1,
+    "bad": 0,
+    "shown": "qb07598",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "s01",
+    "category": "species",
+    "answerable": true,
+    "sent": [
+     "q30fa04",
+     "q29c30f"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q30fa04",
+    "shownOk": false,
+    "shownSure": true
+   },
+   {
+    "id": "s02",
+    "category": "species",
+    "answerable": true,
+    "sent": [
+     "q22374b",
+     "q22374b-2"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q22374b",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "s03",
+    "category": "species",
+    "answerable": true,
+    "sent": [
+     "qce12f1",
+     "qac9c76"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "qce12f1",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "s06",
+    "category": "species",
+    "answerable": true,
+    "sent": [
+     "q3566c8"
+    ],
+    "good": 0,
+    "bad": 1,
+    "shown": "q3566c8",
+    "shownOk": false,
+    "shownSure": true
+   },
+   {
+    "id": "l01",
+    "category": "legal",
+    "answerable": true,
+    "sent": [
+     "q3739a7"
+    ],
+    "good": 1,
+    "bad": 0,
+    "shown": "q3739a7",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "l02",
+    "category": "legal",
+    "answerable": true,
+    "sent": [
+     "q3776b6"
+    ],
+    "good": 1,
+    "bad": 0,
+    "shown": "q3776b6",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "l03",
+    "category": "legal",
+    "answerable": true,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "l04",
+    "category": "legal",
+    "answerable": true,
+    "sent": [
+     "q8a1865",
+     "q28d471"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q8a1865",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "l05",
+    "category": "legal",
+    "answerable": true,
+    "sent": [
+     "q41a64b",
+     "qf3fbd2-2"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q41a64b",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "l06",
+    "category": "legal",
+    "answerable": true,
+    "sent": [
+     "gov-52"
+    ],
+    "good": 0,
+    "bad": 1,
+    "shown": "gov-52",
+    "shownOk": false,
+    "shownSure": true
+   },
+   {
+    "id": "l07",
+    "category": "legal",
+    "answerable": true,
+    "sent": [
+     "qab5df5"
+    ],
+    "good": 1,
+    "bad": 0,
+    "shown": "qab5df5",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "l08",
+    "category": "legal",
+    "answerable": true,
+    "sent": [
+     "q210342",
+     "q3739a7"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q210342",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "e01",
+    "category": "emergency",
+    "answerable": true,
+    "sent": [
+     "guide-poisoning",
+     "q2028dc"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "guide-poisoning",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "e02",
+    "category": "emergency",
+    "answerable": true,
+    "sent": [
+     "q6ea1d7",
+     "q285fc9"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q6ea1d7",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "e03",
+    "category": "emergency",
+    "answerable": true,
+    "sent": [
+     "guide-bloat",
+     "guide-vomiting"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q28f7a3",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "e04",
+    "category": "emergency",
+    "answerable": true,
+    "sent": [
+     "guide-snake",
+     "q5784bd"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q5784bd",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "e05",
+    "category": "emergency",
+    "answerable": true,
+    "sent": [
+     "guide-seizure",
+     "q5faf86"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q5faf86",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "e06",
+    "category": "emergency",
+    "answerable": true,
+    "sent": [
+     "guide-accident",
+     "qa1d4d7"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "qa1d4d7",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "o01",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o02",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o03",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o04",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o05",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "q3abd2e",
+     "q3abd2e-2"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o06",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o08",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": "qca693b",
+    "shownOk": false,
+    "shownSure": false
+   },
+   {
+    "id": "o09",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o10",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o11",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o12",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o13",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o14",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o16",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "q0f7a59"
+    ],
+    "good": 0,
+    "bad": 1,
+    "shown": "q0f7a59",
+    "shownOk": false,
+    "shownSure": true
+   },
+   {
+    "id": "o17",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o18",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [
+     "qe63044-2",
+     "qe63044"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o19",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o20",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o21",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o22",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o23",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o24",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o25",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o27",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "o28",
+    "category": "out-of-scope",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": "q3776b6",
+    "shownOk": false,
+    "shownSure": false
+   },
+   {
+    "id": "m01",
+    "category": "multi-turn",
+    "answerable": false,
+    "sent": [
+     "qe78236-2"
+    ],
+    "good": 0,
+    "bad": 1,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "m02",
+    "category": "multi-turn",
+    "answerable": true,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "m03",
+    "category": "multi-turn",
+    "answerable": true,
+    "sent": [
+     "qe0efd4",
+     "qb9e0e6"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "qe0efd4",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "m04",
+    "category": "multi-turn",
+    "answerable": true,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "m05",
+    "category": "multi-turn",
+    "answerable": true,
+    "sent": [
+     "guide-poisoning",
+     "q7bf34c"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q7bf34c",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "m06",
+    "category": "multi-turn",
+    "answerable": true,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "m07",
+    "category": "multi-turn",
+    "answerable": true,
+    "sent": [
+     "q0ca850"
+    ],
+    "good": 1,
+    "bad": 0,
+    "shown": "q0ca850",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "m08",
+    "category": "multi-turn",
+    "answerable": true,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "m09",
+    "category": "multi-turn",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "m10",
+    "category": "multi-turn",
+    "answerable": true,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": "q05288f",
+    "shownOk": false,
+    "shownSure": false
+   }
+  ]
+ }
+}

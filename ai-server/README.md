@@ -13,6 +13,8 @@ to train it and retrain it from the app's 👍/👎 ratings.
 | `train_lora.py` | Fine-tunes a model with LoRA, on a free Google Colab T4 GPU or (small models) a laptop CPU. |
 | `build_rag_data.py` | Makes the training set: each question with its best-matching checked passages and the right answer, so the model learns to answer from sources. `data/rag_train.jsonl` (v1) and `_v2` are kept for the record; `_v3` is current. |
 | `answer_rag.py` | Answers the test questions the way the app does (find passages, then generate), for `evaluate.py`. |
+| `answer_prompts.py` | Answers the prompts the app itself builds (`npm run eval:retrieval -- --prompts ...`) with the exported model, to measure the evidence check (`docs/ai-evaluation-guide.md`). |
+| `data/retrieval_eval.jsonl` | 94 labelled questions for the search and evidence check. Keep them out of training. |
 | `export_onnx.py` | Turns the trained model into the file the app runs in the browser (4-bit, on WebGPU or the CPU). |
 | `fetch_gov_guides.py` | Downloads public-domain CDC and FDA pet health pages into `data/passages/gov_guides.csv`. |
 | `fetch_open_data.py` | Downloads openly licensed cat and dog Q&As from the Pets Stack Exchange data dump into `data/open/` (2,447 answers in October 2026). |

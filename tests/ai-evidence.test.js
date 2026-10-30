@@ -1,0 +1,209 @@
+import { readFileSync } from "node:fs";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { supabase } from "../src/lib/supabase";
+import { decodeIndex, queryText, search } from "../src/lib/knowledge";
+import { EVIDENCE, checkAnswer, planAnswer } from "../src/lib/evidence";
+import { sourcesFor } from "../src/lib/prompt";
+import PROMPT from "../src/lib/aiPrompt.json";
+
+/* The assistant's evidence check, on the real knowledge index (public/knowledge/index.json) and the labelled
+   questions in ai-server/data/retrieval_eval.jsonl. The questions' vectors come from
+   tests/fixtures/retrieval-queries.json (written by npm run eval:retrieval), so no model is downloaded here.
+   The end-to-end tests run askAssistant() itself, with the browser's search worker and the AI server faked. */
+
+const raw = JSON.parse(readFileSync("public/knowledge/index.json", "utf8"));
+const index = decodeIndex(raw);
+const fixture = JSON.parse(readFileSync("tests/fixtures/retrieval-queries.json", "utf8"));
+const cases = Object.fromEntries(readFileSync("ai-server/data/retrieval_eval.jsonl", "utf8").split("\n").filter(Boolean)
+  .map((l) => JSON.parse(l)).map((c) => [c.id, c]));
+
+const idOf = (e) => e.of || e.id;
+function plan(id) {
+  const c = cases[id], { q, vector } = fixture.queries[id];
+  const results = search(index, vector, q, { species: c.species || "" });
+  return { c, q, results, ...planAnswer(index, results, q, c.turns.at(-1)) };
+}
+const isLaw = (e) => /^(Republic Act|IRR of RA)/.test(e.src || "");
+
+describe("AI evidence: the fixtures match the index and the questions", () => {
+  it("The stored question vectors were made for this index and these questions (rerun npm run eval:retrieval if not)", () => {
+    expect(fixture.indexBuilt).toBe(raw.built);
+    for (const [id, c] of Object.entries(cases)) {
+      expect(fixture.queries[id]?.q, id).toBe(queryText(c.turns.map((content) => ({ role: "user", content }))));
+    }
+  });
+
+  it("The limits in the app are the ones the evaluation calibrated and reported", () => {
+    const report = JSON.parse(readFileSync("ai-server/results/retrieval-eval.json", "utf8"));
+    expect(report.rule).toEqual(EVIDENCE);
+  });
+});
+
+describe("AI evidence: which passages the model may answer from", () => {
+  it("The reported question (best dog breed for a tropical country) gets no passages, and no law is offered", () => {
+    for (const species of ["", "dog"]) {
+      const c = cases.o01, { q, vector } = fixture.queries.o01;
+      const results = search(index, vector, q, { species });
+      expect(results.slice(0, 2).every(isLaw), "the search alone still finds the laws").toBe(true);
+      const { evidence, fallback } = planAnswer(index, results, q, c.turns.at(-1));
+      expect(evidence).toEqual([]);
+      expect(fallback.match).toBeNull();
+      expect(fallback.reply).toMatch(/don't have a checked answer/);
+      expect(fallback.related.map((r) => r.q).join(" ")).not.toMatch(/dog meat|put to sleep|legal/i);
+    }
+  });
+
+  it("Questions that only share a place or a legal word with the law Q&As get no law passages", () => {
+    for (const id of ["o06", "o08", "o10", "o11", "o21", "o22", "o24", "o27", "o28", "m09"]) {
+      const { evidence } = plan(id);
+      expect(evidence.filter(isLaw).map(idOf), id).toEqual([]);
+    }
+  });
+
+  it("Real legal questions still get the right law (English and Tagalog)", () => {
+    for (const id of ["l01", "l04", "l05", "l08", "t08"]) {
+      const { c, evidence } = plan(id);
+      expect(evidence.some((e) => c.relevant.includes(idOf(e))), id).toBe(true);
+    }
+  });
+
+  it("Questions the library has no answer for get no passages", () => {
+    for (const id of ["o02", "o03", "o04", "o09", "o12", "o13", "o14", "o17", "o19", "o20", "o23", "o25"]) {
+      expect(plan(id).evidence.map(idOf), id).toEqual([]);
+    }
+  });
+
+  it("Emergencies the app recognises always get their first-aid guide first, and every emergency gets a right passage", () => {
+    for (const [id, guide] of [["e01", "guide-poisoning"], ["e03", "guide-bloat"], ["e04", "guide-snake"], ["e05", "guide-seizure"], ["e06", "guide-accident"]]) {
+      expect(plan(id).evidence[0]?.id, id).toBe(guide);
+    }
+    // "Keeps going to the litter box but nothing comes out" isn't caught by the emergency check (emergency.js
+    // URGENT) yet, but the checked answer about a blocked bladder is still the evidence.
+    for (const id of ["e01", "e02", "e03", "e04", "e05", "e06"]) {
+      const { c, evidence } = plan(id);
+      expect(evidence.some((e) => c.relevant.includes(idOf(e))), id).toBe(true);
+    }
+  });
+
+  it("Everyday questions in English, Tagalog, and about cats or dogs get a passage that answers them", () => {
+    for (const id of ["r01", "r03", "r11", "r14", "r27", "t05", "t06", "t07", "s01", "s02", "s03"]) {
+      const { c, evidence } = plan(id);
+      expect(evidence.length, id).toBeGreaterThan(0);
+      expect(evidence.some((e) => c.relevant.includes(idOf(e))), id).toBe(true);
+    }
+  });
+
+  it("A passage about the other animal isn't used when the question names one", () => {
+    for (const id of ["s01", "s02", "s03", "r06", "r28"]) {
+      const { evidence } = plan(id);
+      expect(evidence.filter((e) => e.sp === "dog").map(idOf), id).toEqual([]);
+    }
+  });
+});
+
+describe("AI evidence: checking what the model wrote", () => {
+  const sources = [
+    { label: "FurFriends checked answer", text: "Q: Do I need to register my dog?\nA: Yes. Under Section 5 of RA 9482, dog owners must register their dogs with the city or municipality and vaccinate them every year." },
+    { label: "FurFriends checked answer", text: "Q: How often should I bathe my dog?\nA: Most dogs need a bath every 1 to 3 months. Use a dog shampoo, never human shampoo." },
+  ];
+
+  it("A law, section or organisation that isn't in the passages is rejected", () => {
+    expect(checkAnswer("Yes, under Republic Act No. 8485 you must register your dog with the city every year.", sources).problems.join()).toMatch(/law not in the sources: Republic Act No\. 8485/);
+    expect(checkAnswer("Yes. Section 9 says owners must register their dogs with the city every year.", sources).problems.join()).toMatch(/Section 9/);
+    expect(checkAnswer("The ASPCA says owners must register their dogs with the city every year.", sources).problems.join()).toMatch(/ASPCA/);
+  });
+
+  it("A law that is in the passages is fine, and only the passage the answer uses is credited", () => {
+    const r = checkAnswer("Yes. Section 5 of RA 9482 says dog owners must register their dogs with the city or municipality and vaccinate them every year.", sources);
+    expect(r.ok).toBe(true);
+    expect(r.used).toEqual([0]);
+  });
+
+  it("A number that isn't in the passages is rejected; a 24-hour clinic is FurFriends' own advice", () => {
+    expect(checkAnswer("Bathe your dog every 2 weeks with a dog shampoo, never human shampoo.", sources).problems.join()).toMatch(/number not in the sources: 2/);
+    expect(checkAnswer("Bathe most dogs every 1 to 3 months with a dog shampoo, never human shampoo. If the skin is red, call a 24-hour clinic.", sources).ok).toBe(true);
+  });
+
+  it("An answer that doesn't come from its passages is rejected, and a passage it only touches isn't credited", () => {
+    const off = "Huskies were bred for pulling sleds in the snow, so they can overheat quickly in hot weather.";
+    expect(checkAnswer(off, sources).problems.join()).toMatch(/not based on the sources/);
+    // Mostly the first passage, with one word ("dog shampoo") of the second: only the first is credited.
+    const r = checkAnswer("Yes. Section 5 of RA 9482 says dog owners must register their dogs with the city or municipality. Use a dog shampoo.", sources);
+    expect(r.ok).toBe(true);
+    expect(r.used).toEqual([0]);
+  });
+});
+
+/* ---------------------------------------------------------------- askAssistant() end to end */
+describe("AI evidence: what the owner sees (askAssistant end to end)", () => {
+  let askAssistant, serverReply, serverCalls;
+  const vectors = new Map(Object.values(fixture.queries).map((x) => [x.q, x.vector]));
+
+  beforeAll(async () => {
+    // The search model runs in a Web Worker in the browser: answer with the stored vectors instead.
+    globalThis.Worker = class {
+      postMessage({ id, text }) { setTimeout(() => this.onmessage({ data: vectors.has(text) ? { id, vector: vectors.get(text) } : { id, error: `no vector for ${text}` } })); }
+    };
+    if (!globalThis.TextDecoderStream) globalThis.TextDecoderStream = (await import("node:stream/web")).TextDecoderStream;
+    vi.stubGlobal("fetch", async (url, init) => {
+      if (String(url).endsWith("knowledge/index.json")) return new Response(JSON.stringify(raw));
+      serverCalls.push(JSON.parse(init.body));
+      return new Response(serverReply, { headers: { "X-Model": "rag-v2" } });
+    });
+    ({ askAssistant } = await import("../src/lib/assistant"));
+  });
+  beforeEach(() => {
+    serverCalls = [];
+    serverReply = "";
+    supabase.state.session = { access_token: "test-token", user: { id: "u1" } };
+  });
+  const ask = (id, pet = null) => askAssistant({ messages: cases[id].turns.map((content) => ({ role: "user", content })), pet });
+
+  it("The reported tropical-breed question: the AI isn't asked, no law is shown or credited, and the reply says there's no checked answer", async () => {
+    serverReply = "Under Republic Act No. 9482 ...";   // what a wrongly asked model might say
+    for (const pet of [null, { id: "p1", name: "Bantay", species: "Dog", breed: "", medical: [], vaccinations: [] }]) {
+      const r = await ask("o01", pet);
+      expect(serverCalls).toEqual([]);
+      expect(r.reply).toMatch(/don't have a checked answer for that yet, so I'd rather not guess/);
+      expect(r.reply).not.toMatch(/9482|8485|Republic Act/);
+      expect(r.generated).toBeFalsy();
+      expect(r.sources).toBeUndefined();
+      expect(r.match).toBeNull();
+    }
+  });
+
+  it("A question with evidence goes to the AI with only that evidence, and the passage it uses is credited", async () => {
+    const { evidence } = plan("r11");
+    const passage = evidence[0];
+    serverReply = passage.a.split(/(?<=\.)\s/).slice(0, 3).join(" ");   // an answer written from the first passage
+    const r = await ask("r11");
+    expect(serverCalls).toHaveLength(1);
+    expect(serverCalls[0].sources).toEqual(sourcesFor(evidence));
+    expect(r.generated).toBe(true);
+    expect(r.sources.map((s) => s.id)).toEqual([idOf(passage)]);
+  });
+
+  it("An AI answer that cites a law its passages don't contain is replaced by the checked answer", async () => {
+    const { evidence, fallback } = plan("r11");
+    serverReply = `${evidence[0].a.split(/(?<=\.)\s/).slice(0, 2).join(" ")} Under Republic Act No. 8485 you must report it to your barangay.`;
+    const r = await ask("r11");
+    expect(serverCalls).toHaveLength(1);
+    expect(r.generated).toBeFalsy();
+    expect(r.reply).toBe(fallback.reply);
+    expect(r.reply).not.toMatch(/8485/);
+  });
+
+  it("An AI answer that wanders off its passages is replaced by the checked answer", async () => {
+    serverReply = "Huskies were bred for pulling sleds in the snow, so they overheat in hot weather. Keep them in air conditioning.";
+    const r = await ask("r11");
+    expect(r.generated).toBeFalsy();
+    expect(r.reply).not.toMatch(/sled|snow/i);
+  });
+
+  it("When the AI says the passages don't answer it, the checked answer shows, as before", async () => {
+    serverReply = PROMPT.notFound;
+    const { fallback } = plan("r11");
+    const r = await ask("r11");
+    expect(r.reply).toBe(fallback.reply);
+  });
+});

@@ -101,6 +101,33 @@ This prints Markdown tables and saves them next to the first file, as `...-summa
 
   The 👍/👎 helpful rate from the app (`export_feedback.py`) is a second, real-world measure to report alongside the test.
 
+## Search and evidence check (automatic)
+The app only lets the AI answer from checked passages that are about the question (`src/lib/evidence.js`), and
+only credits the passages its answer actually uses. This test measures that part, with no graders needed.
+
+- **Questions:** `ai-server/data/retrieval_eval.jsonl`, 94 owner-style questions (English, Tagalog, cats and dogs,
+  Philippine law, emergencies, follow-ups, and 27 the library can't answer). Each lists the passages that truly
+  answer it, or none. The labels were made by reading each question's top search results: they say whether a
+  passage answers the question, not whether it is veterinary-correct. **Keep these questions out of training**,
+  like `test.jsonl`. Half are "dev" (the limits are tuned on them), half "test" (reported).
+- **Run:** in the main project folder:
+  ```
+  npm run eval:retrieval -- --calibrate                               # search metrics, and the limits it would choose
+  npm run eval:retrieval -- --prompts ai-server/results/eval-prompts.jsonl
+  cd ai-server && python answer_prompts.py --prompts results/eval-prompts.jsonl --out results/eval-answers.jsonl   # ~30 min, real model
+  cd .. && npm run eval:retrieval -- --calibrate --answers ai-server/results/eval-answers.jsonl
+  ```
+  If it suggests new limits, copy them into `EVIDENCE` / `ANSWER` in `src/lib/evidence.js`, run it again, then `npm test`
+  (the tests check the app uses the reported limits). Run it again after `npm run knowledge`: a new index changes the scores.
+- **What it reports**, for the old behaviour (`baseline`) and the evidence check:
+  - *precision*: of the passages sent to the AI, how many answer the question
+  - *recall*: answerable questions where the AI got at least one right passage
+  - *correctAbstain*: unanswerable questions where the AI wasn't asked (the app says it has no checked answer)
+  - *wrongOnly*: questions where the AI got only wrong passages (the cause of off-topic answers and wrong credits)
+  - with the real model's answers: AI answers shown on unanswerable questions, answers with a law, organisation
+    or number not in their passages (*unsupported*), and *creditPrecision* (credited passages that answer the question)
+- These are automatic measures. They don't replace the graders' accuracy and safety grades above.
+
 **References**
 - Cohen, J. (1960). A coefficient of agreement for nominal scales. *Educational and Psychological Measurement, 20*(1), 37–46.
 - Landis, J. R., & Koch, G. G. (1977). The measurement of observer agreement for categorical data. *Biometrics, 33*(1), 159–174.

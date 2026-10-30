@@ -1,0 +1,94 @@
+{"id":"r01","category":"en","turns":["How often should my puppy get dewormed?"],"relevant":["q93dbf2","q33e3e7"],"split":"dev"}
+{"id":"r02","category":"en","turns":["what shots does a new kitten need"],"relevant":["qb27a0e","qb9e0e6"],"split":"test"}
+{"id":"r03","category":"en","turns":["Is chocolate really bad for dogs?"],"relevant":["q37381b","q9e32f9"],"split":"dev"}
+{"id":"r04","category":"en","turns":["My dog keeps scratching and I found small black bugs in his fur"],"relevant":["q440e51","q163a45"],"split":"test"}
+{"id":"r05","category":"en","turns":["How can I tell if my dog is overheating on a hot day?"],"relevant":["guide-heatstroke","q83170a"],"split":"dev"}
+{"id":"r06","category":"en","turns":["How do I keep my cat cool during summer?"],"relevant":["qc53cec","q846781","q465b1f"],"split":"test"}
+{"id":"r07","category":"en","turns":["When should I get my female cat spayed?"],"relevant":["qea8856","qca693b"],"split":"dev"}
+{"id":"r08","category":"en","turns":["How many times a day should I feed an adult dog?"],"relevant":["q0c19b6","q36cff2"],"split":"test"}
+{"id":"r09","category":"en","turns":["Can cats drink cow's milk?"],"relevant":["qd08bcf","qd444ad"],"split":"dev"}
+{"id":"r10","category":"en","turns":["How do I trim my dog's nails without hurting him?"],"relevant":["q95d19a","q10f229"],"split":"test"}
+{"id":"r11","category":"en","turns":["What are the signs of tick fever in dogs?"],"relevant":["qab5df5"],"split":"dev"}
+{"id":"r12","category":"en","turns":["How do I stop my puppy from biting my hands?"],"relevant":["qd0b9a8","qf707e3","q255020","q246085"],"split":"test"}
+{"id":"r13","category":"en","turns":["Why does my cat pee outside the litter box?"],"relevant":["q285fc9"],"split":"dev"}
+{"id":"r14","category":"en","turns":["How often should I bathe my dog?"],"relevant":["q105b9d","q105b9d-2","qa9bf28","q3374af"],"split":"test"}
+{"id":"r15","category":"en","turns":["Is it okay to give my dog grapes as a treat?"],"relevant":["q7bf34c","guide-poisoning","qa6febf"],"split":"dev"}
+{"id":"r16","category":"en","turns":["What human foods are toxic to cats?"],"relevant":["guide-poisoning","q724041"],"split":"test"}
+{"id":"r17","category":"en","turns":["How do I brush my dog's teeth?"],"relevant":["q474c6e","q13a0aa"],"split":"dev"}
+{"id":"r18","category":"en","turns":["My senior dog is drinking a lot more water than usual"],"relevant":["qf8b878"],"split":"test"}
+{"id":"r19","category":"en","turns":["How do I introduce a new cat to my other cat?"],"relevant":["q0f70da","q66f1a7"],"split":"dev"}
+{"id":"r20","category":"en","turns":["Does my indoor cat need vaccines?"],"relevant":["q8ca789","gov-84"],"split":"test"}
+{"id":"r21","category":"en","turns":["What is parvo and how do puppies get it?"],"relevant":["qbf4a31","qbb00ce"],"split":"dev"}
+{"id":"r22","category":"en","turns":["How can I tell if my cat is in pain?"],"relevant":["q2c18ab","qac2864","q93be58-2"],"split":"test"}
+{"id":"r23","category":"en","turns":["How do I house train a puppy?"],"relevant":["q8f9f9a","q0e0a11","q74dce7"],"split":"dev"}
+{"id":"r24","category":"en","turns":["My dog is afraid of fireworks, what can I do?"],"relevant":["q12ca1f","qb6653f","q12ca1f-2","q472397","q472397-2"],"split":"test"}
+{"id":"r25","category":"en","turns":["What should I put in a pet first aid kit?"],"relevant":["q4e6b63","gov-57"],"split":"dev"}
+{"id":"r26","category":"en","turns":["Can I use human shampoo on my cat?"],"relevant":["qe3c2e2","qd83201-2","q364eee","qd83201"],"split":"test"}
+{"id":"r27","category":"en","turns":["How do I know if my dog is overweight?"],"relevant":["qc6c64c"],"split":"dev"}
+{"id":"r28","category":"en","turns":["Why is my cat vomiting hairballs?"],"relevant":["qecf1bf","q79e4ce"],"split":"test"}
+{"id":"r29","category":"en","turns":["When can my puppy go outside after vaccines?"],"relevant":["qec4e0c","q5a2490","qb1b158"],"split":"dev"}
+{"id":"r30","category":"en","turns":["How do I get rid of fleas in my house?"],"relevant":["q8559cb"],"split":"test"}
+{"id":"r31","category":"en","turns":["Can food allergies make my dog itchy?"],"relevant":["qfc1a24","q163a45"],"split":"dev"}
+{"id":"r32","category":"en","turns":["How often should I deworm my kitten?"],"relevant":["qe0efd4","qb9e0e6","q8ebfd7"],"split":"test"}
+{"id":"r33","category":"en","turns":["Are aspins healthier than purebred dogs?"],"relevant":["qd5ddf6"],"split":"dev"}
+{"id":"t01","category":"tl","turns":["Nagsusuka ang aso ko, ano ang dapat gawin?"],"relevant":["q881818","guide-vomiting"],"split":"dev"}
+{"id":"t02","category":"tl","turns":["May garapata ang aso ko paano tanggalin"],"relevant":["qbd63fb","q0ca850","q26f0db"],"split":"test"}
+{"id":"t03","category":"tl","turns":["kailan dapat purgahin ang kuting"],"relevant":["qe0efd4","qb9e0e6","qbfc163"],"split":"dev"}
+{"id":"t04","category":"tl","turns":["Pwede ba kumain ng ubas ang aso?"],"relevant":["q7bf34c","qa6febf","guide-poisoning"],"split":"test"}
+{"id":"t05","category":"tl","turns":["Nagtatae ang pusa ko ng dalawang araw na"],"relevant":["q394ce7","q2169dc","guide-vomiting"],"split":"dev"}
+{"id":"t06","category":"tl","turns":["Ilang beses dapat paliguan ang aso?"],"relevant":["qa9bf28","q105b9d","q105b9d-2"],"split":"test"}
+{"id":"t07","category":"tl","turns":["Nalalagas ang balahibo ng pusa ko"],"relevant":["q1eee29","qe8e3b0","qb5fda4"],"split":"dev"}
+{"id":"t08","category":"tl","turns":["Kailangan ko bang iparehistro ang aso ko?"],"relevant":["qb07598","q29fd1d"],"split":"test"}
+{"id":"s01","category":"species","turns":["Can I give my cat dog food?"],"relevant":["q29c30f"],"split":"dev"}
+{"id":"s02","category":"species","turns":["Why does my cat knead blankets?"],"relevant":["q22374b","q22374b-2","qa11f91","qf7c37f","qc75e0d"],"split":"test"}
+{"id":"s03","category":"species","turns":["My kitten is sneezing a lot"],"relevant":["qce12f1","qac9c76","q64125d","q90fd0c"],"species":"cat","split":"dev"}
+{"id":"s06","category":"species","turns":["Why does my cat bring me dead lizards?"],"relevant":["q3288c2","q3288c2-2","q594943"],"split":"test"}
+{"id":"l01","category":"legal","turns":["Is it required by law to vaccinate my dog against rabies in the Philippines?"],"relevant":["q3739a7","q29fd1d"],"split":"dev"}
+{"id":"l02","category":"legal","turns":["What happens if my dog bites someone, am I liable?"],"relevant":["q3776b6"],"split":"test"}
+{"id":"l03","category":"legal","turns":["Where do I report someone hurting a dog?"],"relevant":["qb527eb"],"split":"dev"}
+{"id":"l04","category":"legal","turns":["Is there a penalty for animal cruelty here?"],"relevant":["q8a1865","q28d471"],"split":"test"}
+{"id":"l05","category":"legal","turns":["Can my dog roam the street without a leash?"],"relevant":["q41a64b"],"split":"dev"}
+{"id":"l06","category":"legal","turns":["Can I bring my dog on a plane from Manila to Cebu?"],"relevant":["qcdb3e5","gov-55"],"split":"test"}
+{"id":"l07","category":"legal","turns":["Is tick fever common in the Philippines?"],"relevant":["qab5df5"],"split":"dev"}
+{"id":"l08","category":"legal","turns":["Is there free anti-rabies vaccine for dogs in the Philippines?"],"relevant":["q210342","q3739a7"],"split":"test"}
+{"id":"e01","category":"emergency","turns":["My dog ate rat poison"],"relevant":["guide-poisoning","q2028dc"],"split":"dev"}
+{"id":"e02","category":"emergency","turns":["My cat keeps going to the litter box but nothing comes out"],"relevant":["q6ea1d7","guide-urinary","qb0335e"],"split":"test"}
+{"id":"e03","category":"emergency","turns":["My dog's belly is swollen and he keeps trying to vomit"],"relevant":["q28f7a3","guide-bloat"],"split":"dev"}
+{"id":"e04","category":"emergency","turns":["My dog was bitten by a snake in the yard"],"relevant":["q5784bd","gov-147","guide-snake"],"split":"test"}
+{"id":"e05","category":"emergency","turns":["my dog is having a seizure"],"relevant":["q5faf86","guide-seizure"],"split":"dev"}
+{"id":"e06","category":"emergency","turns":["My puppy was hit by a motorcycle"],"relevant":["qa1d4d7","guide-accident"],"split":"test"}
+{"id":"o01","category":"out-of-scope","turns":["Philippines is a tropical country. Is that really the best dog breed for a tropical country?"],"relevant":[],"split":"dev"}
+{"id":"o02","category":"out-of-scope","turns":["What is the best dog breed for a small apartment in Manila?"],"relevant":[],"split":"test"}
+{"id":"o03","category":"out-of-scope","turns":["Which dog breeds handle hot humid weather best?"],"relevant":[],"split":"dev"}
+{"id":"o04","category":"out-of-scope","turns":["Is a Siberian Husky suitable for the Philippines?"],"relevant":[],"split":"test"}
+{"id":"o05","category":"out-of-scope","turns":["How do I take care of a hamster?"],"relevant":[],"split":"dev"}
+{"id":"o06","category":"out-of-scope","turns":["What is the capital of the Philippines?"],"relevant":[],"split":"test"}
+{"id":"o08","category":"out-of-scope","turns":["How much does it cost to spay a cat in the Philippines?"],"relevant":[],"split":"dev"}
+{"id":"o09","category":"out-of-scope","turns":["Can my dog eat durian?"],"relevant":[],"split":"test"}
+{"id":"o10","category":"out-of-scope","turns":["Do I need a permit to open a pet grooming business in the Philippines?"],"relevant":[],"split":"dev"}
+{"id":"o11","category":"out-of-scope","turns":["What's the best pet insurance in the Philippines?"],"relevant":[],"split":"test"}
+{"id":"o12","category":"out-of-scope","turns":["Can dogs see ghosts?"],"relevant":[],"split":"dev"}
+{"id":"o13","category":"out-of-scope","turns":["How do I treat my own sore throat?"],"relevant":[],"split":"test"}
+{"id":"o14","category":"out-of-scope","turns":["My parrot is plucking its feathers"],"relevant":[],"split":"dev"}
+{"id":"o16","category":"out-of-scope","turns":["Is it legal to keep a monkey as a pet in the Philippines?"],"relevant":[],"split":"test"}
+{"id":"o17","category":"out-of-scope","turns":["How long do goldfish live?"],"relevant":[],"split":"dev"}
+{"id":"o18","category":"out-of-scope","turns":["What should I name my new puppy?"],"relevant":[],"split":"test"}
+{"id":"o19","category":"out-of-scope","turns":["How do I fix my car's aircon?"],"relevant":[],"split":"dev"}
+{"id":"o20","category":"out-of-scope","turns":["Can I take my cat with me when I move to Japan?"],"relevant":[],"split":"test"}
+{"id":"o21","category":"out-of-scope","turns":["How many stray dogs are there in the Philippines?"],"relevant":[],"split":"dev"}
+{"id":"o22","category":"out-of-scope","turns":["What's the best dog food brand in the Philippines?"],"relevant":[],"split":"test"}
+{"id":"o23","category":"out-of-scope","turns":["How much is a Shih Tzu puppy in Manila?"],"relevant":[],"split":"dev"}
+{"id":"o24","category":"out-of-scope","turns":["Which vet clinic in Quezon City is open 24 hours?"],"relevant":[],"split":"test"}
+{"id":"o25","category":"out-of-scope","turns":["How do I make my dog famous on TikTok?"],"relevant":[],"split":"dev"}
+{"id":"o27","category":"out-of-scope","turns":["How do I register my business with DTI?"],"relevant":[],"split":"test"}
+{"id":"o28","category":"out-of-scope","turns":["Are there laws about how many dogs I can own in my barangay?"],"relevant":[],"split":"dev"}
+{"id":"m01","category":"multi-turn","turns":["Is a Siberian Husky a good dog for families?","Is that breed suitable for our hot climate?"],"relevant":[],"split":"dev"}
+{"id":"m02","category":"multi-turn","turns":["My dog ate chocolate","how much is too much?"],"relevant":["q37381b","q9e32f9"],"split":"test"}
+{"id":"m03","category":"multi-turn","turns":["How often should I deworm my puppy?","what about kittens?"],"relevant":["qe0efd4","qb9e0e6","q8ebfd7"],"split":"dev"}
+{"id":"m04","category":"multi-turn","turns":["My cat is sneezing a lot","is it contagious to my other cat?"],"relevant":["qce12f1","qfa17f5"],"split":"test"}
+{"id":"m05","category":"multi-turn","turns":["Can dogs eat grapes?","What about raisins?"],"relevant":["q7bf34c","qa6febf","guide-poisoning"],"split":"dev"}
+{"id":"m06","category":"multi-turn","turns":["When should my puppy get the anti-rabies shot?","Is that required by law?"],"relevant":["q3739a7","q29fd1d"],"split":"test"}
+{"id":"m07","category":"multi-turn","turns":["My dog has ticks","How do I remove them safely without leaving the head in?"],"relevant":["q0ca850","qbd63fb"],"split":"dev"}
+{"id":"m08","category":"multi-turn","turns":["Ayaw kumain ng pusa ko","tatlong araw na po"],"relevant":["qc01447"],"split":"test"}
+{"id":"m09","category":"multi-turn","turns":["What vaccines does my kitten need?","And how much do those usually cost in the Philippines?"],"relevant":[],"split":"dev"}
+{"id":"m10","category":"multi-turn","turns":["My dog keeps scratching","Could it be because of the food he eats?"],"relevant":["qfc1a24","q163a45"],"split":"test"}

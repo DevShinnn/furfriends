@@ -1,8 +1,8 @@
 import { supabase } from "./supabase";
-import { GUIDES, urgentGuides } from "./emergency";
 import { breedFor } from "./breeds";
-import { ageText, byDateDesc, vaxStatus } from "./utils";
-import { chatReply, compose, decodeIndex, queryText, safetyReply, search, withEnglish } from "./knowledge";
+import { chatReply, decodeIndex, queryText, safetyReply, search, withEnglish } from "./knowledge";
+import { chatMessages, conversation, describePet, petContext, sourcesFor } from "./prompt";
+import { planAnswer, reviewAnswer } from "./evidence";
 import PROMPT from "./aiPrompt.json";
 
 /* Client for the FurFriends assistant.
@@ -26,30 +26,13 @@ import PROMPT from "./aiPrompt.json";
 
 export const ASSISTANT_URL = import.meta.env.VITE_ASSISTANT_URL ?? "/api/ask";
 const SLEEPS = /\.hf\.space\//.test(ASSISTANT_URL);   // a free Hugging Face Space sleeps when unused
-const HISTORY = 10;   // earlier messages sent along as context
 
-/* The messages actually sent to the model: no error notes, only the last few, only role and text. */
-export const conversation = (messages) =>
-  messages.filter((m) => !m.error).slice(-HISTORY).map(({ role, content }) => ({ role, content }));
+// The prompt (conversation, pet details, checked passages) is built in prompt.js.
+export { conversation, petContext } from "./prompt";
 
 /* The chat lives in sessionStorage (see pages/Assistant.jsx); this wipes it, e.g. on log in, log out or a demo reset. */
 export function clearChats() {
   try { Object.keys(sessionStorage).filter((k) => k.startsWith("ff-ai-chat:")).forEach((k) => sessionStorage.removeItem(k)); } catch { /* ignore */ }
-}
-
-/* ------------------------------------------------------------------ pet context
-   A short summary of the pet's records, so answers can be about this pet. */
-export function petContext(pet) {
-  if (!pet) return null;
-  const med = [...pet.medical].sort(byDateDesc);
-  const titles = (types, n = 6) => med.filter((m) => types.includes(m.type)).slice(0, n).map((m) => m.title);
-  return {
-    name: pet.name, species: pet.species, breed: pet.breed || null, gender: pet.gender || null,
-    age: ageText(pet) === "—" ? null : ageText(pet), weightKg: pet.weight ? Number(pet.weight) : null,
-    allergies: titles(["Allergy"]), medications: titles(["Medication"]),
-    recentConditions: titles(["Illness", "Injury", "Surgery"], 4),
-    vaccines: pet.vaccinations.map((v) => ({ name: v.name, status: vaxStatus(v).label })),
-  };
 }
 
 // The emergency check (urgentGuides) lives in emergency.js, so ai-server/answer_rag.py can run the same one.
@@ -149,37 +132,38 @@ async function askKnowledge({ messages, pet, signal, onStatus, onText }) {
   const index = await ready;
   if (rule) return { reply: rule.reply, model: index.version, match: rule.match, related: rule.related };
   const results = search(index, await embed(q, onStatus), q, { species: (pet?.species || "").toLowerCase() });
-  const answer = compose(results, q);
   if (signal?.aborted) throw new Error("Cancelled");
-  // FurFriends' trained model writes the answer from the 2 best checked passages: on the server, or on this
-  // device if the owner turned that on. If it fails, the closest checked answer is shown as before.
-  const used = withUrgent(index, last, results).slice(0, SOURCES);
-  const write = ASSISTANT_URL ? () => askServer(messages, pet, used, { signal, onStatus, onText })
-    : (await chatReady()) ? () => generate(chatMessages(messages, pet, used), { signal, onStatus, onText }).then((reply) => ({ reply, model: CHAT_VERSION }))
+  // Only passages that are about the question are evidence (evidence.js). The search-only reply is the fallback.
+  const { evidence, fallback } = planAnswer(index, results, q, last);
+  const checked = { reply: fallback.reply, model: index.version, match: fallback.match, related: fallback.related };
+  // Nothing checked is about the question: the model isn't asked, so it can't fill the gap with a guess.
+  if (!evidence.length) return checked;
+  // FurFriends' trained model writes the answer from the evidence: on the server, or on this device if the
+  // owner turned that on.
+  const write = ASSISTANT_URL ? () => askServer(messages, pet, evidence, { signal, onStatus, onText })
+    : (await chatReady()) ? () => generate(chatMessages(messages, pet, evidence), { signal, onStatus, onText }).then((reply) => ({ reply, model: CHAT_VERSION }))
       : null;
   if (write) {
     try {
       const { reply, model } = await write();
-      // The model says so when the 2 passages don't answer the question. The search's own reply is then
-      // more useful: the closest checked answer if it's close enough, or similar questions to tap.
+      // The model says so when the passages don't answer the question; the search's own reply is then more useful.
       if (!reply.startsWith(PROMPT.notFound.slice(0, 40))) {
-        // Both passages are credited: the model may have used either (CC BY-SA asks for credit).
-        return { reply, model, match: used[0] ? pickSource(used[0]) : null, sources: used.map(pickSource), related: answer.related, generated: true };
+        // The answer must lean on its passages and name no law, organisation or number they don't. Only the
+        // passages it actually uses are credited (CC BY-SA asks for credit).
+        const context = [describePet(petContext(pet)), ...conversation(messages).filter((m) => m.role === "user").map((m) => m.content)].join("\n");
+        const review = reviewAnswer(reply, evidence, { context });
+        if (review.ok) {
+          const sources = review.used.map(pickSource);
+          return { reply, model, match: sources[0], sources, related: fallback.related, generated: true };
+        }
+        console.warn("FurFriends AI answer isn't backed by its checked sources, showing the checked answer instead:", review.problems);
       }
     } catch (e) {
       if (e.message === "Cancelled") throw e;
       console.warn("FurFriends AI failed, using the checked answer instead:", e);
     }
   }
-  return { reply: answer.reply, model: index.version, match: answer.match, related: answer.related };
-}
-
-/* An emergency the app recognises (the red box) puts its first-aid guide first, ahead of the search,
-   so the model always has the right guide to answer from. ai-server/answer_rag.py does the same. */
-function withUrgent(index, question, results) {
-  const urgent = urgentGuides(question).map((g) => index.entries.find((e) => e.id === `guide-${g.slug}`)).filter(Boolean);
-  const ids = new Set(urgent.map((e) => e.id));
-  return [...urgent, ...results.filter((e) => !ids.has(e.of || e.id))];
+  return checked;
 }
 
 /* ------------------------------------------------------------------ the trained model, on the device
@@ -191,7 +175,6 @@ export const CHAT_MODEL = ASSISTANT_URL ? "" : import.meta.env.VITE_CHAT_MODEL |
 // e.g. VITE_CHAT_HOST=http://localhost:8090/ (see ai-server/README.md). Unset: Hugging Face.
 const CHAT_HOST = import.meta.env.VITE_CHAT_HOST || "";
 const CHAT_VERSION = CHAT_MODEL.split("/").pop() || "chat";
-const SOURCES = 2, SOURCE_WORDS = 160;   // the same as ai-server/answer_rag.py
 const CHOICE = "ff-ai-model";            // "yes" | "no": the owner's choice, on this device
 
 export const chatChoice = () => { try { return localStorage.getItem(CHOICE) || ""; } catch { return ""; } };
@@ -211,43 +194,8 @@ export const chatSupport = () => (supportPromise ??= (async () => {
 })());
 const chatReady = async () => chatChoice() === "yes" && !!(await chatSupport());
 
-/* The prompt, built exactly like ai-server/prompting.py builds it in training. */
-const clipWords = (text, n) => { const w = text.split(/\s+/).filter(Boolean); return w.length <= n ? text : w.slice(0, n).join(" ") + " …"; };
-function sourceOf(e) {
-  if (e.kind === "guide") {
-    const g = GUIDES.find((x) => `guide-${x.slug}` === (e.of || e.id));
-    // The same as guide_text() in ai-server/build_rag_data.py: the signs let the model tell which guide fits.
-    const text = `${g.title}. ${g.summary}\nSigns: ${g.signs.join("; ")}${(g.lists || []).map((l) => `\n${l.title}: ${l.items.join("; ")}`).join("")}\nWhat to do now:\n${g.steps.map((s, i) => `${i + 1}. ${s}`).join("\n")}`
-      + (g.avoid?.length ? `\nDon't: ${g.avoid.join(" ")}` : "")
-      + `\n${g.urgency === "now" ? "Go to a vet now." : "Call your vet for advice."}`;
-    return { label: `FurFriends first-aid guide: ${g.title}`, text };
-  }
-  if (e.kind === "gov") return { label: e.src, text: `${e.q}\n${e.a}` };
-  return { label: /^Pets Stack Exchange/.test(e.src || "") ? "Pets Stack Exchange answer" : "FurFriends checked answer", text: `Q: ${clipWords(e.q, 40)}\nA: ${e.a}` };
-}
-function describePet(c) {
-  if (!c) return null;
-  const facts = [c.species, c.breed, c.gender, c.age, c.weightKg ? `${c.weightKg} kg` : null].filter(Boolean);
-  const lines = [`The owner is asking about ${c.name || "their pet"}: ${facts.join(", ")}.`];
-  for (const [k, label] of [["allergies", "Allergies"], ["medications", "Medications"], ["recentConditions", "Recent illnesses or surgery"]]) {
-    if (c[k]?.length) lines.push(`${label}: ${c[k].join(", ")}.`);
-  }
-  if (c.vaccines?.length) lines.push(`Vaccines: ${c.vaccines.map((v) => `${v.name} (${v.status})`).join(", ")}.`);
-  return lines.join(" ");
-}
-// First-aid guides are short and checked: never cut, so all the steps are always there.
-const sourcesFor = (results) => results.map((e) => { const s = sourceOf(e); return e.kind === "guide" ? s : { ...s, text: clipWords(s.text, SOURCE_WORDS) }; });
-export function chatMessages(messages, pet, results) {
-  let system = PROMPT.system;
-  const about = describePet(petContext(pet));
-  if (about) system += `\n\n${about}`;
-  if (results.length) {
-    const sources = sourcesFor(results);
-    system += `\n\n${PROMPT.sourcesIntro}\n${sources.map((s, i) => `[${i + 1}] ${s.label}\n${s.text}`).join("\n\n")}`;
-  }
-  return [{ role: "system", content: system }, ...conversation(messages)];
-}
-const pickSource = (r) => ({ q: r.kind === "guide" ? r.q.split(":")[0] : r.q.length > 110 ? r.q.slice(0, 110).replace(/\s+\S*$/, "") + "…" : r.q,
+export { chatMessages } from "./prompt";
+const pickSource = (r) => ({ id: r.of || r.id, q: r.kind === "guide" ? r.q.split(":")[0] : r.q.length > 110 ? r.q.slice(0, 110).replace(/\s+\S*$/, "") + "…" : r.q,
   source: r.src || "", url: r.url || "", kind: r.kind, score: Math.round(r.score * 100) / 100 });
 
 let chatWorker = null, chatLoading = null, chatId = 0;

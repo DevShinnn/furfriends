@@ -5,7 +5,8 @@ own model (DevShin00/furfriends-rag-v2) and streams it back, so owners download 
   Authorization: Bearer <Supabase access token>   (only logged-in FurFriends users get answers)
   body  { messages: [{ role, content }], pet: {...} | null, sources: [{ label, text }] }
   200 → the answer as plain text, streamed as it's written; header X-Model: the model version
-  429 → the monthly AI allowance is used up; 401 → not logged in. The app then shows the closest checked answer.
+  429 → the monthly AI allowance is used up; 401 → not logged in; 400 → no sources (the model never answers
+  without checked passages). The app then shows the closest checked answer.
   GET /api/ask → { ok, model, loaded }
 
 Vercel's free plan includes 4 CPU-hours per 30 days and pauses the whole account (the app too) past that.
@@ -95,6 +96,10 @@ def ask(body: AskBody, authorization: str | None = Header(default=None)):
     check(token)
     if not body.messages or body.messages[-1].role != "user":
         raise HTTPException(400, "The last message must be the user's question.")
+    # The model only writes answers from checked passages. Without any, it would answer from memory, so it
+    # doesn't answer at all (the app then shows its own "no checked answer" reply).
+    if not body.sources:
+        raise HTTPException(400, "No checked sources were sent with the question.")
     msgs = build_messages([m.model_dump() for m in body.messages], body.pet,
                           [s.model_dump() for s in body.sources[:3]] if body.sources else None)
 

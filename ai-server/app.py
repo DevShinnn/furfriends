@@ -175,6 +175,9 @@ async def ask(body: AskBody, authorization: str | None = Header(default=None)):
         raise HTTPException(400, "The last message must be the user's question.")
     if _model is None:
         raise HTTPException(503, "The assistant is still starting. Try again in a minute.")
+    # As in api/ask.py: the app only asks with checked passages, and without them the model would answer from memory.
+    if not body.sources:
+        raise HTTPException(400, "No checked sources were sent with the question.")
     sources = [s.model_dump() for s in body.sources[:3]] if body.sources else None
     chat = build_messages([m.model_dump() for m in body.messages], body.pet, sources)
     if body.stream:
