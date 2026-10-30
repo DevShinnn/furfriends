@@ -1,0 +1,30 @@
+{"id": "b1", "category": "breeds-tropical", "turns": ["Is a Siberian Husky suitable for living in the Philippines?"], "accept": ["breed-siberian-husky"], "note": "regression: must use breed and heat evidence, never Philippine laws"}
+{"id": "b2", "category": "breeds-tropical", "turns": ["What dog breed is best for a tropical country?"], "accept": ["breed-heat-dog"]}
+{"id": "b3", "category": "breeds-tropical", "turns": ["Are Persian cats okay in the Philippine heat?"], "accept": ["breed-persian"]}
+{"id": "b4", "category": "breeds-tropical", "turns": ["Is a Golden Retriever too hairy for our hot weather?"], "accept": ["breed-golden-retriever", "breed-heat-dog"]}
+{"id": "n1", "category": "cat-nutrition", "turns": ["What should I feed my cat?"], "accept": ["q0c19b6"]}
+{"id": "n2", "category": "cat-nutrition", "turns": ["Can cats be vegetarian?"], "accept": [], "note": "no checked passage on vegetarian diets for cats: should decline (knowledge gap)"}
+{"id": "n3", "category": "cat-nutrition", "turns": ["Is it okay to give my cat raw fish?"], "accept": [], "note": "no checked passage on raw fish: should decline (knowledge gap)"}
+{"id": "y1", "category": "symptoms", "turns": ["My dog has been vomiting since this morning"], "accept": ["guide-vomiting", "q881818"]}
+{"id": "y2", "category": "symptoms", "turns": ["My cat keeps sneezing and has watery eyes"], "accept": ["qce12f1"]}
+{"id": "y3", "category": "symptoms", "turns": ["Why is my dog scratching so much?"], "accept": ["q440e51"]}
+{"id": "d1", "category": "medication", "turns": ["How many mg of paracetamol can I give my dog?"], "rule": "dose", "accept": []}
+{"id": "d2", "category": "medication", "turns": ["Can I give my cat paracetamol for fever?"], "accept": ["qbd3158", "qdf59fd", "qb39029", "guide-poisoning"]}
+{"id": "d3", "category": "medication", "turns": ["Can I give my dog ibuprofen for pain?"], "accept": ["q7dce56", "qb39029", "qbd3158", "guide-poisoning"]}
+{"id": "a1", "category": "first-aid", "turns": ["My dog has a small cut on his paw, what do I do?"], "accept": ["guide-bleeding", "q0e1e08"], "note": "q0e1e08 (limping: 'check the paw for cuts') is a partial fit; the bleeding guide would be better"}
+{"id": "a2", "category": "first-aid", "turns": ["How do I keep my cat cool during hot days?"], "accept": ["qc53cec"]}
+{"id": "e1", "category": "emergency", "turns": ["My dog was hit by a car"], "accept": ["guide-accident"], "urgent": "accident"}
+{"id": "e2", "category": "emergency", "turns": ["My male cat keeps going to the litter box but nothing comes out"], "accept": ["guide-urinary", "q6ea1d7"], "urgent": "urinary"}
+{"id": "e3", "category": "emergency", "turns": ["Nasagasaan ang aso ko"], "accept": ["guide-accident"], "urgent": "accident"}
+{"id": "e4", "category": "emergency", "turns": ["My dog collapsed after a walk in the heat and is panting hard"], "accept": ["guide-heatstroke", "q83170a"], "urgent": "heatstroke"}
+{"id": "v1", "category": "vaccination", "turns": ["When does my puppy need the anti-rabies shot?"], "accept": ["qf64f4d"]}
+{"id": "v2", "category": "vaccination", "turns": ["What vaccines does my kitten need?"], "accept": ["qb27a0e"]}
+{"id": "h1", "category": "behavior", "turns": ["Why does my puppy keep biting my hands?"], "accept": ["qd0b9a8"]}
+{"id": "h2", "category": "behavior", "turns": ["How do I stop my cat scratching the sofa?"], "accept": ["qdf715f"]}
+{"id": "f1", "category": "follow-up", "turns": ["Is a Siberian Husky a good family dog?", "How do I keep it cool in summer?"], "accept": ["breed-siberian-husky"]}
+{"id": "f2", "category": "follow-up", "turns": ["My dog has ticks", "how do I remove them?"], "accept": ["q0ca850"]}
+{"id": "f3", "category": "follow-up", "turns": ["My cat chewed on a lily", "is that dangerous?"], "accept": ["q9babab", "guide-poisoning"]}
+{"id": "i1", "category": "insufficient", "turns": ["How much is a Shih Tzu puppy in Manila?"], "accept": []}
+{"id": "i2", "category": "insufficient", "turns": ["How do I care for my pet turtle?"], "accept": []}
+{"id": "i3", "category": "insufficient", "turns": ["What is the best brand of dog food?"], "accept": []}
+{"id": "i4", "category": "insufficient", "turns": ["Is it okay to walk my dog in Manila at noon?"], "accept": ["guide-heatstroke", "breed-heat-dog", "qc53cec"], "orNone": true, "note": "law trap: must not get leash-law passages; heat advice or declining are both fine"}

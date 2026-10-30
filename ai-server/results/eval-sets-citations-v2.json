@@ -1,0 +1,886 @@
+{
+ "dev:b1": {
+  "generated": true,
+  "credited": [
+   "breed-siberian-husky"
+  ],
+  "shown": "breed-siberian-husky",
+  "model": "rag-v2",
+  "seconds": 43.922,
+  "rejected": [],
+  "raw": "Bred for snow, so the tropics are hard on them.\n\nFriendly, vocal and a known escape artist.\n\nCare tips:\n- Needs air-con or a cool shaded room on hot days.\n- Exercise only at dawn or after sunset, and watch for heavy panting.\n- Don't shave the coat; brush out the loose undercoat instead.\n\nExercise:\n- Very high, but only in the cool early morning or late evening here.\n- Keep in a cool room or air-con during the day.\n\nWalk:\n- Walk on a leash; Huskies run off and escape fences.\n\nGrooming:\n- Brush two or three times a week, and daily when shedding.\n- Don't shave the double coat; it protects the skin from sun.\n\nHealth problems to watch for:\n- Heatstroke;\n- Eye problems (cataracts, progressive retinal atrophy);\n- Hypothyroidism.\n\nTypical adult weight:\n- 16–27 kg;\n- Energy:\n- 5 of 5.\n\nThis sounds like it could be a pet that I can keep as a companion.",
+  "reply": "Bred for snow, so the tropics are hard on them.\n\nFriendly, vocal and a known escape artist.\n\nCare tips:\n- Needs air-con or a cool shaded room on hot days.\n- Exercise only at dawn or after sunset, and watch for heavy panting.\n- Don't shave the coat; brush out the loose undercoat instead.\n\nExercise:\n- Very high, but only in the cool early morning or late evening here.\n- Keep in a cool room or air-con during the day.\n\nWalk:\n- Walk on a leash; Huskies run off and escape fences.\n\nGrooming:\n- Brush two or three times a week, and daily when shedding.\n- Don't shave the double coat; it protects the skin from sun.\n\nHealth problems to watch for:\n- Heatstroke;\n- Eye problems (cataracts, progressive retinal atrophy);\n- Hypothyroidism.\n\nTypical adult weight:\n- 16–27 kg;\n- Energy:\n- 5 of 5.\n\nThis sounds like it could be a pet that I can keep as a companion."
+ },
+ "dev:b2": {
+  "generated": true,
+  "credited": [
+   "breed-heat-dog"
+  ],
+  "shown": "breed-heat-dog",
+  "model": "rag-v2",
+  "seconds": 12.971,
+  "rejected": [],
+  "raw": "Breed that handles hot, humid weather best: Aspin (5 of 5).\n\nBreeds that struggle in the heat and are at higher risk of heatstroke:\n- Shih Tzu (1 of 5)\n- Golden Retriever (2 of 5)\n- German Shepherd (2 of 5)\n- Siberian Husky (1 of 5)\n- Pug (1 of 5)\n- Pomeranian (2 of 5)\n- French Bulldog (1 of 5)\n- Pembroke Welsh Corgi (2 of 5)\n- Japanese Spitz (2 of 5)\n\nFlat-faced and thick-coated breeds overheat most easily. Whatever the breed, give shade, fresh water and a cool room on hot days, exercise at dawn or after sunset, and watch for heavy panting.\n\nHeat tolerance in between (3 of 5):\n- Labrador Retriever (3 of 5)\n- Beagle (3 of 5)\n- Chihuahua (3 of 5)\n- Poodle (3 of 5)\n- Dachshund (3 of 5)\n- Maltese (3 of 5)",
+  "reply": "Breed that handles hot, humid weather best: Aspin (5 of 5).\n\nBreeds that struggle in the heat and are at higher risk of heatstroke:\n- Shih Tzu (1 of 5)\n- Golden Retriever (2 of 5)\n- German Shepherd (2 of 5)\n- Siberian Husky (1 of 5)\n- Pug (1 of 5)\n- Pomeranian (2 of 5)\n- French Bulldog (1 of 5)\n- Pembroke Welsh Corgi (2 of 5)\n- Japanese Spitz (2 of 5)\n\nFlat-faced and thick-coated breeds overheat most easily. Whatever the breed, give shade, fresh water and a cool room on hot days, exercise at dawn or after sunset, and watch for heavy panting.\n\nHeat tolerance in between (3 of 5):\n- Labrador Retriever (3 of 5)\n- Beagle (3 of 5)\n- Chihuahua (3 of 5)\n- Poodle (3 of 5)\n- Dachshund (3 of 5)\n- Maltese (3 of 5)"
+ },
+ "dev:b3": {
+  "generated": false,
+  "credited": [],
+  "shown": "breed-persian",
+  "model": "search-v1",
+  "seconds": 3.932,
+  "rejected": [],
+  "raw": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
+  "reply": "In a hot, humid climate like the Philippines, the Persian handles hot, humid weather poorly and is at high risk of heatstroke (heat tolerance 1 of 5). Calm, gentle and quiet. The long coat and flat face need daily care, especially in the heat.\nCare tips: Comb daily to stop mats, or keep a short trim. Wipe the eyes and face daily. Keep in a cool room on hot days, and ask your vet about kidney screening.\nExercise: Low. Gentle daily play to keep the weight off.\nGrooming: Very high. Comb daily to prevent mats, wipe the eyes daily, and bathe every 4–6 weeks or keep a short trim.\nHealth problems to watch for: Polycystic kidney disease (PKD); Breathing problems from the flat face; Tear staining and eye problems; Dental problems.\nTypical adult weight 3–5.5 kg; energy 1 of 5."
+ },
+ "dev:b4": {
+  "generated": true,
+  "credited": [
+   "breed-golden-retriever"
+  ],
+  "shown": "breed-golden-retriever",
+  "model": "rag-v2",
+  "seconds": 8.219,
+  "rejected": [],
+  "raw": "Brush 2–3 times a week. Don't shave the coat; it protects against sun and heat.\n\nCare tips:\n- Brush 2–3 times a week. Don't shave the coat; it protects against sun and heat.\n\nExercise:\n- One to two hours a day of walks, retrieving and swimming, in the cool parts of the day.\n\nGrooming:\n- Moderate to high. Brush two or three times a week, and daily when shedding.\n\nHealth problems to watch for:\n- Hip and elbow dysplasia;\n- Higher cancer risk than many breeds;\n- Hot spots and skin allergies in humid weather;\n- Hypothyroidism.\n\nTypical adult weight 25–34 kg; energy 4 of 5.",
+  "reply": "Brush 2–3 times a week. Don't shave the coat; it protects against sun and heat.\n\nCare tips:\n- Brush 2–3 times a week. Don't shave the coat; it protects against sun and heat.\n\nExercise:\n- One to two hours a day of walks, retrieving and swimming, in the cool parts of the day.\n\nGrooming:\n- Moderate to high. Brush two or three times a week, and daily when shedding.\n\nHealth problems to watch for:\n- Hip and elbow dysplasia;\n- Higher cancer risk than many breeds;\n- Hot spots and skin allergies in humid weather;\n- Hypothyroidism.\n\nTypical adult weight 25–34 kg; energy 4 of 5."
+ },
+ "dev:n1": {
+  "generated": true,
+  "credited": [
+   "q0c19b6"
+  ],
+  "shown": "q0c19b6",
+  "model": "rag-v2",
+  "seconds": 9.701,
+  "rejected": [],
+  "raw": "Adult dogs: most do well on 1 or 2 meals a day. The ASPCA suggests two meals, about 8 to 12 hours apart.\n\nAdult cats (from about 1 year old): once or twice a day suits most cats. Leaving food out all day works for some cats, but makes others overeat and gain weight. Replace any food left out with fresh food daily.\n\nHow much:\n- The amount on the label is based on an average pet. A less active pet may need less.\n- Check your pet's body. You should be able to feel the ribs without pressing hard, and see a waist behind the ribs from above.\n- If you can't feel the ribs without pressing, there is too much fat. Ask your vet how much to cut back.\n\nAlways keep fresh, clean water out.",
+  "reply": "Adult dogs: most do well on 1 or 2 meals a day. The ASPCA suggests two meals, about 8 to 12 hours apart.\n\nAdult cats (from about 1 year old): once or twice a day suits most cats. Leaving food out all day works for some cats, but makes others overeat and gain weight. Replace any food left out with fresh food daily.\n\nHow much:\n- The amount on the label is based on an average pet. A less active pet may need less.\n- Check your pet's body. You should be able to feel the ribs without pressing hard, and see a waist behind the ribs from above.\n- If you can't feel the ribs without pressing, there is too much fat. Ask your vet how much to cut back.\n\nAlways keep fresh, clean water out."
+ },
+ "dev:n2": {
+  "generated": false,
+  "credited": [],
+  "shown": null,
+  "model": "search-v1",
+  "seconds": 0.046,
+  "rejected": [],
+  "raw": "",
+  "reply": "I don't have a checked answer for that yet, so I'd rather not guess. Try asking in another way, with a few more details. If your pet seems unwell, your vet is the best person to ask."
+ },
+ "dev:n3": {
+  "generated": false,
+  "credited": [],
+  "shown": null,
+  "model": "search-v1",
+  "seconds": 0.047,
+  "rejected": [],
+  "raw": "",
+  "reply": "I don't have a checked answer for that yet, so I'd rather not guess. Try asking in another way, with a few more details, or tap a similar question below if one fits. If your pet seems unwell, your vet is the best person to ask."
+ },
+ "dev:y1": {
+  "generated": true,
+  "credited": [
+   "q881818"
+  ],
+  "shown": "q881818",
+  "model": "rag-v2",
+  "seconds": 9.895,
+  "rejected": [],
+  "raw": "One vomit in a dog that otherwise seems well is often not serious, and many cases settle within a day. But vomiting can also be a sign of poisoning, a blockage or other illness.\n\nGo to the vet right away if he vomits and also has:\n- Blood in the vomit\n- Diarrhea, belly pain or fever\n- Low energy, no appetite or signs of dehydration\n- A chance he swallowed something toxic or an object\n\nSee your vet today if vomiting goes on for more than 24 hours, even if he seems fine.\n\nFor a mild case, your vet may suggest resting the stomach for a short time, then small, frequent meals of a bland food. Keep fresh water available. Don't give human medicines unless your vet tells you to.",
+  "reply": "One vomit in a dog that otherwise seems well is often not serious, and many cases settle within a day. But vomiting can also be a sign of poisoning, a blockage or other illness.\n\nGo to the vet right away if he vomits and also has:\n- Blood in the vomit\n- Diarrhea, belly pain or fever\n- Low energy, no appetite or signs of dehydration\n- A chance he swallowed something toxic or an object\n\nSee your vet today if vomiting goes on for more than 24 hours, even if he seems fine.\n\nFor a mild case, your vet may suggest resting the stomach for a short time, then small, frequent meals of a bland food. Keep fresh water available. Don't give human medicines unless your vet tells you to."
+ },
+ "dev:y2": {
+  "generated": true,
+  "credited": [
+   "qce12f1"
+  ],
+  "shown": "qce12f1",
+  "model": "rag-v2",
+  "seconds": 8.781,
+  "rejected": [],
+  "raw": "It sounds like it could be upper respiratory infection, often called cat flu. Viruses like feline herpesvirus and calicivirus are common causes, and they spread easily between cats. Signs include sneezing, runny eyes or nose, mouth sores, tiredness and poor appetite.\n\nWhat helps:\n- Gently wipe her nose clean. A blocked nose can stop her smelling food, so she may eat less.\n- Make sure she keeps eating and drinking.\n\nSee your vet within 24 hours if the sneezing doesn't stop. Go now if she:\n- Has trouble breathing, or her gums look bluish\n- Hasn't eaten properly for 24 hours\n- Is a kitten. Young cats are more likely to get seriously ill.\n\nVaccines can make these infections milder.",
+  "reply": "It sounds like it could be upper respiratory infection, often called cat flu. Viruses like feline herpesvirus and calicivirus are common causes, and they spread easily between cats. Signs include sneezing, runny eyes or nose, mouth sores, tiredness and poor appetite.\n\nWhat helps:\n- Gently wipe her nose clean. A blocked nose can stop her smelling food, so she may eat less.\n- Make sure she keeps eating and drinking.\n\nSee your vet within 24 hours if the sneezing doesn't stop. Go now if she:\n- Has trouble breathing, or her gums look bluish\n- Hasn't eaten properly for 24 hours\n- Is a kitten. Young cats are more likely to get seriously ill.\n\nVaccines can make these infections milder."
+ },
+ "dev:y3": {
+  "generated": true,
+  "credited": [
+   "q440e51"
+  ],
+  "shown": "q440e51",
+  "model": "rag-v2",
+  "seconds": 8.998,
+  "rejected": [],
+  "raw": "It could be. Common flea signs include:\n- Scratching, biting or licking the skin a lot\n- Hair loss or red skin near the tail and between or behind the legs\n- Small red bumps or flaky skin\n- Seeing adult fleas or \"flea dirt\" (tiny black specks of flea poop) in the fur\n\nSome pets are allergic to flea bites, which makes the itching worse. A heavy flea load can cause blood loss (anemia). Fleas also spread tapeworms.\n\nItching can have other causes too, like mites or allergies, so have your vet check your dog. Ask your vet for a flea product that suits your dog's weight and age.",
+  "reply": "It could be. Common flea signs include:\n- Scratching, biting or licking the skin a lot\n- Hair loss or red skin near the tail and between or behind the legs\n- Small red bumps or flaky skin\n- Seeing adult fleas or \"flea dirt\" (tiny black specks of flea poop) in the fur\n\nSome pets are allergic to flea bites, which makes the itching worse. A heavy flea load can cause blood loss (anemia). Fleas also spread tapeworms.\n\nItching can have other causes too, like mites or allergies, so have your vet check your dog. Ask your vet for a flea product that suits your dog's weight and age."
+ },
+ "dev:d1": {
+  "generated": false,
+  "credited": [],
+  "shown": null,
+  "model": "search-v1",
+  "seconds": 0.031,
+  "rejected": [],
+  "raw": "",
+  "reply": "I can't give medicine doses. The right medicine and dose depend on your pet's weight, health and what's wrong, so only a vet can prescribe them.\n\n- Don't give human medicines or leftover prescriptions\n- Call your vet and tell them your pet's weight and symptoms\n\nIf your pet is very weak, not eating, or has trouble breathing, go to a vet now."
+ },
+ "dev:d2": {
+  "generated": true,
+  "credited": [
+   "qbd3158"
+  ],
+  "shown": "qbd3158",
+  "model": "rag-v2",
+  "seconds": 6.043,
+  "rejected": [],
+  "raw": "No. Ibuprofen and other human pain medicines, such as paracetamol and aspirin, are poisonous to cats. Even one tablet can cause stomach bleeding and kidney failure.\n\nIf your cat already took some, go to a vet now. If your cat seems to be in pain, see your vet, who can give a medicine that is safe for cats.",
+  "reply": "No. Ibuprofen and other human pain medicines, such as paracetamol and aspirin, are poisonous to cats. Even one tablet can cause stomach bleeding and kidney failure.\n\nIf your cat already took some, go to a vet now. If your cat seems to be in pain, see your vet, who can give a medicine that is safe for cats."
+ },
+ "dev:d3": {
+  "generated": false,
+  "credited": [],
+  "shown": "q7dce56",
+  "model": "search-v1",
+  "seconds": 5.501,
+  "rejected": [],
+  "raw": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet or the nearest 24-hour clinic, and if your pet seems unwell or in pain, see them soon.",
+  "reply": "Go to your vet or the nearest 24-hour clinic now. Human pain relievers like ibuprofen, naproxen and aspirin (NSAIDs) are dangerous for dogs. They can cause stomach ulcers, bleeding and kidney damage, and large amounts can cause seizures or coma.\n\nSigns may include vomiting, diarrhea, black stools, belly pain, not eating, weakness and pale gums.\n\nBefore you go:\n- Bring the bottle and count how many tablets are missing, so the vet can judge the risk.\n- Only make your dog vomit if a vet tells you to.\n- Don't give any other medicine.\n\nOn the way, keep him calm and watch for vomiting or weakness. Never give human pain medicine to a pet without your vet's advice."
+ },
+ "dev:a1": {
+  "generated": true,
+  "credited": [
+   "q0e1e08"
+  ],
+  "shown": "q0e1e08",
+  "model": "rag-v2",
+  "seconds": 9.85,
+  "rejected": [],
+  "raw": "This sounds like it could be limping. Limping usually means pain or weakness, so it deserves a vet check.\n\nFirst aid at home:\n- Keep him calm and limit his activity.\n- Gently check the paw for cuts, a broken nail, or something stuck between the toes. Stop if he shows pain. Dogs in pain may bite, even their owners.\n- Don't give human pain medicines unless your vet tells you to. They can poison pets.\n\nGo to the vet now if he:\n- Won't put any weight on the leg, or the leg looks bent or swollen\n- Can't stand or walk without help\n- Was hit by a vehicle or attacked by another animal\n- Is in severe pain, or the limp came on suddenly and badly\n\nSee your vet within 24 hours if the limp lasts more than a day or is getting worse. A short video of him walking at home helps the vet.",
+  "reply": "This sounds like it could be limping. Limping usually means pain or weakness, so it deserves a vet check.\n\nFirst aid at home:\n- Keep him calm and limit his activity.\n- Gently check the paw for cuts, a broken nail, or something stuck between the toes. Stop if he shows pain. Dogs in pain may bite, even their owners.\n- Don't give human pain medicines unless your vet tells you to. They can poison pets.\n\nGo to the vet now if he:\n- Won't put any weight on the leg, or the leg looks bent or swollen\n- Can't stand or walk without help\n- Was hit by a vehicle or attacked by another animal\n- Is in severe pain, or the limp came on suddenly and badly\n\nSee your vet within 24 hours if the limp lasts more than a day or is getting worse. A short video of him walking at home helps the vet."
+ },
+ "dev:a2": {
+  "generated": true,
+  "credited": [
+   "qc53cec"
+  ],
+  "shown": "qc53cec",
+  "model": "rag-v2",
+  "seconds": 6.525,
+  "rejected": [],
+  "raw": "Cats handle heat better than many dogs, but hot, humid days can still be dangerous.\n- Keep fresh water in several places, and add wet food for extra fluids\n- Give them a shaded, airy spot, and use a fan or air-con in the hottest hours\n- Brush long-haired cats often to remove loose fur\n- Never leave a cat in a parked car\n\nOpen-mouth panting, drooling, wobbliness or collapse can mean heatstroke. Move them somewhere cool and go to a vet now.",
+  "reply": "Cats handle heat better than many dogs, but hot, humid days can still be dangerous.\n- Keep fresh water in several places, and add wet food for extra fluids\n- Give them a shaded, airy spot, and use a fan or air-con in the hottest hours\n- Brush long-haired cats often to remove loose fur\n- Never leave a cat in a parked car\n\nOpen-mouth panting, drooling, wobbliness or collapse can mean heatstroke. Move them somewhere cool and go to a vet now."
+ },
+ "dev:e1": {
+  "generated": true,
+  "credited": [
+   "guide-accident"
+  ],
+  "shown": "guide-accident",
+  "model": "rag-v2",
+  "seconds": 9.292,
+  "rejected": [],
+  "raw": "This sounds like it could be hit by a vehicle or fall. Internal bleeding and chest injuries may not show at first. Pets that fall from balconies or windows need a vet check too.\n\nWhat to do now:\n- Make sure you're safe from traffic first.\n- Approach slowly and speak softly. Hurt animals bite, so use a towel or muzzle unless they're vomiting or struggling to breathe.\n- Move them as little as possible. Slide a large dog onto a board or blanket to use as a stretcher, keeping the back and neck straight. Put small pets in a box or carrier.\n- Press on any bleeding, keep them calm, and go to the vet now.\n\nDon't:\n- Giving any painkiller.\n- Trying to straighten or splint a leg.\n- Giving food or water.\n\nGo to your vet or the nearest 24-hour clinic now.",
+  "reply": "This sounds like it could be hit by a vehicle or fall. Internal bleeding and chest injuries may not show at first. Pets that fall from balconies or windows need a vet check too.\n\nWhat to do now:\n- Make sure you're safe from traffic first.\n- Approach slowly and speak softly. Hurt animals bite, so use a towel or muzzle unless they're vomiting or struggling to breathe.\n- Move them as little as possible. Slide a large dog onto a board or blanket to use as a stretcher, keeping the back and neck straight. Put small pets in a box or carrier.\n- Press on any bleeding, keep them calm, and go to the vet now.\n\nDon't:\n- Giving any painkiller.\n- Trying to straighten or splint a leg.\n- Giving food or water.\n\nGo to your vet or the nearest 24-hour clinic now."
+ },
+ "dev:e2": {
+  "generated": true,
+  "credited": [
+   "guide-urinary",
+   "q6ea1d7"
+  ],
+  "shown": "guide-urinary",
+  "model": "rag-v2",
+  "seconds": 5.175,
+  "rejected": [],
+  "raw": "This can be a blocked bladder, which is an emergency in male cats. Take him to a vet now. A blockage can become life-threatening within a day.\n\nOther signs include crying in the litter box, licking his genitals, vomiting, or hiding. Don't wait to see if it passes, and don't press on his belly. The vet can check his bladder and relieve the blockage.",
+  "reply": "This can be a blocked bladder, which is an emergency in male cats. Take him to a vet now. A blockage can become life-threatening within a day.\n\nOther signs include crying in the litter box, licking his genitals, vomiting, or hiding. Don't wait to see if it passes, and don't press on his belly. The vet can check his bladder and relieve the blockage."
+ },
+ "dev:e3": {
+  "generated": true,
+  "credited": [
+   "guide-accident"
+  ],
+  "shown": "guide-accident",
+  "model": "rag-v2",
+  "seconds": 9.681,
+  "rejected": [],
+  "raw": "This sounds like it could be hit by a vehicle or fall. Internal bleeding and chest injuries may not show at first. Pets that fall from balconies or windows need a vet check too.\n\nWhat to do now:\n- Make sure you're safe from traffic first.\n- Approach slowly and speak softly. Hurt animals bite, so use a towel or muzzle unless they're vomiting or struggling to breathe.\n- Move them as little as possible. Slide a large dog onto a board or blanket to use as a stretcher, keeping the back and neck straight. Put small pets in a box or carrier.\n- Press on any bleeding, keep them calm, and go to the vet now.\n\nDon't:\n- Giving any painkiller.\n- Trying to straighten or splint a leg.\n- Giving food or water.\n\nGo to your vet or the nearest 24-hour clinic now.",
+  "reply": "This sounds like it could be hit by a vehicle or fall. Internal bleeding and chest injuries may not show at first. Pets that fall from balconies or windows need a vet check too.\n\nWhat to do now:\n- Make sure you're safe from traffic first.\n- Approach slowly and speak softly. Hurt animals bite, so use a towel or muzzle unless they're vomiting or struggling to breathe.\n- Move them as little as possible. Slide a large dog onto a board or blanket to use as a stretcher, keeping the back and neck straight. Put small pets in a box or carrier.\n- Press on any bleeding, keep them calm, and go to the vet now.\n\nDon't:\n- Giving any painkiller.\n- Trying to straighten or splint a leg.\n- Giving food or water.\n\nGo to your vet or the nearest 24-hour clinic now."
+ },
+ "dev:e4": {
+  "generated": true,
+  "credited": [
+   "q83170a"
+  ],
+  "shown": "q83170a",
+  "model": "rag-v2",
+  "seconds": 9.679,
+  "rejected": [],
+  "raw": "This sounds like heatstroke, which is an emergency. Go to your vet or the nearest 24-hour veterinary clinic now.\n\nBefore you leave and on the way:\n- Move him out of the sun into shade or an air-conditioned space.\n- Wet his body with cool (not ice-cold) water or wet towels, especially the belly, and use a fan or the car aircon.\n- Don't dunk him in a tub of cold water.\n- Offer small sips of water only once he is alert and starting to cool.\n\nOther heatstroke signs are hot skin, drooling, vomiting, and wobbly walking. Keep cooling him on the drive, and let the vet check him even if he seems to improve.",
+  "reply": "This sounds like heatstroke, which is an emergency. Go to your vet or the nearest 24-hour veterinary clinic now.\n\nBefore you leave and on the way:\n- Move him out of the sun into shade or an air-conditioned space.\n- Wet his body with cool (not ice-cold) water or wet towels, especially the belly, and use a fan or the car aircon.\n- Don't dunk him in a tub of cold water.\n- Offer small sips of water only once he is alert and starting to cool.\n\nOther heatstroke signs are hot skin, drooling, vomiting, and wobbly walking. Keep cooling him on the drive, and let the vet check him even if he seems to improve."
+ },
+ "dev:v1": {
+  "generated": true,
+  "credited": [
+   "qf64f4d"
+  ],
+  "shown": "qf64f4d",
+  "model": "rag-v2",
+  "seconds": 6.665,
+  "rejected": [],
+  "raw": "Puppies usually get their first anti-rabies shot at about 3 months old, then boosters as your vet advises, usually every year. In the Philippines, the Anti-Rabies Act requires dogs to be vaccinated against rabies.\n\n- Many LGUs hold free anti-rabies vaccination drives, so ask your barangay or city vet\n- Keep the vaccination card, because you may need it for travel or boarding\n- Your puppy also needs the core puppy shots (such as 5-in-1), which your vet will schedule",
+  "reply": "Puppies usually get their first anti-rabies shot at about 3 months old, then boosters as your vet advises, usually every year. In the Philippines, the Anti-Rabies Act requires dogs to be vaccinated against rabies.\n\n- Many LGUs hold free anti-rabies vaccination drives, so ask your barangay or city vet\n- Keep the vaccination card, because you may need it for travel or boarding\n- Your puppy also needs the core puppy shots (such as 5-in-1), which your vet will schedule"
+ },
+ "dev:v2": {
+  "generated": true,
+  "credited": [
+   "qb27a0e"
+  ],
+  "shown": "qb27a0e",
+  "model": "rag-v2",
+  "seconds": 6.404,
+  "rejected": [],
+  "raw": "Most kittens get these core vaccines:\n- FVRCP (cat flu and panleukopenia), usually starting at 6 to 8 weeks and repeated every 3 to 4 weeks until about 16 weeks\n- Rabies, given from around 12 weeks, which is required in the Philippines\n\nYour vet may also suggest FeLV if your kitten will go outdoors or live with other cats. Keep the vaccine card, and add each shot in FurFriends so you get reminders for boosters.",
+  "reply": "Most kittens get these core vaccines:\n- FVRCP (cat flu and panleukopenia), usually starting at 6 to 8 weeks and repeated every 3 to 4 weeks until about 16 weeks\n- Rabies, given from around 12 weeks, which is required in the Philippines\n\nYour vet may also suggest FeLV if your kitten will go outdoors or live with other cats. Keep the vaccine card, and add each shot in FurFriends so you get reminders for boosters."
+ },
+ "dev:h1": {
+  "generated": true,
+  "credited": [
+   "qd0b9a8"
+  ],
+  "shown": "qd0b9a8",
+  "model": "rag-v2",
+  "seconds": 10.082,
+  "rejected": [],
+  "raw": "Mouthing is normal for puppies. The goal is to teach them to be gentle.\n\n- When teeth press hard, give a high-pitched yelp and let your hand go limp. Praise your puppy when they stop.\n- If that doesn't work, ignore them for 10 to 20 seconds or walk away, then play again calmly.\n- Keep a chew toy or tug toy handy and offer it when they go for your hands or feet.\n- Play fetch or tug instead of rough games with your hands.\n- Don't jerk your hands away. It invites more grabbing.\n- Never hit, slap or shake your puppy. It can make biting worse and cause fear.\n\nGet help from a certified animal behaviorist or veterinary behaviorist if bites come with a stiff body, growling or pulled-back lips, or hurt much more than play bites.",
+  "reply": "Mouthing is normal for puppies. The goal is to teach them to be gentle.\n\n- When teeth press hard, give a high-pitched yelp and let your hand go limp. Praise your puppy when they stop.\n- If that doesn't work, ignore them for 10 to 20 seconds or walk away, then play again calmly.\n- Keep a chew toy or tug toy handy and offer it when they go for your hands or feet.\n- Play fetch or tug instead of rough games with your hands.\n- Don't jerk your hands away. It invites more grabbing.\n- Never hit, slap or shake your puppy. It can make biting worse and cause fear.\n\nGet help from a certified animal behaviorist or veterinary behaviorist if bites come with a stiff body, growling or pulled-back lips, or hurt much more than play bites."
+ },
+ "dev:h2": {
+  "generated": true,
+  "credited": [
+   "qdf715f"
+  ],
+  "shown": "qdf715f",
+  "model": "rag-v2",
+  "seconds": 5.501,
+  "rejected": [],
+  "raw": "Scratching is normal for cats. It keeps their claws healthy and marks their space, so give them a better place to do it.\n- Put a sturdy scratching post next to the sofa, tall enough for a full stretch\n- Try both upright posts and flat cardboard scratchers\n- Reward your cat with treats or play when they use it\n- Cover the sofa spots with a throw or double-sided tape for a while\n- Trim the claws regularly\n\nDon't punish or declaw your cat.",
+  "reply": "Scratching is normal for cats. It keeps their claws healthy and marks their space, so give them a better place to do it.\n- Put a sturdy scratching post next to the sofa, tall enough for a full stretch\n- Try both upright posts and flat cardboard scratchers\n- Reward your cat with treats or play when they use it\n- Cover the sofa spots with a throw or double-sided tape for a while\n- Trim the claws regularly\n\nDon't punish or declaw your cat."
+ },
+ "dev:f1": {
+  "generated": true,
+  "credited": [
+   "breed-siberian-husky"
+  ],
+  "shown": "breed-siberian-husky",
+  "model": "rag-v2",
+  "seconds": 11.436,
+  "rejected": [],
+  "raw": "Bred for snow, so the tropics are hard on them.\n\nFriendly, vocal and a known escape artist.\n\nCare tips:\n- Needs air-con or a cool shaded room on hot days.\n- Exercise only at dawn or after sunset, and watch for heavy panting.\n- Don't shave the coat; brush out the loose undercoat instead.\n\nExercise:\n- Very high, but only in the cool early morning or late evening here.\n- Keep in a cool room or air-con during the day.\n\nWalk:\n- Walk on a leash; Huskies run off and escape fences.\n\nGrooming:\n- Brush two or three times a week, and daily when shedding.\n- Don't shave the double coat; it protects the skin from sun.\n\nHealth problems to watch for:\n- Heatstroke;\n- Eye problems (cataracts, progressive retinal atrophy);\n- Hypothyroidism.\n\nTypical adult weight:\n- 16–27 kg;\n- Energy:\n- 5 of 5.\n\nThis sounds like it could be a good family dog.",
+  "reply": "Bred for snow, so the tropics are hard on them.\n\nFriendly, vocal and a known escape artist.\n\nCare tips:\n- Needs air-con or a cool shaded room on hot days.\n- Exercise only at dawn or after sunset, and watch for heavy panting.\n- Don't shave the coat; brush out the loose undercoat instead.\n\nExercise:\n- Very high, but only in the cool early morning or late evening here.\n- Keep in a cool room or air-con during the day.\n\nWalk:\n- Walk on a leash; Huskies run off and escape fences.\n\nGrooming:\n- Brush two or three times a week, and daily when shedding.\n- Don't shave the double coat; it protects the skin from sun.\n\nHealth problems to watch for:\n- Heatstroke;\n- Eye problems (cataracts, progressive retinal atrophy);\n- Hypothyroidism.\n\nTypical adult weight:\n- 16–27 kg;\n- Energy:\n- 5 of 5.\n\nThis sounds like it could be a good family dog."
+ },
+ "dev:f2": {
+  "generated": true,
+  "credited": [
+   "q0ca850"
+  ],
+  "shown": "q0ca850",
+  "model": "rag-v2",
+  "seconds": 8.548,
+  "rejected": [],
+  "raw": "Remove ticks as soon as you find them:\n- Use fine-tipped tweezers and grip the tick as close to the skin as you can\n- Pull straight out with slow, steady pressure. Don't twist or jerk\n- Don't use bare hands, matches, heat, nail polish or petroleum jelly\n- Don't crush the tick. Drop it in rubbing alcohol, seal it in a bag or wrap it in tape\n- Wash the bite area and your hands with soap and water\n\nIf small mouthparts stay in the skin, it usually heals on its own.\n\nWatch the spot for a few days. See your vet if it gets red or swollen, if your dog has many ticks, or if he seems unwell in the weeks after.",
+  "reply": "Remove ticks as soon as you find them:\n- Use fine-tipped tweezers and grip the tick as close to the skin as you can\n- Pull straight out with slow, steady pressure. Don't twist or jerk\n- Don't use bare hands, matches, heat, nail polish or petroleum jelly\n- Don't crush the tick. Drop it in rubbing alcohol, seal it in a bag or wrap it in tape\n- Wash the bite area and your hands with soap and water\n\nIf small mouthparts stay in the skin, it usually heals on its own.\n\nWatch the spot for a few days. See your vet if it gets red or swollen, if your dog has many ticks, or if he seems unwell in the weeks after."
+ },
+ "dev:f3": {
+  "generated": true,
+  "credited": [
+   "qdce40b"
+  ],
+  "shown": "qdce40b",
+  "model": "rag-v2",
+  "seconds": 9.552,
+  "rejected": [],
+  "raw": "Yes, treat this as an emergency. For cats, every part of true lilies and daylilies is poisonous, including the pollen and the vase water. Even a small amount licked off the fur can cause deadly kidney failure. Go to your vet or the nearest 24-hour clinic now.\n\nEarly treatment makes a big difference. Waiting 18 hours or more often leads to kidney damage that can't be reversed.\n\nBefore you go:\n- Wipe the pollen off her fur with a damp cloth so she can't lick more.\n- Bring the flower or a photo so the vet can identify it.\n- Only make her vomit if a vet tells you to.\n\nShe may look fine at first. Early signs include drooling, vomiting, low energy and not eating. Keep lilies out of homes with cats.",
+  "reply": "Yes, treat this as an emergency. For cats, every part of true lilies and daylilies is poisonous, including the pollen and the vase water. Even a small amount licked off the fur can cause deadly kidney failure. Go to your vet or the nearest 24-hour clinic now.\n\nEarly treatment makes a big difference. Waiting 18 hours or more often leads to kidney damage that can't be reversed.\n\nBefore you go:\n- Wipe the pollen off her fur with a damp cloth so she can't lick more.\n- Bring the flower or a photo so the vet can identify it.\n- Only make her vomit if a vet tells you to.\n\nShe may look fine at first. Early signs include drooling, vomiting, low energy and not eating. Keep lilies out of homes with cats."
+ },
+ "dev:i1": {
+  "generated": false,
+  "credited": [],
+  "shown": null,
+  "model": "search-v1",
+  "seconds": 0.047,
+  "rejected": [],
+  "raw": "",
+  "reply": "I don't have a checked answer for that yet, so I'd rather not guess. Try asking in another way, with a few more details. If your pet seems unwell, your vet is the best person to ask."
+ },
+ "dev:i2": {
+  "generated": false,
+  "credited": [],
+  "shown": null,
+  "model": "search-v1",
+  "seconds": 0.046,
+  "rejected": [],
+  "raw": "",
+  "reply": "I don't have a checked answer for that yet, so I'd rather not guess. Try asking in another way, with a few more details. If your pet seems unwell, your vet is the best person to ask."
+ },
+ "dev:i3": {
+  "generated": false,
+  "credited": [],
+  "shown": null,
+  "model": "search-v1",
+  "seconds": 0.047,
+  "rejected": [],
+  "raw": "",
+  "reply": "I don't have a checked answer for that yet, so I'd rather not guess. Try asking in another way, with a few more details. If your pet seems unwell, your vet is the best person to ask."
+ },
+ "dev:i4": {
+  "generated": false,
+  "credited": [],
+  "shown": null,
+  "model": "search-v1",
+  "seconds": 0.047,
+  "rejected": [],
+  "raw": "",
+  "reply": "I don't have a checked answer for that yet, so I'd rather not guess. Try asking in another way, with a few more details, or tap a similar question below if one fits. If your pet seems unwell, your vet is the best person to ask."
+ },
+ "regression:R01": {
+  "generated": true,
+  "credited": [
+   "qcf4aff"
+  ],
+  "shown": "qcf4aff",
+  "model": "rag-v2",
+  "seconds": 8.729,
+  "rejected": [],
+  "raw": "Don't wait it out. A cat that stops eating can develop a serious liver problem called hepatic lipidosis (fatty liver). It can be fatal if not treated quickly. Overweight cats are at higher risk.\n\nWhat to do:\n- If your cat hasn't eaten properly for 24 hours, take her to the vet now.\n- Go right away if her gums, ears, skin or the whites of her eyes look yellow, or if she is very weak.\n- Tell the vet when she last ate and if anything changed at home.\n\nMost cats with fatty liver have another illness that caused the poor appetite, so the vet will look for that too. Fatty liver needs prompt treatment, so don't wait to see if she starts eating again.",
+  "reply": "Don't wait it out. A cat that stops eating can develop a serious liver problem called hepatic lipidosis (fatty liver). It can be fatal if not treated quickly. Overweight cats are at higher risk.\n\nWhat to do:\n- If your cat hasn't eaten properly for 24 hours, take her to the vet now.\n- Go right away if her gums, ears, skin or the whites of her eyes look yellow, or if she is very weak.\n- Tell the vet when she last ate and if anything changed at home.\n\nMost cats with fatty liver have another illness that caused the poor appetite, so the vet will look for that too. Fatty liver needs prompt treatment, so don't wait to see if she starts eating again."
+ },
+ "regression:R02": {
+  "generated": true,
+  "credited": [
+   "qcf4aff"
+  ],
+  "shown": "qcf4aff",
+  "model": "rag-v2",
+  "seconds": 8.763,
+  "rejected": [],
+  "raw": "Don't wait it out. A cat that stops eating can develop a serious liver problem called hepatic lipidosis (fatty liver). It can be fatal if not treated quickly. Overweight cats are at higher risk.\n\nWhat to do:\n- If your cat hasn't eaten properly for 24 hours, take her to the vet now.\n- Go right away if her gums, ears, skin or the whites of her eyes look yellow, or if she is very weak.\n- Tell the vet when she last ate and if anything changed at home.\n\nMost cats with fatty liver have another illness that caused the poor appetite, so the vet will look for that too. Fatty liver needs prompt treatment, so don't wait to see if she starts eating again.",
+  "reply": "Don't wait it out. A cat that stops eating can develop a serious liver problem called hepatic lipidosis (fatty liver). It can be fatal if not treated quickly. Overweight cats are at higher risk.\n\nWhat to do:\n- If your cat hasn't eaten properly for 24 hours, take her to the vet now.\n- Go right away if her gums, ears, skin or the whites of her eyes look yellow, or if she is very weak.\n- Tell the vet when she last ate and if anything changed at home.\n\nMost cats with fatty liver have another illness that caused the poor appetite, so the vet will look for that too. Fatty liver needs prompt treatment, so don't wait to see if she starts eating again."
+ },
+ "regression:R03": {
+  "generated": true,
+  "credited": [
+   "qc01447"
+  ],
+  "shown": "qc01447",
+  "model": "rag-v2",
+  "seconds": 5.642,
+  "rejected": [],
+  "raw": "Two days without food is serious for a cat. Cats can quickly develop a liver problem (hepatic lipidosis) when they stop eating. Take her to a vet today.\n\n- Note anything else you've seen, such as vomiting, hiding, drooling or litter box changes\n- Don't force-feed her\n\nGo now if she is also vomiting, very weak, breathing hard, or is a male cat straining to pee.",
+  "reply": "Two days without food is serious for a cat. Cats can quickly develop a liver problem (hepatic lipidosis) when they stop eating. Take her to a vet today.\n\n- Note anything else you've seen, such as vomiting, hiding, drooling or litter box changes\n- Don't force-feed her\n\nGo now if she is also vomiting, very weak, breathing hard, or is a male cat straining to pee."
+ },
+ "regression:R04": {
+  "generated": true,
+  "credited": [
+   "qcf4aff"
+  ],
+  "shown": "qcf4aff",
+  "model": "rag-v2",
+  "seconds": 8.72,
+  "rejected": [],
+  "raw": "Don't wait it out. A cat that stops eating can develop a serious liver problem called hepatic lipidosis (fatty liver). It can be fatal if not treated quickly. Overweight cats are at higher risk.\n\nWhat to do:\n- If your cat hasn't eaten properly for 24 hours, take her to the vet now.\n- Go right away if her gums, ears, skin or the whites of her eyes look yellow, or if she is very weak.\n- Tell the vet when she last ate and if anything changed at home.\n\nMost cats with fatty liver have another illness that caused the poor appetite, so the vet will look for that too. Fatty liver needs prompt treatment, so don't wait to see if she starts eating again.",
+  "reply": "Don't wait it out. A cat that stops eating can develop a serious liver problem called hepatic lipidosis (fatty liver). It can be fatal if not treated quickly. Overweight cats are at higher risk.\n\nWhat to do:\n- If your cat hasn't eaten properly for 24 hours, take her to the vet now.\n- Go right away if her gums, ears, skin or the whites of her eyes look yellow, or if she is very weak.\n- Tell the vet when she last ate and if anything changed at home.\n\nMost cats with fatty liver have another illness that caused the poor appetite, so the vet will look for that too. Fatty liver needs prompt treatment, so don't wait to see if she starts eating again."
+ },
+ "regression:R05": {
+  "generated": true,
+  "credited": [
+   "qcf4aff"
+  ],
+  "shown": "qcf4aff",
+  "model": "rag-v2",
+  "seconds": 8.578,
+  "rejected": [],
+  "raw": "Don't wait it out. A cat that stops eating can develop a serious liver problem called hepatic lipidosis (fatty liver). It can be fatal if not treated quickly. Overweight cats are at higher risk.\n\nWhat to do:\n- If your cat hasn't eaten properly for 24 hours, take her to the vet now.\n- Go right away if her gums, ears, skin or the whites of her eyes look yellow, or if she is very weak.\n- Tell the vet when she last ate and if anything changed at home.\n\nMost cats with fatty liver have another illness that caused the poor appetite, so the vet will look for that too. Fatty liver needs prompt treatment, so don't wait to see if she starts eating again.",
+  "reply": "Don't wait it out. A cat that stops eating can develop a serious liver problem called hepatic lipidosis (fatty liver). It can be fatal if not treated quickly. Overweight cats are at higher risk.\n\nWhat to do:\n- If your cat hasn't eaten properly for 24 hours, take her to the vet now.\n- Go right away if her gums, ears, skin or the whites of her eyes look yellow, or if she is very weak.\n- Tell the vet when she last ate and if anything changed at home.\n\nMost cats with fatty liver have another illness that caused the poor appetite, so the vet will look for that too. Fatty liver needs prompt treatment, so don't wait to see if she starts eating again."
+ },
+ "regression:R06": {
+  "generated": true,
+  "credited": [
+   "q05288f"
+  ],
+  "shown": "q05288f",
+  "model": "rag-v2",
+  "seconds": 8.55,
+  "rejected": [],
+  "raw": "A dog that stops eating is often unwell, so take it seriously and involve your vet early.\n\nWhat to check:\n- Does he seem hungry but struggle to pick up, chew or swallow food? That points to pain in the mouth, teeth or jaw.\n- Has anything changed lately, like a move, a new food or a new medicine?\n- Are there other signs, like vomiting, diarrhea, pain or low energy?\n\nWhen to go:\n- Skipped meals but otherwise acting normal: see your vet today, within 24 hours.\n- Go now if he hasn't eaten or drunk anything for 24 hours, or if he is also vomiting, very weak or in a lot of pain.\n- If he has diabetes and refuses even one meal, call your vet right away.",
+  "reply": "A dog that stops eating is often unwell, so take it seriously and involve your vet early.\n\nWhat to check:\n- Does he seem hungry but struggle to pick up, chew or swallow food? That points to pain in the mouth, teeth or jaw.\n- Has anything changed lately, like a move, a new food or a new medicine?\n- Are there other signs, like vomiting, diarrhea, pain or low energy?\n\nWhen to go:\n- Skipped meals but otherwise acting normal: see your vet today, within 24 hours.\n- Go now if he hasn't eaten or drunk anything for 24 hours, or if he is also vomiting, very weak or in a lot of pain.\n- If he has diabetes and refuses even one meal, call your vet right away."
+ },
+ "regression:R07": {
+  "generated": true,
+  "credited": [
+   "q05288f"
+  ],
+  "shown": "q05288f",
+  "model": "rag-v2",
+  "seconds": 9.754,
+  "rejected": [],
+  "raw": "A dog that stops eating is often unwell, so take it seriously and involve your vet early.\n\nWhat to check:\n- Does he seem hungry but struggle to pick up, chew or swallow food? That points to pain in the mouth, teeth or jaw.\n- Has anything changed lately, like a move, a new food or a new medicine?\n- Are there other signs, like vomiting, diarrhea, pain or low energy?\n\nWhen to go:\n- Skipped meals but otherwise acting normal: see your vet today, within 24 hours.\n- Go now if he hasn't eaten or drunk anything for 24 hours, or if he is also vomiting, very weak or in a lot of pain.\n- If he has diabetes and refuses even one meal, call your vet right away.",
+  "reply": "A dog that stops eating is often unwell, so take it seriously and involve your vet early.\n\nWhat to check:\n- Does he seem hungry but struggle to pick up, chew or swallow food? That points to pain in the mouth, teeth or jaw.\n- Has anything changed lately, like a move, a new food or a new medicine?\n- Are there other signs, like vomiting, diarrhea, pain or low energy?\n\nWhen to go:\n- Skipped meals but otherwise acting normal: see your vet today, within 24 hours.\n- Go now if he hasn't eaten or drunk anything for 24 hours, or if he is also vomiting, very weak or in a lot of pain.\n- If he has diabetes and refuses even one meal, call your vet right away."
+ },
+ "regression:R08": {
+  "generated": true,
+  "credited": [
+   "q05288f"
+  ],
+  "shown": "q05288f",
+  "model": "rag-v2",
+  "seconds": 8.403,
+  "rejected": [],
+  "raw": "A dog that stops eating is often unwell, so take it seriously and involve your vet early.\n\nWhat to check:\n- Does he seem hungry but struggle to pick up, chew or swallow food? That points to pain in the mouth, teeth or jaw.\n- Has anything changed lately, like a move, a new food or a new medicine?\n- Are there other signs, like vomiting, diarrhea, pain or low energy?\n\nWhen to go:\n- Skipped meals but otherwise acting normal: see your vet today, within 24 hours.\n- Go now if he hasn't eaten or drunk anything for 24 hours, or if he is also vomiting, very weak or in a lot of pain.\n- If he has diabetes and refuses even one meal, call your vet right away.",
+  "reply": "A dog that stops eating is often unwell, so take it seriously and involve your vet early.\n\nWhat to check:\n- Does he seem hungry but struggle to pick up, chew or swallow food? That points to pain in the mouth, teeth or jaw.\n- Has anything changed lately, like a move, a new food or a new medicine?\n- Are there other signs, like vomiting, diarrhea, pain or low energy?\n\nWhen to go:\n- Skipped meals but otherwise acting normal: see your vet today, within 24 hours.\n- Go now if he hasn't eaten or drunk anything for 24 hours, or if he is also vomiting, very weak or in a lot of pain.\n- If he has diabetes and refuses even one meal, call your vet right away."
+ },
+ "regression:R09": {
+  "generated": true,
+  "credited": [
+   "q05288f"
+  ],
+  "shown": "q05288f",
+  "model": "rag-v2",
+  "seconds": 8.422,
+  "rejected": [],
+  "raw": "A dog that stops eating is often unwell, so take it seriously and involve your vet early.\n\nWhat to check:\n- Does he seem hungry but struggle to pick up, chew or swallow food? That points to pain in the mouth, teeth or jaw.\n- Has anything changed lately, like a move, a new food or a new medicine?\n- Are there other signs, like vomiting, diarrhea, pain or low energy?\n\nWhen to go:\n- Skipped meals but otherwise acting normal: see your vet today, within 24 hours.\n- Go now if he hasn't eaten or drunk anything for 24 hours, or if he is also vomiting, very weak or in a lot of pain.\n- If he has diabetes and refuses even one meal, call your vet right away.",
+  "reply": "A dog that stops eating is often unwell, so take it seriously and involve your vet early.\n\nWhat to check:\n- Does he seem hungry but struggle to pick up, chew or swallow food? That points to pain in the mouth, teeth or jaw.\n- Has anything changed lately, like a move, a new food or a new medicine?\n- Are there other signs, like vomiting, diarrhea, pain or low energy?\n\nWhen to go:\n- Skipped meals but otherwise acting normal: see your vet today, within 24 hours.\n- Go now if he hasn't eaten or drunk anything for 24 hours, or if he is also vomiting, very weak or in a lot of pain.\n- If he has diabetes and refuses even one meal, call your vet right away."
+ },
+ "regression:R10": {
+  "generated": false,
+  "credited": [],
+  "shown": null,
+  "model": "search-v1",
+  "seconds": 0.046,
+  "rejected": [],
+  "raw": "",
+  "reply": "I don't have a checked answer for that yet, so I'd rather not guess. Try asking in another way, with a few more details, or tap a similar question below if one fits. If your pet seems unwell, your vet is the best person to ask."
+ },
+ "regression:R11": {
+  "generated": false,
+  "credited": [],
+  "shown": null,
+  "model": "search-v1",
+  "seconds": 0.047,
+  "rejected": [],
+  "raw": "",
+  "reply": "I don't have a checked answer for that yet, so I'd rather not guess. Try asking in another way, with a few more details, or tap a similar question below if one fits. If your pet seems unwell, your vet is the best person to ask."
+ },
+ "regression:R12": {
+  "generated": false,
+  "credited": [],
+  "shown": null,
+  "model": "search-v1",
+  "seconds": 0.046,
+  "rejected": [],
+  "raw": "",
+  "reply": "I don't have a checked answer for that yet, so I'd rather not guess. Try asking in another way, with a few more details, or tap a similar question below if one fits. If your pet seems unwell, your vet is the best person to ask."
+ },
+ "regression:R13": {
+  "generated": false,
+  "credited": [],
+  "shown": null,
+  "model": "search-v1",
+  "seconds": 0.047,
+  "rejected": [],
+  "raw": "",
+  "reply": "I don't have a checked answer for that yet, so I'd rather not guess. Try asking in another way, with a few more details, or tap a similar question below if one fits. If your pet seems unwell, your vet is the best person to ask."
+ },
+ "regression:R14": {
+  "generated": true,
+  "credited": [
+   "breed-siberian-husky"
+  ],
+  "shown": "breed-siberian-husky",
+  "model": "rag-v2",
+  "seconds": 11.466,
+  "rejected": [],
+  "raw": "Bred for snow, so the tropics are hard on them.\n\nFriendly, vocal and a known escape artist.\n\nCare tips:\n- Needs air-con or a cool shaded room on hot days.\n- Exercise only at dawn or after sunset, and watch for heavy panting.\n- Don't shave the coat; brush out the loose undercoat instead.\n\nExercise:\n- Very high, but only in the cool early morning or late evening here.\n- Keep in a cool room or air-con during the day.\n\nWalk:\n- Walk on a leash; Huskies run off and escape fences.\n\nGrooming:\n- Brush two or three times a week, and daily when shedding.\n- Don't shave the double coat; it protects the skin from sun.\n\nHealth problems to watch for:\n- Heatstroke;\n- Eye problems (cataracts, progressive retinal atrophy);\n- Hypothyroidism.\n\nTypical adult weight:\n- 16–27 kg;\n- Energy:\n- 5 of 5.\n\nThis sounds like it could be a good fit for your hot climate.",
+  "reply": "Bred for snow, so the tropics are hard on them.\n\nFriendly, vocal and a known escape artist.\n\nCare tips:\n- Needs air-con or a cool shaded room on hot days.\n- Exercise only at dawn or after sunset, and watch for heavy panting.\n- Don't shave the coat; brush out the loose undercoat instead.\n\nExercise:\n- Very high, but only in the cool early morning or late evening here.\n- Keep in a cool room or air-con during the day.\n\nWalk:\n- Walk on a leash; Huskies run off and escape fences.\n\nGrooming:\n- Brush two or three times a week, and daily when shedding.\n- Don't shave the double coat; it protects the skin from sun.\n\nHealth problems to watch for:\n- Heatstroke;\n- Eye problems (cataracts, progressive retinal atrophy);\n- Hypothyroidism.\n\nTypical adult weight:\n- 16–27 kg;\n- Energy:\n- 5 of 5.\n\nThis sounds like it could be a good fit for your hot climate."
+ },
+ "regression:R15": {
+  "generated": true,
+  "credited": [
+   "breed-siberian-husky"
+  ],
+  "shown": "breed-siberian-husky",
+  "model": "rag-v2",
+  "seconds": 11.587,
+  "rejected": [],
+  "raw": "Siberian Husky handles hot, humid weather poorly and is at high risk of heatstroke (heat tolerance 1 of 5). Bred for snow, so the tropics are hard on them.\n\nCare tips:\n- Needs air-con or a cool shaded room on hot days.\n- Exercise only at dawn or after sunset, and watch for heavy panting.\n- Don't shave the coat; brush out the loose undercoat instead.\n\nExercise:\n- Very high, but only in the cool early morning or late evening here.\n- Keep in a cool room or air-con during the day.\n\nWalk:\n- Walk on a leash; Huskies run off and escape fences.\n\nGrooming:\n- Brush two or three times a week, and daily when shedding.\n- Don't shave the double coat; it protects the skin from sun.\n\nHealth problems to watch for:\n- Heatstroke;\n- Eye problems (cataracts, progressive retinal atrophy);\n- Hypothyroidism.\n\nTypical adult weight 16–27 kg; energy 5 of 5.",
+  "reply": "Siberian Husky handles hot, humid weather poorly and is at high risk of heatstroke (heat tolerance 1 of 5). Bred for snow, so the tropics are hard on them.\n\nCare tips:\n- Needs air-con or a cool shaded room on hot days.\n- Exercise only at dawn or after sunset, and watch for heavy panting.\n- Don't shave the coat; brush out the loose undercoat instead.\n\nExercise:\n- Very high, but only in the cool early morning or late evening here.\n- Keep in a cool room or air-con during the day.\n\nWalk:\n- Walk on a leash; Huskies run off and escape fences.\n\nGrooming:\n- Brush two or three times a week, and daily when shedding.\n- Don't shave the double coat; it protects the skin from sun.\n\nHealth problems to watch for:\n- Heatstroke;\n- Eye problems (cataracts, progressive retinal atrophy);\n- Hypothyroidism.\n\nTypical adult weight 16–27 kg; energy 5 of 5."
+ },
+ "regression:R16": {
+  "generated": true,
+  "credited": [
+   "breed-siberian-husky"
+  ],
+  "shown": "breed-siberian-husky",
+  "model": "rag-v2",
+  "seconds": 11.355,
+  "rejected": [],
+  "raw": "Bred for snow, so the tropics are hard on them.\n\nFriendly, vocal and a known escape artist.\n\nCare tips:\n- Needs air-con or a cool shaded room on hot days.\n- Exercise only at dawn or after sunset, and watch for heavy panting.\n- Don't shave the coat; brush out the loose undercoat instead.\n\nExercise:\n- Very high, but only in the cool early morning or late evening here.\n- Keep in a cool room or air-con during the day.\n\nWalk:\n- Walk on a leash; Huskies run off and escape fences.\n\nGrooming:\n- Brush two or three times a week, and daily when shedding.\n- Don't shave the double coat; it protects the skin from sun.\n\nHealth problems to watch for:\n- Heatstroke;\n- Eye problems (cataracts, progressive retinal atrophy);\n- Hypothyroidism.\n\nTypical adult weight:\n- 16–27 kg;\n- Energy:\n- 5 of 5.\n\nThis sounds like it could be Siberian Husky.",
+  "reply": "Bred for snow, so the tropics are hard on them.\n\nFriendly, vocal and a known escape artist.\n\nCare tips:\n- Needs air-con or a cool shaded room on hot days.\n- Exercise only at dawn or after sunset, and watch for heavy panting.\n- Don't shave the coat; brush out the loose undercoat instead.\n\nExercise:\n- Very high, but only in the cool early morning or late evening here.\n- Keep in a cool room or air-con during the day.\n\nWalk:\n- Walk on a leash; Huskies run off and escape fences.\n\nGrooming:\n- Brush two or three times a week, and daily when shedding.\n- Don't shave the double coat; it protects the skin from sun.\n\nHealth problems to watch for:\n- Heatstroke;\n- Eye problems (cataracts, progressive retinal atrophy);\n- Hypothyroidism.\n\nTypical adult weight:\n- 16–27 kg;\n- Energy:\n- 5 of 5.\n\nThis sounds like it could be Siberian Husky."
+ },
+ "regression:R17": {
+  "generated": true,
+  "credited": [
+   "breed-heat-dog"
+  ],
+  "shown": "breed-heat-dog",
+  "model": "rag-v2",
+  "seconds": 8.295,
+  "rejected": [],
+  "raw": "Aspin (5 of 5).\nBreeds that struggle in the heat and are at higher risk of heatstroke: Shih Tzu (1 of 5), Golden Retriever (2 of 5), German Shepherd (2 of 5), Siberian Husky (1 of 5), Pug (1 of 5), Pomeranian (2 of 5), French Bulldog (1 of 5), Pembroke Welsh Corgi (2 of 5), Japanese Spitz (2 of 5), American Bully (2 of 5).",
+  "reply": "Aspin (5 of 5).\nBreeds that struggle in the heat and are at higher risk of heatstroke: Shih Tzu (1 of 5), Golden Retriever (2 of 5), German Shepherd (2 of 5), Siberian Husky (1 of 5), Pug (1 of 5), Pomeranian (2 of 5), French Bulldog (1 of 5), Pembroke Welsh Corgi (2 of 5), Japanese Spitz (2 of 5), American Bully (2 of 5)."
+ },
+ "heldout:H01": {
+  "generated": false,
+  "credited": [],
+  "shown": "breed-pug",
+  "model": "search-v1",
+  "seconds": 3.155,
+  "rejected": [],
+  "raw": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
+  "reply": "In a hot, humid climate like the Philippines, the Pug handles hot, humid weather poorly and is at high risk of heatstroke (heat tolerance 1 of 5). Charming, comical companion. The flat face makes breathing and staying cool difficult.\nCare tips: Keep cool and indoors on hot days, and keep walks short and gentle. Clean and dry the face wrinkles daily. Use a harness instead of a collar, and keep them lean so they breathe easier.\nExercise: Low to moderate. Two short walks of 15–20 minutes, in cool hours only. Stop at the first sign of heavy panting, and use a harness, not a collar.\nGrooming: Low to moderate. Brush weekly, as Pugs shed a lot. Clean the face wrinkles daily and dry them well.\nHealth problems to watch for: Breathing problems (BOAS); Heatstroke; Eye injuries; Skin-fold infections; Obesity.\nTypical adult weight 6–8 kg; energy 2 of 5."
+ },
+ "heldout:H02": {
+  "generated": false,
+  "credited": [],
+  "shown": null,
+  "model": "search-v1",
+  "seconds": 0.046,
+  "rejected": [],
+  "raw": "",
+  "reply": "I don't have a checked answer for that yet, so I'd rather not guess. Try asking in another way, with a few more details, or tap a similar question below if one fits. If your pet seems unwell, your vet is the best person to ask."
+ },
+ "heldout:H03": {
+  "generated": true,
+  "credited": [
+   "breed-heat-cat"
+  ],
+  "shown": "breed-heat-cat",
+  "model": "rag-v2",
+  "seconds": 7.379,
+  "rejected": [],
+  "raw": "Breed breeds in the FurFriends guide that handle hot, humid weather best: Puspin (5 of 5), Siamese (4 of 5), Bengal (4 of 5), Abyssinian (4 of 5).\nBreeds that struggle in the heat and are at higher risk of heatstroke: Persian (1 of 5), Maine Coon (2 of 5), Ragdoll (2 of 5), British Shorthair (2 of 5), Exotic Shorthair (1 of 5).",
+  "reply": "Breed breeds in the FurFriends guide that handle hot, humid weather best: Puspin (5 of 5), Siamese (4 of 5), Bengal (4 of 5), Abyssinian (4 of 5).\nBreeds that struggle in the heat and are at higher risk of heatstroke: Persian (1 of 5), Maine Coon (2 of 5), Ragdoll (2 of 5), British Shorthair (2 of 5), Exotic Shorthair (1 of 5)."
+ },
+ "heldout:H04": {
+  "generated": true,
+  "credited": [
+   "q911e89"
+  ],
+  "shown": "q911e89",
+  "model": "rag-v2",
+  "seconds": 5.979,
+  "rejected": [],
+  "raw": "Kittens have small stomachs and grow fast, so feed small meals often:\n- Up to about 6 months: 3-4 meals a day\n- After 6 months: 2 meals a day\n\nUse food made for kittens, and follow the amount on the pack for their weight. Always leave fresh water. Don't give cow's milk, because many cats can't digest it and get diarrhea.\n\nAsk your vet to check their weight at each vaccination visit.",
+  "reply": "Kittens have small stomachs and grow fast, so feed small meals often:\n- Up to about 6 months: 3-4 meals a day\n- After 6 months: 2 meals a day\n\nUse food made for kittens, and follow the amount on the pack for their weight. Always leave fresh water. Don't give cow's milk, because many cats can't digest it and get diarrhea.\n\nAsk your vet to check their weight at each vaccination visit."
+ },
+ "heldout:H05": {
+  "generated": true,
+  "credited": [
+   "guide-poisoning"
+  ],
+  "shown": "guide-poisoning",
+  "model": "rag-v2",
+  "seconds": 13.391,
+  "rejected": [],
+  "raw": "Many everyday foods, medicines and plants are toxic. Act fast, even if your pet seems fine. Signs can take hours or days.\n\nThis could be poisoning. Many common foods can be poisonous to cats. For example:\n\n- Chocolate\n- Coffee and energy drinks\n- Gases\n- Rats and mice poison\n- Insect sprays and pesticides\n- Lilies (cats)\n- Pet litter\n- Pet food\n\nIf your cat has eaten something that looks like chocolate, make sure it's gone before going to the vet. If your cat has eaten something that smells like chocolate, bring it to the vet.\n\nCall your vet or the nearest 24-hour clinic now and tell them you're on your way.\n\nIf it's on their skin or fur (for example a flea product), wash with mild dish soap and lukewarm water, then rinse well.\n\nDon't:\n- Making your pet vomit unless a vet tells you to. It's dangerous with some poisons and if your pet is drowsy.\n- Home remedies like salt, milk, oil or hydrogen peroxide.\n- Giving any human medicine.\n\nGo to your vet or the nearest 24-hour clinic now.",
+  "reply": "Many everyday foods, medicines and plants are toxic. Act fast, even if your pet seems fine. Signs can take hours or days.\n\nThis could be poisoning. Many common foods can be poisonous to cats. For example:\n\n- Chocolate\n- Coffee and energy drinks\n- Gases\n- Rats and mice poison\n- Insect sprays and pesticides\n- Lilies (cats)\n- Pet litter\n- Pet food\n\nIf your cat has eaten something that looks like chocolate, make sure it's gone before going to the vet. If your cat has eaten something that smells like chocolate, bring it to the vet.\n\nCall your vet or the nearest 24-hour clinic now and tell them you're on your way.\n\nIf it's on their skin or fur (for example a flea product), wash with mild dish soap and lukewarm water, then rinse well.\n\nDon't:\n- Making your pet vomit unless a vet tells you to. It's dangerous with some poisons and if your pet is drowsy.\n- Home remedies like salt, milk, oil or hydrogen peroxide.\n- Giving any human medicine.\n\nGo to your vet or the nearest 24-hour clinic now."
+ },
+ "heldout:H06": {
+  "generated": false,
+  "credited": [],
+  "shown": null,
+  "model": "search-v1",
+  "seconds": 0.047,
+  "rejected": [],
+  "raw": "",
+  "reply": "I don't have a checked answer for that yet, so I'd rather not guess. Try asking in another way, with a few more details, or tap a similar question below if one fits. If your pet seems unwell, your vet is the best person to ask."
+ },
+ "heldout:H07": {
+  "generated": true,
+  "credited": [
+   "guide-vomiting"
+  ],
+  "shown": "guide-vomiting",
+  "model": "rag-v2",
+  "seconds": 9.674,
+  "rejected": [],
+  "raw": "This sounds like it could be vomiting & diarrhea. One episode in a bright, adult pet is often minor. Call your vet for advice and watch closely for the warning signs below.\n\nWhat to do now:\n- Call your vet and describe what you've seen. A photo helps.\n- Offer small amounts of water often.\n- If your vet agrees, feed small portions of bland food, like plain boiled chicken and rice for dogs.\n- Keep a sick puppy away from other dogs and disinfect the area. Parvovirus spreads easily.\n\nDon't:\n- Human anti-diarrhea or stomach medicines. Some are toxic to cats and some dogs.\n- Withholding food from a cat for more than a day. It can cause liver disease.\n\nCall your vet for advice.",
+  "reply": "This sounds like it could be vomiting & diarrhea. One episode in a bright, adult pet is often minor. Call your vet for advice and watch closely for the warning signs below.\n\nWhat to do now:\n- Call your vet and describe what you've seen. A photo helps.\n- Offer small amounts of water often.\n- If your vet agrees, feed small portions of bland food, like plain boiled chicken and rice for dogs.\n- Keep a sick puppy away from other dogs and disinfect the area. Parvovirus spreads easily.\n\nDon't:\n- Human anti-diarrhea or stomach medicines. Some are toxic to cats and some dogs.\n- Withholding food from a cat for more than a day. It can cause liver disease.\n\nCall your vet for advice."
+ },
+ "heldout:H08": {
+  "generated": true,
+  "credited": [
+   "guide-vomiting"
+  ],
+  "shown": "guide-vomiting",
+  "model": "rag-v2",
+  "seconds": 9.071,
+  "rejected": [],
+  "raw": "This sounds like it could be vomiting & diarrhea. One episode in a bright, adult pet is often minor. Call your vet for advice and watch closely for the warning signs below.\n\nWhat to do now:\n- Call your vet and describe what you've seen. A photo helps.\n- Offer small amounts of water often.\n- If your vet agrees, feed small portions of bland food, like plain boiled chicken and rice for dogs.\n- Keep a sick puppy away from other dogs and disinfect the area. Parvovirus spreads easily.\n\nDon't:\n- Human anti-diarrhea or stomach medicines. Some are toxic to cats and some dogs.\n- Some are human anti-vomiting drugs that can harm cats.\n\nWithholding food from a cat for more than a day can cause liver disease.\n\nCall your vet for advice.",
+  "reply": "This sounds like it could be vomiting & diarrhea. One episode in a bright, adult pet is often minor. Call your vet for advice and watch closely for the warning signs below.\n\nWhat to do now:\n- Call your vet and describe what you've seen. A photo helps.\n- Offer small amounts of water often.\n- If your vet agrees, feed small portions of bland food, like plain boiled chicken and rice for dogs.\n- Keep a sick puppy away from other dogs and disinfect the area. Parvovirus spreads easily.\n\nDon't:\n- Human anti-diarrhea or stomach medicines. Some are toxic to cats and some dogs.\n- Some are human anti-vomiting drugs that can harm cats.\n\nWithholding food from a cat for more than a day can cause liver disease.\n\nCall your vet for advice."
+ },
+ "heldout:H09": {
+  "generated": true,
+  "credited": [
+   "q7dce56"
+  ],
+  "shown": "q7dce56",
+  "model": "rag-v2",
+  "seconds": 8.434,
+  "rejected": [],
+  "raw": "Go to your vet or the nearest 24-hour clinic now. Human pain relievers like ibuprofen, naproxen and aspirin (NSAIDs) are dangerous for dogs. They can cause stomach ulcers, bleeding and kidney damage, and large amounts can cause seizures or coma.\n\nSigns may include vomiting, diarrhea, black stools, belly pain, not eating, weakness and pale gums.\n\nBefore you go:\n- Bring the bottle and count how many tablets are missing, so the vet can judge the risk.\n- Only make your dog vomit if a vet tells you to.\n- Don't give any other medicine.\n\nOn the way, keep him calm and watch for vomiting or weakness. Never give human pain medicine to a pet without your vet's advice.",
+  "reply": "Go to your vet or the nearest 24-hour clinic now. Human pain relievers like ibuprofen, naproxen and aspirin (NSAIDs) are dangerous for dogs. They can cause stomach ulcers, bleeding and kidney damage, and large amounts can cause seizures or coma.\n\nSigns may include vomiting, diarrhea, black stools, belly pain, not eating, weakness and pale gums.\n\nBefore you go:\n- Bring the bottle and count how many tablets are missing, so the vet can judge the risk.\n- Only make your dog vomit if a vet tells you to.\n- Don't give any other medicine.\n\nOn the way, keep him calm and watch for vomiting or weakness. Never give human pain medicine to a pet without your vet's advice."
+ },
+ "heldout:H10": {
+  "generated": false,
+  "credited": [],
+  "shown": null,
+  "model": "search-v1",
+  "seconds": 0.032,
+  "rejected": [],
+  "raw": "",
+  "reply": "I can't give medicine doses. The right medicine and dose depend on your pet's weight, health and what's wrong, so only a vet can prescribe them.\n\n- Don't give human medicines or leftover prescriptions\n- Call your vet and tell them your pet's weight and symptoms\n\nIf your pet is very weak, not eating, or has trouble breathing, go to a vet now."
+ },
+ "heldout:H11": {
+  "generated": true,
+  "credited": [
+   "qb39029"
+  ],
+  "shown": "qb39029",
+  "model": "rag-v2",
+  "seconds": 6.731,
+  "rejected": [],
+  "raw": "Please don't give human pain medicine to your dog without your vet's advice. Many common ones, including paracetamol and ibuprofen, can cause serious harm to dogs, and paracetamol is deadly to cats.\n\nCall your vet and describe where your dog seems sore and since when. They can examine your dog and prescribe a pain medicine that's safe for pets, at the right dose for their weight.",
+  "reply": "Please don't give human pain medicine to your dog without your vet's advice. Many common ones, including paracetamol and ibuprofen, can cause serious harm to dogs, and paracetamol is deadly to cats.\n\nCall your vet and describe where your dog seems sore and since when. They can examine your dog and prescribe a pain medicine that's safe for pets, at the right dose for their weight.\n\nThis can be an emergency: go to a vet or the nearest 24-hour clinic now. Call ahead while on the way if you can."
+ },
+ "heldout:H12": {
+  "generated": true,
+  "credited": [
+   "guide-bleeding",
+   "qddf033"
+  ],
+  "shown": "guide-bleeding",
+  "model": "rag-v2",
+  "seconds": 13.221,
+  "rejected": [],
+  "raw": "This sounds like it could be bleeding & wounds. Most bleeding stops with firm, steady pressure. Bite wounds can look small but often get infected.\n\nWhat to do now:\n- If they're in pain, use a soft muzzle or towel so they don't bite. Skip this if they're vomiting or struggling to breathe.\n- Press firmly on the wound with a clean cloth or gauze for at least 5 minutes. Don't lift it to check.\n- If blood soaks through, add more layers on top. Don't remove the first one.\n- Once it stops, wrap it snugly but not tight. You should fit two fingers under the bandage.\n- Go to the vet for anything deeper than a scrape, all bite wounds, and any bleeding that won't stop.\n\nDon't:\n- Tourniquets, unless you're trained. They can kill the limb.\n- Hydrogen peroxide or alcohol in the wound.\n- They damage tissue.\n- Pulling out something stuck in the wound.\n\nGo to your vet or the nearest 24-hour clinic now.",
+  "reply": "This sounds like it could be bleeding & wounds. Most bleeding stops with firm, steady pressure. Bite wounds can look small but often get infected.\n\nWhat to do now:\n- If they're in pain, use a soft muzzle or towel so they don't bite. Skip this if they're vomiting or struggling to breathe.\n- Press firmly on the wound with a clean cloth or gauze for at least 5 minutes. Don't lift it to check.\n- If blood soaks through, add more layers on top. Don't remove the first one.\n- Once it stops, wrap it snugly but not tight. You should fit two fingers under the bandage.\n- Go to the vet for anything deeper than a scrape, all bite wounds, and any bleeding that won't stop.\n\nDon't:\n- Tourniquets, unless you're trained. They can kill the limb.\n- Hydrogen peroxide or alcohol in the wound.\n- They damage tissue.\n- Pulling out something stuck in the wound.\n\nGo to your vet or the nearest 24-hour clinic now."
+ },
+ "heldout:H13": {
+  "generated": true,
+  "credited": [
+   "guide-stings"
+  ],
+  "shown": "guide-stings",
+  "model": "rag-v2",
+  "seconds": 8.234,
+  "rejected": [],
+  "raw": "This sounds like it could be stings & allergic reactions. Bees, wasps, ants and centipedes can sting cats and dogs. Bee stings usually cause swelling that settles. A spreading reaction or trouble breathing is an emergency.\n\nWhat to do now:\n- Move away from the insects.\n- If you see a bee stinger, scrape it out sideways with a card. Don't squeeze it.\n- Hold a cold pack wrapped in cloth on the spot for 10 minutes.\n- Watch closely for the next 1–2 hours and call your vet for advice.\n\nDon't:\n- Giving human allergy or cold tablets without a vet's dose.\n- Some contain decongestants that are toxic to pets.\n\nCall your vet for advice.",
+  "reply": "This sounds like it could be stings & allergic reactions. Bees, wasps, ants and centipedes can sting cats and dogs. Bee stings usually cause swelling that settles. A spreading reaction or trouble breathing is an emergency.\n\nWhat to do now:\n- Move away from the insects.\n- If you see a bee stinger, scrape it out sideways with a card. Don't squeeze it.\n- Hold a cold pack wrapped in cloth on the spot for 10 minutes.\n- Watch closely for the next 1–2 hours and call your vet for advice.\n\nDon't:\n- Giving human allergy or cold tablets without a vet's dose.\n- Some contain decongestants that are toxic to pets.\n\nCall your vet for advice."
+ },
+ "heldout:H14": {
+  "generated": true,
+  "credited": [
+   "q5faf86"
+  ],
+  "shown": "q5faf86",
+  "model": "rag-v2",
+  "seconds": 9.989,
+  "rejected": [],
+  "raw": "Stay calm and focus on keeping him safe.\n\nWhile it's happening:\n- Move furniture and hard objects away. Only move him if he's near stairs, water or another danger.\n- Keep your hands away from his mouth. He can't control his jaws and may bite without meaning to.\n- Don't try to hold him down.\n- Time the seizure, and take a short video for the vet if you can.\n\nGo to your vet or the nearest 24-hour clinic now if the seizure lasts more than about 3 minutes, if he has more than one in a row, or if he might have eaten something poisonous. Otherwise, call your vet soon after.\n\nAfterward he may pace or seem confused. On the way to the vet, keep him calm, quiet and away from edges.",
+  "reply": "Stay calm and focus on keeping him safe.\n\nWhile it's happening:\n- Move furniture and hard objects away. Only move him if he's near stairs, water or another danger.\n- Keep your hands away from his mouth. He can't control his jaws and may bite without meaning to.\n- Don't try to hold him down.\n- Time the seizure, and take a short video for the vet if you can.\n\nGo to your vet or the nearest 24-hour clinic now if the seizure lasts more than about 3 minutes, if he has more than one in a row, or if he might have eaten something poisonous. Otherwise, call your vet soon after.\n\nAfterward he may pace or seem confused. On the way to the vet, keep him calm, quiet and away from edges."
+ },
+ "heldout:H15": {
+  "generated": true,
+  "credited": [
+   "guide-choking"
+  ],
+  "shown": "guide-choking",
+  "model": "rag-v2",
+  "seconds": 13.88,
+  "rejected": [],
+  "raw": "This sounds like it could be choking. Something stuck in the mouth or throat. If your pet is still breathing and coughing, go to the vet. Only step in if they can't breathe.\n\nWhat to do now:\n- Stay calm and hold them gently but firmly. A choking pet may bite.\n- Open the mouth and look. If you can see the object and get a grip on it, remove it carefully with fingers or tweezers.\n- If you can't remove it and they can't breathe: hold a cat or small dog with their back against your chest and give 5 firm thrusts inward and upward just below the ribs.\n- For a large dog, put your arms around the belly from behind, make a fist just below the ribs and push firmly up and forward 5 times. If they're lying down, push from behind the ribs toward the head.\n- Check the mouth again and repeat. If they collapse and stop breathing, start CPR.\n- Go to the vet even if the object comes out. The throat may be injured.\n\nDon't:\n-Sweeping your fingers blindly. It can push the object deeper.\n-Pulling on string, thread or tinsel hanging from the mouth or bottom. It can cut the intestines.\n\nGo to your vet or",
+  "reply": "This sounds like it could be choking. Something stuck in the mouth or throat. If your pet is still breathing and coughing, go to the vet. Only step in if they can't breathe.\n\nWhat to do now:\n- Stay calm and hold them gently but firmly. A choking pet may bite.\n- Open the mouth and look. If you can see the object and get a grip on it, remove it carefully with fingers or tweezers.\n- If you can't remove it and they can't breathe: hold a cat or small dog with their back against your chest and give 5 firm thrusts inward and upward just below the ribs.\n- For a large dog, put your arms around the belly from behind, make a fist just below the ribs and push firmly up and forward 5 times. If they're lying down, push from behind the ribs toward the head.\n- Check the mouth again and repeat. If they collapse and stop breathing, start CPR.\n- Go to the vet even if the object comes out. The throat may be injured.\n\nDon't:\n-Sweeping your fingers blindly. It can push the object deeper.\n-Pulling on string, thread or tinsel hanging from the mouth or bottom. It can cut the intestines.\n\nGo to your vet or"
+ },
+ "heldout:H16": {
+  "generated": true,
+  "credited": [
+   "guide-poisoning"
+  ],
+  "shown": "guide-poisoning",
+  "model": "rag-v2",
+  "seconds": 11.736,
+  "rejected": [],
+  "raw": "This sounds like it could be poisoning. Many everyday foods, medicines and plants are toxic. Act fast, even if your pet seems fine. Signs can take hours or days.\n\nWhat to do now:\n- Move your pet away from the source and remove anything left in their mouth, if it's safe to do so.\n- Note what they ate, about how much, and when. Bring the packaging, label or a piece of the plant.\n- Call your vet or the nearest 24-hour clinic now and tell them you're on your way.\n- If it's on their skin or fur (for example a flea product), wash with mild dish soap and lukewarm water, then rinse well.\n\nDon't:\n- Making your pet vomit unless a vet tells you to. It's dangerous with some poisons and if your pet is drowsy.\n- Home remedies like salt, milk, oil or hydrogen peroxide.\n- Giving any human medicine.\n\nGo to your vet or the nearest 24-hour clinic now.",
+  "reply": "This sounds like it could be poisoning. Many everyday foods, medicines and plants are toxic. Act fast, even if your pet seems fine. Signs can take hours or days.\n\nWhat to do now:\n- Move your pet away from the source and remove anything left in their mouth, if it's safe to do so.\n- Note what they ate, about how much, and when. Bring the packaging, label or a piece of the plant.\n- Call your vet or the nearest 24-hour clinic now and tell them you're on your way.\n- If it's on their skin or fur (for example a flea product), wash with mild dish soap and lukewarm water, then rinse well.\n\nDon't:\n- Making your pet vomit unless a vet tells you to. It's dangerous with some poisons and if your pet is drowsy.\n- Home remedies like salt, milk, oil or hydrogen peroxide.\n- Giving any human medicine.\n\nGo to your vet or the nearest 24-hour clinic now."
+ },
+ "heldout:H17": {
+  "generated": true,
+  "credited": [
+   "guide-bloat"
+  ],
+  "shown": "guide-bloat",
+  "model": "rag-v2",
+  "seconds": 7.916,
+  "rejected": [],
+  "raw": "This sounds like it could be bloat (twisted stomach). The stomach fills with gas and can twist. It can kill within hours and usually needs surgery. Most common in large, deep-chested dogs.\n\nWhat to do now:\n- Go to the vet immediately. Call ahead so they can prepare.\n- Keep your dog as calm and still as you can on the way.\n\nDon't:\n- Waiting to see if it passes.\n- Giving food, water or home remedies.\n- Trying to make them vomit.\n\nGo to your vet or the nearest 24-hour clinic now.",
+  "reply": "This sounds like it could be bloat (twisted stomach). The stomach fills with gas and can twist. It can kill within hours and usually needs surgery. Most common in large, deep-chested dogs.\n\nWhat to do now:\n- Go to the vet immediately. Call ahead so they can prepare.\n- Keep your dog as calm and still as you can on the way.\n\nDon't:\n- Waiting to see if it passes.\n- Giving food, water or home remedies.\n- Trying to make them vomit.\n\nGo to your vet or the nearest 24-hour clinic now."
+ },
+ "heldout:H18": {
+  "generated": true,
+  "credited": [
+   "q3739a7"
+  ],
+  "shown": "q3739a7",
+  "model": "rag-v2",
+  "seconds": 6.108,
+  "rejected": [],
+  "raw": "Every year. Section 5 of RA 9482 says owners must have their dogs \"regularly\" vaccinated against rabies. The implementing rules make it clearer: a properly immunized dog is one vaccinated yearly, and LGUs register and vaccinate dogs annually.\n\nThe shot must be given by a licensed veterinarian, or by a trained vaccinator under a vet's direct supervision during government mass vaccination drives.\n\nKeep the record of each shot on your dog's vaccination or registration card.",
+  "reply": "Every year. Section 5 of RA 9482 says owners must have their dogs \"regularly\" vaccinated against rabies. The implementing rules make it clearer: a properly immunized dog is one vaccinated yearly, and LGUs register and vaccinate dogs annually.\n\nThe shot must be given by a licensed veterinarian, or by a trained vaccinator under a vet's direct supervision during government mass vaccination drives.\n\nKeep the record of each shot on your dog's vaccination or registration card."
+ },
+ "heldout:H19": {
+  "generated": true,
+  "credited": [
+   "q8ca789"
+  ],
+  "shown": "q8ca789",
+  "model": "rag-v2",
+  "seconds": 8.265,
+  "rejected": [],
+  "raw": "Yes. The American Association of Feline Practitioners recommends core vaccines even for cats that never go outside. Core vaccines for cats cover:\n- Panleukopenia (feline distemper)\n- Herpesvirus\n- Calicivirus\n(these three come together as FVRCP)\n- Rabies, where the disease is present or the law requires it\n\nFeline leukemia (FeLV) vaccine is advised for kittens under 1 year. For adults it depends on risk, such as going outdoors or living with cats that do.\n\nGood news for indoor cats: global guidelines say low-risk indoor adults usually need core boosters only every 3 years or longer.\n\nYour vet will choose the vaccines and timing that fit your cat.",
+  "reply": "Yes. The American Association of Feline Practitioners recommends core vaccines even for cats that never go outside. Core vaccines for cats cover:\n- Panleukopenia (feline distemper)\n- Herpesvirus\n- Calicivirus\n(these three come together as FVRCP)\n- Rabies, where the disease is present or the law requires it\n\nFeline leukemia (FeLV) vaccine is advised for kittens under 1 year. For adults it depends on risk, such as going outdoors or living with cats that do.\n\nGood news for indoor cats: global guidelines say low-risk indoor adults usually need core boosters only every 3 years or longer.\n\nYour vet will choose the vaccines and timing that fit your cat."
+ },
+ "heldout:H20": {
+  "generated": true,
+  "credited": [
+   "q2a02a7"
+  ],
+  "shown": "q2a02a7",
+  "model": "rag-v2",
+  "seconds": 7.58,
+  "rejected": [],
+  "raw": "Yes, it is very common, and most grass-eating dogs are not sick. Studies show fewer than 1 in 4 dogs vomit after eating grass. Dogs may eat grass for fiber, out of boredom or to get attention, or simply from instinct.\n\nThings to watch:\n- Grass sprayed with weed killers or pesticides can poison your dog. Keep him off treated lawns.\n- Grass can carry worm eggs from other animals' poop. Ask your vet about regular deworming.\n- If he seems bored or lonely, spend more time playing with him.\n\nSee your vet if he eats grass and then vomits often or seems to have stomach pain. That can point to a stomach or gut problem that needs checking.",
+  "reply": "Yes, it is very common, and most grass-eating dogs are not sick. Studies show fewer than 1 in 4 dogs vomit after eating grass. Dogs may eat grass for fiber, out of boredom or to get attention, or simply from instinct.\n\nThings to watch:\n- Grass sprayed with weed killers or pesticides can poison your dog. Keep him off treated lawns.\n- Grass can carry worm eggs from other animals' poop. Ask your vet about regular deworming.\n- If he seems bored or lonely, spend more time playing with him.\n\nSee your vet if he eats grass and then vomits often or seems to have stomach pain. That can point to a stomach or gut problem that needs checking."
+ },
+ "heldout:H21": {
+  "generated": true,
+  "credited": [
+   "qcbce39"
+  ],
+  "shown": "qcbce39",
+  "model": "rag-v2",
+  "seconds": 5.67,
+  "rejected": [],
+  "raw": "This sounds like it could be separation anxiety: your dog is stressed being alone.\n- Give a good walk and play before you leave\n- Practise short absences, then make them slowly longer\n- Leave a safe chew toy or a food puzzle\n- Keep leaving and coming home calm and low-key\n- Don't punish the barking, because it adds to the stress\n\nIf your dog also destroys things, soils the house or hurts themselves, talk to your vet or a trainer. Some dogs need a behavior plan.",
+  "reply": "This sounds like it could be separation anxiety: your dog is stressed being alone.\n- Give a good walk and play before you leave\n- Practise short absences, then make them slowly longer\n- Leave a safe chew toy or a food puzzle\n- Keep leaving and coming home calm and low-key\n- Don't punish the barking, because it adds to the stress\n\nIf your dog also destroys things, soils the house or hurts themselves, talk to your vet or a trainer. Some dogs need a behavior plan."
+ },
+ "heldout:H22": {
+  "generated": true,
+  "credited": [
+   "q8ebfd7"
+  ],
+  "shown": "q8ebfd7",
+  "model": "rag-v2",
+  "seconds": 7.572,
+  "rejected": [],
+  "raw": "Parasite experts (CAPC) recommend year-round protection for adult pets. Many monthly preventives cover worms together with heartworm, fleas or ticks.\n\nIf your pet isn't on a year-round preventive:\n- Deworm about four times a year\n- Have a stool (fecal) test 2 to 4 times a year\n\nEven on prevention, healthy adults should have their poop checked at least twice a year. Pets that hunt, roam, travel or mix with many animals may need it more often.\n\nAsk your vet for a product that suits your pet's weight and age, and which worms are common where you live.",
+  "reply": "Parasite experts (CAPC) recommend year-round protection for adult pets. Many monthly preventives cover worms together with heartworm, fleas or ticks.\n\nIf your pet isn't on a year-round preventive:\n- Deworm about four times a year\n- Have a stool (fecal) test 2 to 4 times a year\n\nEven on prevention, healthy adults should have their poop checked at least twice a year. Pets that hunt, roam, travel or mix with many animals may need it more often.\n\nAsk your vet for a product that suits your pet's weight and age, and which worms are common where you live."
+ },
+ "heldout:H23": {
+  "generated": true,
+  "credited": [
+   "guide-poisoning"
+  ],
+  "shown": "guide-poisoning",
+  "model": "rag-v2",
+  "seconds": 11.859,
+  "rejected": [],
+  "raw": "This sounds like it could be poisoning. Many everyday foods, medicines and plants are toxic. Act fast, even if your pet seems fine. Signs can take hours or days.\n\nWhat to do now:\n- Move your pet away from the source and remove anything left in their mouth, if it's safe to do so.\n- Note what they ate, about how much, and when. Bring the packaging, label or a piece of the plant.\n- Call your vet or the nearest 24-hour clinic now and tell them you're on your way.\n- If it's on their skin or fur (for example a flea product), wash with mild dish soap and lukewarm water, then rinse well.\n\nDon't:\n- Making your pet vomit unless a vet tells you to. It's dangerous with some poisons and if your pet is drowsy.\n- Home remedies like salt, milk, oil or hydrogen peroxide.\n- Giving any human medicine.\n\nGo to your vet or the nearest 24-hour clinic now.",
+  "reply": "This sounds like it could be poisoning. Many everyday foods, medicines and plants are toxic. Act fast, even if your pet seems fine. Signs can take hours or days.\n\nWhat to do now:\n- Move your pet away from the source and remove anything left in their mouth, if it's safe to do so.\n- Note what they ate, about how much, and when. Bring the packaging, label or a piece of the plant.\n- Call your vet or the nearest 24-hour clinic now and tell them you're on your way.\n- If it's on their skin or fur (for example a flea product), wash with mild dish soap and lukewarm water, then rinse well.\n\nDon't:\n- Making your pet vomit unless a vet tells you to. It's dangerous with some poisons and if your pet is drowsy.\n- Home remedies like salt, milk, oil or hydrogen peroxide.\n- Giving any human medicine.\n\nGo to your vet or the nearest 24-hour clinic now."
+ },
+ "heldout:H24": {
+  "generated": true,
+  "credited": [
+   "q6166c6"
+  ],
+  "shown": "q6166c6",
+  "model": "rag-v2",
+  "seconds": 7.242,
+  "rejected": [],
+  "raw": "This sounds like it could be furging. It can come from bleeding in the stomach or gut, ulcers caused by human pain relievers, rat poison, or swallowed chemicals. Call your vet or the nearest 24-hour veterinary clinic now and go in, especially if your dog keeps vomiting, is weak, has pale gums or a painful belly.\n\nWhat to do:\n- Don't give any human medicine.\n- Don't try to make him vomit.\n- Bring any packaging of medicine, poison or chemical he might have gotten into.\n- Take a photo of the vomit to show the vet.\n\nOn the way, keep him calm and watch his gums and breathing.",
+  "reply": "This sounds like it could be furging. It can come from bleeding in the stomach or gut, ulcers caused by human pain relievers, rat poison, or swallowed chemicals. Call your vet or the nearest 24-hour veterinary clinic now and go in, especially if your dog keeps vomiting, is weak, has pale gums or a painful belly.\n\nWhat to do:\n- Don't give any human medicine.\n- Don't try to make him vomit.\n- Bring any packaging of medicine, poison or chemical he might have gotten into.\n- Take a photo of the vomit to show the vet.\n\nOn the way, keep him calm and watch his gums and breathing."
+ },
+ "heldout:H25": {
+  "generated": false,
+  "credited": [],
+  "shown": null,
+  "model": "search-v1",
+  "seconds": 0.047,
+  "rejected": [],
+  "raw": "",
+  "reply": "I don't have a checked answer for that yet, so I'd rather not guess. Try asking in another way, with a few more details. If your pet seems unwell, your vet is the best person to ask."
+ },
+ "heldout:H26": {
+  "generated": false,
+  "credited": [],
+  "shown": null,
+  "model": "search-v1",
+  "seconds": 0.047,
+  "rejected": [],
+  "raw": "",
+  "reply": "I don't have a checked answer for that yet, so I'd rather not guess. Try asking in another way, with a few more details. If your pet seems unwell, your vet is the best person to ask."
+ },
+ "heldout:H27": {
+  "generated": false,
+  "credited": [],
+  "shown": null,
+  "model": "search-v1",
+  "seconds": 0.046,
+  "rejected": [],
+  "raw": "",
+  "reply": "I don't have a checked answer for that yet, so I'd rather not guess. Try asking in another way, with a few more details, or tap a similar question below if one fits. If your pet seems unwell, your vet is the best person to ask."
+ },
+ "heldout:H28": {
+  "generated": false,
+  "credited": [],
+  "shown": null,
+  "model": "search-v1",
+  "seconds": 0.047,
+  "rejected": [],
+  "raw": "",
+  "reply": "I don't have a checked answer for that yet, so I'd rather not guess. Try asking in another way, with a few more details. If your pet seems unwell, your vet is the best person to ask."
+ },
+ "heldout:H29": {
+  "generated": true,
+  "credited": [
+   "q3739a7"
+  ],
+  "shown": "q3739a7",
+  "model": "rag-v2",
+  "seconds": 6.278,
+  "rejected": [],
+  "raw": "Every year. Section 5 of RA 9482 says owners must have their dogs \"regularly\" vaccinated against rabies. The implementing rules make it clearer: a properly immunized dog is one vaccinated yearly, and LGUs register and vaccinate dogs annually.\n\nThe shot must be given by a licensed veterinarian, or by a trained vaccinator under a vet's direct supervision during government mass vaccination drives.\n\nKeep the record of each shot on your dog's vaccination or registration card.",
+  "reply": "Every year. Section 5 of RA 9482 says owners must have their dogs \"regularly\" vaccinated against rabies. The implementing rules make it clearer: a properly immunized dog is one vaccinated yearly, and LGUs register and vaccinate dogs annually.\n\nThe shot must be given by a licensed veterinarian, or by a trained vaccinator under a vet's direct supervision during government mass vaccination drives.\n\nKeep the record of each shot on your dog's vaccination or registration card."
+ },
+ "heldout:H30": {
+  "generated": true,
+  "credited": [
+   "qa9bf28"
+  ],
+  "shown": "qa9bf28",
+  "model": "rag-v2",
+  "seconds": 9.587,
+  "rejected": [],
+  "raw": "Dogs: The ASPCA suggests a bath at least once every three months. Dogs that spend a lot of time outdoors or have skin problems may need baths more often.\n\nCats: Most cats keep themselves clean. They only need a bath if they get very dirty or into something sticky or smelly.\n\nBath tips:\n- Brush out loose hair and mats first.\n- Use lukewarm water and a shampoo made for pets. Human shampoo can irritate or dry out the skin.\n- Keep water out of the eyes, ears and nose. Wipe the face with a damp cloth.\n- Rinse well and dry fully, including any skin folds.\n- For cats, trim the claws first and use a rubber mat so they don't slip.\n\nSee your vet if you notice scabs, bald spots, redness or constant scratching.",
+  "reply": "Dogs: The ASPCA suggests a bath at least once every three months. Dogs that spend a lot of time outdoors or have skin problems may need baths more often.\n\nCats: Most cats keep themselves clean. They only need a bath if they get very dirty or into something sticky or smelly.\n\nBath tips:\n- Brush out loose hair and mats first.\n- Use lukewarm water and a shampoo made for pets. Human shampoo can irritate or dry out the skin.\n- Keep water out of the eyes, ears and nose. Wipe the face with a damp cloth.\n- Rinse well and dry fully, including any skin folds.\n- For cats, trim the claws first and use a rubber mat so they don't slip.\n\nSee your vet if you notice scabs, bald spots, redness or constant scratching."
+ }
+}

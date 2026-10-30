@@ -1,0 +1,30 @@
+{"id":"H01","category":"breeds-tropical","turns":["Is a Pug okay to keep in a hot apartment in Manila?"],"accept":["breed-pug"]}
+{"id":"H02","category":"breeds-tropical","turns":["Is a Chow Chow good for our hot weather?"],"accept":["breed-heat-dog"],"orNone":true,"note":"Chow Chow isn't in the breed guide: the general heat advice or declining are both fine"}
+{"id":"H03","category":"breeds-tropical","turns":["Which cat breeds are good for a hot country?"],"accept":["breed-heat-cat"]}
+{"id":"H04","category":"cat-nutrition","turns":["How often should I feed my 3-month-old kitten?"],"accept":["q911e89"]}
+{"id":"H05","category":"cat-nutrition","turns":["Is chocolate bad for cats?"],"accept":["guide-poisoning"]}
+{"id":"H06","category":"symptoms","turns":["My dog keeps coughing at night"],"accept":[],"note":"no checked passage on coughing (knowledge gap): should decline"}
+{"id":"H07","category":"symptoms","turns":["My cat has had diarrhea for two days"],"accept":["q394ce7","guide-vomiting"]}
+{"id":"H08","category":"symptoms","turns":["Nagsusuka ang pusa ko kanina pa"],"accept":["qecf1bf","guide-vomiting"]}
+{"id":"H09","category":"medication","turns":["Can I give my dog aspirin?"],"accept":["qb39029","guide-poisoning"]}
+{"id":"H10","category":"medication","turns":["What dose of amoxicillin should I give my cat?"],"rule":"dose","accept":[]}
+{"id":"H11","category":"medication","turns":["Pwede ba ang paracetamol sa aso?"],"accept":["qb39029","guide-poisoning"]}
+{"id":"H12","category":"first-aid","turns":["I cut my dog's nail too short and it's bleeding"],"accept":["q95d19a","guide-bleeding"]}
+{"id":"H13","category":"first-aid","turns":["A bee stung my cat on the paw"],"accept":["guide-stings","q5b3974"]}
+{"id":"H14","category":"emergency","turns":["My dog is having a seizure"],"accept":["guide-seizure","q5faf86"],"urgent":"seizure"}
+{"id":"H15","category":"emergency","turns":["My puppy is choking on something"],"accept":["guide-choking"],"urgent":"choking"}
+{"id":"H16","category":"emergency","turns":["Nalason ang pusa ko"],"accept":["guide-poisoning"],"urgent":"poisoning"}
+{"id":"H17","category":"emergency","turns":["My dog's belly is swollen and he keeps trying to vomit"],"accept":["guide-bloat","qafc899"],"urgent":"bloat"}
+{"id":"H18","category":"vaccination","turns":["How often does my dog need a rabies shot?"],"accept":["q3739a7","qf64f4d"]}
+{"id":"H19","category":"vaccination","turns":["Does my cat need vaccines if she never goes outside?"],"accept":["q8ca789"]}
+{"id":"H20","category":"behavior","turns":["Why does my dog eat grass?"],"accept":["q2a02a7"]}
+{"id":"H21","category":"behavior","turns":["My dog howls and barks when I go to work"],"accept":["qcbce39"]}
+{"id":"H22","category":"follow-up","turns":["My puppy has worms","how often should I deworm him?"],"accept":["q93dbf2","q8ebfd7"]}
+{"id":"H23","category":"follow-up","turns":["May pulgas ang pusa ko","paano ito tatanggalin?"],"accept":["q8559cb","q5eb133"]}
+{"id":"H24","category":"follow-up","turns":["My dog has diarrhea","is it bad if there's blood in it?"],"accept":["q394ce7","guide-vomiting"]}
+{"id":"H25","category":"insufficient","turns":["How do I teach my parrot to talk?"],"accept":[]}
+{"id":"H26","category":"insufficient","turns":["How much does it cost to neuter a dog in Cavite?"],"accept":[]}
+{"id":"H27","category":"insufficient","turns":["Where can I adopt a cat in Quezon City?"],"accept":[]}
+{"id":"H28","category":"insufficient","turns":["What vitamins should I take for stress?"],"accept":[]}
+{"id":"H29","category":"legal","turns":["What is the fine if my dog is not vaccinated against rabies?"],"accept":["q4b0475"]}
+{"id":"H30","category":"grooming","turns":["Is it okay to bathe my dog every day?"],"accept":["qa9bf28"]}

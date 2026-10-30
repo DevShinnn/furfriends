@@ -57,10 +57,10 @@
 {"id":"e04","category":"emergency","turns":["My dog was bitten by a snake in the yard"],"relevant":["q5784bd","gov-147","guide-snake"],"split":"test"}
 {"id":"e05","category":"emergency","turns":["my dog is having a seizure"],"relevant":["q5faf86","guide-seizure"],"split":"dev"}
 {"id":"e06","category":"emergency","turns":["My puppy was hit by a motorcycle"],"relevant":["qa1d4d7","guide-accident"],"split":"test"}
-{"id":"o01","category":"out-of-scope","turns":["Philippines is a tropical country. Is that really the best dog breed for a tropical country?"],"relevant":[],"split":"dev"}
+{"id":"o01","category":"out-of-scope","turns":["Philippines is a tropical country. Is that really the best dog breed for a tropical country?"],"relevant":["breed-heat-dog"],"split":"dev","note":"relabelled 2026-10-30: the breed guide (heat tolerance, care tips) was added to the library; before, nothing answered it"}
 {"id":"o02","category":"out-of-scope","turns":["What is the best dog breed for a small apartment in Manila?"],"relevant":[],"split":"test"}
-{"id":"o03","category":"out-of-scope","turns":["Which dog breeds handle hot humid weather best?"],"relevant":[],"split":"dev"}
-{"id":"o04","category":"out-of-scope","turns":["Is a Siberian Husky suitable for the Philippines?"],"relevant":[],"split":"test"}
+{"id":"o03","category":"out-of-scope","turns":["Which dog breeds handle hot humid weather best?"],"relevant":["breed-heat-dog"],"split":"dev","note":"relabelled 2026-10-30: the breed guide (heat tolerance, care tips) was added to the library; before, nothing answered it"}
+{"id":"o04","category":"out-of-scope","turns":["Is a Siberian Husky suitable for the Philippines?"],"relevant":["breed-siberian-husky"],"split":"test","note":"relabelled 2026-10-30: the breed guide (heat tolerance, care tips) was added to the library; before, nothing answered it"}
 {"id":"o05","category":"out-of-scope","turns":["How do I take care of a hamster?"],"relevant":[],"split":"dev"}
 {"id":"o06","category":"out-of-scope","turns":["What is the capital of the Philippines?"],"relevant":[],"split":"test"}
 {"id":"o08","category":"out-of-scope","turns":["How much does it cost to spay a cat in the Philippines?"],"relevant":[],"split":"dev"}
@@ -82,7 +82,7 @@
 {"id":"o25","category":"out-of-scope","turns":["How do I make my dog famous on TikTok?"],"relevant":[],"split":"dev"}
 {"id":"o27","category":"out-of-scope","turns":["How do I register my business with DTI?"],"relevant":[],"split":"test"}
 {"id":"o28","category":"out-of-scope","turns":["Are there laws about how many dogs I can own in my barangay?"],"relevant":[],"split":"dev"}
-{"id":"m01","category":"multi-turn","turns":["Is a Siberian Husky a good dog for families?","Is that breed suitable for our hot climate?"],"relevant":[],"split":"dev"}
+{"id":"m01","category":"multi-turn","turns":["Is a Siberian Husky a good dog for families?","Is that breed suitable for our hot climate?"],"relevant":["breed-siberian-husky"],"split":"dev","note":"relabelled 2026-10-30: the breed guide (heat tolerance, care tips) was added to the library; before, nothing answered it"}
 {"id":"m02","category":"multi-turn","turns":["My dog ate chocolate","how much is too much?"],"relevant":["q37381b","q9e32f9"],"split":"test"}
 {"id":"m03","category":"multi-turn","turns":["How often should I deworm my puppy?","what about kittens?"],"relevant":["qe0efd4","qb9e0e6","q8ebfd7"],"split":"dev"}
 {"id":"m04","category":"multi-turn","turns":["My cat is sneezing a lot","is it contagious to my other cat?"],"relevant":["qce12f1"],"split":"test","community":["qfa17f5"]}
@@ -109,4 +109,4 @@
 {"id":"w03","category":"topic-switch","turns":["How often should I bathe my dog?","Is it okay to give grapes to dogs as a treat?"],"relevant":["q7bf34c","qa6febf","guide-poisoning"],"split":"dev"}
 {"id":"w04","category":"topic-switch","turns":["What vaccines does my kitten need?","Is it normal for cats to sleep most of the day?"],"relevant":[],"split":"test","community":["qa90a14"]}
 {"id":"w05","category":"topic-switch","turns":["My dog has fleas","How do I trim my dog's nails safely?"],"relevant":["q95d19a"],"split":"dev","community":["q10f229"]}
-{"id":"w06","category":"topic-switch","turns":["Is a Siberian Husky a good family dog?","Is that breed suitable for a hot tropical climate like ours?"],"relevant":[],"split":"test"}
+{"id":"w06","category":"topic-switch","turns":["Is a Siberian Husky a good family dog?","Is that breed suitable for a hot tropical climate like ours?"],"relevant":["breed-siberian-husky"],"split":"test","note":"relabelled 2026-10-30: the breed guide (heat tolerance, care tips) was added to the library; before, nothing answered it"}

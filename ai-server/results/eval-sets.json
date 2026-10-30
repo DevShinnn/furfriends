@@ -1,0 +1,1281 @@
+{
+ "index": "search-v1",
+ "entries": 610,
+ "built": "2026-10-30T09:15:59.909Z",
+ "report": {
+  "dev": {
+   "questions": 30,
+   "passed": 30,
+   "accuracy": "95.8% (23/24)",
+   "correctAbstention": "100% (5/5)",
+   "anyWrongPassage": "30% (9/30)",
+   "onlyWrongPassages": "0% (0/30)",
+   "citationAccuracy": "95.2% (20/21)",
+   "emergencyHandled": "100% (4/4)",
+   "rows": [
+    {
+     "id": "b1",
+     "category": "breeds-tropical",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "breed-siberian-husky"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "b2",
+     "category": "breeds-tropical",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "breed-heat-dog"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "b3",
+     "category": "breeds-tropical",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "breed-persian",
+      "breed-exotic-shorthair"
+     ],
+     "right": 1,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "b4",
+     "category": "breeds-tropical",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "breed-golden-retriever"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "n1",
+     "category": "cat-nutrition",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "q0c19b6",
+      "q911e89"
+     ],
+     "right": 1,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "n2",
+     "category": "cat-nutrition",
+     "answerable": false,
+     "orNone": false,
+     "rule": false,
+     "sent": [],
+     "right": 0,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "n3",
+     "category": "cat-nutrition",
+     "answerable": false,
+     "orNone": false,
+     "rule": false,
+     "sent": [],
+     "right": 0,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "y1",
+     "category": "symptoms",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "guide-vomiting",
+      "q881818"
+     ],
+     "right": 2,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "y2",
+     "category": "symptoms",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "qce12f1"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "y3",
+     "category": "symptoms",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "q440e51",
+      "q163a45"
+     ],
+     "right": 1,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "d1",
+     "category": "medication",
+     "answerable": false,
+     "orNone": false,
+     "rule": true,
+     "sent": [],
+     "right": 0,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "d2",
+     "category": "medication",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "guide-poisoning",
+      "qbd3158"
+     ],
+     "right": 2,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "d3",
+     "category": "medication",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "guide-poisoning",
+      "q7dce56"
+     ],
+     "right": 2,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "a1",
+     "category": "first-aid",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "q0e1e08"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "a2",
+     "category": "first-aid",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "qc53cec",
+      "breed-british-shorthair"
+     ],
+     "right": 1,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "e1",
+     "category": "emergency",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "guide-accident"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": true,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "e2",
+     "category": "emergency",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "guide-urinary",
+      "q6ea1d7"
+     ],
+     "right": 2,
+     "wrong": 0,
+     "urgentOk": true,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "e3",
+     "category": "emergency",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "guide-accident"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": true,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "e4",
+     "category": "emergency",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "guide-heatstroke",
+      "q83170a"
+     ],
+     "right": 2,
+     "wrong": 0,
+     "urgentOk": true,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "v1",
+     "category": "vaccination",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "qf64f4d",
+      "q799bb8"
+     ],
+     "right": 1,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "v2",
+     "category": "vaccination",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "qb27a0e",
+      "q8ca789"
+     ],
+     "right": 1,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "h1",
+     "category": "behavior",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "qd0b9a8",
+      "q440e51"
+     ],
+     "right": 1,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "h2",
+     "category": "behavior",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "qdf715f"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "f1",
+     "category": "follow-up",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "breed-siberian-husky"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "f2",
+     "category": "follow-up",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "q0ca850",
+      "gov-114"
+     ],
+     "right": 1,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "f3",
+     "category": "follow-up",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "q9babab",
+      "qdce40b"
+     ],
+     "right": 1,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": false,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "i1",
+     "category": "insufficient",
+     "answerable": false,
+     "orNone": false,
+     "rule": false,
+     "sent": [],
+     "right": 0,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "i2",
+     "category": "insufficient",
+     "answerable": false,
+     "orNone": false,
+     "rule": false,
+     "sent": [],
+     "right": 0,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "i3",
+     "category": "insufficient",
+     "answerable": false,
+     "orNone": false,
+     "rule": false,
+     "sent": [],
+     "right": 0,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "i4",
+     "category": "insufficient",
+     "answerable": true,
+     "orNone": true,
+     "rule": false,
+     "sent": [],
+     "right": 0,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    }
+   ]
+  },
+  "regression": {
+   "questions": 17,
+   "passed": 17,
+   "accuracy": "100% (13/13)",
+   "correctAbstention": "100% (4/4)",
+   "anyWrongPassage": "11.8% (2/17)",
+   "onlyWrongPassages": "0% (0/17)",
+   "citationAccuracy": "100% (13/13)",
+   "emergencyHandled": "–",
+   "rows": [
+    {
+     "id": "R01",
+     "category": "cat-appetite",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "qc01447",
+      "qcf4aff"
+     ],
+     "right": 2,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "R02",
+     "category": "cat-appetite",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "qc01447",
+      "qcf4aff"
+     ],
+     "right": 2,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "R03",
+     "category": "cat-appetite",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "qc01447",
+      "qcf4aff"
+     ],
+     "right": 2,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "R04",
+     "category": "cat-appetite",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "qc01447",
+      "qcf4aff"
+     ],
+     "right": 2,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "R05",
+     "category": "cat-appetite",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "qcf4aff",
+      "qc01447"
+     ],
+     "right": 2,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "R06",
+     "category": "dog-appetite",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "q05288f"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "R07",
+     "category": "dog-appetite",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "q05288f",
+      "q881818"
+     ],
+     "right": 1,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "R08",
+     "category": "dog-appetite",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "q05288f"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "R09",
+     "category": "dog-appetite",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "q05288f"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "R10",
+     "category": "cross-species-food",
+     "answerable": false,
+     "orNone": false,
+     "rule": false,
+     "sent": [],
+     "right": 0,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "R11",
+     "category": "cross-species-food",
+     "answerable": false,
+     "orNone": false,
+     "rule": false,
+     "sent": [],
+     "right": 0,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "R12",
+     "category": "cross-species-food",
+     "answerable": false,
+     "orNone": false,
+     "rule": false,
+     "sent": [],
+     "right": 0,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "R13",
+     "category": "cross-species-food",
+     "answerable": false,
+     "orNone": false,
+     "rule": false,
+     "sent": [],
+     "right": 0,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "R14",
+     "category": "husky-follow-up",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "breed-siberian-husky"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "R15",
+     "category": "husky-follow-up",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "breed-siberian-husky"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "R16",
+     "category": "husky-follow-up",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "breed-siberian-husky"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "R17",
+     "category": "heat-summary",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "breed-heat-dog",
+      "breed-shih-tzu"
+     ],
+     "right": 1,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    }
+   ]
+  },
+  "heldout": {
+   "questions": 30,
+   "passed": 26,
+   "accuracy": "79.2% (19/24)",
+   "correctAbstention": "100% (5/5)",
+   "anyWrongPassage": "33.3% (10/30)",
+   "onlyWrongPassages": "13.3% (4/30)",
+   "citationAccuracy": "77.3% (17/22)",
+   "emergencyHandled": "100% (4/4)",
+   "rows": [
+    {
+     "id": "H01",
+     "category": "breeds-tropical",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "breed-pug"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H02",
+     "category": "breeds-tropical",
+     "answerable": true,
+     "orNone": true,
+     "rule": false,
+     "sent": [],
+     "right": 0,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H03",
+     "category": "breeds-tropical",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "breed-heat-cat",
+      "breed-exotic-shorthair"
+     ],
+     "right": 1,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H04",
+     "category": "cat-nutrition",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "q911e89",
+      "qe0efd4"
+     ],
+     "right": 1,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H05",
+     "category": "cat-nutrition",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "guide-poisoning"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H06",
+     "category": "symptoms",
+     "answerable": false,
+     "orNone": false,
+     "rule": false,
+     "sent": [],
+     "right": 0,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H07",
+     "category": "symptoms",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "guide-vomiting",
+      "q394ce7"
+     ],
+     "right": 2,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H08",
+     "category": "symptoms",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "guide-vomiting"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H09",
+     "category": "medication",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "q7dce56"
+     ],
+     "right": 0,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": false,
+     "ok": false,
+     "problems": [
+      "only wrong passages"
+     ]
+    },
+    {
+     "id": "H10",
+     "category": "medication",
+     "answerable": false,
+     "orNone": false,
+     "rule": true,
+     "sent": [],
+     "right": 0,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H11",
+     "category": "medication",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "guide-poisoning",
+      "qb39029"
+     ],
+     "right": 2,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H12",
+     "category": "first-aid",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "guide-bleeding",
+      "qddf033"
+     ],
+     "right": 1,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": false,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H13",
+     "category": "first-aid",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "guide-stings"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H14",
+     "category": "emergency",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "guide-seizure",
+      "q5faf86"
+     ],
+     "right": 2,
+     "wrong": 0,
+     "urgentOk": true,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H15",
+     "category": "emergency",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "guide-choking"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": true,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H16",
+     "category": "emergency",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "guide-poisoning"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": true,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H17",
+     "category": "emergency",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "guide-bloat",
+      "guide-vomiting"
+     ],
+     "right": 1,
+     "wrong": 1,
+     "urgentOk": true,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H18",
+     "category": "vaccination",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "q3739a7",
+      "qf64f4d"
+     ],
+     "right": 2,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H19",
+     "category": "vaccination",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "q8ca789",
+      "gov-84"
+     ],
+     "right": 1,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H20",
+     "category": "behavior",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "q2a02a7"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H21",
+     "category": "behavior",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "qcbce39"
+     ],
+     "right": 1,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H22",
+     "category": "follow-up",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "q93dbf2",
+      "q8ebfd7"
+     ],
+     "right": 2,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H23",
+     "category": "follow-up",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "guide-poisoning"
+     ],
+     "right": 0,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": false,
+     "ok": false,
+     "problems": [
+      "only wrong passages"
+     ]
+    },
+    {
+     "id": "H24",
+     "category": "follow-up",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "q6166c6"
+     ],
+     "right": 0,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": false,
+     "ok": false,
+     "problems": [
+      "only wrong passages"
+     ]
+    },
+    {
+     "id": "H25",
+     "category": "insufficient",
+     "answerable": false,
+     "orNone": false,
+     "rule": false,
+     "sent": [],
+     "right": 0,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H26",
+     "category": "insufficient",
+     "answerable": false,
+     "orNone": false,
+     "rule": false,
+     "sent": [],
+     "right": 0,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H27",
+     "category": "insufficient",
+     "answerable": false,
+     "orNone": false,
+     "rule": false,
+     "sent": [],
+     "right": 0,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H28",
+     "category": "insufficient",
+     "answerable": false,
+     "orNone": false,
+     "rule": false,
+     "sent": [],
+     "right": 0,
+     "wrong": 0,
+     "urgentOk": null,
+     "citeOk": null,
+     "ok": true,
+     "problems": []
+    },
+    {
+     "id": "H29",
+     "category": "legal",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "q3739a7",
+      "qd5dbc6"
+     ],
+     "right": 0,
+     "wrong": 2,
+     "urgentOk": null,
+     "citeOk": false,
+     "ok": false,
+     "problems": [
+      "only wrong passages",
+      "law passages for a care question: q3739a7 qd5dbc6"
+     ]
+    },
+    {
+     "id": "H30",
+     "category": "grooming",
+     "answerable": true,
+     "orNone": false,
+     "rule": false,
+     "sent": [
+      "qa9bf28",
+      "q3374af"
+     ],
+     "right": 1,
+     "wrong": 1,
+     "urgentOk": null,
+     "citeOk": true,
+     "ok": true,
+     "problems": []
+    }
+   ]
+  }
+ }
+}

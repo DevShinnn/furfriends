@@ -1,7 +1,7 @@
 {
  "index": {
   "version": "search-v1",
-  "built": "2026-10-30T08:37:39.975Z"
+  "built": "2026-10-30T09:15:59.909Z"
  },
  "rule": {
   "strong": 0.7,
@@ -14,39 +14,39 @@
  "report": {
   "baseline/dev": {
    "cases": 57,
-   "precision": 43,
-   "recall": 97.3,
+   "precision": 45.6,
+   "recall": 97.5,
    "falseAbstain": 0,
    "correctAbstain": 0,
-   "wrongOnly": 36.8,
-   "shownWrong": 12.3,
-   "shownWrongSure": 8.8,
-   "shownRight": 91.9,
-   "balanced": 48.7
+   "wrongOnly": 31.6,
+   "shownWrong": 15.8,
+   "shownWrongSure": 10.5,
+   "shownRight": 92.5,
+   "balanced": 48.8
   },
   "baseline/test": {
    "cases": 55,
-   "precision": 41.8,
-   "recall": 94.3,
+   "precision": 43.6,
+   "recall": 94.6,
    "falseAbstain": 0,
    "correctAbstain": 0,
-   "wrongOnly": 40,
-   "shownWrong": 14.5,
+   "wrongOnly": 36.4,
+   "shownWrong": 16.4,
    "shownWrongSure": 9.1,
-   "shownRight": 82.9,
-   "balanced": 47.2
+   "shownRight": 83.8,
+   "balanced": 47.3
   },
   "baseline/all": {
    "cases": 112,
-   "precision": 42.4,
-   "recall": 95.8,
+   "precision": 44.6,
+   "recall": 96.1,
    "falseAbstain": 0,
    "correctAbstain": 0,
-   "wrongOnly": 38.4,
-   "shownWrong": 13.4,
-   "shownWrongSure": 8.9,
-   "shownRight": 87.5,
-   "balanced": 47.9
+   "wrongOnly": 33.9,
+   "shownWrong": 16.1,
+   "shownWrongSure": 9.8,
+   "shownRight": 88.3,
+   "balanced": 48.1
   },
   "baseline/rows": [
    {
@@ -125,7 +125,7 @@
     "answerable": true,
     "sent": [
      "qc53cec",
-     "gov-82"
+     "breed-maine-coon"
     ],
     "good": 1,
     "bad": 1,
@@ -279,7 +279,7 @@
     "answerable": true,
     "sent": [
      "q474c6e",
-     "qd0b9a8"
+     "qbf6858"
     ],
     "good": 1,
     "bad": 1,
@@ -502,14 +502,14 @@
     "category": "en",
     "answerable": false,
     "sent": [
-     "q7dce56",
-     "gov-105"
+     "breed-aspin",
+     "breed-heat-dog"
     ],
     "good": 0,
     "bad": 2,
-    "shown": null,
-    "shownOk": true,
-    "shownSure": false
+    "shown": "breed-aspin",
+    "shownOk": false,
+    "shownSure": true
    },
    {
     "id": "t01",
@@ -671,7 +671,7 @@
     "answerable": false,
     "sent": [
      "guide-poisoning",
-     "gov-83"
+     "breed-persian"
     ],
     "good": 0,
     "bad": 2,
@@ -878,58 +878,58 @@
    {
     "id": "o01",
     "category": "out-of-scope",
-    "answerable": false,
+    "answerable": true,
     "sent": [
-     "q0f7a59",
-     "qb3053f"
+     "breed-heat-dog",
+     "breed-aspin"
     ],
-    "good": 0,
-    "bad": 2,
-    "shown": null,
+    "good": 1,
+    "bad": 1,
+    "shown": "breed-heat-dog",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    },
    {
     "id": "o02",
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "q0e0a11",
-     "qab5df5"
+     "breed-heat-dog",
+     "breed-aspin"
     ],
     "good": 0,
     "bad": 2,
-    "shown": null,
-    "shownOk": true,
+    "shown": "breed-heat-dog",
+    "shownOk": false,
     "shownSure": false
    },
    {
     "id": "o03",
     "category": "out-of-scope",
-    "answerable": false,
+    "answerable": true,
     "sent": [
-     "gov-107",
-     "guide-heatstroke"
+     "breed-heat-dog",
+     "breed-shih-tzu"
     ],
-    "good": 0,
-    "bad": 2,
-    "shown": null,
+    "good": 1,
+    "bad": 1,
+    "shown": "breed-heat-dog",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    },
    {
     "id": "o04",
     "category": "out-of-scope",
-    "answerable": false,
+    "answerable": true,
     "sent": [
-     "q0f7a59",
-     "gov-123"
+     "breed-siberian-husky",
+     "breed-heat-dog"
     ],
-    "good": 0,
-    "bad": 2,
-    "shown": null,
+    "good": 1,
+    "bad": 1,
+    "shown": "breed-siberian-husky",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    },
    {
     "id": "o05",
@@ -950,8 +950,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "qb3053f",
-     "q28d471"
+     "breed-puspin",
+     "breed-aspin"
     ],
     "good": 0,
     "bad": 2,
@@ -964,8 +964,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "qca693b",
-     "qb27a0e"
+     "breed-puspin",
+     "qca693b"
     ],
     "good": 0,
     "bad": 2,
@@ -1006,8 +1006,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "q29fd1d",
-     "qb3053f"
+     "breed-puspin",
+     "q29fd1d"
     ],
     "good": 0,
     "bad": 2,
@@ -1076,7 +1076,7 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "qcf4aff",
+     "breed-golden-retriever",
      "q8a1865"
     ],
     "good": 0,
@@ -1133,7 +1133,7 @@
     "answerable": false,
     "sent": [
      "q0f7a59",
-     "q29fd1d"
+     "breed-aspin"
     ],
     "good": 0,
     "bad": 2,
@@ -1147,7 +1147,7 @@
     "answerable": false,
     "sent": [
      "q0f7a59",
-     "q29fd1d"
+     "breed-heat-dog"
     ],
     "good": 0,
     "bad": 2,
@@ -1160,13 +1160,13 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "q3374af",
-     "q4dd1f5"
+     "breed-shih-tzu",
+     "breed-heat-dog"
     ],
     "good": 0,
     "bad": 2,
-    "shown": null,
-    "shownOk": true,
+    "shown": "breed-shih-tzu",
+    "shownOk": false,
     "shownSure": false
    },
    {
@@ -1228,16 +1228,16 @@
    {
     "id": "m01",
     "category": "multi-turn",
-    "answerable": false,
+    "answerable": true,
     "sent": [
-     "gov-104",
-     "gov-107"
+     "breed-siberian-husky",
+     "breed-heat-dog"
     ],
-    "good": 0,
-    "bad": 2,
-    "shown": null,
+    "good": 1,
+    "bad": 1,
+    "shown": "breed-siberian-husky",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    },
    {
     "id": "m02",
@@ -1606,53 +1606,53 @@
    {
     "id": "w06",
     "category": "topic-switch",
-    "answerable": false,
+    "answerable": true,
     "sent": [
-     "gov-104",
-     "gov-92"
+     "breed-siberian-husky",
+     "breed-heat-dog"
     ],
-    "good": 0,
-    "bad": 2,
-    "shown": null,
+    "good": 1,
+    "bad": 1,
+    "shown": "breed-siberian-husky",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    }
   ],
   "evidence/dev": {
    "cases": 57,
-   "precision": 78.3,
-   "recall": 97.3,
-   "falseAbstain": 2.7,
-   "correctAbstain": 95,
-   "wrongOnly": 1.8,
-   "shownWrong": 7,
-   "shownWrongSure": 7,
-   "shownRight": 86.5,
-   "balanced": 96.2
+   "precision": 80.6,
+   "recall": 97.5,
+   "falseAbstain": 2.5,
+   "correctAbstain": 100,
+   "wrongOnly": 0,
+   "shownWrong": 5.3,
+   "shownWrongSure": 5.3,
+   "shownRight": 90,
+   "balanced": 98.8
   },
   "evidence/test": {
    "cases": 55,
-   "precision": 78.8,
-   "recall": 88.6,
-   "falseAbstain": 8.6,
-   "correctAbstain": 90,
-   "wrongOnly": 5.5,
-   "shownWrong": 5.5,
+   "precision": 80,
+   "recall": 91.9,
+   "falseAbstain": 8.1,
+   "correctAbstain": 88.9,
+   "wrongOnly": 3.6,
+   "shownWrong": 3.6,
    "shownWrongSure": 3.6,
-   "shownRight": 88.6,
-   "balanced": 89.3
+   "shownRight": 91.9,
+   "balanced": 90.4
   },
   "evidence/all": {
    "cases": 112,
-   "precision": 78.6,
-   "recall": 93.1,
-   "falseAbstain": 5.6,
-   "correctAbstain": 92.5,
-   "wrongOnly": 3.6,
-   "shownWrong": 6.3,
-   "shownWrongSure": 5.4,
-   "shownRight": 87.5,
-   "balanced": 92.8
+   "precision": 80.3,
+   "recall": 94.8,
+   "falseAbstain": 5.2,
+   "correctAbstain": 94.3,
+   "wrongOnly": 1.8,
+   "shownWrong": 4.5,
+   "shownWrongSure": 4.5,
+   "shownRight": 90.9,
+   "balanced": 94.6
   },
   "evidence/rows": [
    {
@@ -1719,7 +1719,7 @@
     ],
     "good": 1,
     "bad": 0,
-    "shown": null,
+    "shown": "guide-heatstroke",
     "shownOk": true,
     "shownSure": false
    },
@@ -2205,15 +2205,12 @@
     "id": "s01",
     "category": "species",
     "answerable": false,
-    "sent": [
-     "gov-189",
-     "q0c19b6"
-    ],
+    "sent": [],
     "good": 0,
-    "bad": 2,
-    "shown": "gov-189",
-    "shownOk": false,
-    "shownSure": true
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
    },
    {
     "id": "s02",
@@ -2444,13 +2441,15 @@
    {
     "id": "o01",
     "category": "out-of-scope",
-    "answerable": false,
-    "sent": [],
-    "good": 0,
+    "answerable": true,
+    "sent": [
+     "breed-heat-dog"
+    ],
+    "good": 1,
     "bad": 0,
-    "shown": null,
+    "shown": "breed-heat-dog",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    },
    {
     "id": "o02",
@@ -2466,24 +2465,29 @@
    {
     "id": "o03",
     "category": "out-of-scope",
-    "answerable": false,
-    "sent": [],
-    "good": 0,
-    "bad": 0,
-    "shown": null,
+    "answerable": true,
+    "sent": [
+     "breed-heat-dog",
+     "breed-shih-tzu"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "breed-heat-dog",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    },
    {
     "id": "o04",
     "category": "out-of-scope",
-    "answerable": false,
-    "sent": [],
-    "good": 0,
+    "answerable": true,
+    "sent": [
+     "breed-siberian-husky"
+    ],
+    "good": 1,
     "bad": 0,
-    "shown": null,
+    "shown": "breed-siberian-husky",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    },
    {
     "id": "o05",
@@ -2719,13 +2723,15 @@
    {
     "id": "m01",
     "category": "multi-turn",
-    "answerable": false,
-    "sent": [],
-    "good": 0,
+    "answerable": true,
+    "sent": [
+     "breed-siberian-husky"
+    ],
+    "good": 1,
     "bad": 0,
-    "shown": null,
+    "shown": "breed-siberian-husky",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    },
    {
     "id": "m02",
@@ -2809,7 +2815,7 @@
     "answerable": true,
     "sent": [
      "qc01447",
-     "q0c19b6"
+     "qcf4aff"
     ],
     "good": 1,
     "bad": 1,
@@ -2912,12 +2918,12 @@
     "category": "follow-up",
     "answerable": true,
     "sent": [
-     "q03cef8"
+     "q05288f"
     ],
-    "good": 0,
-    "bad": 1,
-    "shown": "q03cef8",
-    "shownOk": false,
+    "good": 1,
+    "bad": 0,
+    "shown": "q05288f",
+    "shownOk": true,
     "shownSure": false
    },
    {
@@ -2939,10 +2945,11 @@
     "category": "follow-up",
     "answerable": true,
     "sent": [
-     "q3374af"
+     "q3374af",
+     "breed-shih-tzu"
     ],
     "good": 1,
-    "bad": 0,
+    "bad": 1,
     "shown": "q3374af",
     "shownOk": true,
     "shownSure": true
@@ -3062,13 +3069,15 @@
    {
     "id": "w06",
     "category": "topic-switch",
-    "answerable": false,
-    "sent": [],
-    "good": 0,
+    "answerable": true,
+    "sent": [
+     "breed-siberian-husky"
+    ],
+    "good": 1,
     "bad": 0,
-    "shown": null,
+    "shown": "breed-siberian-husky",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    }
   ]
  }
