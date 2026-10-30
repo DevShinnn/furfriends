@@ -1,0 +1,32 @@
+{
+  "_about": "Emergency-recognition questions for the assistant (urgentGuides in src/lib/emergency.js): the first-aid guide each should bring up, or none. Written for the Phase 3 safety check; the expected guides follow the app's own guides, not a vet's review. Keep out of training.",
+  "cases": [
+    { "q": "My cat keeps going to the litter box but nothing comes out", "guide": "urinary" },
+    { "q": "my male cat is in and out of the litter box and only a few drops come out", "guide": "urinary" },
+    { "q": "my cat is straining in the litter box", "guide": "urinary" },
+    { "q": "My cat can't pee", "guide": "urinary" },
+    { "q": "my dog ate rat poison", "guide": "poisoning" },
+    { "q": "my dog is having a seizure", "guide": "seizure" },
+    { "q": "My dog's belly is swollen and he keeps trying to vomit", "guide": "bloat" },
+    { "q": "my puppy was hit by a motorcycle", "guide": "accident" },
+    { "q": "nalason ang aso ko", "guide": "poisoning" },
+    { "q": "nangingisay ang pusa ko", "guide": "seizure" },
+    { "q": "hirap huminga ang aso ko", "guide": "breathing" },
+    { "q": "kumain ng tsokolate ang aso ko", "guide": "poisoning" },
+    { "q": "nasagasaan ang aso namin", "guide": "accident" },
+    { "q": "nabangga ng motor ang tuta ko", "guide": "accident" },
+    { "q": "hindi makaihi ang pusa ko", "guide": "urinary" },
+    { "q": "kinagat ng ahas ang aso ko", "guide": "snake" },
+    { "q": "dumudugo ang paa ng aso ko", "guide": "bleeding" },
+    { "q": "nabulunan ang tuta ko", "guide": "choking" },
+    { "q": "nakuryente ang pusa ko", "guide": "burns" },
+    { "q": "how often should I bathe my cat", "guide": null },
+    { "q": "Why does my cat scratch the sides of the litter box?", "guide": null },
+    { "q": "my dog's poop comes out soft", "guide": null },
+    { "q": "my cat uses the litter box a lot since I changed brands", "guide": null },
+    { "q": "paano paliguan ang aso", "guide": null },
+    { "q": "ilang beses pakainin ang tuta", "guide": null },
+    { "q": "kumain ng saging ang aso ko", "guide": null },
+    { "q": "kinagat ako ng aso ko habang naglalaro", "guide": null }
+  ]
+}

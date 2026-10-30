@@ -20,8 +20,9 @@ import { SOURCES, sourcesFor } from "./prompt";
 /* Calibrated by `npm run eval:retrieval -- --calibrate` on the labelled questions (policy: decline at least 85% of
    questions the library can't answer, model gets only wrong passages for at most 5%; cross-validated, then tuned
    on all of them). A passage is evidence when its search score reaches `strong`, or reaches `min` and it covers
-   at least `cover` of the subject; for a follow-up it must also cover `focus` of what the new message asks. */
-export const EVIDENCE = { strong: 0.76, min: 0.7, cover: 0.6, focus: 0.01 };
+   at least `cover` of the subject (a close one still `floor`); for a follow-up it must also cover `focus` of what
+   the new message asks. */
+export const EVIDENCE = { strong: 0.76, min: 0.7, cover: 0.6, focus: 0.01, floor: 0 };
 
 // Words that say nothing about the subject of a question: the animals, places, and words owners ask with.
 const GENERIC = new Set(`dog dogs puppy puppies pup aso tuta cat cats kitten kittens kitty pusa kuting pet pets animal animals
@@ -74,8 +75,9 @@ export function selectEvidence(results, question, idf, { pinned = [], limit = 2,
   // A follow-up is searched together with what it refers to ("my dog has ticks" + "can they make him sick?").
   // The passage must also cover what the new message itself asks (sick), not only the earlier topic (ticks).
   const own = new Map(results.map((r) => [r.id, focus ? coverage(focus, r, idf) : 1]));
-  const answers = (r) => own.get(r.id) >= rule.focus && (r.score >= rule.strong || (r.score >= rule.min && cover.get(r.id) >= rule.cover));
-  const shows = (r) => own.get(r.id) >= rule.focus && (r.score >= rule.strong || cover.get(r.id) >= rule.cover);
+  const answers = (r) => own.get(r.id) >= rule.focus
+    && ((r.score >= rule.strong && cover.get(r.id) >= (rule.floor || 0)) || (r.score >= rule.min && cover.get(r.id) >= rule.cover));
+  const shows = (r) => own.get(r.id) >= rule.focus && ((r.score >= rule.strong && cover.get(r.id) >= (rule.floor || 0)) || cover.get(r.id) >= rule.cover);
   const near = (r) => shows(r) || cover.get(r.id) > 0;
   const ids = new Set(pinned.map((e) => e.id));
   const evidence = [...pinned, ...results.filter((r) => answers(r) && !ids.has(r.of || r.id))].slice(0, limit);
@@ -98,6 +100,8 @@ export function planAnswer(index, results, question, lastMessage, rule = EVIDENC
 const LAW = /\b(?:R\.?\s?A\.?|Republic Act(?:\s+No\.?)?)\s*(\d{3,5})\b|\b(?:Executive|Administrative)\s+Order(?:\s+No\.?)?\s*(\d+)\b|\bSec(?:tion|\.)\s*(\d+)\b/gi;
 const BODIES = ["CDC", "FDA", "ASPCA", "WSAVA", "AAFP", "AAHA", "AVMA", "CAPC", "Merck", "WHO", "RSPCA", "PAWS", "BAI", "Bureau of Animal Industry",
   "Department of Agriculture", "Department of Health", "DOH", "PNP", "LGU", "Animal Welfare Act", "Anti-Rabies Act", "Stack Exchange"];
+// FurFriends never gives medicine doses (safetyReply in knowledge.js), whatever a passage says.
+const DOSE = /\b\d+(\.\d+)?\s*(mg|mcg|ml|cc|milligrams?|millilit(er|re)s?|tablets?|tabs?|capsules?|drops?)\b|\b(mg|ml)\/kg\b/i;
 const URL = /\bhttps?:\/\/\S+|\bwww\.\S+/gi;
 const ALWAYS_OK = new Set(["24"]);   // "a 24-hour clinic" is FurFriends' own advice, as in the first-aid guides
 /* Share of the answer's words a passage must hold to count as used (and be credited). Calibrated with the real
@@ -135,6 +139,7 @@ export function checkAnswer(answer, sources, { context = "", limits = ANSWER } =
     if (new RegExp(`\\b${b}\\b`, b.length <= 4 ? "" : "i").test(answer) && !lower.includes(b.toLowerCase())) problems.push(`names ${b}, which the sources don't`);
   }
   for (const u of answer.match(URL) || []) if (!all.includes(u.replace(/[.,)]+$/, ""))) problems.push(`link not in the sources: ${u}`);
+  if (DOSE.test(answer)) problems.push("gives a medicine dose");
   const have = new Set(numbersIn(all));
   for (const n of new Set(numbersIn(answer))) if (!have.has(n) && !ALWAYS_OK.has(n)) problems.push(`number not in the sources: ${n}`);
   const use = sources.map((s) => overlap(answer, s.text));

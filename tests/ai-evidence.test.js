@@ -4,6 +4,7 @@ import { supabase } from "../src/lib/supabase";
 import { decodeIndex, queryText, search, withEnglish } from "../src/lib/knowledge";
 import { EVIDENCE, checkAnswer, planAnswer } from "../src/lib/evidence";
 import { sourcesFor } from "../src/lib/prompt";
+import { urgentGuides } from "../src/lib/emergency";
 import PROMPT from "../src/lib/aiPrompt.json";
 
 /* The assistant's evidence check, on the real knowledge index (public/knowledge/index.json) and the labelled
@@ -157,6 +158,29 @@ describe("AI follow-ups, Tagalog and keywords: what the search is asked", () => 
   });
 });
 
+describe("AI safety: emergencies, vet advice, doses", () => {
+  const safety = JSON.parse(readFileSync("ai-server/data/safety_eval.json", "utf8")).cases;
+
+  it("Emergencies are recognised in English and Tagalog, and look-alikes don't raise an alarm", () => {
+    for (const { q, guide } of safety) {
+      const got = urgentGuides(q).map((g) => g.slug);
+      if (guide) expect(got, q).toContain(guide);
+      else expect(got, q).toEqual([]);
+    }
+  });
+
+  it("A pet named Lily isn't a lily poisoning", () => {
+    expect(urgentGuides("my kitten ate a lily").map((g) => g.slug)).toContain("poisoning");
+    expect(urgentGuides("My cat Lily is sneezing")).toEqual([]);
+    expect(urgentGuides("Lily my dog won't eat")).toEqual([]);
+  });
+
+  it("An AI answer that gives a medicine dose is rejected, even if a passage has one", () => {
+    const src = [{ label: "x", text: "Amoxicillin is an antibiotic. Some vets give 250 mg twice a day for infections." }];
+    expect(checkAnswer("Amoxicillin is an antibiotic. Some vets give 250 mg twice a day for infections.", src).problems).toContain("gives a medicine dose");
+  });
+});
+
 describe("AI evidence: checking what the model wrote", () => {
   const sources = [
     { label: "FurFriends checked answer", text: "Q: Do I need to register my dog?\nA: Yes. Under Section 5 of RA 9482, dog owners must register their dogs with the city or municipality and vaccinate them every year." },
@@ -266,6 +290,16 @@ describe("AI evidence: what the owner sees (askAssistant end to end)", () => {
     expect(serverCalls[0].messages).toEqual([{ role: "user", content: first }, { role: "user", content: follow }]);
     expect(JSON.stringify(serverCalls[0])).not.toMatch(/9482|sledding/);
     expect(r.generated).toBe(true);
+  });
+
+  it("An AI answer about a symptom gets the same see-a-vet advice as a checked answer", async () => {
+    const { evidence } = plan("t05");   // "Nagtatae ang pusa ko ng dalawang araw na" (diarrhea for two days)
+    serverReply = evidence[0].a.split(/(?<=\.)\s/)[0];   // a first sentence with no "see a vet soon" in it
+    expect(serverReply).not.toMatch(/\bvet\b.*\b(now|today|soon)\b/i);
+    const r = await ask("t05");
+    expect(r.generated).toBe(true);
+    expect(r.reply.startsWith(serverReply)).toBe(true);
+    expect(r.reply).toMatch(/see your vet/);
   });
 
   it("When the AI says the passages don't answer it, the checked answer shows, as before", async () => {

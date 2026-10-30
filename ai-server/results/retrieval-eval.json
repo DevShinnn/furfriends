@@ -7,20 +7,10 @@
   "strong": 0.76,
   "min": 0.7,
   "cover": 0.6,
-  "focus": 0.01
+  "focus": 0.01,
+  "floor": 0
  },
- "heldOut": {
-  "cases": 112,
-  "precision": 76.1,
-  "recall": 81.9,
-  "falseAbstain": 12.1,
-  "correctAbstain": 92.9,
-  "wrongOnly": 6.4,
-  "shownWrong": 10.8,
-  "shownWrongSure": 6.3,
-  "shownRight": 79.4,
-  "balanced": 87.4
- },
+ "heldOut": null,
  "report": {
   "baseline/dev": {
    "cases": 57,
@@ -36,7 +26,7 @@
   },
   "baseline/test": {
    "cases": 55,
-   "precision": 49.1,
+   "precision": 50,
    "recall": 85.4,
    "falseAbstain": 0,
    "correctAbstain": 0,
@@ -48,7 +38,7 @@
   },
   "baseline/all": {
    "cases": 112,
-   "precision": 52.2,
+   "precision": 52.7,
    "recall": 91.6,
    "falseAbstain": 0,
    "correctAbstain": 0,
@@ -526,8 +516,8 @@
     "category": "tl",
     "answerable": true,
     "sent": [
-     "q6166c6",
-     "q881818"
+     "guide-vomiting",
+     "q6166c6"
     ],
     "good": 1,
     "bad": 1,
@@ -568,8 +558,8 @@
     "category": "tl",
     "answerable": true,
     "sent": [
-     "q7bf34c",
-     "qa6febf"
+     "guide-poisoning",
+     "q7bf34c"
     ],
     "good": 2,
     "bad": 0,
@@ -582,8 +572,8 @@
     "category": "tl",
     "answerable": true,
     "sent": [
-     "q394ce7",
-     "q2169dc"
+     "guide-vomiting",
+     "q394ce7"
     ],
     "good": 2,
     "bad": 0,
@@ -820,11 +810,11 @@
     "category": "emergency",
     "answerable": true,
     "sent": [
-     "q6ea1d7",
-     "q285fc9"
+     "guide-urinary",
+     "q6ea1d7"
     ],
-    "good": 1,
-    "bad": 1,
+    "good": 2,
+    "bad": 0,
     "shown": "q6ea1d7",
     "shownOk": true,
     "shownSure": true
@@ -1642,7 +1632,7 @@
   },
   "evidence/test": {
    "cases": 55,
-   "precision": 80.6,
+   "precision": 82.1,
    "recall": 85.4,
    "falseAbstain": 12.2,
    "correctAbstain": 85.7,
@@ -1654,7 +1644,7 @@
   },
   "evidence/all": {
    "cases": 112,
-   "precision": 79,
+   "precision": 79.7,
    "recall": 88,
    "falseAbstain": 9.6,
    "correctAbstain": 89.7,
@@ -2122,8 +2112,8 @@
     "category": "tl",
     "answerable": true,
     "sent": [
-     "q6166c6",
-     "q881818"
+     "guide-vomiting",
+     "q6166c6"
     ],
     "good": 1,
     "bad": 1,
@@ -2164,8 +2154,8 @@
     "category": "tl",
     "answerable": true,
     "sent": [
-     "q7bf34c",
-     "qa6febf"
+     "guide-poisoning",
+     "q7bf34c"
     ],
     "good": 2,
     "bad": 0,
@@ -2178,8 +2168,8 @@
     "category": "tl",
     "answerable": true,
     "sent": [
-     "q394ce7",
-     "q2169dc"
+     "guide-vomiting",
+     "q394ce7"
     ],
     "good": 2,
     "bad": 0,
@@ -2407,11 +2397,11 @@
     "category": "emergency",
     "answerable": true,
     "sent": [
-     "q6ea1d7",
-     "q285fc9"
+     "guide-urinary",
+     "q6ea1d7"
     ],
-    "good": 1,
-    "bad": 1,
+    "good": 2,
+    "bad": 0,
     "shown": "q6ea1d7",
     "shownOk": true,
     "shownSure": true

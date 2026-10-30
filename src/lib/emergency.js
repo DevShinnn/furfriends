@@ -1,6 +1,7 @@
 /* First-aid guides for cats and dogs. Built into the app so they work offline.
    urgency: "now" = go to a vet immediately; "call" = call your vet for advice, go now if red flags.
    Content is general first aid, not a diagnosis — every guide ends at the vet. */
+import { withEnglish } from "./knowledge.js";
 
 export const RED_FLAGS = [
   "Struggling to breathe, or pale, blue or grey gums",
@@ -403,14 +404,14 @@ const URGENT = [
   ["cpr", /not breathing|no heartbeat|unconscious|won'?t wake|unresponsive/],
   ["breathing", /can'?t breathe|cannot breathe|trouble breathing|struggling to breathe|gasping|blue gums|grey gums|gray gums|pale gums|white gums|breathing (very |really |so )?(fast|hard|heavily|quickly)|(fast|rapid|heavy) breathing/],
   ["heatstroke", /heat ?stroke|overheat|too hot/],
-  ["poisoning", /poison|chocolate|grape|raisin|xylitol|onion|garlic|rat bait|rodenticide|antifreeze|coolant|radiator|bleach|paracetamol|ibuprofen|insecticide/],
+  ["poisoning", /poison|chocolate|grape|raisin|xylitol|(ate|eat(en|s)?|chew\w*|lick\w*|swallow\w*)\b[^.]{0,30}\blil(y|ies)|lil(y|ies) (pollen|plant|flower|lea(f|ves))|macadamia|onion|garlic|rat bait|rodenticide|antifreeze|coolant|radiator|bleach|paracetamol|ibuprofen|insecticide/],
   ["toad", /\btoads?\b|palaka/],
   ["choking", /chok/],
   ["bleeding", /bleeding|won'?t stop bleed/],
   ["accident", /hit by|run over|fell (from|off)|fall from/],
   ["seizure", /seiz|convuls|fitting/],
   ["bloat", /bloat|swollen (belly|stomach|tummy)|(belly|stomach|tummy) (is |looks |got )?(swollen|swelling|hard|tight|big)|distended|retch|dry heav|trying to vomit/],
-  ["urinary", /can'?t pee|cannot pee|can'?t urinate|straining to (pee|urinate)|no urine|not peeing/],
+  ["urinary", /can'?t pee|cannot pee|can'?t urinate|straining to (pee|urinate)|no urine|not peeing|trying to (pee|urinate)|straining (in|at) the litter|in and out of the litter ?box|litter ?box.*\b(nothing (comes )?out|no (pee|urine)|(only )?(a few )?drops)\b/],
   ["snake", /snake/],
   ["burns", /\bburn|electric shock|electrocut/],
   ["eye", /eye (injur|bulg|popped|out)/],
@@ -418,8 +419,10 @@ const URGENT = [
   ["vomiting", /vomit|throwing up|diarrh|blood in (the )?(stool|poop)/],
 ];
 
+// Tagalog is checked through the same translation as the search ("nalason ang aso ko" -> "poison poisoned dog").
 export function urgentGuides(text) {
-  const t = text.toLowerCase();
+  const english = withEnglish(text);
+  const t = (english === text ? text : `${text}. ${english}`).toLowerCase();
   const slugs = URGENT.filter(([, re]) => re.test(t)).map(([s]) => s);
   return GUIDES.filter((g) => slugs.includes(g.slug)).slice(0, 3);
 }

@@ -18,7 +18,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { pipeline } from "@huggingface/transformers";
-import { EMBED_MODEL, EMBED_OPTIONS, chatReply, compose, decodeIndex, queryText, safetyReply, search } from "../src/lib/knowledge.js";
+import { EMBED_MODEL, EMBED_OPTIONS, chatReply, compose, decodeIndex, queryText, safetyReply, search, withVetAdvice } from "../src/lib/knowledge.js";
 import { ANSWER, EVIDENCE, checkAnswer, planAnswer } from "../src/lib/evidence.js";
 import { chatMessages, sourcesFor, SOURCES } from "../src/lib/prompt.js";
 import { urgentGuides } from "../src/lib/emergency.js";
@@ -100,13 +100,13 @@ const better = (a, b) => { for (let i = 0; i < a.length; i++) if (a[i] !== b[i])
 const range = (a, b, s) => Array.from({ length: Math.round((b - a) / s) + 1 }, (_, i) => Math.round((a + i * s) * 1000) / 1000);
 function tune(split) {
   let best = null;
-  for (const strong of range(0.7, 0.96, 0.02)) for (const min of range(0.5, 0.8, 0.02)) for (const cover of range(0, 0.9, 0.05)) for (const focus of [0, 0.01, 0.3]) {
+  for (const strong of range(0.7, 0.96, 0.02)) for (const min of range(0.5, 0.8, 0.02)) for (const cover of range(0, 0.9, 0.05)) for (const focus of [0, 0.01, 0.3]) for (const floor of [0, 0.2, 0.3, 0.4, 0.5]) {
     if (min > strong) continue;
-    const r = { strong, min, cover, focus };
+    const r = { strong, min, cover, focus, floor };
     const { m } = measure("evidence", split, r);
     if (m.correctAbstain < MIN_ABSTAIN || m.wrongOnly > MAX_WRONG_ONLY) continue;
     // Most answerable questions with a right passage; then cleaner passages; then more declines; then looser limits.
-    const key = [m.recall, m.precision, m.correctAbstain, -strong, -min, -cover, -focus];
+    const key = [m.recall, m.precision, m.correctAbstain, -strong, -min, -cover, -focus, -floor];
     if (!best || better(key, best.key)) best = { key, rule: r, m };
   }
   if (!best) throw new Error(`No limits meet the policy (abstain >= ${MIN_ABSTAIN}%, wrong-only <= ${MAX_WRONG_ONLY}%) on ${split || "all"}`);
@@ -181,7 +181,9 @@ if (answersIn) {
       const a = sent.length && answers.find((x) => x.id === p.id && x.policy === policy);
       if (sent.length && !a) throw new Error(`No answer for ${p.id} (${policy}): run answer_prompts.py on the latest prompts`);
       const shownBad = shown.match && !rel.has(shown.match.id);
-      if (!a) return { id: p.id, answerable: rel.size > 0, outcome: "checked", generated: false, wrongCredit: shownBad ? 1 : 0, credits: shown.match ? 1 : 0 };
+      const needsVet = withVetAdvice(p.q, "x") !== "x";   // a symptom, or something the pet ate (knowledge.js)
+      const vetOk = (text) => withVetAdvice(p.q, text) === text;
+      if (!a) return { id: p.id, answerable: rel.size > 0, outcome: "checked", generated: false, wrongCredit: shownBad ? 1 : 0, credits: shown.match ? 1 : 0, needsVet, vetShown: vetOk(shown.reply) };
       // The same check as the app (askKnowledge), with the owner's words as context.
       const check = checkAnswer(a.answer, sourcesFor(sent), { context: p.turns.join("\n"), limits });
       const declined = notFound(a.answer);
@@ -195,6 +197,7 @@ if (answersIn) {
       return {
         id: p.id, answerable: rel.size > 0, generated: kept, declined, rightSent, answer: a.answer, problems: check.problems,
         unsupported: claims.filter((x) => !x.startsWith("not based")), ungrounded: claims.some((x) => x.startsWith("not based")),
+        needsVet, vetShown: kept ? vetOk(policy === "baseline" ? a.answer : withVetAdvice(p.q, a.answer)) : vetOk(shown.reply),
         credits: kept ? credited.length : shown.match ? 1 : 0,
         wrongCredit: kept ? credited.filter((e) => !rel.has(idOf(e))).length : shownBad ? 1 : 0,
       };
@@ -212,6 +215,7 @@ if (answersIn) {
       ungrounded: pct(gen.filter((r) => r.ungrounded).length, gen.length),           // of shown AI answers: barely uses its passages
       creditPrecision: pct(rows.reduce((n, r) => n + r.credits - r.wrongCredit, 0), rows.reduce((n, r) => n + r.credits, 0)),
       wrongCredits: rows.reduce((n, r) => n + r.wrongCredit, 0),
+      vetAdviceShown: pct(rows.filter((r) => r.needsVet && r.vetShown).length, rows.filter((r) => r.needsVet).length),   // symptom / swallowed questions whose reply says to see a vet soon
     } };
   };
 

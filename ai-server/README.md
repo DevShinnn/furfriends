@@ -15,6 +15,7 @@ to train it and retrain it from the app's 👍/👎 ratings.
 | `answer_rag.py` | Answers the test questions the way the app does (find passages, then generate), for `evaluate.py`. |
 | `answer_prompts.py` | Answers the prompts the app itself builds (`npm run eval:retrieval -- --prompts ...`) with the exported model, to measure the evidence check; `--serve` answers over HTTP for `npm run eval:conversation` (`docs/ai-evaluation-guide.md`). |
 | `data/retrieval_eval.jsonl` | 112 labelled questions and conversations for the search and evidence check. Keep them out of training. |
+| `data/safety_eval.json` | 27 questions, emergencies and everyday ones in English and Tagalog, with the first-aid guide each should bring up (or none). Checked by `npm test`. Keep them out of training. |
 | `export_onnx.py` | Turns the trained model into the file the app runs in the browser (4-bit, on WebGPU or the CPU). |
 | `fetch_gov_guides.py` | Downloads public-domain CDC and FDA pet health pages into `data/passages/gov_guides.csv`. |
 | `fetch_open_data.py` | Downloads openly licensed cat and dog Q&As from the Pets Stack Exchange data dump into `data/open/` (2,447 answers in October 2026). |

@@ -1,8 +1,8 @@
 import { supabase } from "./supabase";
 import { breedFor } from "./breeds";
-import { chatReply, decodeIndex, queryText, safetyReply, search, withEnglish } from "./knowledge";
+import { chatReply, decodeIndex, queryText, safetyReply, search, withEnglish, withVetAdvice } from "./knowledge";
 import { MODEL_HISTORY, chatMessages, conversation, describePet, petContext, sourcesFor } from "./prompt";
-import { planAnswer, reviewAnswer } from "./evidence";
+import { EVIDENCE, planAnswer, reviewAnswer } from "./evidence";
 import PROMPT from "./aiPrompt.json";
 
 /* Client for the FurFriends assistant.
@@ -154,7 +154,11 @@ async function askKnowledge({ messages, pet, signal, onStatus, onText }) {
         const review = reviewAnswer(reply, evidence, { context });
         if (review.ok) {
           const sources = review.used.map(pickSource);
-          return { reply, model, match: sources[0], sources, related: fallback.related, generated: true };
+          // The same vet advice as the checked answers get, when the question is about a symptom or something
+          // the pet ate and the answer doesn't already say to see a vet soon.
+          // Written only from passages that cleared the lower limit: say it's the closest checked information.
+          const uncertain = review.used.every((e) => e.kind !== "guide" && e.score < EVIDENCE.strong);
+          return { reply: withVetAdvice(q, reply), model, match: sources[0], sources, related: fallback.related, generated: true, uncertain };
         }
         console.warn("FurFriends AI answer isn't backed by its checked sources, showing the checked answer instead:", review.problems);
       }

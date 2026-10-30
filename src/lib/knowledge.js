@@ -67,7 +67,7 @@ export const POISON_NOTE = "If your pet may have eaten, licked or touched someth
   + "even if your pet seems fine. Bring the package or label, and only make your pet vomit if a vet tells you to.";
 const SAYS_VET = /\b(vet|vets|veterinarian|clinic)\b/i;
 const SAYS_SOON = /\b(now|immediately|right away|straight away|urgent|urgently|today|as soon as)\b/i;
-function withVetAdvice(question, answer) {
+export function withVetAdvice(question, answer) {
   if (SAYS_VET.test(answer) && SAYS_SOON.test(answer)) return answer;
   if (SWALLOWED.test(question)) return `${answer}\n\n${POISON_NOTE}`;
   return SYMPTOM.test(question) ? `${answer}\n\n${VET_NOTE}` : answer;
@@ -209,6 +209,10 @@ const TAGALOG = [   // phrases first, so "nakagat ako" (bit me) isn't read as ju
   [/\bmatanda na\b|\bmatandang\b/, "old senior"], [/\bpalaka\b/, "toad"], [/\bahas\b/, "snake"],
   [/\bpagkain\b|\bpakain\b/, "food feeding"], [/\bpaliguan\b|\bligo\b/, "bath"], [/\bkapitbahay\b/, "neighbor"],
   [/\bnaligaw\b|\bnawala\b/, "lost"], [/\bbuntis\b/, "pregnant"], [/\bkapon\b|\bkinapon\b/, "neuter spay"],
+  // Emergencies (also read by the emergency check, urgentGuides in emergency.js).
+  [/\bnasagasaan\b|\bnasagasa\b|\bnabangga\b|\bbinangga\b/, "hit by a car"], [/\b(hindi|di|ayaw) (maka-?ihi|umiihi|umihi)\b|\bhirap umihi\b/, "can't pee"], [/\b(hindi|di) makahinga\b/, "trouble breathing"],
+  [/\bnahulog\b/, "fell from"],
+  [/\bnabulunan\b|\bnabilaukan\b/, "choking"], [/\bnakuryente\b|\bnakoryente\b/, "electric shock"], [/\bnapaso\b/, "burned burn"],
   // Question words, so they aren't taken for what the question is about.
   [/\bilang beses\b/, "how often"], [/\bkailan\b/, "when"], [/\bpwede\b|\bpuwede\b/, "can"], [/\bdapat\b/, "should"],
   [/\bgagawin\b|\bgawin\b/, "do"], [/\btanggalin\b|\balisin\b|\btatanggalin\b/, "remove"], [/\bdelikado\b|\bmapanganib\b/, "dangerous"],

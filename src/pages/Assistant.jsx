@@ -59,12 +59,12 @@ export default function Assistant() {
     setChat(next); setText(""); setBusy(true);
     abort.current = new AbortController();
     try {
-      const { reply, model, match, related, generated, sources } = await askAssistant({
+      const { reply, model, match, related, generated, sources, uncertain } = await askAssistant({
         user, messages: next.filter((m) => !m.error), pet, signal: abort.current.signal, onStatus: setPreparing, onText: setDraft,
       });
       // Keep what the assistant saw alongside the answer, in case it's rated later.
       setChat((c) => [...c, {
-        id: uid(), fid: crypto.randomUUID(), role: "assistant", content: reply, model, match, related, generated, sources,
+        id: uid(), fid: crypto.randomUUID(), role: "assistant", content: reply, model, match, related, generated, sources, uncertain,
         q, petId: pet?.id || null, ctx: petContext(pet), convo: conversation(chat), rating: 0,
       }]);
     } catch (e) {
@@ -186,7 +186,7 @@ export default function Assistant() {
   );
 }
 
-function Message({ m, onRate, onExplain, onAsk }) {
+export function Message({ m, onRate, onExplain, onAsk }) {
   if (m.role === "user") {
     const guides = urgentGuides(m.content);
     return (
@@ -214,6 +214,13 @@ function Message({ m, onRate, onExplain, onAsk }) {
         {m.generated && m.sources?.length
           ? <small className="ai-source">Written by the FurFriends AI from: {m.sources.map((s, i) => <span key={i}>{i > 0 && " · "}<SourceLink match={s} /></span>)}</small>
           : m.match && <Source match={m.match} />}
+        {(m.generated || m.match) && !m.error && (
+          // Answers come from general pet-care sources: they can't take this pet's exam, history or tests into account.
+          <small className="ai-note">
+            {m.uncertain && "This is the closest checked information FurFriends has, and it may not fit your pet exactly. "}
+            General pet-care information, not veterinary advice.
+          </small>
+        )}
         {m.related?.length > 0 && (
           <div className="ai-related">
             <span>Similar questions:</span>

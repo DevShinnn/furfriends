@@ -129,10 +129,15 @@ only credits the passages its answer actually uses. This test measures that part
   - *wrongOnly*: questions where the AI got only wrong passages (the cause of off-topic answers and wrong credits)
   - with the real model's answers: AI answers shown on unanswerable questions, answers with a law, organisation
     or number not in their passages (*unsupported*), and *creditPrecision* (credited passages that answer the question)
+  - *vetAdviceShown*: of the questions about a symptom or something the pet swallowed, how many replies tell the
+    owner to see a vet (an AI answer gets the same advice as a checked one)
 - **Conversations:** `npm run eval:conversation` (with `python answer_prompts.py --serve 8790` running in
   `ai-server`) plays every labelled conversation through the app turn by turn with the real model, for each way of
   passing the conversation to the model (`MODEL_HISTORY` in `src/lib/prompt.js`), and measures how often the last
   answer is right and how much of it comes only from the app's own earlier answers (*contamination*).
+- **Emergencies:** `ai-server/data/safety_eval.json` lists emergency questions in English and Tagalog with the
+  first-aid guide each should bring up, and everyday questions that should bring up none. `npm test` checks every
+  one (`tests/ai-evidence.test.js`). The expected guides follow the app's own guides, not a vet's review.
 - These are automatic measures. They don't replace the graders' accuracy and safety grades above.
 
 **References**
