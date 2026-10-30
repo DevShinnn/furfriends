@@ -1,5 +1,6 @@
 """The FurFriends AI on Vercel: POST /api/ask writes the answer from the app's checked passages with the team's
-own model (DevShin00/furfriends-rag-v2) and streams it back, so owners download nothing.
+own model (DevShin00/furfriends-rag-v4) and streams it back, so owners download nothing.
+To go back to the earlier model, set FURFRIENDS_AI_MODEL=DevShin00/furfriends-rag-v2 in Vercel and redeploy.
 
   POST /api/ask
   Authorization: Bearer <Supabase access token>   (only logged-in FurFriends users get answers)
@@ -29,8 +30,8 @@ sys.path.insert(0, os.path.join(ROOT, "ai-server"))
 from onnx_chat import OnnxChat  # noqa: E402
 from prompting import build_messages  # noqa: E402
 
-MODEL = os.getenv("FURFRIENDS_AI_MODEL", "DevShin00/furfriends-rag-v2")
-VERSION = MODEL.split("/")[-1].removeprefix("furfriends-")          # saved with ratings, e.g. "rag-v2"
+MODEL = os.getenv("FURFRIENDS_AI_MODEL", "DevShin00/furfriends-rag-v4")
+VERSION = MODEL.split("/")[-1].removeprefix("furfriends-")          # saved with ratings, e.g. "rag-v4"
 LIMIT = float(os.getenv("AI_CPU_SECONDS_30D", str(3 * 3600)))      # 75% of the Hobby plan's 4 CPU-hours
 CHECK_USAGE = os.getenv("AI_USAGE_CHECK", "on") != "off"             # "off" only for testing on a laptop
 MAX_NEW_TOKENS = 260

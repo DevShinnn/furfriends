@@ -46,6 +46,7 @@ def main():
     p.add_argument("--limit", type=int, default=0)
     p.add_argument("--no-urgent", action="store_true", help="don't put the emergency check's first-aid guide first")
     p.add_argument("--only", default="", help="only questions containing one of these words (comma-separated), for a quick check")
+    p.add_argument("--checked-only", action="store_true", help="no Pets Stack Exchange passages, as the app since 2026-10-30")
     p.add_argument("--out", required=True)
     args = p.parse_args()
     torch.manual_seed(0)
@@ -53,7 +54,10 @@ def main():
     test = jsonl(args.test)[: args.limit or None]
     if args.only:
         test = [t for t in test if any(w in t["messages"][-2]["content"].lower() for w in args.only.lower().split(","))]
-    lib = library(jsonl(args.train), args.gov)
+    train = jsonl(args.train)
+    if args.checked_only:
+        train = [ex for ex in train if not (ex.get("source") or "").startswith("Pets Stack Exchange")]
+    lib = library(train, args.gov)
     etok, emodel = AutoTokenizer.from_pretrained(EMBED), AutoModel.from_pretrained(EMBED).eval()
     urgent = [[] for _ in test] if args.no_urgent else urgent_slugs([t["messages"][-2]["content"] for t in test])
     at = {x["id"]: j for j, x in enumerate(lib)}
