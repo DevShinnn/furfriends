@@ -87,7 +87,9 @@ describe("AI evidence: which passages the model may answer from", () => {
   });
 
   it("Everyday questions in English, Tagalog, and about cats or dogs get a passage that answers them", () => {
-    for (const id of ["r01", "r03", "r11", "r14", "r27", "t05", "t06", "t07", "s01", "s02", "s03"]) {
+    // (s01 dog food for cats and s02 kneading were answered only by Stack Exchange posts, which the app no longer
+    // searches: until the team writes checked answers, the library has none. docs/ai-knowledge-gaps.md)
+    for (const id of ["r01", "r03", "r11", "r14", "r27", "t05", "t06", "t07", "s03"]) {
       const { c, evidence } = plan(id);
       expect(evidence.length, id).toBeGreaterThan(0);
       expect(evidence.some((e) => c.relevant.includes(idOf(e))), id).toBe(true);

@@ -3,6 +3,8 @@
    owner's own device. Run it after changing the Q&A data (ai-server/data) or the guides.
 
      node scripts/build-knowledge.mjs          → public/knowledge/index.json (served by Vercel)
+     node scripts/build-knowledge.mjs --with-community   → also the Pets Stack Exchange answers (owners' opinions, which
+                                                 nobody checked; left out since 2026-10-30, see qaEntries)
      node scripts/build-knowledge.mjs --eval   → accuracy test: searches the held-out test questions
                                                  with an index built WITHOUT them, then writes
                                                  ai-server/results/search-answers.jsonl for evaluate.py
@@ -22,6 +24,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const DATA = join(ROOT, "ai-server", "data");
 const args = process.argv.slice(2);
 const EVAL = args.includes("--eval");
+const COMMUNITY = args.includes("--with-community");
 const VERSION = args.find((a) => a.startsWith("--version="))?.split("=")[1] || "search-v1";
 
 const jsonl = (f) => readFileSync(join(DATA, f), "utf8").split("\n").filter((l) => l.trim()).map((l) => JSON.parse(l));
@@ -39,6 +42,11 @@ function qaEntries(rows) {
   return rows
     // Answers about one named pet ("Is Mochi's weight healthy?") would mislead other owners.
     .filter((r) => !r.pet?.name)
+    // Only checked sources: Pets Stack Exchange answers are pet owners' opinions that nobody on the team checked.
+    // On the 112 labelled questions (npm run eval:retrieval) leaving them out cost 8 of 83 answerable everyday
+    // questions (cat milk, introducing cats...), which now say there's no checked answer until the team writes one
+    // (docs/ai-knowledge-gaps.md). They are still used to train the model's answering style (build_rag_data.py).
+    .filter((r) => COMMUNITY || !/^Pets Stack Exchange/.test(r.source || ""))
     .flatMap((r) => {
       const q = r.messages.at(-2).content, a = r.messages.at(-1).content;
       const main = {

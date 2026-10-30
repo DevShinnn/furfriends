@@ -16,6 +16,7 @@
     "check-secrets": "node scripts/check-secrets.mjs",
     "check-secrets:all": "node scripts/check-secrets.mjs --all",
     "check-secrets:install": "node scripts/check-secrets.mjs --install-hook",
+    "test": "vitest run",
     "eval:retrieval": "vite-node scripts/eval-retrieval.mjs",
     "eval:conversation": "vite-node scripts/eval-conversation.mjs"
   },
@@ -28,8 +29,12 @@
     "react-router-dom": "^7.18.4"
   },
   "devDependencies": {
+    "@testing-library/dom": "10.4.0",
+    "@testing-library/react": "16.3.0",
     "@vitejs/plugin-react": "^4.7.0",
+    "jsdom": "26.1.0",
     "vite": "^6.4.3",
-    "vite-plugin-pwa": "^1.3.0"
+    "vite-plugin-pwa": "^1.3.0",
+    "vitest": "3.2.4"
   }
 }

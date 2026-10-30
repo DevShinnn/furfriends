@@ -21,8 +21,9 @@ import { SOURCES, sourcesFor } from "./prompt";
    questions the library can't answer, model gets only wrong passages for at most 5%; cross-validated, then tuned
    on all of them). A passage is evidence when its search score reaches `strong`, or reaches `min` and it covers
    at least `cover` of the subject (a close one still `floor`); for a follow-up it must also cover `focus` of what
-   the new message asks. */
-export const EVIDENCE = { strong: 0.76, min: 0.7, cover: 0.6, focus: 0.01, floor: 0 };
+   the new message asks. Recalibrated 2026-10-30 for the checked-sources-only index (550 passages, no Stack Exchange):
+   the scores of a smaller library run lower. */
+export const EVIDENCE = { strong: 0.7, min: 0.6, cover: 0.55, focus: 0.01, floor: 0 };
 
 // Words that say nothing about the subject of a question: the animals, places, and words owners ask with.
 const GENERIC = new Set(`dog dogs puppy puppies pup aso tuta cat cats kitten kittens kitty pusa kuting pet pets animal animals
@@ -35,7 +36,7 @@ const GENERIC = new Set(`dog dogs puppy puppies pup aso tuta cat cats kitten kit
 function root(w) { return w.length > 5 ? w.replace(/(ing|ed|ly)$/, "") : w; }
 
 /* The question's subject words, each with how rare it is in the library (rare words say more). */
-function subject(question, idf) {
+export function subject(question, idf) {
   const words = new Map();
   for (const w of tokens(question)) {
     const r = root(w);

@@ -5,6 +5,9 @@
      npm run eval:retrieval -- --prompts out.jsonl   → the exact prompts the app would send the model, per policy,
                                                        for ai-server/answer_prompts.py to answer with the real model
      npm run eval:retrieval -- --answers in.jsonl    → scores those answers: abstaining, unsupported claims, credits
+         --label v4                                  → writes answer-eval-v4.json, to compare models side by side
+         --skip m03,f02                              → leaves those questions out of the answer scores (e.g. ones a
+                                                       model was trained on)
 
    Questions: ai-server/data/retrieval_eval.jsonl. Each has the passage ids (from public/knowledge/index.json) that
    truly answer it, or none when the library has no answer and the assistant should say so. The labels were made
@@ -98,9 +101,13 @@ function measure(policy, split, rule) {
 const MIN_ABSTAIN = 85, MAX_WRONG_ONLY = 5;
 const better = (a, b) => { for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return a[i] > b[i]; return false; };
 const range = (a, b, s) => Array.from({ length: Math.round((b - a) / s) + 1 }, (_, i) => Math.round((a + i * s) * 1000) / 1000);
+// A follow-up's passage must cover at least something the new message asks: a safety rule, not traded for recall.
+// (With only checked sources, focus 0 answered one more follow-up, f11, but also gave "how much do kitten vaccines
+// cost?" the vaccine schedule, m09, and sent more wrong passages: 4.5% against 3.6% of questions.)
+const FOCUS = [0.01, 0.3];
 function tune(split) {
   let best = null;
-  for (const strong of range(0.7, 0.96, 0.02)) for (const min of range(0.5, 0.8, 0.02)) for (const cover of range(0, 0.9, 0.05)) for (const focus of [0, 0.01, 0.3]) for (const floor of [0, 0.2, 0.3, 0.4, 0.5]) {
+  for (const strong of range(0.7, 0.96, 0.02)) for (const min of range(0.5, 0.8, 0.02)) for (const cover of range(0, 0.9, 0.05)) for (const focus of FOCUS) for (const floor of [0, 0.2, 0.3, 0.4, 0.5]) {
     if (min > strong) continue;
     const r = { strong, min, cover, focus, floor };
     const { m } = measure("evidence", split, r);
@@ -174,8 +181,9 @@ const answersIn = opt("--answers");
 if (answersIn) {
   const answers = readFileSync(answersIn, "utf8").split("\n").filter(Boolean).map((l) => JSON.parse(l));
   const notFound = (t) => t.startsWith(PROMPT.notFound.slice(0, 40));
+  const skip = new Set((opt("--skip") || "").split(",").filter(Boolean));
   const scoreAnswers = (policy, split, limits) => {
-    const rows = prepared.filter((p) => !p.rule && (!split || p.split === split)).map((p) => {
+    const rows = prepared.filter((p) => !p.rule && !skip.has(p.id) && (!split || p.split === split)).map((p) => {
       const { sent, shown } = POLICIES[policy](p, rule);
       const rel = new Set(p.relevant);
       const a = sent.length && answers.find((x) => x.id === p.id && x.policy === policy);
@@ -244,5 +252,7 @@ if (answersIn) {
   }
   console.log(`\nWith the real model's answers (answer limits ${JSON.stringify(limits)}; questions answered by a rule are left out):`);
   console.table(out);
-  writeFileSync(join(ROOT, "ai-server", "results", "answer-eval.json"), JSON.stringify({ limits, metrics: out, details }, null, 1));
+  const label = opt("--label");
+  writeFileSync(join(ROOT, "ai-server", "results", `answer-eval${label ? `-${label}` : ""}.json`),
+    JSON.stringify({ answers: answersIn, skipped: [...skip], limits, metrics: out, details }, null, 1));
 }

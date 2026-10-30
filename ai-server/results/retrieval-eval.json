@@ -1,12 +1,12 @@
 {
  "index": {
   "version": "search-v1",
-  "built": "2026-10-28T12:44:53.360Z"
+  "built": "2026-10-30T08:37:39.975Z"
  },
  "rule": {
-  "strong": 0.76,
-  "min": 0.7,
-  "cover": 0.6,
+  "strong": 0.7,
+  "min": 0.6,
+  "cover": 0.55,
   "focus": 0.01,
   "floor": 0
  },
@@ -14,39 +14,39 @@
  "report": {
   "baseline/dev": {
    "cases": 57,
-   "precision": 55.3,
-   "recall": 97.6,
+   "precision": 43,
+   "recall": 97.3,
    "falseAbstain": 0,
    "correctAbstain": 0,
-   "wrongOnly": 28.1,
-   "shownWrong": 10.5,
-   "shownWrongSure": 7,
-   "shownRight": 88.1,
-   "balanced": 48.8
+   "wrongOnly": 36.8,
+   "shownWrong": 12.3,
+   "shownWrongSure": 8.8,
+   "shownRight": 91.9,
+   "balanced": 48.7
   },
   "baseline/test": {
    "cases": 55,
-   "precision": 50,
-   "recall": 85.4,
+   "precision": 41.8,
+   "recall": 94.3,
    "falseAbstain": 0,
    "correctAbstain": 0,
-   "wrongOnly": 36.4,
+   "wrongOnly": 40,
    "shownWrong": 14.5,
    "shownWrongSure": 9.1,
-   "shownRight": 78,
-   "balanced": 42.7
+   "shownRight": 82.9,
+   "balanced": 47.2
   },
   "baseline/all": {
    "cases": 112,
-   "precision": 52.7,
-   "recall": 91.6,
+   "precision": 42.4,
+   "recall": 95.8,
    "falseAbstain": 0,
    "correctAbstain": 0,
-   "wrongOnly": 32.1,
-   "shownWrong": 12.5,
-   "shownWrongSure": 8,
-   "shownRight": 83.1,
-   "balanced": 45.8
+   "wrongOnly": 38.4,
+   "shownWrong": 13.4,
+   "shownWrongSure": 8.9,
+   "shownRight": 87.5,
+   "balanced": 47.9
   },
   "baseline/rows": [
    {
@@ -97,10 +97,10 @@
     "answerable": true,
     "sent": [
      "q440e51",
-     "qb986b7"
+     "q163a45"
     ],
-    "good": 1,
-    "bad": 1,
+    "good": 2,
+    "bad": 0,
     "shown": "q440e51",
     "shownOk": true,
     "shownSure": true
@@ -111,13 +111,13 @@
     "answerable": true,
     "sent": [
      "guide-heatstroke",
-     "qc7a9fc"
+     "q83170a"
     ],
-    "good": 1,
-    "bad": 1,
+    "good": 2,
+    "bad": 0,
     "shown": "guide-heatstroke",
     "shownOk": true,
-    "shownSure": true
+    "shownSure": false
    },
    {
     "id": "r06",
@@ -125,10 +125,10 @@
     "answerable": true,
     "sent": [
      "qc53cec",
-     "q846781"
+     "gov-82"
     ],
-    "good": 2,
-    "bad": 0,
+    "good": 1,
+    "bad": 1,
     "shown": "qc53cec",
     "shownOk": true,
     "shownSure": true
@@ -138,13 +138,13 @@
     "category": "en",
     "answerable": true,
     "sent": [
-     "q852262",
-     "qea8856"
+     "qca693b",
+     "q17559d"
     ],
     "good": 1,
     "bad": 1,
-    "shown": "q852262",
-    "shownOk": false,
+    "shown": "qca693b",
+    "shownOk": true,
     "shownSure": true
    },
    {
@@ -153,7 +153,7 @@
     "answerable": true,
     "sent": [
      "q0c19b6",
-     "qb54902-2"
+     "q16da13"
     ],
     "good": 1,
     "bad": 1,
@@ -164,16 +164,16 @@
    {
     "id": "r09",
     "category": "en",
-    "answerable": true,
+    "answerable": false,
     "sent": [
-     "qd08bcf",
-     "qd444ad"
+     "qf8b878",
+     "qce12f1"
     ],
-    "good": 2,
-    "bad": 0,
-    "shown": "qd08bcf",
+    "good": 0,
+    "bad": 2,
+    "shown": null,
     "shownOk": true,
-    "shownSure": true
+    "shownSure": false
    },
    {
     "id": "r10",
@@ -181,7 +181,7 @@
     "answerable": true,
     "sent": [
      "q95d19a",
-     "q418554"
+     "q0e1e08"
     ],
     "good": 1,
     "bad": 1,
@@ -209,10 +209,10 @@
     "answerable": true,
     "sent": [
      "qd0b9a8",
-     "qf707e3"
+     "gov-98"
     ],
-    "good": 2,
-    "bad": 0,
+    "good": 1,
+    "bad": 1,
     "shown": "qd0b9a8",
     "shownOk": true,
     "shownSure": true
@@ -223,7 +223,7 @@
     "answerable": true,
     "sent": [
      "q285fc9",
-     "qb0335e-2"
+     "guide-urinary"
     ],
     "good": 1,
     "bad": 1,
@@ -236,12 +236,12 @@
     "category": "en",
     "answerable": true,
     "sent": [
-     "q105b9d",
-     "q105b9d-2"
+     "qa9bf28",
+     "q3374af"
     ],
     "good": 2,
     "bad": 0,
-    "shown": "q105b9d",
+    "shown": "qa9bf28",
     "shownOk": true,
     "shownSure": true
    },
@@ -265,7 +265,7 @@
     "answerable": true,
     "sent": [
      "guide-poisoning",
-     "q35ca1b"
+     "gov-182"
     ],
     "good": 1,
     "bad": 1,
@@ -279,10 +279,10 @@
     "answerable": true,
     "sent": [
      "q474c6e",
-     "q13a0aa"
+     "qd0b9a8"
     ],
-    "good": 2,
-    "bad": 0,
+    "good": 1,
+    "bad": 1,
     "shown": "q474c6e",
     "shownOk": true,
     "shownSure": true
@@ -292,25 +292,25 @@
     "category": "en",
     "answerable": true,
     "sent": [
-     "q76440a",
-     "qf8b878"
+     "qf8b878",
+     "qf65362"
     ],
     "good": 1,
     "bad": 1,
-    "shown": null,
+    "shown": "qf8b878",
     "shownOk": true,
     "shownSure": false
    },
    {
     "id": "r19",
     "category": "en",
-    "answerable": true,
+    "answerable": false,
     "sent": [
-     "q66f1a7",
-     "q0f70da"
+     "gov-85",
+     "gov-80"
     ],
-    "good": 2,
-    "bad": 0,
+    "good": 0,
+    "bad": 2,
     "shown": null,
     "shownOk": true,
     "shownSure": false
@@ -335,10 +335,10 @@
     "answerable": true,
     "sent": [
      "qbf4a31",
-     "qbb00ce"
+     "q047e48"
     ],
-    "good": 2,
-    "bad": 0,
+    "good": 1,
+    "bad": 1,
     "shown": "qbf4a31",
     "shownOk": true,
     "shownSure": true
@@ -346,15 +346,15 @@
    {
     "id": "r22",
     "category": "en",
-    "answerable": true,
+    "answerable": false,
     "sent": [
-     "q2c18ab",
-     "qac2864"
+     "qbf64f4",
+     "qdf59fd"
     ],
-    "good": 2,
-    "bad": 0,
-    "shown": "q2c18ab",
-    "shownOk": true,
+    "good": 0,
+    "bad": 2,
+    "shown": "qbf64f4",
+    "shownOk": false,
     "shownSure": true
    },
    {
@@ -363,10 +363,10 @@
     "answerable": true,
     "sent": [
      "q0e0a11",
-     "q8f9f9a"
+     "q33e3e7"
     ],
-    "good": 2,
-    "bad": 0,
+    "good": 1,
+    "bad": 1,
     "shown": "q0e0a11",
     "shownOk": true,
     "shownSure": true
@@ -374,16 +374,16 @@
    {
     "id": "r24",
     "category": "en",
-    "answerable": true,
+    "answerable": false,
     "sent": [
-     "q12ca1f",
-     "qb6653f"
+     "gov-41",
+     "q5faf86"
     ],
-    "good": 2,
-    "bad": 0,
-    "shown": "q12ca1f",
+    "good": 0,
+    "bad": 2,
+    "shown": null,
     "shownOk": true,
-    "shownSure": true
+    "shownSure": false
    },
    {
     "id": "r25",
@@ -391,10 +391,10 @@
     "answerable": true,
     "sent": [
      "q4e6b63",
-     "gov-170"
+     "gov-57"
     ],
-    "good": 1,
-    "bad": 1,
+    "good": 2,
+    "bad": 0,
     "shown": "q4e6b63",
     "shownOk": true,
     "shownSure": true
@@ -402,15 +402,15 @@
    {
     "id": "r26",
     "category": "en",
-    "answerable": true,
+    "answerable": false,
     "sent": [
-     "qe3c2e2",
-     "qd83201-2"
+     "qa9bf28",
+     "q5eb133"
     ],
-    "good": 2,
-    "bad": 0,
-    "shown": "qe3c2e2",
-    "shownOk": true,
+    "good": 0,
+    "bad": 2,
+    "shown": "qa9bf28",
+    "shownOk": false,
     "shownSure": true
    },
    {
@@ -419,7 +419,7 @@
     "answerable": true,
     "sent": [
      "qc6c64c",
-     "q2ad0be-2"
+     "q028111"
     ],
     "good": 1,
     "bad": 1,
@@ -461,7 +461,7 @@
     "answerable": true,
     "sent": [
      "q8559cb",
-     "qd88b08"
+     "guide-poisoning"
     ],
     "good": 1,
     "bad": 1,
@@ -475,7 +475,7 @@
     "answerable": true,
     "sent": [
      "q163a45",
-     "q4eae64"
+     "gov-194"
     ],
     "good": 1,
     "bad": 1,
@@ -500,13 +500,13 @@
    {
     "id": "r33",
     "category": "en",
-    "answerable": true,
+    "answerable": false,
     "sent": [
-     "qd5ddf6",
-     "qd48651"
+     "q7dce56",
+     "gov-105"
     ],
-    "good": 1,
-    "bad": 1,
+    "good": 0,
+    "bad": 2,
     "shown": null,
     "shownOk": true,
     "shownSure": false
@@ -531,10 +531,10 @@
     "answerable": true,
     "sent": [
      "q0ca850",
-     "qbd63fb"
+     "gov-114"
     ],
-    "good": 2,
-    "bad": 0,
+    "good": 1,
+    "bad": 1,
     "shown": "q0ca850",
     "shownOk": true,
     "shownSure": true
@@ -544,13 +544,13 @@
     "category": "tl",
     "answerable": true,
     "sent": [
-     "qe0efd4",
-     "qbfc163"
+     "q8ebfd7",
+     "qb9e0e6"
     ],
-    "good": 2,
-    "bad": 0,
-    "shown": "qe0efd4",
-    "shownOk": true,
+    "good": 1,
+    "bad": 1,
+    "shown": "q8ebfd7",
+    "shownOk": false,
     "shownSure": true
    },
    {
@@ -586,12 +586,12 @@
     "category": "tl",
     "answerable": true,
     "sent": [
-     "q105b9d",
-     "qa9bf28"
+     "qa9bf28",
+     "q3374af"
     ],
-    "good": 2,
-    "bad": 0,
-    "shown": "q105b9d",
+    "good": 1,
+    "bad": 1,
+    "shown": "qa9bf28",
     "shownOk": true,
     "shownSure": true
    },
@@ -601,10 +601,10 @@
     "answerable": true,
     "sent": [
      "q1eee29",
-     "qe8e3b0"
+     "q17e7fd"
     ],
-    "good": 2,
-    "bad": 0,
+    "good": 1,
+    "bad": 1,
     "shown": "q1eee29",
     "shownOk": true,
     "shownSure": true
@@ -626,30 +626,30 @@
    {
     "id": "s01",
     "category": "species",
-    "answerable": true,
+    "answerable": false,
     "sent": [
-     "q29c30f",
-     "q30fa04"
+     "gov-189",
+     "q0c19b6"
     ],
-    "good": 1,
-    "bad": 1,
-    "shown": "q29c30f",
-    "shownOk": true,
+    "good": 0,
+    "bad": 2,
+    "shown": "gov-189",
+    "shownOk": false,
     "shownSure": true
    },
    {
     "id": "s02",
     "category": "species",
-    "answerable": true,
+    "answerable": false,
     "sent": [
-     "q22374b",
-     "qa11f91"
+     "q1d0b4f",
+     "qce12f1"
     ],
-    "good": 2,
-    "bad": 0,
-    "shown": "q22374b",
+    "good": 0,
+    "bad": 2,
+    "shown": null,
     "shownOk": true,
-    "shownSure": true
+    "shownSure": false
    },
    {
     "id": "s03",
@@ -657,10 +657,10 @@
     "answerable": true,
     "sent": [
      "qce12f1",
-     "qac9c76"
+     "qb9e0e6"
     ],
-    "good": 2,
-    "bad": 0,
+    "good": 1,
+    "bad": 1,
     "shown": "qce12f1",
     "shownOk": true,
     "shownSure": true
@@ -668,16 +668,16 @@
    {
     "id": "s06",
     "category": "species",
-    "answerable": true,
+    "answerable": false,
     "sent": [
-     "q3566c8",
-     "q3288c2"
+     "guide-poisoning",
+     "gov-83"
     ],
-    "good": 1,
-    "bad": 1,
-    "shown": "q3566c8",
-    "shownOk": false,
-    "shownSure": true
+    "good": 0,
+    "bad": 2,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
    },
    {
     "id": "l01",
@@ -699,7 +699,7 @@
     "answerable": true,
     "sent": [
      "q3776b6",
-     "gov-96"
+     "gov-102"
     ],
     "good": 1,
     "bad": 1,
@@ -713,7 +713,7 @@
     "answerable": true,
     "sent": [
      "q3776b6",
-     "qb66a78"
+     "gov-102"
     ],
     "good": 0,
     "bad": 2,
@@ -741,7 +741,7 @@
     "answerable": true,
     "sent": [
      "q41a64b",
-     "q4ed026"
+     "gov-148"
     ],
     "good": 1,
     "bad": 1,
@@ -894,8 +894,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "q4d5d6d",
-     "qfe281c"
+     "q0e0a11",
+     "qab5df5"
     ],
     "good": 0,
     "bad": 2,
@@ -908,8 +908,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "q874015",
-     "qb29977"
+     "gov-107",
+     "guide-heatstroke"
     ],
     "good": 0,
     "bad": 2,
@@ -922,8 +922,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "qa87a36-2",
-     "qa87a36"
+     "q0f7a59",
+     "gov-123"
     ],
     "good": 0,
     "bad": 2,
@@ -936,8 +936,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "q3abd2e",
-     "q3abd2e-2"
+     "gov-126",
+     "gov-115"
     ],
     "good": 0,
     "bad": 2,
@@ -951,7 +951,7 @@
     "answerable": false,
     "sent": [
      "qb3053f",
-     "q0f7a59"
+     "q28d471"
     ],
     "good": 0,
     "bad": 2,
@@ -965,7 +965,7 @@
     "answerable": false,
     "sent": [
      "qca693b",
-     "qf35222"
+     "qb27a0e"
     ],
     "good": 0,
     "bad": 2,
@@ -978,8 +978,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "q724041",
-     "q50156c"
+     "gov-189",
+     "gov-200"
     ],
     "good": 0,
     "bad": 2,
@@ -1020,8 +1020,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "qd9d83e-2",
-     "qd9d83e"
+     "gov-41",
+     "gov-145"
     ],
     "good": 0,
     "bad": 2,
@@ -1034,8 +1034,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "q33b5a4",
-     "q352e89-2"
+     "guide-stings",
+     "q83b3c0"
     ],
     "good": 0,
     "bad": 2,
@@ -1048,8 +1048,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "qf3cd77",
-     "q1a1d8f"
+     "gov-139",
+     "gov-132"
     ],
     "good": 0,
     "bad": 2,
@@ -1063,7 +1063,7 @@
     "answerable": false,
     "sent": [
      "q0f7a59",
-     "q29fd1d"
+     "qb3053f"
     ],
     "good": 0,
     "bad": 2,
@@ -1076,8 +1076,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "q6cdb1a",
-     "qffc240"
+     "qcf4aff",
+     "q8a1865"
     ],
     "good": 0,
     "bad": 2,
@@ -1090,8 +1090,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "qa981d8-2",
-     "qe63044-2"
+     "q33e3e7",
+     "gov-105"
     ],
     "good": 0,
     "bad": 2,
@@ -1104,8 +1104,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "qf3599a",
-     "guide-breathing"
+     "guide-breathing",
+     "q68e395"
     ],
     "good": 0,
     "bad": 2,
@@ -1118,8 +1118,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "qcb7675",
-     "q2d7ee6"
+     "gov-52",
+     "gov-49"
     ],
     "good": 0,
     "bad": 2,
@@ -1132,8 +1132,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "qab5a0e",
-     "q0f7a59"
+     "q0f7a59",
+     "q29fd1d"
     ],
     "good": 0,
     "bad": 2,
@@ -1147,12 +1147,12 @@
     "answerable": false,
     "sent": [
      "q0f7a59",
-     "q445460"
+     "q29fd1d"
     ],
     "good": 0,
     "bad": 2,
-    "shown": "q0f7a59",
-    "shownOk": false,
+    "shown": null,
+    "shownOk": true,
     "shownSure": false
    },
    {
@@ -1188,8 +1188,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "qf3425e",
-     "q3fda18"
+     "q0e0a11",
+     "q0c19b6"
     ],
     "good": 0,
     "bad": 2,
@@ -1217,7 +1217,7 @@
     "answerable": false,
     "sent": [
      "q29fd1d",
-     "q3776b6"
+     "q0f7a59"
     ],
     "good": 0,
     "bad": 2,
@@ -1230,8 +1230,8 @@
     "category": "multi-turn",
     "answerable": false,
     "sent": [
-     "q76f531",
-     "qb29977"
+     "gov-104",
+     "gov-107"
     ],
     "good": 0,
     "bad": 2,
@@ -1244,8 +1244,8 @@
     "category": "multi-turn",
     "answerable": true,
     "sent": [
-     "q733a2d",
-     "qac59c6"
+     "qc6c64c",
+     "q0c19b6"
     ],
     "good": 0,
     "bad": 2,
@@ -1272,12 +1272,12 @@
     "category": "multi-turn",
     "answerable": true,
     "sent": [
-     "q36ef23",
-     "q08f7b2"
+     "qce12f1",
+     "gov-83"
     ],
-    "good": 0,
-    "bad": 2,
-    "shown": null,
+    "good": 1,
+    "bad": 1,
+    "shown": "qce12f1",
     "shownOk": true,
     "shownSure": false
    },
@@ -1301,10 +1301,10 @@
     "answerable": true,
     "sent": [
      "qf64f4d",
-     "q01ba1c"
+     "q3739a7"
     ],
-    "good": 0,
-    "bad": 2,
+    "good": 1,
+    "bad": 1,
     "shown": "qf64f4d",
     "shownOk": false,
     "shownSure": true
@@ -1315,10 +1315,10 @@
     "answerable": true,
     "sent": [
      "q0ca850",
-     "qbd63fb"
+     "gov-114"
     ],
-    "good": 2,
-    "bad": 0,
+    "good": 1,
+    "bad": 1,
     "shown": "q0ca850",
     "shownOk": true,
     "shownSure": true
@@ -1356,12 +1356,12 @@
     "category": "multi-turn",
     "answerable": true,
     "sent": [
-     "qa3181d",
-     "q440e51"
+     "q440e51",
+     "q163a45"
     ],
-    "good": 0,
-    "bad": 2,
-    "shown": "qa3181d",
+    "good": 1,
+    "bad": 1,
+    "shown": "q440e51",
     "shownOk": false,
     "shownSure": true
    },
@@ -1399,7 +1399,7 @@
     "answerable": true,
     "sent": [
      "q8559cb",
-     "q00ffb2-2"
+     "gov-83"
     ],
     "good": 1,
     "bad": 1,
@@ -1413,10 +1413,10 @@
     "answerable": true,
     "sent": [
      "q37381b",
-     "qa0d21b"
+     "q9e32f9"
     ],
-    "good": 1,
-    "bad": 1,
+    "good": 2,
+    "bad": 0,
     "shown": "q37381b",
     "shownOk": true,
     "shownSure": true
@@ -1441,13 +1441,13 @@
     "answerable": true,
     "sent": [
      "q03cef8",
-     "qed1110"
+     "guide-poisoning"
     ],
     "good": 0,
     "bad": 2,
     "shown": "q03cef8",
     "shownOk": false,
-    "shownSure": true
+    "shownSure": false
    },
    {
     "id": "f07",
@@ -1469,7 +1469,7 @@
     "answerable": true,
     "sent": [
      "q3374af",
-     "q105b9d"
+     "qa9bf28"
     ],
     "good": 2,
     "bad": 0,
@@ -1480,28 +1480,28 @@
    {
     "id": "f09",
     "category": "follow-up",
-    "answerable": true,
+    "answerable": false,
     "sent": [
-     "q12ca1f-2",
-     "qb6653f"
+     "gov-41",
+     "q5faf86"
     ],
-    "good": 2,
-    "bad": 0,
-    "shown": "q12ca1f-2",
+    "good": 0,
+    "bad": 2,
+    "shown": null,
     "shownOk": true,
-    "shownSure": true
+    "shownSure": false
    },
    {
     "id": "f10",
     "category": "follow-up",
     "answerable": true,
     "sent": [
-     "qbd63fb",
-     "q0ca850"
+     "q0ca850",
+     "gov-114"
     ],
-    "good": 0,
-    "bad": 2,
-    "shown": "qbd63fb",
+    "good": 1,
+    "bad": 1,
+    "shown": "q0ca850",
     "shownOk": false,
     "shownSure": true
    },
@@ -1511,10 +1511,10 @@
     "answerable": true,
     "sent": [
      "qd0b9a8",
-     "qf707e3"
+     "q33e3e7"
     ],
-    "good": 2,
-    "bad": 0,
+    "good": 1,
+    "bad": 1,
     "shown": "qd0b9a8",
     "shownOk": true,
     "shownSure": true
@@ -1525,10 +1525,10 @@
     "answerable": true,
     "sent": [
      "q285fc9",
-     "qb0335e"
+     "guide-urinary"
     ],
-    "good": 2,
-    "bad": 0,
+    "good": 1,
+    "bad": 1,
     "shown": "q285fc9",
     "shownOk": true,
     "shownSure": true
@@ -1539,11 +1539,11 @@
     "answerable": true,
     "sent": [
      "guide-vomiting",
-     "q8d57d9"
+     "qecf1bf"
     ],
     "good": 2,
     "bad": 0,
-    "shown": "q8d57d9",
+    "shown": "qecf1bf",
     "shownOk": true,
     "shownSure": true
    },
@@ -1552,8 +1552,8 @@
     "category": "topic-switch",
     "answerable": false,
     "sent": [
-     "q3abd2e",
-     "q3abd2e-2"
+     "gov-126",
+     "gov-115"
     ],
     "good": 0,
     "bad": 2,
@@ -1578,16 +1578,16 @@
    {
     "id": "w04",
     "category": "topic-switch",
-    "answerable": true,
+    "answerable": false,
     "sent": [
-     "qa90a14",
-     "q540657"
+     "q0c19b6",
+     "qe4c922"
     ],
-    "good": 1,
-    "bad": 1,
-    "shown": "qa90a14",
+    "good": 0,
+    "bad": 2,
+    "shown": null,
     "shownOk": true,
-    "shownSure": true
+    "shownSure": false
    },
    {
     "id": "w05",
@@ -1595,7 +1595,7 @@
     "answerable": true,
     "sent": [
      "q95d19a",
-     "q418554"
+     "q0ca850"
     ],
     "good": 1,
     "bad": 1,
@@ -1608,8 +1608,8 @@
     "category": "topic-switch",
     "answerable": false,
     "sent": [
-     "qb29977",
-     "q76f531"
+     "gov-104",
+     "gov-92"
     ],
     "good": 0,
     "bad": 2,
@@ -1620,39 +1620,39 @@
   ],
   "evidence/dev": {
    "cases": 57,
-   "precision": 77.5,
-   "recall": 90.5,
-   "falseAbstain": 7.1,
-   "correctAbstain": 93.3,
-   "wrongOnly": 3.5,
+   "precision": 78.3,
+   "recall": 97.3,
+   "falseAbstain": 2.7,
+   "correctAbstain": 95,
+   "wrongOnly": 1.8,
    "shownWrong": 7,
-   "shownWrongSure": 5.3,
-   "shownRight": 81,
-   "balanced": 91.9
+   "shownWrongSure": 7,
+   "shownRight": 86.5,
+   "balanced": 96.2
   },
   "evidence/test": {
    "cases": 55,
-   "precision": 82.1,
-   "recall": 85.4,
-   "falseAbstain": 12.2,
-   "correctAbstain": 85.7,
+   "precision": 78.8,
+   "recall": 88.6,
+   "falseAbstain": 8.6,
+   "correctAbstain": 90,
    "wrongOnly": 5.5,
-   "shownWrong": 7.3,
-   "shownWrongSure": 5.5,
-   "shownRight": 80.5,
-   "balanced": 85.6
+   "shownWrong": 5.5,
+   "shownWrongSure": 3.6,
+   "shownRight": 88.6,
+   "balanced": 89.3
   },
   "evidence/all": {
    "cases": 112,
-   "precision": 79.7,
-   "recall": 88,
-   "falseAbstain": 9.6,
-   "correctAbstain": 89.7,
-   "wrongOnly": 4.5,
-   "shownWrong": 7.1,
+   "precision": 78.6,
+   "recall": 93.1,
+   "falseAbstain": 5.6,
+   "correctAbstain": 92.5,
+   "wrongOnly": 3.6,
+   "shownWrong": 6.3,
    "shownWrongSure": 5.4,
-   "shownRight": 80.7,
-   "balanced": 88.9
+   "shownRight": 87.5,
+   "balanced": 92.8
   },
   "evidence/rows": [
    {
@@ -1728,10 +1728,9 @@
     "category": "en",
     "answerable": true,
     "sent": [
-     "qc53cec",
-     "q846781"
+     "qc53cec"
     ],
-    "good": 2,
+    "good": 1,
     "bad": 0,
     "shown": "qc53cec",
     "shownOk": true,
@@ -1742,13 +1741,12 @@
     "category": "en",
     "answerable": true,
     "sent": [
-     "q852262",
-     "qea8856"
+     "qca693b"
     ],
     "good": 1,
-    "bad": 1,
-    "shown": "q852262",
-    "shownOk": false,
+    "bad": 0,
+    "shown": "qca693b",
+    "shownOk": true,
     "shownSure": true
    },
    {
@@ -1757,7 +1755,7 @@
     "answerable": true,
     "sent": [
      "q0c19b6",
-     "qb54902-2"
+     "q16da13"
     ],
     "good": 1,
     "bad": 1,
@@ -1768,26 +1766,23 @@
    {
     "id": "r09",
     "category": "en",
-    "answerable": true,
-    "sent": [
-     "qd08bcf"
-    ],
-    "good": 1,
+    "answerable": false,
+    "sent": [],
+    "good": 0,
     "bad": 0,
-    "shown": "qd08bcf",
+    "shown": null,
     "shownOk": true,
-    "shownSure": true
+    "shownSure": false
    },
    {
     "id": "r10",
     "category": "en",
     "answerable": true,
     "sent": [
-     "q95d19a",
-     "q418554"
+     "q95d19a"
     ],
     "good": 1,
-    "bad": 1,
+    "bad": 0,
     "shown": "q95d19a",
     "shownOk": true,
     "shownSure": true
@@ -1811,10 +1806,9 @@
     "category": "en",
     "answerable": true,
     "sent": [
-     "qd0b9a8",
-     "qf707e3"
+     "qd0b9a8"
     ],
-    "good": 2,
+    "good": 1,
     "bad": 0,
     "shown": "qd0b9a8",
     "shownOk": true,
@@ -1826,7 +1820,7 @@
     "answerable": true,
     "sent": [
      "q285fc9",
-     "qb0335e-2"
+     "guide-urinary"
     ],
     "good": 1,
     "bad": 1,
@@ -1839,12 +1833,12 @@
     "category": "en",
     "answerable": true,
     "sent": [
-     "q105b9d",
-     "q105b9d-2"
+     "qa9bf28",
+     "q3374af"
     ],
     "good": 2,
     "bad": 0,
-    "shown": "q105b9d",
+    "shown": "qa9bf28",
     "shownOk": true,
     "shownSure": true
    },
@@ -1880,10 +1874,9 @@
     "category": "en",
     "answerable": true,
     "sent": [
-     "q474c6e",
-     "q13a0aa"
+     "q474c6e"
     ],
-    "good": 2,
+    "good": 1,
     "bad": 0,
     "shown": "q474c6e",
     "shownOk": true,
@@ -1900,16 +1893,14 @@
     "bad": 0,
     "shown": "qf8b878",
     "shownOk": true,
-    "shownSure": true
+    "shownSure": false
    },
    {
     "id": "r19",
     "category": "en",
-    "answerable": true,
-    "sent": [
-     "q66f1a7"
-    ],
-    "good": 1,
+    "answerable": false,
+    "sent": [],
+    "good": 0,
     "bad": 0,
     "shown": null,
     "shownOk": true,
@@ -1934,10 +1925,9 @@
     "category": "en",
     "answerable": true,
     "sent": [
-     "qbf4a31",
-     "qbb00ce"
+     "qbf4a31"
     ],
-    "good": 2,
+    "good": 1,
     "bad": 0,
     "shown": "qbf4a31",
     "shownOk": true,
@@ -1946,15 +1936,14 @@
    {
     "id": "r22",
     "category": "en",
-    "answerable": true,
+    "answerable": false,
     "sent": [
-     "q2c18ab",
-     "qac2864"
+     "qbf64f4"
     ],
-    "good": 2,
-    "bad": 0,
-    "shown": "q2c18ab",
-    "shownOk": true,
+    "good": 0,
+    "bad": 1,
+    "shown": "qbf64f4",
+    "shownOk": false,
     "shownSure": true
    },
    {
@@ -1962,10 +1951,9 @@
     "category": "en",
     "answerable": true,
     "sent": [
-     "q0e0a11",
-     "q8f9f9a"
+     "q0e0a11"
     ],
-    "good": 2,
+    "good": 1,
     "bad": 0,
     "shown": "q0e0a11",
     "shownOk": true,
@@ -1974,16 +1962,13 @@
    {
     "id": "r24",
     "category": "en",
-    "answerable": true,
-    "sent": [
-     "q12ca1f",
-     "qb6653f"
-    ],
-    "good": 2,
+    "answerable": false,
+    "sent": [],
+    "good": 0,
     "bad": 0,
-    "shown": "q12ca1f",
+    "shown": null,
     "shownOk": true,
-    "shownSure": true
+    "shownSure": false
    },
    {
     "id": "r25",
@@ -1991,10 +1976,10 @@
     "answerable": true,
     "sent": [
      "q4e6b63",
-     "gov-170"
+     "gov-57"
     ],
-    "good": 1,
-    "bad": 1,
+    "good": 2,
+    "bad": 0,
     "shown": "q4e6b63",
     "shownOk": true,
     "shownSure": true
@@ -2002,15 +1987,14 @@
    {
     "id": "r26",
     "category": "en",
-    "answerable": true,
+    "answerable": false,
     "sent": [
-     "qe3c2e2",
-     "qd83201-2"
+     "qa9bf28"
     ],
-    "good": 2,
-    "bad": 0,
-    "shown": "qe3c2e2",
-    "shownOk": true,
+    "good": 0,
+    "bad": 1,
+    "shown": "qa9bf28",
+    "shownOk": false,
     "shownSure": true
    },
    {
@@ -2059,11 +2043,10 @@
     "category": "en",
     "answerable": true,
     "sent": [
-     "q8559cb",
-     "qd88b08"
+     "q8559cb"
     ],
     "good": 1,
-    "bad": 1,
+    "bad": 0,
     "shown": "q8559cb",
     "shownOk": true,
     "shownSure": true
@@ -2073,11 +2056,10 @@
     "category": "en",
     "answerable": true,
     "sent": [
-     "q163a45",
-     "q4eae64"
+     "q163a45"
     ],
     "good": 1,
-    "bad": 1,
+    "bad": 0,
     "shown": "q163a45",
     "shownOk": true,
     "shownSure": true
@@ -2099,7 +2081,7 @@
    {
     "id": "r33",
     "category": "en",
-    "answerable": true,
+    "answerable": false,
     "sent": [],
     "good": 0,
     "bad": 0,
@@ -2127,10 +2109,10 @@
     "answerable": true,
     "sent": [
      "q0ca850",
-     "qbd63fb"
+     "gov-114"
     ],
-    "good": 2,
-    "bad": 0,
+    "good": 1,
+    "bad": 1,
     "shown": "q0ca850",
     "shownOk": true,
     "shownSure": true
@@ -2140,13 +2122,13 @@
     "category": "tl",
     "answerable": true,
     "sent": [
-     "qe0efd4",
-     "qbfc163"
+     "q8ebfd7",
+     "qb9e0e6"
     ],
-    "good": 2,
-    "bad": 0,
-    "shown": "qe0efd4",
-    "shownOk": true,
+    "good": 1,
+    "bad": 1,
+    "shown": "q8ebfd7",
+    "shownOk": false,
     "shownSure": true
    },
    {
@@ -2182,12 +2164,12 @@
     "category": "tl",
     "answerable": true,
     "sent": [
-     "q105b9d",
-     "qa9bf28"
+     "qa9bf28",
+     "q3374af"
     ],
-    "good": 2,
-    "bad": 0,
-    "shown": "q105b9d",
+    "good": 1,
+    "bad": 1,
+    "shown": "qa9bf28",
     "shownOk": true,
     "shownSure": true
    },
@@ -2197,10 +2179,10 @@
     "answerable": true,
     "sent": [
      "q1eee29",
-     "qe8e3b0"
+     "q17e7fd"
     ],
-    "good": 2,
-    "bad": 0,
+    "good": 1,
+    "bad": 1,
     "shown": "q1eee29",
     "shownOk": true,
     "shownSure": true
@@ -2210,10 +2192,11 @@
     "category": "tl",
     "answerable": true,
     "sent": [
-     "qb07598"
+     "qb07598",
+     "qd5bc9c"
     ],
     "good": 1,
-    "bad": 0,
+    "bad": 1,
     "shown": "qb07598",
     "shownOk": true,
     "shownSure": true
@@ -2221,40 +2204,36 @@
    {
     "id": "s01",
     "category": "species",
-    "answerable": true,
+    "answerable": false,
     "sent": [
-     "q29c30f",
-     "q30fa04"
+     "gov-189",
+     "q0c19b6"
     ],
-    "good": 1,
-    "bad": 1,
-    "shown": "q29c30f",
-    "shownOk": true,
+    "good": 0,
+    "bad": 2,
+    "shown": "gov-189",
+    "shownOk": false,
     "shownSure": true
    },
    {
     "id": "s02",
     "category": "species",
-    "answerable": true,
-    "sent": [
-     "q22374b",
-     "qa11f91"
-    ],
-    "good": 2,
+    "answerable": false,
+    "sent": [],
+    "good": 0,
     "bad": 0,
-    "shown": "q22374b",
+    "shown": null,
     "shownOk": true,
-    "shownSure": true
+    "shownSure": false
    },
    {
     "id": "s03",
     "category": "species",
     "answerable": true,
     "sent": [
-     "qce12f1",
-     "qac9c76"
+     "qce12f1"
     ],
-    "good": 2,
+    "good": 1,
     "bad": 0,
     "shown": "qce12f1",
     "shownOk": true,
@@ -2263,15 +2242,13 @@
    {
     "id": "s06",
     "category": "species",
-    "answerable": true,
-    "sent": [
-     "q3566c8"
-    ],
+    "answerable": false,
+    "sent": [],
     "good": 0,
-    "bad": 1,
-    "shown": "q3566c8",
-    "shownOk": false,
-    "shownSure": true
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
    },
    {
     "id": "l01",
@@ -2292,10 +2269,11 @@
     "category": "legal",
     "answerable": true,
     "sent": [
-     "q3776b6"
+     "q3776b6",
+     "gov-102"
     ],
     "good": 1,
-    "bad": 0,
+    "bad": 1,
     "shown": "q3776b6",
     "shownOk": true,
     "shownSure": true
@@ -2305,9 +2283,10 @@
     "category": "legal",
     "answerable": true,
     "sent": [
-     "q3776b6"
+     "q3776b6",
+     "qb527eb"
     ],
-    "good": 0,
+    "good": 1,
     "bad": 1,
     "shown": "q3776b6",
     "shownOk": false,
@@ -2510,11 +2489,9 @@
     "id": "o05",
     "category": "out-of-scope",
     "answerable": false,
-    "sent": [
-     "q3abd2e"
-    ],
+    "sent": [],
     "good": 0,
-    "bad": 1,
+    "bad": 0,
     "shown": null,
     "shownOk": true,
     "shownSure": false
@@ -2633,12 +2610,9 @@
     "id": "o18",
     "category": "out-of-scope",
     "answerable": false,
-    "sent": [
-     "qa981d8-2",
-     "qe63044-2"
-    ],
+    "sent": [],
     "good": 0,
-    "bad": 2,
+    "bad": 0,
     "shown": null,
     "shownOk": true,
     "shownSure": false
@@ -2738,8 +2712,8 @@
     "sent": [],
     "good": 0,
     "bad": 0,
-    "shown": "q3776b6",
-    "shownOk": false,
+    "shown": null,
+    "shownOk": true,
     "shownSure": false
    },
    {
@@ -2808,13 +2782,12 @@
     "category": "multi-turn",
     "answerable": true,
     "sent": [
-     "q01ba1c",
      "q3739a7"
     ],
     "good": 1,
-    "bad": 1,
-    "shown": "q01ba1c",
-    "shownOk": false,
+    "bad": 0,
+    "shown": "q3739a7",
+    "shownOk": true,
     "shownSure": true
    },
    {
@@ -2822,10 +2795,9 @@
     "category": "multi-turn",
     "answerable": true,
     "sent": [
-     "q0ca850",
-     "qbd63fb"
+     "q0ca850"
     ],
-    "good": 2,
+    "good": 1,
     "bad": 0,
     "shown": "q0ca850",
     "shownOk": true,
@@ -2837,7 +2809,7 @@
     "answerable": true,
     "sent": [
      "qc01447",
-     "q87acdb"
+     "q0c19b6"
     ],
     "good": 1,
     "bad": 1,
@@ -2861,13 +2833,12 @@
     "category": "multi-turn",
     "answerable": true,
     "sent": [
-     "qa3181d",
      "q163a45"
     ],
     "good": 1,
-    "bad": 1,
-    "shown": "qa3181d",
-    "shownOk": false,
+    "bad": 0,
+    "shown": "q163a45",
+    "shownOk": true,
     "shownSure": true
    },
    {
@@ -2902,11 +2873,10 @@
     "category": "follow-up",
     "answerable": true,
     "sent": [
-     "q8559cb",
-     "q00ffb2-2"
+     "q8559cb"
     ],
     "good": 1,
-    "bad": 1,
+    "bad": 0,
     "shown": "q8559cb",
     "shownOk": true,
     "shownSure": true
@@ -2941,9 +2911,11 @@
     "id": "f06",
     "category": "follow-up",
     "answerable": true,
-    "sent": [],
+    "sent": [
+     "q03cef8"
+    ],
     "good": 0,
-    "bad": 0,
+    "bad": 1,
     "shown": "q03cef8",
     "shownOk": false,
     "shownSure": false
@@ -2967,10 +2939,9 @@
     "category": "follow-up",
     "answerable": true,
     "sent": [
-     "q3374af",
-     "q105b9d"
+     "q3374af"
     ],
-    "good": 2,
+    "good": 1,
     "bad": 0,
     "shown": "q3374af",
     "shownOk": true,
@@ -2979,7 +2950,7 @@
    {
     "id": "f09",
     "category": "follow-up",
-    "answerable": true,
+    "answerable": false,
     "sent": [],
     "good": 0,
     "bad": 0,
@@ -2991,12 +2962,14 @@
     "id": "f10",
     "category": "follow-up",
     "answerable": true,
-    "sent": [],
-    "good": 0,
+    "sent": [
+     "gov-114"
+    ],
+    "good": 1,
     "bad": 0,
-    "shown": null,
+    "shown": "gov-114",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    },
    {
     "id": "f11",
@@ -3015,10 +2988,10 @@
     "answerable": true,
     "sent": [
      "q285fc9",
-     "qb0335e"
+     "guide-urinary"
     ],
-    "good": 2,
-    "bad": 0,
+    "good": 1,
+    "bad": 1,
     "shown": "q285fc9",
     "shownOk": true,
     "shownSure": true
@@ -3029,11 +3002,11 @@
     "answerable": true,
     "sent": [
      "guide-vomiting",
-     "q8d57d9"
+     "qecf1bf"
     ],
     "good": 2,
     "bad": 0,
-    "shown": "q8d57d9",
+    "shown": "qecf1bf",
     "shownOk": true,
     "shownSure": true
    },
@@ -3041,11 +3014,9 @@
     "id": "w02",
     "category": "topic-switch",
     "answerable": false,
-    "sent": [
-     "q3abd2e"
-    ],
+    "sent": [],
     "good": 0,
-    "bad": 1,
+    "bad": 0,
     "shown": null,
     "shownOk": true,
     "shownSure": false
@@ -3067,27 +3038,23 @@
    {
     "id": "w04",
     "category": "topic-switch",
-    "answerable": true,
-    "sent": [
-     "qa90a14",
-     "q540657"
-    ],
-    "good": 1,
-    "bad": 1,
-    "shown": "qa90a14",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
     "shownOk": true,
-    "shownSure": true
+    "shownSure": false
    },
    {
     "id": "w05",
     "category": "topic-switch",
     "answerable": true,
     "sent": [
-     "q95d19a",
-     "q418554"
+     "q95d19a"
     ],
     "good": 1,
-    "bad": 1,
+    "bad": 0,
     "shown": "q95d19a",
     "shownOk": true,
     "shownSure": true
