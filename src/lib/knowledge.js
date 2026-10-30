@@ -67,20 +67,35 @@ export const POISON_NOTE = "If your pet may have eaten, licked or touched someth
   + "even if your pet seems fine. Bring the package or label, and only make your pet vomit if a vet tells you to.";
 const SAYS_VET = /\b(vet|vets|veterinarian|clinic)\b/i;
 const SAYS_SOON = /\b(now|immediately|right away|straight away|urgent|urgently|today|as soon as)\b/i;
-/* A cat that hasn't eaten for a day or more needs a vet today (from the checked answer "My cat hasn't eaten for 2
-   days", qc01447): it comes first, before anything about feeding, whatever answer follows. */
+/* A cat that hasn't eaten for a day or more must go to a vet now (the checked answers qcf4aff "If your cat hasn't eaten
+   properly for 24 hours, take her to the vet now" and qc01447 "Two days without food is serious for a cat"). When the
+   owner has said how long, the reply opens with it, whatever answer follows: the model tends to copy a passage that
+   says "if ... 24 hours, ... now", which doesn't answer an owner who has just said "tatlong araw na po" (three days).
+   `owner` is the owner's own messages: the search text turns "tatlong araw" into just "days". */
 const NOT_EATING = /\b(not|isn'?t|won'?t|doesn'?t|didn'?t|hasn'?t|has not|stop(s|ped)?|refus(es|ed|ing)?)\s+(eat|eating|eaten)\b|\b(no|lost|loss of) appetite\b|\boff (his|her|its|their) food\b/i;
 const DAYS = /\b(days?|weeks?|since (yesterday|last night|monday|tuesday|wednesday|thursday|friday|saturday|sunday)|24 hours|(a|one|two|three|\d+) (whole )?days?|overnight)\b/i;
-export const CAT_APPETITE_NOTE = "A cat that hasn't eaten for a day or more needs a vet today. Cats can quickly develop a serious liver problem "
-  + "(hepatic lipidosis) when they stop eating. Don't force-feed her, and go now if she is also vomiting, very weak or breathing hard.";
-export function withAppetiteAdvice(question, answer, species = "") {
-  const cat = CAT.test(question) || (species === "cat" && !DOG.test(question));
-  const urgent = cat && NOT_EATING.test(question) && DAYS.test(question);
-  return urgent && !(SAYS_VET.test(answer) && /\b(today|now|immediately)\b/i.test(answer)) ? `${CAT_APPETITE_NOTE}\n\n${answer}` : answer;
+const NUMBERS = { a: 1, an: 1, one: 1, isang: 1, two: 2, dalawang: 2, three: 3, tatlong: 3, four: 4, apat: 4, five: 5, limang: 5, six: 6, anim: 6, seven: 7, pitong: 7 };
+const WORDS = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven"];
+/* "three days", "tatlong araw", "2 days", "isang linggo", "since yesterday" → "Three days"; null when not said. */
+export function howLong(text) {
+  const m = text.toLowerCase().match(/\b(\d+|a|an|one|two|three|four|five|six|seven|isang|dalawang|tatlong|apat na|limang|anim na|pitong)\s+(days?|araw|weeks?|linggo)\b/);
+  if (m) {
+    const n = Number(m[1]) || NUMBERS[m[1].replace(/ na$/, "")];
+    const unit = /^(weeks?|linggo)$/.test(m[2]) ? "week" : "day";
+    return `${WORDS[n] || n} ${unit}${n === 1 ? "" : "s"}`;
+  }
+  return /\bsince (yesterday|last night)\b|\bkahapon pa\b|\b24 hours\b|\bovernight\b/i.test(text) ? "A day" : null;
 }
-export function withVetAdvice(question, answer, species = "") {
-  const first = withAppetiteAdvice(question, answer, species);
-  if (first !== answer) return first;
+const APPETITE_MARK = "without eating is serious for a cat. Take her to a vet now";
+export const catAppetiteNote = (duration) => `${duration || "More than a day"} ${APPETITE_MARK}: a cat that stops eating can develop a serious `
+  + "liver problem (hepatic lipidosis). Don't force-feed her, and tell the vet when she last ate.";
+export function withAppetiteAdvice(question, answer, species = "", owner = "") {
+  const cat = CAT.test(question) || (species === "cat" && !DOG.test(question));
+  const duration = howLong(owner);
+  if (!cat || !NOT_EATING.test(question) || !(duration || DAYS.test(question)) || answer.includes(APPETITE_MARK)) return answer;
+  return `${catAppetiteNote(duration)}\n\n${answer}`;
+}
+export function withVetAdvice(question, answer) {
   if (SAYS_VET.test(answer) && SAYS_SOON.test(answer)) return answer;
   if (SWALLOWED.test(question)) return `${answer}\n\n${POISON_NOTE}`;
   return SYMPTOM.test(question) ? `${answer}\n\n${VET_NOTE}` : answer;

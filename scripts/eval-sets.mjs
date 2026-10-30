@@ -15,7 +15,8 @@
    Each question lists the passages that answer it (`accept`; empty = the library can't, so nothing may be sent;
    `orNone`: declining is fine too). Optional: `rule: "dose"` (the no-doses reply), `urgent` (that first-aid guide is
    pinned and the reply says go now), `reject` (passages that must never be sent or shown), `exact` (exactly these
-   are sent), `appetite` (the reply says to see a vet today). Labels were written by reading the passages; they are
+   are sent), `appetite` (the reply says to see a vet today), `duration` (the reply opens with how long the owner
+   said, e.g. "Three days without eating"), `noDuration` (no such opening when no duration was given). Labels were written by reading the passages; they are
    relevance judgements, not veterinary review.
 
    Reported per set: accuracy (answerable questions sent a right passage), correct abstention, wrong-passage
@@ -64,7 +65,7 @@ for (const set of chosen) {
     const rule = chatReply(last) || safetyReply(q);
     const { evidence, fallback } = planAnswer(index, search(index, vector, q, {}), q, last);
     const sent = rule ? [] : evidence.map(idOf);
-    const reply = withEmergency(last, withAppetiteAdvice(q, fallback.reply));
+    const reply = withEmergency(last, withAppetiteAdvice(q, fallback.reply, "", c.turns.join("\n")));
     const accept = new Set(c.accept || []);
     const right = sent.filter((id) => accept.has(id)), wrong = sent.filter((id) => !accept.has(id));
     const problems = [];
@@ -80,6 +81,8 @@ for (const set of chosen) {
     }
     if (c.exact && sent.join() !== c.exact.join()) problems.push(`sent ${sent.join(",") || "nothing"}, not exactly ${c.exact.join(",")}`);
     if (c.appetite && !SAYS_TODAY(reply)) problems.push("doesn't say to see a vet today");
+    if (c.duration && !reply.startsWith(`${c.duration} without eating`)) problems.push(`doesn't open with "${c.duration} without eating"`);
+    if (c.noDuration && /without eating is serious/.test(reply)) problems.push("adds a duration note though no duration was given");
     let urgentOk = null;
     if (c.urgent) {
       urgentOk = urgentGuides(last).some((g) => g.slug === c.urgent) && SAYS_NOW(reply);

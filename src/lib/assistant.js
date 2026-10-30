@@ -136,7 +136,9 @@ async function askKnowledge({ messages, pet, signal, onStatus, onText }) {
   if (signal?.aborted) throw new Error("Cancelled");
   // Only passages that are about the question are evidence (evidence.js). The search-only reply is the fallback.
   const { evidence, fallback } = planAnswer(index, results, q, last);
-  const checked = { reply: withEmergency(last, withAppetiteAdvice(q, fallback.reply, species)), model: index.version, match: fallback.match, related: fallback.related };
+  // The owner's own words, for what the search text loses ("tatlong araw" is searched as just "days").
+  const owner = conversation(messages).filter((m) => m.role === "user").map((m) => m.content).join("\n");
+  const checked = { reply: withEmergency(last, withAppetiteAdvice(q, fallback.reply, species, owner)), model: index.version, match: fallback.match, related: fallback.related };
   // Nothing checked is about the question: the model isn't asked, so it can't fill the gap with a guess.
   if (!evidence.length) return checked;
   // FurFriends' trained model writes the answer from the evidence: on the server, or on this device if the
@@ -159,7 +161,7 @@ async function askKnowledge({ messages, pet, signal, onStatus, onText }) {
           // the pet ate and the answer doesn't already say to see a vet soon.
           // Written only from passages that cleared the lower limit: say it's the closest checked information.
           const uncertain = review.used.every((e) => e.kind !== "guide" && e.score < EVIDENCE.strong);
-          return { reply: withEmergency(last, withVetAdvice(q, reply, species)), model, match: sources[0], sources, related: fallback.related, generated: true, uncertain };
+          return { reply: withEmergency(last, withAppetiteAdvice(q, withVetAdvice(q, reply), species, owner)), model, match: sources[0], sources, related: fallback.related, generated: true, uncertain };
         }
         console.warn("FurFriends AI answer isn't backed by its checked sources, showing the checked answer instead:", review.problems);
       }

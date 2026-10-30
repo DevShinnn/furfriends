@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { supabase } from "../src/lib/supabase";
-import { CAT_APPETITE_NOTE, decodeIndex, search, withAppetiteAdvice, withVetAdvice } from "../src/lib/knowledge";
+import { catAppetiteNote, decodeIndex, howLong, search, withAppetiteAdvice } from "../src/lib/knowledge";
 import { checkAnswer, planAnswer } from "../src/lib/evidence";
 import { sourcesFor } from "../src/lib/prompt";
 
@@ -41,25 +41,45 @@ describe("AI regressions: a cat that hasn't eaten for days", () => {
     }
   });
 
-  it("is told to see a vet today first, before anything else, when an answer doesn't already say so", () => {
-    const feeding = entry("q0c19b6").a;
-    for (const q of ["My cat has not eaten for three days", "not eating cat days", "My kitten won't eat and it's been 2 days", "My cat stopped eating since yesterday"]) {
-      expect(withAppetiteAdvice(q, feeding).startsWith(CAT_APPETITE_NOTE), q).toBe(true);
-      expect(withVetAdvice(q, feeding).startsWith(CAT_APPETITE_NOTE), q).toBe(true);
-    }
-    // The pet's species counts when the question doesn't name one ("Mochi hasn't eaten for 2 days").
-    expect(withAppetiteAdvice("Mochi hasn't eaten for 2 days", feeding, "cat").startsWith(CAT_APPETITE_NOTE)).toBe(true);
-    expect(withAppetiteAdvice("Mochi hasn't eaten for 2 days", feeding, "dog")).toBe(feeding);
-    // Not for a dog, not without a duration, and not again when the answer already says to go today.
-    expect(withAppetiteAdvice("My dog has not eaten for three days", feeding)).toBe(feeding);
-    expect(withAppetiteAdvice("How often should I feed my cat?", feeding)).toBe(feeding);
-    const checked = entry("qc01447").a;
-    expect(withAppetiteAdvice("My cat has not eaten for three days", checked)).toBe(checked);
+  it("reads how long the owner said, in English and Tagalog", () => {
+    expect(howLong("tatlong araw na po")).toBe("Three days");
+    expect(howLong("Hindi kumakain ang pusa ko ng dalawang araw")).toBe("Two days");
+    expect(howLong("My kitten won't eat and it's been 2 days")).toBe("Two days");
+    expect(howLong("isang linggo na")).toBe("One week");
+    expect(howLong("My cat stopped eating since yesterday")).toBe("A day");
+    expect(howLong("Ayaw kumain ng pusa ko")).toBeNull();
   });
 
-  it("the note says only what the checked answer says", () => {
-    const checked = entry("qc01447").a.toLowerCase();
-    for (const fact of ["hepatic lipidosis", "vet today", "force-feed", "vomiting", "very weak", "breathing hard"]) expect(checked).toContain(fact);
+  it("opens with how long the owner said and to go to a vet now, before anything else (English and Tagalog)", () => {
+    const feeding = entry("q0c19b6").a;
+    for (const [q, owner, said] of [["My cat has not eaten for three days", "My cat has not eaten for three days", "Three days"],
+      ["not eating cat days", "Ayaw kumain ng pusa ko\ntatlong araw na po", "Three days"],
+      ["My kitten won't eat and it's been 2 days", "My kitten won't eat and it's been 2 days", "Two days"],
+      ["My cat stopped eating since yesterday", "My cat stopped eating since yesterday", "A day"]]) {
+      expect(withAppetiteAdvice(q, feeding, "", owner).startsWith(catAppetiteNote(said)), q).toBe(true);
+    }
+    // The pet's species counts when the question doesn't name one ("Mochi hasn't eaten for 2 days").
+    expect(withAppetiteAdvice("Mochi hasn't eaten for 2 days", feeding, "cat", "Mochi hasn't eaten for 2 days").startsWith(catAppetiteNote("Two days"))).toBe(true);
+    expect(withAppetiteAdvice("Mochi hasn't eaten for 2 days", feeding, "dog", "Mochi hasn't eaten for 2 days")).toBe(feeding);
+    // Not for a dog, not for a feeding question, and not before the owner has said how long.
+    expect(withAppetiteAdvice("My dog has not eaten for three days", feeding, "", "My dog has not eaten for three days")).toBe(feeding);
+    expect(withAppetiteAdvice("How often should I feed my cat?", feeding, "", "How often should I feed my cat?")).toBe(feeding);
+    expect(withAppetiteAdvice("not eating cat", feeding, "", "Ayaw kumain ng pusa ko")).toBe(feeding);
+    // Added once, however many times the reply passes through.
+    const once = withAppetiteAdvice("not eating cat days", feeding, "", "tatlong araw na po");
+    expect(withAppetiteAdvice("not eating cat days", once, "", "tatlong araw na po")).toBe(once);
+  });
+
+  it("isn't skipped because the answer says 'if ... 24 hours, ... now' (what rag-v2 copied on the preview)", () => {
+    const howLongIsTooLong = entry("qcf4aff").a;   // "If your cat hasn't eaten properly for 24 hours, take her to the vet now."
+    const r = withAppetiteAdvice("not eating cat days", howLongIsTooLong, "", "Ayaw kumain ng pusa ko\ntatlong araw na po");
+    expect(r.startsWith("Three days without eating is serious for a cat. Take her to a vet now")).toBe(true);
+    expect(r.endsWith(howLongIsTooLong)).toBe(true);
+  });
+
+  it("the note says only what the checked answers say", () => {
+    const checked = `${entry("qc01447").a} ${entry("qcf4aff").a}`.toLowerCase();
+    for (const fact of ["is serious for a cat", "take her to the vet now", "hepatic lipidosis", "force-feed", "tell the vet when she last ate"]) expect(checked).toContain(fact);
   });
 });
 
@@ -150,6 +170,27 @@ describe("AI regressions: what the owner sees (askAssistant end to end)", () => 
     expect(r.generated).toBe(true);
     expect(r.sources.map((s) => s.id)).toContain("qc01447");
     expect(r.reply).toMatch(/vet today/);
+  });
+
+  it("the exact preview conversation 'Ayaw kumain ng pusa ko' / 'tatlong araw na po': the second reply says three days and to go now", async () => {
+    // What rag-v2 wrote for both turns on the preview: the "how long is too long" passage, word for word.
+    serverReply = entry("qcf4aff").a;
+    const chat = [{ role: "user", content: "Ayaw kumain ng pusa ko" }];   // as pages/Assistant.jsx sends it: the whole chat
+    const first = await askAssistant({ messages: chat.slice(), pet: null });
+    expect(first.reply).toBe(serverReply);                                // no duration given yet: no note
+    chat.push({ role: "assistant", content: first.reply }, { role: "user", content: "tatlong araw na po" });
+    const second = await askAssistant({ messages: chat.slice(), pet: null });
+    // The model gets both of the owner's messages (never its own earlier answer) and only the not-eating passages.
+    expect(serverCalls[1].messages).toEqual([{ role: "user", content: "Ayaw kumain ng pusa ko" }, { role: "user", content: "tatlong araw na po" }]);
+    expect(JSON.stringify(serverCalls[1].sources)).not.toMatch(/meals a day/);
+    expect(second.generated).toBe(true);
+    expect(second.reply).not.toBe(first.reply);
+    expect(second.reply.startsWith("Three days without eating is serious for a cat. Take her to a vet now")).toBe(true);
+    // With the owner's cat selected and no animal named, the same.
+    serverCalls = [];
+    const cat = { id: "p1", name: "Mingming", species: "Cat", breed: "", medical: [], vaccinations: [] };
+    const withPet = await askAssistant({ messages: chat.slice(), pet: cat });
+    expect(withPet.reply.startsWith("Three days without eating")).toBe(true);
   });
 
   it("dog food for a cat: the AI isn't asked and no pet-food passage is shown as the answer", async () => {
