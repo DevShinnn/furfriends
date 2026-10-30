@@ -4,43 +4,59 @@
   "built": "2026-10-28T12:44:53.360Z"
  },
  "rule": {
-  "strong": 0.84,
-  "min": 0.68,
-  "cover": 0.45
+  "strong": 0.76,
+  "min": 0.7,
+  "cover": 0.6,
+  "focus": 0.01
+ },
+ "heldOut": {
+  "cases": 112,
+  "precision": 76.1,
+  "recall": 81.9,
+  "falseAbstain": 12.1,
+  "correctAbstain": 92.9,
+  "wrongOnly": 6.4,
+  "shownWrong": 10.8,
+  "shownWrongSure": 6.3,
+  "shownRight": 79.4,
+  "balanced": 87.4
  },
  "report": {
   "baseline/dev": {
-   "cases": 48,
-   "precision": 44.8,
-   "recall": 93.9,
+   "cases": 57,
+   "precision": 55.3,
+   "recall": 97.6,
    "falseAbstain": 0,
    "correctAbstain": 0,
-   "wrongOnly": 35.4,
-   "shownWrong": 12.5,
-   "shownWrongSure": 8.3,
-   "balanced": 47
+   "wrongOnly": 28.1,
+   "shownWrong": 10.5,
+   "shownWrongSure": 7,
+   "shownRight": 88.1,
+   "balanced": 48.8
   },
   "baseline/test": {
-   "cases": 46,
-   "precision": 48.9,
-   "recall": 88.2,
+   "cases": 55,
+   "precision": 49.1,
+   "recall": 85.4,
    "falseAbstain": 0,
    "correctAbstain": 0,
-   "wrongOnly": 34.8,
-   "shownWrong": 13,
-   "shownWrongSure": 6.5,
-   "balanced": 44.1
+   "wrongOnly": 36.4,
+   "shownWrong": 14.5,
+   "shownWrongSure": 9.1,
+   "shownRight": 78,
+   "balanced": 42.7
   },
   "baseline/all": {
-   "cases": 94,
-   "precision": 46.8,
-   "recall": 91,
+   "cases": 112,
+   "precision": 52.2,
+   "recall": 91.6,
    "falseAbstain": 0,
    "correctAbstain": 0,
-   "wrongOnly": 35.1,
-   "shownWrong": 12.8,
-   "shownWrongSure": 7.4,
-   "balanced": 45.5
+   "wrongOnly": 32.1,
+   "shownWrong": 12.5,
+   "shownWrongSure": 8,
+   "shownRight": 83.1,
+   "balanced": 45.8
   },
   "baseline/rows": [
    {
@@ -132,13 +148,13 @@
     "category": "en",
     "answerable": true,
     "sent": [
-     "qea8856",
-     "q852262"
+     "q852262",
+     "qea8856"
     ],
     "good": 1,
     "bad": 1,
-    "shown": "qea8856",
-    "shownOk": true,
+    "shown": "q852262",
+    "shownOk": false,
     "shownSure": true
    },
    {
@@ -147,10 +163,10 @@
     "answerable": true,
     "sent": [
      "q0c19b6",
-     "q36cff2"
+     "qb54902-2"
     ],
-    "good": 2,
-    "bad": 0,
+    "good": 1,
+    "bad": 1,
     "shown": "q0c19b6",
     "shownOk": true,
     "shownSure": true
@@ -161,10 +177,10 @@
     "answerable": true,
     "sent": [
      "qd08bcf",
-     "q11a9bd-2"
+     "qd444ad"
     ],
-    "good": 1,
-    "bad": 1,
+    "good": 2,
+    "bad": 0,
     "shown": "qd08bcf",
     "shownOk": true,
     "shownSure": true
@@ -300,11 +316,11 @@
     "category": "en",
     "answerable": true,
     "sent": [
-     "q0f70da",
-     "q395097"
+     "q66f1a7",
+     "q0f70da"
     ],
-    "good": 1,
-    "bad": 1,
+    "good": 2,
+    "bad": 0,
     "shown": null,
     "shownOk": true,
     "shownSure": false
@@ -356,12 +372,12 @@
     "category": "en",
     "answerable": true,
     "sent": [
-     "q8f9f9a",
-     "q0e0a11"
+     "q0e0a11",
+     "q8f9f9a"
     ],
     "good": 2,
     "bad": 0,
-    "shown": "q8f9f9a",
+    "shown": "q0e0a11",
     "shownOk": true,
     "shownSure": true
    },
@@ -399,10 +415,10 @@
     "answerable": true,
     "sent": [
      "qe3c2e2",
-     "qa9bf28"
+     "qd83201-2"
     ],
-    "good": 1,
-    "bad": 1,
+    "good": 2,
+    "bad": 0,
     "shown": "qe3c2e2",
     "shownOk": true,
     "shownSure": true
@@ -497,7 +513,7 @@
     "answerable": true,
     "sent": [
      "qd5ddf6",
-     "qf8abd3"
+     "qd48651"
     ],
     "good": 1,
     "bad": 1,
@@ -510,12 +526,12 @@
     "category": "tl",
     "answerable": true,
     "sent": [
-     "q33e3e7",
+     "q6166c6",
      "q881818"
     ],
     "good": 1,
     "bad": 1,
-    "shown": "q33e3e7",
+    "shown": "q6166c6",
     "shownOk": false,
     "shownSure": true
    },
@@ -524,28 +540,28 @@
     "category": "tl",
     "answerable": true,
     "sent": [
-     "qbd63fb",
-     "qab5df5"
+     "q0ca850",
+     "qbd63fb"
     ],
-    "good": 1,
-    "bad": 1,
-    "shown": null,
+    "good": 2,
+    "bad": 0,
+    "shown": "q0ca850",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    },
    {
     "id": "t03",
     "category": "tl",
     "answerable": true,
     "sent": [
-     "q0c19b6",
-     "qca693b"
+     "qe0efd4",
+     "qbfc163"
     ],
-    "good": 0,
-    "bad": 2,
-    "shown": null,
+    "good": 2,
+    "bad": 0,
+    "shown": "qe0efd4",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    },
    {
     "id": "t04",
@@ -559,7 +575,7 @@
     "bad": 0,
     "shown": "q7bf34c",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    },
    {
     "id": "t05",
@@ -580,12 +596,12 @@
     "category": "tl",
     "answerable": true,
     "sent": [
-     "qa9bf28",
-     "q16da13"
+     "q105b9d",
+     "qa9bf28"
     ],
-    "good": 1,
-    "bad": 1,
-    "shown": "qa9bf28",
+    "good": 2,
+    "bad": 0,
+    "shown": "q105b9d",
     "shownOk": true,
     "shownSure": true
    },
@@ -622,13 +638,13 @@
     "category": "species",
     "answerable": true,
     "sent": [
-     "q30fa04",
-     "q29c30f"
+     "q29c30f",
+     "q30fa04"
     ],
     "good": 1,
     "bad": 1,
-    "shown": "q30fa04",
-    "shownOk": false,
+    "shown": "q29c30f",
+    "shownOk": true,
     "shownSure": true
    },
    {
@@ -637,7 +653,7 @@
     "answerable": true,
     "sent": [
      "q22374b",
-     "q22374b-2"
+     "qa11f91"
     ],
     "good": 2,
     "bad": 0,
@@ -707,7 +723,7 @@
     "answerable": true,
     "sent": [
      "q3776b6",
-     "gov-102"
+     "qb66a78"
     ],
     "good": 0,
     "bad": 2,
@@ -755,7 +771,7 @@
     "bad": 1,
     "shown": "gov-52",
     "shownOk": false,
-    "shownSure": true
+    "shownSure": false
    },
    {
     "id": "l07",
@@ -963,8 +979,8 @@
     ],
     "good": 0,
     "bad": 2,
-    "shown": "qca693b",
-    "shownOk": false,
+    "shown": null,
+    "shownOk": true,
     "shownSure": false
    },
    {
@@ -973,7 +989,7 @@
     "answerable": false,
     "sent": [
      "q724041",
-     "qce2b43"
+     "q50156c"
     ],
     "good": 0,
     "bad": 2,
@@ -993,7 +1009,7 @@
     "bad": 2,
     "shown": "q29fd1d",
     "shownOk": false,
-    "shownSure": true
+    "shownSure": false
    },
    {
     "id": "o11",
@@ -1005,8 +1021,8 @@
     ],
     "good": 0,
     "bad": 2,
-    "shown": "q29fd1d",
-    "shownOk": false,
+    "shown": null,
+    "shownOk": true,
     "shownSure": false
    },
    {
@@ -1042,8 +1058,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "q1a1d8f",
-     "qf3cd77"
+     "qf3cd77",
+     "q1a1d8f"
     ],
     "good": 0,
     "bad": 2,
@@ -1063,7 +1079,7 @@
     "bad": 2,
     "shown": "q0f7a59",
     "shownOk": false,
-    "shownSure": true
+    "shownSure": false
    },
    {
     "id": "o17",
@@ -1084,8 +1100,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "qe63044-2",
-     "qe63044"
+     "qa981d8-2",
+     "qe63044-2"
     ],
     "good": 0,
     "bad": 2,
@@ -1169,7 +1185,7 @@
     "answerable": false,
     "sent": [
      "qb3053f",
-     "q518ff4"
+     "q3739a7"
     ],
     "good": 0,
     "bad": 2,
@@ -1210,12 +1226,12 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "q3776b6",
-     "q29fd1d"
+     "q29fd1d",
+     "q3776b6"
     ],
     "good": 0,
     "bad": 2,
-    "shown": "q3776b6",
+    "shown": "q29fd1d",
     "shownOk": false,
     "shownSure": false
    },
@@ -1224,8 +1240,8 @@
     "category": "multi-turn",
     "answerable": false,
     "sent": [
-     "qe78236-2",
-     "qe78236"
+     "q76f531",
+     "qb29977"
     ],
     "good": 0,
     "bad": 2,
@@ -1294,14 +1310,14 @@
     "category": "multi-turn",
     "answerable": true,
     "sent": [
-     "qd72a58",
-     "q3776b6"
+     "qf64f4d",
+     "q01ba1c"
     ],
     "good": 0,
     "bad": 2,
-    "shown": null,
-    "shownOk": true,
-    "shownSure": false
+    "shown": "qf64f4d",
+    "shownOk": false,
+    "shownSure": true
    },
    {
     "id": "m07",
@@ -1309,10 +1325,10 @@
     "answerable": true,
     "sent": [
      "q0ca850",
-     "q26f0db"
+     "qbd63fb"
     ],
-    "good": 1,
-    "bad": 1,
+    "good": 2,
+    "bad": 0,
     "shown": "q0ca850",
     "shownOk": true,
     "shownSure": true
@@ -1322,22 +1338,232 @@
     "category": "multi-turn",
     "answerable": true,
     "sent": [
-     "qa5df51",
-     "qc01447"
+     "qc01447",
+     "qcf4aff"
     ],
     "good": 1,
     "bad": 1,
-    "shown": null,
+    "shown": "qc01447",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    },
    {
     "id": "m09",
     "category": "multi-turn",
     "answerable": false,
     "sent": [
-     "q0f7a59",
-     "q29fd1d"
+     "qb27a0e",
+     "qb9e0e6"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": "qb27a0e",
+    "shownOk": false,
+    "shownSure": true
+   },
+   {
+    "id": "m10",
+    "category": "multi-turn",
+    "answerable": true,
+    "sent": [
+     "qa3181d",
+     "q440e51"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": "qa3181d",
+    "shownOk": false,
+    "shownSure": true
+   },
+   {
+    "id": "f01",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "guide-poisoning",
+     "q7bf34c"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "guide-poisoning",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "f02",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "q8ebfd7",
+     "qe0efd4"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q8ebfd7",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "f03",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "q8559cb",
+     "q00ffb2-2"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q8559cb",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "f04",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "q37381b",
+     "qa0d21b"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q37381b",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "f05",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "gov-114",
+     "qd6c542"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "gov-114",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "f06",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "q03cef8",
+     "qed1110"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": "q03cef8",
+    "shownOk": false,
+    "shownSure": true
+   },
+   {
+    "id": "f07",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "qb27a0e",
+     "qb9e0e6"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "qb27a0e",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "f08",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "q3374af",
+     "q105b9d"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q3374af",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "f09",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "q12ca1f-2",
+     "qb6653f"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q12ca1f-2",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "f10",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "qbd63fb",
+     "q0ca850"
+    ],
+    "good": 0,
+    "bad": 2,
+    "shown": "qbd63fb",
+    "shownOk": false,
+    "shownSure": true
+   },
+   {
+    "id": "f11",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "qd0b9a8",
+     "qf707e3"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "qd0b9a8",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "f12",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "q285fc9",
+     "qb0335e"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q285fc9",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "w01",
+    "category": "topic-switch",
+    "answerable": true,
+    "sent": [
+     "guide-vomiting",
+     "q8d57d9"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q8d57d9",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "w02",
+    "category": "topic-switch",
+    "answerable": false,
+    "sent": [
+     "q3abd2e",
+     "q3abd2e-2"
     ],
     "good": 0,
     "bad": 2,
@@ -1346,52 +1572,97 @@
     "shownSure": false
    },
    {
-    "id": "m10",
-    "category": "multi-turn",
+    "id": "w03",
+    "category": "topic-switch",
     "answerable": true,
     "sent": [
-     "q05288f",
-     "qa40283"
+     "guide-poisoning",
+     "q7bf34c"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q7bf34c",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "w04",
+    "category": "topic-switch",
+    "answerable": true,
+    "sent": [
+     "qa90a14",
+     "q540657"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qa90a14",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "w05",
+    "category": "topic-switch",
+    "answerable": true,
+    "sent": [
+     "q95d19a",
+     "q418554"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q95d19a",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "w06",
+    "category": "topic-switch",
+    "answerable": false,
+    "sent": [
+     "qb29977",
+     "q76f531"
     ],
     "good": 0,
     "bad": 2,
-    "shown": "q05288f",
-    "shownOk": false,
+    "shown": null,
+    "shownOk": true,
     "shownSure": false
    }
   ],
   "evidence/dev": {
-   "cases": 48,
-   "precision": 78.2,
-   "recall": 90.9,
-   "falseAbstain": 9.1,
-   "correctAbstain": 86.7,
-   "wrongOnly": 4.2,
-   "shownWrong": 6.3,
-   "shownWrongSure": 2.1,
-   "balanced": 88.8
+   "cases": 57,
+   "precision": 77.5,
+   "recall": 90.5,
+   "falseAbstain": 7.1,
+   "correctAbstain": 93.3,
+   "wrongOnly": 3.5,
+   "shownWrong": 7,
+   "shownWrongSure": 5.3,
+   "shownRight": 81,
+   "balanced": 91.9
   },
   "evidence/test": {
-   "cases": 46,
-   "precision": 78,
-   "recall": 73.5,
-   "falseAbstain": 20.6,
-   "correctAbstain": 83.3,
-   "wrongOnly": 8.7,
-   "shownWrong": 8.7,
-   "shownWrongSure": 6.5,
-   "balanced": 78.4
+   "cases": 55,
+   "precision": 80.6,
+   "recall": 85.4,
+   "falseAbstain": 12.2,
+   "correctAbstain": 85.7,
+   "wrongOnly": 5.5,
+   "shownWrong": 7.3,
+   "shownWrongSure": 5.5,
+   "shownRight": 80.5,
+   "balanced": 85.6
   },
   "evidence/all": {
-   "cases": 94,
-   "precision": 78.1,
-   "recall": 82.1,
-   "falseAbstain": 14.9,
-   "correctAbstain": 85.2,
-   "wrongOnly": 6.4,
-   "shownWrong": 7.4,
-   "shownWrongSure": 4.3,
-   "balanced": 83.7
+   "cases": 112,
+   "precision": 79,
+   "recall": 88,
+   "falseAbstain": 9.6,
+   "correctAbstain": 89.7,
+   "wrongOnly": 4.5,
+   "shownWrong": 7.1,
+   "shownWrongSure": 5.4,
+   "shownRight": 80.7,
+   "balanced": 88.9
   },
   "evidence/rows": [
    {
@@ -1458,9 +1729,9 @@
     ],
     "good": 1,
     "bad": 0,
-    "shown": "guide-heatstroke",
+    "shown": null,
     "shownOk": true,
-    "shownSure": true
+    "shownSure": false
    },
    {
     "id": "r06",
@@ -1481,13 +1752,13 @@
     "category": "en",
     "answerable": true,
     "sent": [
-     "qea8856",
-     "q852262"
+     "q852262",
+     "qea8856"
     ],
     "good": 1,
     "bad": 1,
-    "shown": "qea8856",
-    "shownOk": true,
+    "shown": "q852262",
+    "shownOk": false,
     "shownSure": true
    },
    {
@@ -1496,10 +1767,10 @@
     "answerable": true,
     "sent": [
      "q0c19b6",
-     "q36cff2"
+     "qb54902-2"
     ],
-    "good": 2,
-    "bad": 0,
+    "good": 1,
+    "bad": 1,
     "shown": "q0c19b6",
     "shownOk": true,
     "shownSure": true
@@ -1633,14 +1904,13 @@
     "category": "en",
     "answerable": true,
     "sent": [
-     "q76440a",
      "qf8b878"
     ],
     "good": 1,
-    "bad": 1,
-    "shown": null,
+    "bad": 0,
+    "shown": "qf8b878",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    },
    {
     "id": "r19",
@@ -1702,12 +1972,12 @@
     "category": "en",
     "answerable": true,
     "sent": [
-     "q8f9f9a",
-     "q0e0a11"
+     "q0e0a11",
+     "q8f9f9a"
     ],
     "good": 2,
     "bad": 0,
-    "shown": "q8f9f9a",
+    "shown": "q0e0a11",
     "shownOk": true,
     "shownSure": true
    },
@@ -1745,10 +2015,10 @@
     "answerable": true,
     "sent": [
      "qe3c2e2",
-     "qa9bf28"
+     "qd83201-2"
     ],
-    "good": 1,
-    "bad": 1,
+    "good": 2,
+    "bad": 0,
     "shown": "qe3c2e2",
     "shownOk": true,
     "shownSure": true
@@ -1814,10 +2084,10 @@
     "answerable": true,
     "sent": [
      "q163a45",
-     "qfc1a24"
+     "q4eae64"
     ],
-    "good": 2,
-    "bad": 0,
+    "good": 1,
+    "bad": 1,
     "shown": "q163a45",
     "shownOk": true,
     "shownSure": true
@@ -1852,46 +2122,56 @@
     "category": "tl",
     "answerable": true,
     "sent": [
+     "q6166c6",
      "q881818"
     ],
     "good": 1,
-    "bad": 0,
-    "shown": "q881818",
-    "shownOk": true,
+    "bad": 1,
+    "shown": "q6166c6",
+    "shownOk": false,
     "shownSure": true
    },
    {
     "id": "t02",
     "category": "tl",
     "answerable": true,
-    "sent": [],
-    "good": 0,
+    "sent": [
+     "q0ca850",
+     "qbd63fb"
+    ],
+    "good": 2,
     "bad": 0,
-    "shown": null,
+    "shown": "q0ca850",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    },
    {
     "id": "t03",
     "category": "tl",
     "answerable": true,
-    "sent": [],
-    "good": 0,
+    "sent": [
+     "qe0efd4",
+     "qbfc163"
+    ],
+    "good": 2,
     "bad": 0,
-    "shown": null,
+    "shown": "qe0efd4",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    },
    {
     "id": "t04",
     "category": "tl",
     "answerable": true,
-    "sent": [],
-    "good": 0,
+    "sent": [
+     "q7bf34c",
+     "qa6febf"
+    ],
+    "good": 2,
     "bad": 0,
     "shown": "q7bf34c",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    },
    {
     "id": "t05",
@@ -1912,11 +2192,12 @@
     "category": "tl",
     "answerable": true,
     "sent": [
+     "q105b9d",
      "qa9bf28"
     ],
-    "good": 1,
+    "good": 2,
     "bad": 0,
-    "shown": "qa9bf28",
+    "shown": "q105b9d",
     "shownOk": true,
     "shownSure": true
    },
@@ -1952,13 +2233,13 @@
     "category": "species",
     "answerable": true,
     "sent": [
-     "q30fa04",
-     "q29c30f"
+     "q29c30f",
+     "q30fa04"
     ],
     "good": 1,
     "bad": 1,
-    "shown": "q30fa04",
-    "shownOk": false,
+    "shown": "q29c30f",
+    "shownOk": true,
     "shownSure": true
    },
    {
@@ -1967,7 +2248,7 @@
     "answerable": true,
     "sent": [
      "q22374b",
-     "q22374b-2"
+     "qa11f91"
     ],
     "good": 2,
     "bad": 0,
@@ -2007,10 +2288,11 @@
     "category": "legal",
     "answerable": true,
     "sent": [
-     "q3739a7"
+     "q3739a7",
+     "qf64f4d"
     ],
     "good": 1,
-    "bad": 0,
+    "bad": 1,
     "shown": "q3739a7",
     "shownOk": true,
     "shownSure": true
@@ -2032,12 +2314,14 @@
     "id": "l03",
     "category": "legal",
     "answerable": true,
-    "sent": [],
+    "sent": [
+     "q3776b6"
+    ],
     "good": 0,
-    "bad": 0,
-    "shown": null,
-    "shownOk": true,
-    "shownSure": false
+    "bad": 1,
+    "shown": "q3776b6",
+    "shownOk": false,
+    "shownSure": true
    },
    {
     "id": "l04",
@@ -2058,11 +2342,10 @@
     "category": "legal",
     "answerable": true,
     "sent": [
-     "q41a64b",
-     "qf3fbd2-2"
+     "q41a64b"
     ],
     "good": 1,
-    "bad": 1,
+    "bad": 0,
     "shown": "q41a64b",
     "shownOk": true,
     "shownSure": true
@@ -2071,14 +2354,12 @@
     "id": "l06",
     "category": "legal",
     "answerable": true,
-    "sent": [
-     "gov-52"
-    ],
+    "sent": [],
     "good": 0,
-    "bad": 1,
-    "shown": "gov-52",
-    "shownOk": false,
-    "shownSure": true
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
    },
    {
     "id": "l07",
@@ -2240,11 +2521,10 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "q3abd2e",
-     "q3abd2e-2"
+     "q3abd2e"
     ],
     "good": 0,
-    "bad": 2,
+    "bad": 1,
     "shown": null,
     "shownOk": true,
     "shownSure": false
@@ -2267,8 +2547,8 @@
     "sent": [],
     "good": 0,
     "bad": 0,
-    "shown": "qca693b",
-    "shownOk": false,
+    "shown": null,
+    "shownOk": true,
     "shownSure": false
    },
    {
@@ -2341,14 +2621,12 @@
     "id": "o16",
     "category": "out-of-scope",
     "answerable": false,
-    "sent": [
-     "q0f7a59"
-    ],
+    "sent": [],
     "good": 0,
-    "bad": 1,
-    "shown": "q0f7a59",
-    "shownOk": false,
-    "shownSure": true
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
    },
    {
     "id": "o17",
@@ -2366,8 +2644,8 @@
     "category": "out-of-scope",
     "answerable": false,
     "sent": [
-     "qe63044-2",
-     "qe63044"
+     "qa981d8-2",
+     "qe63044-2"
     ],
     "good": 0,
     "bad": 2,
@@ -2478,11 +2756,9 @@
     "id": "m01",
     "category": "multi-turn",
     "answerable": false,
-    "sent": [
-     "qe78236-2"
-    ],
+    "sent": [],
     "good": 0,
-    "bad": 1,
+    "bad": 0,
     "shown": null,
     "shownOk": true,
     "shownSure": false
@@ -2541,21 +2817,25 @@
     "id": "m06",
     "category": "multi-turn",
     "answerable": true,
-    "sent": [],
-    "good": 0,
-    "bad": 0,
-    "shown": null,
-    "shownOk": true,
-    "shownSure": false
+    "sent": [
+     "q01ba1c",
+     "q3739a7"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q01ba1c",
+    "shownOk": false,
+    "shownSure": true
    },
    {
     "id": "m07",
     "category": "multi-turn",
     "answerable": true,
     "sent": [
-     "q0ca850"
+     "q0ca850",
+     "qbd63fb"
     ],
-    "good": 1,
+    "good": 2,
     "bad": 0,
     "shown": "q0ca850",
     "shownOk": true,
@@ -2565,12 +2845,15 @@
     "id": "m08",
     "category": "multi-turn",
     "answerable": true,
-    "sent": [],
-    "good": 0,
-    "bad": 0,
-    "shown": null,
+    "sent": [
+     "qc01447",
+     "q87acdb"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qc01447",
     "shownOk": true,
-    "shownSure": false
+    "shownSure": true
    },
    {
     "id": "m09",
@@ -2587,11 +2870,247 @@
     "id": "m10",
     "category": "multi-turn",
     "answerable": true,
+    "sent": [
+     "qa3181d",
+     "q163a45"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qa3181d",
+    "shownOk": false,
+    "shownSure": true
+   },
+   {
+    "id": "f01",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "guide-poisoning",
+     "q7bf34c"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "guide-poisoning",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "f02",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "q8ebfd7"
+    ],
+    "good": 1,
+    "bad": 0,
+    "shown": "q8ebfd7",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "f03",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "q8559cb",
+     "q00ffb2-2"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q8559cb",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "f04",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "q37381b"
+    ],
+    "good": 1,
+    "bad": 0,
+    "shown": "q37381b",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "f05",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "gov-114"
+    ],
+    "good": 1,
+    "bad": 0,
+    "shown": "gov-114",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "f06",
+    "category": "follow-up",
+    "answerable": true,
     "sent": [],
     "good": 0,
     "bad": 0,
-    "shown": "q05288f",
+    "shown": "q03cef8",
     "shownOk": false,
+    "shownSure": false
+   },
+   {
+    "id": "f07",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "qb9e0e6",
+     "q17559d"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qb9e0e6",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "f08",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "q3374af",
+     "q105b9d"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q3374af",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "f09",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "f10",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "f11",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "f12",
+    "category": "follow-up",
+    "answerable": true,
+    "sent": [
+     "q285fc9",
+     "qb0335e"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q285fc9",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "w01",
+    "category": "topic-switch",
+    "answerable": true,
+    "sent": [
+     "guide-vomiting",
+     "q8d57d9"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q8d57d9",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "w02",
+    "category": "topic-switch",
+    "answerable": false,
+    "sent": [
+     "q3abd2e"
+    ],
+    "good": 0,
+    "bad": 1,
+    "shown": null,
+    "shownOk": true,
+    "shownSure": false
+   },
+   {
+    "id": "w03",
+    "category": "topic-switch",
+    "answerable": true,
+    "sent": [
+     "guide-poisoning",
+     "q7bf34c"
+    ],
+    "good": 2,
+    "bad": 0,
+    "shown": "q7bf34c",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "w04",
+    "category": "topic-switch",
+    "answerable": true,
+    "sent": [
+     "qa90a14",
+     "q540657"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "qa90a14",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "w05",
+    "category": "topic-switch",
+    "answerable": true,
+    "sent": [
+     "q95d19a",
+     "q418554"
+    ],
+    "good": 1,
+    "bad": 1,
+    "shown": "q95d19a",
+    "shownOk": true,
+    "shownSure": true
+   },
+   {
+    "id": "w06",
+    "category": "topic-switch",
+    "answerable": false,
+    "sent": [],
+    "good": 0,
+    "bad": 0,
+    "shown": null,
+    "shownOk": true,
     "shownSure": false
    }
   ]

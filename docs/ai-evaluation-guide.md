@@ -109,7 +109,10 @@ only credits the passages its answer actually uses. This test measures that part
   Philippine law, emergencies, follow-ups, and 27 the library can't answer). Each lists the passages that truly
   answer it, or none. The labels were made by reading each question's top search results: they say whether a
   passage answers the question, not whether it is veterinary-correct. **Keep these questions out of training**,
-  like `test.jsonl`. Half are "dev" (the limits are tuned on them), half "test" (reported).
+  like `test.jsonl`. 112 questions since Phase 2 (18 follow-ups and topic switches added).
+- **Limits:** `--calibrate` tunes them on one half and scores the other, both ways round (cross-validation): the
+  "held-out average" it prints is the number to report. The app's limits are then tuned on all questions, so the
+  plain table after it is optimistic.
 - **Run:** in the main project folder:
   ```
   npm run eval:retrieval -- --calibrate                               # search metrics, and the limits it would choose
@@ -126,6 +129,10 @@ only credits the passages its answer actually uses. This test measures that part
   - *wrongOnly*: questions where the AI got only wrong passages (the cause of off-topic answers and wrong credits)
   - with the real model's answers: AI answers shown on unanswerable questions, answers with a law, organisation
     or number not in their passages (*unsupported*), and *creditPrecision* (credited passages that answer the question)
+- **Conversations:** `npm run eval:conversation` (with `python answer_prompts.py --serve 8790` running in
+  `ai-server`) plays every labelled conversation through the app turn by turn with the real model, for each way of
+  passing the conversation to the model (`MODEL_HISTORY` in `src/lib/prompt.js`), and measures how often the last
+  answer is right and how much of it comes only from the app's own earlier answers (*contamination*).
 - These are automatic measures. They don't replace the graders' accuracy and safety grades above.
 
 **References**

@@ -17,16 +17,17 @@ import { SOURCES, sourcesFor } from "./prompt";
    every law, organisation and number in it appears in them, so the AI can't invent a citation or a figure.
    Only the passages the answer actually uses are credited under it. */
 
-/* Calibrated by `npm run eval:retrieval -- --calibrate` on the dev half of the labelled questions (policy: decline
-   at least 85% of questions the library can't answer, model gets only wrong passages for at most 5%). A passage is
-   evidence when its search score reaches `strong`, or reaches `min` and it covers at least `cover` of the subject. */
-export const EVIDENCE = { strong: 0.84, min: 0.68, cover: 0.45 };
+/* Calibrated by `npm run eval:retrieval -- --calibrate` on the labelled questions (policy: decline at least 85% of
+   questions the library can't answer, model gets only wrong passages for at most 5%; cross-validated, then tuned
+   on all of them). A passage is evidence when its search score reaches `strong`, or reaches `min` and it covers
+   at least `cover` of the subject; for a follow-up it must also cover `focus` of what the new message asks. */
+export const EVIDENCE = { strong: 0.76, min: 0.7, cover: 0.6, focus: 0.01 };
 
 // Words that say nothing about the subject of a question: the animals, places, and words owners ask with.
 const GENERIC = new Set(`dog dogs puppy puppies pup aso tuta cat cats kitten kittens kitty pusa kuting pet pets animal animals
   philippines philippine filipino pinoy manila here country our someone something really best good okay normal right
   know tell need want make take give keep help thing things way time much many often long still also like one
-  usually ever always every there thank thanks please ano dapat kailan pwede puwede gagawin gawin ilang beses bakit paano`
+  usually ever always every there thank thanks please`
   .split(/\s+/).flatMap((w) => tokens(w)).map((w) => root(w)));
 
 // A rough word root, so "overheating" meets "overheat" and "dewormed" meets "deworm".
@@ -43,13 +44,21 @@ function subject(question, idf) {
 }
 
 const passageText = (e) => `${e.ask || ""} ${e.q} ${e.keys || ""} ${e.a}`;
+const passageWords = new Map();   // entry id -> its words; a passage's words never change
+function wordsOf(entry) {
+  const key = entry.id && `${entry.id}\u0000${entry.ask || ""}`;
+  if (key && passageWords.has(key)) return passageWords.get(key);
+  const set = new Set(tokens(withEnglish(passageText(entry))).map(root));
+  if (key) passageWords.set(key, set);
+  return set;
+}
 
 /* How much of the question's subject a passage covers, 0–1, weighted by how rare each word is.
    1 when the question has no subject words of its own. */
 export function coverage(question, entry, idf) {
   const words = subject(question, idf);
   if (!words.size) return 1;
-  const text = new Set(tokens(withEnglish(passageText(entry))).map(root));
+  const text = wordsOf(entry);
   let have = 0, all = 0;
   for (const [w, weight] of words) { all += weight; if (text.has(w)) have += weight; }
   return have / all;
@@ -60,10 +69,13 @@ export function coverage(question, entry, idf) {
    knowledge.js): which results may be shown as a checked answer (shows: about the question, though maybe less
    close; compose() still applies its own score limits and says when it isn't sure), and which may be offered
    as similar questions (near: shares at least one subject word). */
-export function selectEvidence(results, question, idf, { pinned = [], limit = 2, rule = EVIDENCE } = {}) {
+export function selectEvidence(results, question, idf, { pinned = [], limit = 2, rule = EVIDENCE, focus = "" } = {}) {
   const cover = new Map(results.map((r) => [r.id, coverage(question, r, idf)]));
-  const answers = (r) => r.score >= rule.strong || (r.score >= rule.min && cover.get(r.id) >= rule.cover);
-  const shows = (r) => r.score >= rule.strong || cover.get(r.id) >= rule.cover;
+  // A follow-up is searched together with what it refers to ("my dog has ticks" + "can they make him sick?").
+  // The passage must also cover what the new message itself asks (sick), not only the earlier topic (ticks).
+  const own = new Map(results.map((r) => [r.id, focus ? coverage(focus, r, idf) : 1]));
+  const answers = (r) => own.get(r.id) >= rule.focus && (r.score >= rule.strong || (r.score >= rule.min && cover.get(r.id) >= rule.cover));
+  const shows = (r) => own.get(r.id) >= rule.focus && (r.score >= rule.strong || cover.get(r.id) >= rule.cover);
   const near = (r) => shows(r) || cover.get(r.id) > 0;
   const ids = new Set(pinned.map((e) => e.id));
   const evidence = [...pinned, ...results.filter((r) => answers(r) && !ids.has(r.of || r.id))].slice(0, limit);
@@ -74,9 +86,11 @@ export function selectEvidence(results, question, idf, { pinned = [], limit = 2,
    first-aid guide first, so the model always has the right guide (ai-server/answer_rag.py does the same); then
    the search results that are evidence. `fallback` is the search-only reply, shown when the model isn't asked,
    fails, or writes something its passages don't back. */
-export function planAnswer(index, results, question, lastMessage) {
+export function planAnswer(index, results, question, lastMessage, rule = EVIDENCE) {
   const pinned = urgentGuides(lastMessage).map((g) => index.entries.find((e) => e.id === `guide-${g.slug}`)).filter(Boolean);
-  const { evidence, answers, shows, near } = selectEvidence(results, question, index.keywords.idf, { pinned, limit: SOURCES });
+  const own = withEnglish(lastMessage);
+  const focus = own.trim() === question.trim() ? "" : own;   // only a follow-up has a separate focus
+  const { evidence, answers, shows, near } = selectEvidence(results, question, index.keywords.idf, { pinned, limit: SOURCES, rule, focus });
   return { evidence, fallback: compose(results, question, { fits: shows, sure: answers, near }) };
 }
 

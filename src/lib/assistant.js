@@ -1,7 +1,7 @@
 import { supabase } from "./supabase";
 import { breedFor } from "./breeds";
 import { chatReply, decodeIndex, queryText, safetyReply, search, withEnglish } from "./knowledge";
-import { chatMessages, conversation, describePet, petContext, sourcesFor } from "./prompt";
+import { MODEL_HISTORY, chatMessages, conversation, describePet, petContext, sourcesFor } from "./prompt";
 import { planAnswer, reviewAnswer } from "./evidence";
 import PROMPT from "./aiPrompt.json";
 
@@ -62,7 +62,7 @@ async function askServer(messages, pet, used, { signal, onStatus, onText }) {
   const stop = () => ctrl.abort();
   signal?.addEventListener("abort", stop);
   const timer = setTimeout(stop, SERVER_TIMEOUT);
-  const body = JSON.stringify({ messages: conversation(messages), pet: petContext(pet), sources: sourcesFor(used), stream: true });
+  const body = JSON.stringify({ messages: conversation(messages, MODEL_HISTORY), pet: petContext(pet), sources: sourcesFor(used), stream: true });
   try {
     for (;;) {
       const res = await fetch(ASSISTANT_URL, {

@@ -4,70 +4,70 @@
  },
  "metrics": {
   "baseline/dev": {
-   "questions": 48,
-   "aiAnswered": 64.6,
+   "questions": 57,
+   "aiAnswered": 71.9,
    "aiOnUnanswerable": 20,
-   "aiOnAnswerable": 78.8,
-   "aiFromWrongOnly": 5,
-   "unsupported": 3.2,
-   "ungrounded": 0,
-   "creditPrecision": 58.2,
-   "wrongCredits": 28
+   "aiOnAnswerable": 88.1,
+   "aiFromWrongOnly": 4,
+   "unsupported": 0,
+   "ungrounded": 2.4,
+   "creditPrecision": 68.6,
+   "wrongCredits": 27
   },
   "baseline/test": {
-   "questions": 46,
-   "aiAnswered": 84.8,
-   "aiOnUnanswerable": 66.7,
-   "aiOnAnswerable": 85.3,
+   "questions": 55,
+   "aiAnswered": 78.2,
+   "aiOnUnanswerable": 42.9,
+   "aiOnAnswerable": 80.5,
    "aiFromWrongOnly": 10,
    "unsupported": 0,
-   "ungrounded": 7.7,
-   "creditPrecision": 54.3,
-   "wrongCredits": 37
+   "ungrounded": 4.7,
+   "creditPrecision": 57.8,
+   "wrongCredits": 38
   },
   "baseline/all": {
-   "questions": 94,
-   "aiAnswered": 74.5,
-   "aiOnUnanswerable": 40.7,
-   "aiOnAnswerable": 82.1,
-   "aiFromWrongOnly": 15,
-   "unsupported": 1.4,
-   "ungrounded": 4.3,
-   "creditPrecision": 56.1,
+   "questions": 112,
+   "aiAnswered": 75,
+   "aiOnUnanswerable": 31,
+   "aiOnAnswerable": 84.3,
+   "aiFromWrongOnly": 14,
+   "unsupported": 0,
+   "ungrounded": 3.6,
+   "creditPrecision": 63.1,
    "wrongCredits": 65
   },
   "evidence/dev": {
-   "questions": 48,
-   "aiAnswered": 50,
+   "questions": 57,
+   "aiAnswered": 61.4,
    "aiOnUnanswerable": 0,
-   "aiOnAnswerable": 72.7,
-   "aiFromWrongOnly": 0,
+   "aiOnAnswerable": 81,
+   "aiFromWrongOnly": 1,
    "unsupported": 0,
    "ungrounded": 0,
-   "creditPrecision": 87.1,
+   "creditPrecision": 89.7,
    "wrongCredits": 4
   },
   "evidence/test": {
-   "questions": 46,
-   "aiAnswered": 56.5,
+   "questions": 55,
+   "aiAnswered": 63.6,
    "aiOnUnanswerable": 0,
-   "aiOnAnswerable": 73.5,
+   "aiOnAnswerable": 82.9,
    "aiFromWrongOnly": 1,
    "unsupported": 0,
    "ungrounded": 0,
-   "creditPrecision": 83.3,
-   "wrongCredits": 5
+   "creditPrecision": 94.6,
+   "wrongCredits": 2
   },
   "evidence/all": {
-   "questions": 94,
-   "aiAnswered": 53.2,
+   "questions": 112,
+   "aiAnswered": 62.5,
    "aiOnUnanswerable": 0,
-   "aiOnAnswerable": 73.1,
-   "aiFromWrongOnly": 1,
+   "aiOnAnswerable": 81.9,
+   "aiFromWrongOnly": 2,
    "unsupported": 0,
    "ungrounded": 0,
-   "creditPrecision": 85.2,
-   "wrongCredits": 9
+   "creditPrecision": 92.1,
+   "wrongCredits": 6
   }
  },
  "details": {
@@ -156,13 +156,9 @@
     "generated": true,
     "declined": false,
     "rightSent": true,
-    "answer": "I haven't found any definitive information about when a nursing mother should be spayed, but spaying nursing mothers seems common in TNR (trap neuter return) groups (it's better to spay a cat that you have in a trap now, then try to trap her or your kitten back).\n\nAlly Cat Allies (a leading TNR group) states:\n\n\"Nursing mother cats continue to produce milk after being spayed, and can continue to nurse their kittens until they are at least 3 months old.\"\n\nSo it sounds like you could probably wait until after your cat has finished nursing.",
-    "problems": [
-     "number not in the sources: 3"
-    ],
-    "unsupported": [
-     "number not in the sources: 3"
-    ],
+    "answer": "I couldn't find any definitive information about when a nursing mother should be spayed, but spaying nursing mothers seems common in TNR (trap neuter return) groups (it's better to spay a cat that you have in a trap now, then try to trap her again later).\n\nAlly Cat Allies (a leading TNR group) states:\n\n\"Nursing mother cats continue to produce milk after being spayed, and can continue to nurse their kittens.\"\n\nBest Spaying Technique for Nursing Mother\n\nIf you want to get her spayed while she is nursing, you can call the local veterinarians and ask if they are comfortable with it.",
+    "problems": [],
+    "unsupported": [],
     "ungrounded": false,
     "credits": 2,
     "wrongCredit": 1
@@ -178,21 +174,19 @@
     "unsupported": [],
     "ungrounded": false,
     "credits": 2,
-    "wrongCredit": 0
+    "wrongCredit": 1
    },
    {
     "id": "r09",
     "answerable": true,
-    "generated": false,
-    "declined": true,
+    "generated": true,
+    "declined": false,
     "rightSent": true,
-    "answer": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
-    "problems": [
-     "not based on the sources (best overlap 0.06)"
-    ],
+    "answer": "Do not give any milk to any animal(Not only cats but all animals will get ill if you do give milk or milk products)It is better to give clean water and dry cat food.\n\nFeeding dry catfood is safe for most of the wildlife like birds-rodents-foxes-dogs.\n\nIf the cat do hunt it will only need catfood as a supplement to the prey it eats.\n\nYou need to get the cat spayed or neutered so you need to talk to animal protection in your area to get this done.\n\nRelated: Cat and cow's milk (whole milk) -- A feral cat knows what's good for it, right?",
+    "problems": [],
     "unsupported": [],
-    "ungrounded": true,
-    "credits": 1,
+    "ungrounded": false,
+    "credits": 2,
     "wrongCredit": 0
    },
    {
@@ -320,7 +314,7 @@
     "rightSent": true,
     "answer": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
     "problems": [
-     "not based on the sources (best overlap 0.12)"
+     "not based on the sources (best overlap 0.06)"
     ],
     "unsupported": [],
     "ungrounded": true,
@@ -372,7 +366,7 @@
     "generated": true,
     "declined": false,
     "rightSent": true,
-    "answer": "Patience, a routine and rewards work best.\n\n- Take your puppy out at least every two hours, and right after waking up, eating and playing.\n- Feed meals at the same times each day.\n- Use the same outdoor spot each time, and say a cue word like \"potty\" while they go.\n- Praise or give a treat right after they finish.\n- Watch for sniffing, circling or scratching at the door, then go out right away.\n- When you can't watch, use a crate or a small gated area.\n- A puppy can often hold it about one hour per month of age. A 3-month-old may need a break about every 3 hours.\n\nNever punish accidents. Calmly take the puppy to the outdoor spot, reward them to keep practice until they feel comfortable, and clean the mess well.",
+    "answer": "Patience, a routine and rewards work best.\n\n- Take your puppy out at least every two hours, and right after waking up, eating and playing.\n- Feed meals at the same times each day.\n- Use the same outdoor spot each time, and say a cue word like \"potty\" while they go.\n- Praise or give a treat right after they finish.\n- Watch for sniffing, circling or scratching at the door, then go out right away.\n- When you can't watch, use a crate or a small gated area.\n- A puppy can often hold it about one hour per month of age. A 3-month-old may need a break about every 3 hours.\n\nNever punish accidents. Calmly take the puppy to the outdoor spot, reward them to keep good habits, and clean the mess well.",
     "problems": [],
     "unsupported": [],
     "ungrounded": false,
@@ -408,15 +402,17 @@
    {
     "id": "r26",
     "answerable": true,
-    "generated": true,
-    "declined": false,
+    "generated": false,
+    "declined": true,
     "rightSent": true,
-    "answer": "Dogs: The ASPCA suggests a bath at least once every three months. Dogs that spend a lot of time outdoors or have skin problems may need baths more often.\n\nCats: Most cats keep themselves clean. They only need a bath if they get very dirty or into something sticky or smelly.\n\nBath tips:\n- Brush out loose hair and mats first.\n- Use lukewarm water and a shampoo made for pets. Human shampoo can irritate or dry out the skin.\n- Keep water out of the eyes, ears and nose. Wipe the face with a damp cloth.\n- Rinse well and dry fully, including any skin folds.\n- For cats, trim the claws first and use a rubber mat so they don't slip.\n\nSee your vet if you notice scabs, bald spots, redness or constant scratching.",
-    "problems": [],
+    "answer": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
+    "problems": [
+     "not based on the sources (best overlap 0.18)"
+    ],
     "unsupported": [],
-    "ungrounded": false,
-    "credits": 2,
-    "wrongCredit": 1
+    "ungrounded": true,
+    "credits": 1,
+    "wrongCredit": 0
    },
    {
     "id": "r27",
@@ -504,7 +500,7 @@
     "rightSent": true,
     "answer": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
     "problems": [
-     "not based on the sources (best overlap 0.18)"
+     "not based on the sources (best overlap 0.06)"
     ],
     "unsupported": [],
     "ungrounded": true,
@@ -530,25 +526,25 @@
     "generated": true,
     "declined": false,
     "rightSent": true,
-    "answer": "\"Tick fever\" usually means germs like Ehrlichia, Anaplasma or Babesia spread by ticks. In the Philippines, the warm climate suits the brown dog tick, which can live in homes and kennels. Ehrlichia canis was the most common tick-borne germ found in a study of dogs in Metro Manila and Laguna.\n\nSigns may show 1 to 3 weeks after a bite:\n- Fever, low energy, poor appetite\n- Swollen glands, stiffening or limping\n- Nosebleeds, bruises on the skin or gums, or blood in urine or poop\n\nSee a vet today if you notice bleeding, bruising, pale gums or weakness. A blood test is needed to confirm it.\n\nPrevent it with year-round tick control your vet recommends and daily tick checks.",
+    "answer": "Remove ticks as soon as you find them:\n- Use fine-tipped tweezers and grip the tick as close to the skin as you can\n- Pull straight out with slow, steady pressure. Don't twist or jerk\n- Don't use bare hands, matches, heat, nail polish or petroleum jelly\n- Don't crush the tick. Drop it in rubbing alcohol, seal it in a bag or wrap it in tape\n- Wash the bite area and your hands with soap and water\n\nIf small mouthparts stay in the skin, it usually heals on its own.\n\nWatch the spot for a few days. See your vet if it gets red or swollen, if your dog has many ticks, or if he seems unwell in the weeks after.",
     "problems": [],
     "unsupported": [],
     "ungrounded": false,
     "credits": 2,
-    "wrongCredit": 1
+    "wrongCredit": 0
    },
    {
     "id": "t03",
     "answerable": true,
     "generated": true,
     "declined": false,
-    "rightSent": false,
-    "answer": "The best age depends on your pet, so ask your vet. General guidance:\n\nCats: Many groups advise spaying or neutering before about 5 months old. Some vets do it around 6 months. Healthy kittens can be fixed as young as 8 weeks.\n\nDogs: The traditional age is about 6 to 9 months, and some groups advise before 5 months. Giant-breed males kept as house pets are often neutered after they stop growing, at about 12 to 15 months.\n\nBenefits include:\n- No heat cycles and no unplanned litters\n- Lower risk of womb infections and breast tumors in females\n- No testicular cancer in males, and less roaming and urine marking\n\nPets can gain weight after surgery, so watch their food portions.",
+    "rightSent": true,
+    "answer": "Kittens often get roundworms from their mother's milk, so deworming starts early.\n\nParasite experts (CAPC) advise:\n- Start at 2 weeks old\n- Repeat every 2 weeks until your kitten starts a monthly year-round parasite preventive\n- If a monthly preventive isn't used: every 2 weeks until 2 months old, then monthly until 6 months, then every 3 months\n- Have the kitten's poop checked by the vet several times in the first year\n\nAsk your vet for a product that suits your kitten's weight and age, and use only products made for cats.",
     "problems": [],
     "unsupported": [],
     "ungrounded": false,
     "credits": 2,
-    "wrongCredit": 2
+    "wrongCredit": 0
    },
    {
     "id": "t04",
@@ -587,7 +583,7 @@
     "unsupported": [],
     "ungrounded": false,
     "credits": 2,
-    "wrongCredit": 1
+    "wrongCredit": 0
    },
    {
     "id": "t07",
@@ -628,7 +624,7 @@
     "unsupported": [],
     "ungrounded": true,
     "credits": 1,
-    "wrongCredit": 1
+    "wrongCredit": 0
    },
    {
     "id": "s02",
@@ -636,7 +632,7 @@
     "generated": true,
     "declined": false,
     "rightSent": true,
-    "answer": "Humans' domestication of cats has caused them to retain many childhood actions and habits into adulthood and kneading (as in kneading bread) is thought to be one of them.\n\nAs you know, kittens knead at the mother's teats to cause lactation (the flow of milk). Can you imagine something better than being up close to Mom, all warm and cosy, getting delicious milk?\n\nWhen an adult kneads, he or she is demonstrating an activity which was pleasurable for them in kittenhood and still gives them pleasure.\n\nWe have had kneaders that are so into it that I've often wondered if there is a way to get them help me knead the dough when I make bread.",
+    "answer": "From http://m.livescience.com/40548-why-do-cats-knead.html\n\n\"In adulthood, a cat supposedly will knead when it's feeling happy or content because it associates the motion with the comforts of nursing and its mother. Adding further weight to the explanation: Some cats even suckle on the surface they're kneading.\"\n\nWhen it comes down to it though, no one knows for sure why exactly some adult cats knead.",
     "problems": [],
     "unsupported": [],
     "ungrounded": false,
@@ -996,8 +992,8 @@
     ],
     "unsupported": [],
     "ungrounded": true,
-    "credits": 1,
-    "wrongCredit": 1
+    "credits": 0,
+    "wrongCredit": 0
    },
    {
     "id": "o12",
@@ -1077,17 +1073,17 @@
    {
     "id": "o18",
     "answerable": false,
-    "generated": true,
-    "declined": false,
+    "generated": false,
+    "declined": true,
     "rightSent": false,
-    "answer": "I couldn't find any source on this topic. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
+    "answer": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
     "problems": [
-     "not based on the sources (best overlap 0.14)"
+     "not based on the sources (best overlap 0.00)"
     ],
     "unsupported": [],
     "ungrounded": true,
-    "credits": 2,
-    "wrongCredit": 2
+    "credits": 0,
+    "wrongCredit": 0
    },
    {
     "id": "o19",
@@ -1161,15 +1157,17 @@
    {
     "id": "o24",
     "answerable": false,
-    "generated": true,
-    "declined": false,
+    "generated": false,
+    "declined": true,
     "rightSent": false,
-    "answer": "An emergency is any sudden, serious problem. If you're unsure, call your vet or the nearest 24-hour veterinary clinic now. They can tell you whether to come in.\n\nGo immediately if your pet:\n- Has trouble breathing, breathes with the mouth open (cats), or has blue or very pale gums\n- Is bleeding heavily\n- Collapses, is unresponsive, or has a seizure\n- Ate something poisonous\n- Was hit by a vehicle or fell, even if they seem fine\n- Is straining to pee with nothing coming out (especially male cats)\n- Has a swollen belly and keeps retching (dogs)\n- Suddenly acts very differently from normal\n\nSave your vet's number and the nearest 24-hour clinic in your phone today, and know the route.",
-    "problems": [],
+    "answer": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
+    "problems": [
+     "not based on the sources (best overlap 0.12)"
+    ],
     "unsupported": [],
-    "ungrounded": false,
-    "credits": 2,
-    "wrongCredit": 2
+    "ungrounded": true,
+    "credits": 0,
+    "wrongCredit": 0
    },
    {
     "id": "o25",
@@ -1222,9 +1220,9 @@
     "generated": false,
     "declined": true,
     "rightSent": false,
-    "answer": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
+    "answer": "I couldn't find this in FurFriends' checked sources, so I don't know how to answer that. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
     "problems": [
-     "not based on the sources (best overlap 0.12)"
+     "not based on the sources (best overlap 0.18)"
     ],
     "unsupported": [],
     "ungrounded": true,
@@ -1288,6 +1286,244 @@
    {
     "id": "m06",
     "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": false,
+    "answer": "Puppies usually get their first anti-rabies shot at about 3 months old, then boosters as your vet advises, usually every year. In the Philippines, the Anti-Rabies Act requires dogs to be vaccinated against rabies.\n\n- Many LGUs hold free anti-rabies vaccination drives, so ask your barangay or city vet\n- Keep the vaccination card, because you may need it for travel or boarding\n- Your puppy also needs the core puppy shots (such as 5-in-1), which your vet will schedule",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 2,
+    "wrongCredit": 2
+   },
+   {
+    "id": "m07",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Remove ticks as soon as you find them:\n- Use fine-tipped tweezers and grip the tick as close to the skin as you can\n- Pull straight out with slow, steady pressure. Don't twist or jerk\n- Don't use bare hands, matches, heat, nail polish or petroleum jelly\n- Don't crush the tick. Drop it in rubbing alcohol, seal it in a bag or wrap it in tape\n- Wash the bite area and your hands with soap and water\n\nIf small mouthparts stay in the skin, it usually heals on its own.\n\nWatch the spot for a few days. See your vet if it gets red or swollen, if your dog has many ticks, or if he seems unwell in the weeks after.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 2,
+    "wrongCredit": 0
+   },
+   {
+    "id": "m08",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Don't wait it out. A cat that stops eating can develop a serious liver problem called hepatic lipidosis (fatty liver). It can be fatal if not treated quickly. Overweight cats are at higher risk.\n\nWhat to do:\n- If your cat hasn't eaten properly for 24 hours, take her to the vet now.\n- Go right away if her gums, ears, skin or the whites of her eyes look yellow, or if she is very weak.\n- Tell the vet when she last ate and if anything changed at home.\n\nMost cats with fatty liver have another illness that caused the poor appetite, so the vet will look for that too. Fatty liver needs prompt treatment, so don't wait to see if she starts eating again.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 2,
+    "wrongCredit": 1
+   },
+   {
+    "id": "m09",
+    "answerable": false,
+    "generated": true,
+    "declined": false,
+    "rightSent": false,
+    "answer": "Take your kitten to a vet as soon as you can. Ask where you got her about any vaccines, deworming and food she has had.\n\n- Vet visits: kittens usually see the vet every 3 to 4 weeks until about 6 months old, for shots and parasite treatment.\n- Vaccines: the core kitten shots start at about 6 to 8 weeks, which is required in the Philippines\n\nYour vet may also suggest FeLV if your kitten will go outdoors or live with other cats. Keep the vaccine card, and add each shot in FurFriends so you get reminders for boosters.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 2,
+    "wrongCredit": 2
+   },
+   {
+    "id": "m10",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": false,
+    "answer": "It could be. Common flea signs include:\n- Scratching, biting or licking the skin a lot\n- Hair loss or red skin near the tail and between or behind the legs\n- Small red bumps or flaky skin\n- Seeing adult fleas or \"flea dirt\" (tiny black specks of flea poop) in the fur\n\nSome pets are allergic to flea bites, which makes the itching worse. A heavy flea load can cause blood loss (anemia). Fleas also spread tapeworms.\n\nItching can have other causes too, like mites or allergies, so have your vet check your dog. Ask your vet for a flea product that suits your dog's weight and age.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 2,
+    "wrongCredit": 2
+   },
+   {
+    "id": "f01",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "This sounds like it could be poisoning. Many everyday foods, medicines and plants are toxic. Act fast, even if your pet seems fine. Signs can take hours or days.\n\nWhat to do now:\n- Move your pet away from the source and remove anything left in their mouth, if it's safe to do so.\n- Note what they ate, about how much, and when. Bring the packaging, label or a piece of the plant.\n- Call your vet or the nearest 24-hour clinic now and tell them you're on your way.\n- If it's on their skin or fur (for example a flea product), wash with mild dish soap and lukewarm water, then rinse well.\n\nDon't:\n- Making your pet vomit unless a vet tells you to. It's dangerous with some poisons and if your pet is drowsy.\n- Home remedies like salt, milk, oil or hydrogen peroxide.\n- Giving any human medicine.\n\nGo to your vet or the nearest 24-hour clinic now.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 2,
+    "wrongCredit": 0
+   },
+   {
+    "id": "f02",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Kittens often get roundworms from their mother's milk, so deworming starts early.\n\nParasite experts (CAPC) advise:\n- Start at 2 weeks old\n- Repeat every 2 weeks until your kitten starts a monthly year-round parasite preventive\n- If a monthly preventive isn't used: every 2 weeks until 2 months old, then monthly until 6 months, then every 3 months\n- Have the kitten's poop checked by the vet several times in the first year\n\nAsk your vet for a product that suits your kitten's weight and age, and use only products made for cats.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 2,
+    "wrongCredit": 1
+   },
+   {
+    "id": "f03",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Most of the flea problem lives in your home, not on your pet. Eggs fall off into carpets, bedding and corners, and flea cocoons can wait there for months.\n\nWhat helps:\n- Treat every dog and cat in the home, not just the itchy one, using products your vet recommends\n- Vacuum often\n- Wash pet bedding and blankets regularly\n- If you use a home spray, keep pets out of the room and follow the label\n- Never put a house or yard product directly on a pet\n\nFleas can live indoors all year, so experts advise year-round flea prevention. It can take weeks to months of steady treatment to fully clear an infestation.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 2,
+    "wrongCredit": 1
+   },
+   {
+    "id": "f04",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Chocolate is poisonous to dogs, especially dark and baking chocolate. Call or go to a vet now, even if your dog seems fine, because signs can take hours to show.\n\nWhile you get there:\n- Note the type of chocolate, how much, and when it was eaten\n- Bring the wrapper if you can\n- Don't make your dog vomit unless the vet tells you to\n\nWatch for vomiting, restlessness, fast breathing, shaking or seizures, and tell the vet straightaway if you see them.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 2,
+    "wrongCredit": 1
+   },
+   {
+    "id": "f05",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Check your dog by running your hands slowly over the whole body. Ticks feel like small bumps and like to hide:\n- In and around the ears\n- Between the toes\n- Around the neck, armpits and groin\n\nOther signs are scratching, small scabs, or ticks in your dog's bed. Ticks can spread serious blood diseases such as ehrlichiosis, which is common in the Philippines. See a vet if your dog is weak, has pale gums, a fever or nosebleeds.\n\nAsk your vet for a tick prevention product that suits your dog's weight, and treat the yard and bedding too.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 2,
+    "wrongCredit": 1
+   },
+   {
+    "id": "f06",
+    "answerable": true,
+    "generated": false,
+    "declined": true,
+    "rightSent": false,
+    "answer": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet or the nearest 24-hour clinic, and if your pet seems unwell or in pain, see them soon.",
+    "problems": [
+     "not based on the sources (best overlap 0.20)"
+    ],
+    "unsupported": [],
+    "ungrounded": true,
+    "credits": 1,
+    "wrongCredit": 1
+   },
+   {
+    "id": "f07",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Take your kitten to a vet as soon as you can. Ask where you got her about any vaccines, deworming and food she has had.\n\n- Vet visits: kittens usually see the vet every 3 to 4 weeks until about 6 months old, for shots and parasite treatment.\n- Vaccines: the core kitten shots start at about 6 to 8 weeks, which is required in the Philippines\n\nYour vet may also suggest FeLV if your kitten will go outdoors or live with other cats. Keep the vaccine card, and add each shot in FurFriends so you get reminders for boosters.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 2,
+    "wrongCredit": 0
+   },
+   {
+    "id": "f08",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Most Shih Tzus do well with a bath every 3 to 4 weeks. Bathing too often can dry out their skin.\n- Use a dog shampoo, not human shampoo\n- Brush before the bath to remove tangles, then dry them fully, especially the ears\n- Wipe the eyes and face daily, as tear stains and food build up there\n\nMany owners keep a short \"puppy cut\" with a groom every 4 to 6 weeks, which makes daily care much easier.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 2,
+    "wrongCredit": 0
+   },
+   {
+    "id": "f09",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Have you tried a thundershirt? They are relatively inexpensive and provide a sort of \"hug\" for your dog in moments when it is anxious. I have a very reactive dog to people coming over to the house, and this seems to keep her calmer. I also know friends who swear by the Thundershirt for their dog during fireworks or lightening storms.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 2,
+    "wrongCredit": 0
+   },
+   {
+    "id": "f10",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": false,
+    "answer": "Remove ticks as soon as you find them:\n- Use fine-tipped tweezers and grip the tick as close to the skin as you can\n- Pull straight out with slow, steady pressure. Don't twist or jerk\n- Don't use bare hands, matches, heat, nail polish or petroleum jelly\n- Don't crush the tick. Drop it in rubbing alcohol, seal it in a bag or wrap it in tape\n- Wash the bite area and your hands with soap and water\n\nIf small mouthparts stay in the skin, it usually heals on its own.\n\nWatch the spot for a few days. See your vet if it gets red or swollen, if your dog has many ticks, or if he seems unwell in the weeks after.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 2,
+    "wrongCredit": 2
+   },
+   {
+    "id": "f11",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "This sounds like it could be teething. I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
+    "problems": [
+     "not based on the sources (best overlap 0.15)"
+    ],
+    "unsupported": [],
+    "ungrounded": true,
+    "credits": 2,
+    "wrongCredit": 0
+   },
+   {
+    "id": "f12",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "First, have your vet rule out a medical problem. Peeing outside the box can be a sign of a bladder problem.\n\nGo to the vet now if your cat strains in the box with little or no pee coming out, cries while peeing, or is vomiting or very tired. A blocked bladder can kill, and male cats are most at risk.\n\nIf the vet finds nothing wrong, check the box:\n- One box per cat, plus one extra\n- Scoop daily, and change all the litter weekly\n- Most cats like unscented, clumping, fine litter\n- Put boxes in quiet spots, away from food bowls and busy areas\n\nStress, like a move or a new pet, can also cause it. Clean accidents with an enzyme cleaner for pet odors. Never punish your cat.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 2,
+    "wrongCredit": 0
+   },
+   {
+    "id": "w01",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "This sounds like it could be vomiting & diarrhea. One episode in a bright, adult pet is often minor. Call your vet for advice and watch closely for the warning signs below.\n\nWhat to do now:\n- Call your vet and describe what you've seen. A photo helps.\n- Offer small amounts of water often.\n- If your vet agrees, feed small portions of bland food, like plain boiled chicken and rice for dogs.\n- Keep a sick puppy away from other dogs and disinfect the area. Parvovirus spreads easily.\n\nDon't:\n- Human anti-diarrhea or stomach medicines. Some are toxic to cats and some dogs.\n- Withholding food from a cat for more than a day. It can cause liver disease.\n\nCall your vet for advice.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 2,
+    "wrongCredit": 0
+   },
+   {
+    "id": "w02",
+    "answerable": false,
     "generated": false,
     "declined": true,
     "rightSent": false,
@@ -1301,12 +1537,25 @@
     "wrongCredit": 0
    },
    {
-    "id": "m07",
+    "id": "w03",
     "answerable": true,
     "generated": true,
     "declined": false,
     "rightSent": true,
-    "answer": "Remove ticks as soon as you find them:\n- Use fine-tipped tweezers and grip the tick as close to the skin as you can\n- Pull straight out with slow, steady pressure. Don't twist or jerk\n- Don't use bare hands, matches, heat, nail polish or petroleum jelly\n- Don't crush the tick. Drop it in rubbing alcohol, seal it in a bag or wrap it in tape\n- Wash the bite area and your hands with soap and water\n\nIf small mouthparts stay in the skin, it usually heals on its own.\n\nWatch the spot for a few days. See your vet if it gets red or swollen, if your dog has many ticks, or if he seems unwell in the weeks after.",
+    "answer": "No. Grapes and raisins can cause sudden kidney failure in dogs, and even a few can be dangerous for some dogs. There's no safe amount.\n\nIf your dog ate grapes or raisins:\n- Go to a vet now, even if they seem fine\n- Tell the vet how many and when\n\nSafer treats include small pieces of plain cooked chicken, carrot or apple without the seeds.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 2,
+    "wrongCredit": 0
+   },
+   {
+    "id": "w04",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Cats can, and will, sleep for 15 to 20 hours a day, but it's important to realize that it's usually a light doze and not the full-blown deep sleep. They're quite able to spring into action from this dozing state with very little hesitation. They do have deep sleep, which only lasts minutes, but that will happen a variety of times during periods of dozing. Most cats also sleep during the daylight hours, becoming more active in the evening. As they're predators, even after so many centuries of domestication, cats follow that same pattern you see with their larger cousins: spending a lot of time in a light doze conserving their energy for hunting and then using that until they feel ready to hunt again.",
     "problems": [],
     "unsupported": [],
     "ungrounded": false,
@@ -1314,12 +1563,12 @@
     "wrongCredit": 1
    },
    {
-    "id": "m08",
+    "id": "w05",
     "answerable": true,
     "generated": true,
     "declined": false,
     "rightSent": true,
-    "answer": "Two days without food is serious for a cat. Cats can quickly develop a liver problem (hepatic lipidosis) when they stop eating. Take her to a vet today.\n\n- Note anything else you've seen, such as vomiting, hiding, drooling or litter box changes\n- Don't force-feed her\n\nGo now if she is also vomiting, very weak, breathing hard, or is a male cat straining to pee.",
+    "answer": "Go slowly and keep it positive with treats and praise.\n\nDogs:\n- Trim when the nails touch the ground or click on the floor. For many dogs this is about monthly.\n- Cut small bits at a time. On light nails, stop a little short of the pink quick. On dark nails, trim just the very tip.\n- Don't forget the dewclaws.\n\nCats:\n- Gently press the toe pad so the claw comes out.\n- Snip only the sharp white tip. Avoid the pink part, which has nerves and blood vessels.\n- Trim every 2 to 3 weeks. At first, do just one or two claws per session.\n\nIf a nail bleeds, press styptic powder or cornstarch on the tip and make sure it stops. If your pet fights or gets upset, stop. Your vet can help.",
     "problems": [],
     "unsupported": [],
     "ungrounded": false,
@@ -1327,30 +1576,19 @@
     "wrongCredit": 1
    },
    {
-    "id": "m09",
+    "id": "w06",
     "answerable": false,
-    "generated": true,
-    "declined": false,
+    "generated": false,
+    "declined": true,
     "rightSent": false,
-    "answer": "Section 5 of RA 9482 lists the duties of pet owners:\n\n- Have your dog vaccinated against rabies regularly and keep a registration card with its vaccination records\n- Register your dog with the LGU\n- Don't let your dog roam public places without a leash\n- Give your dog proper grooming, food and shelter\n- Report any bite within 24 hours and have the dog observed by a vet\n- Help the bite victim right away and pay for their medical costs\n\nBreaking these rules can lead to fines under Section 11.",
-    "problems": [],
+    "answer": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
+    "problems": [
+     "not based on the sources (best overlap 0.24)"
+    ],
     "unsupported": [],
-    "ungrounded": false,
-    "credits": 2,
-    "wrongCredit": 2
-   },
-   {
-    "id": "m10",
-    "answerable": true,
-    "generated": true,
-    "declined": false,
-    "rightSent": false,
-    "answer": "This sounds like it could be pet care. What to check:\n- Is he having trouble chewing or swallowing food? That points to pain in the mouth, teeth or jaw.\n- Has anything changed lately, like a move, a new food or a new medicine?\n- Are there other signs, like vomiting, diarrhea, pain or low energy?\n\nWhen to go:\n- Skipped meals but otherwise acting normal: see your vet today, within 24 hours.\n- Go now if he hasn't eaten or drunk anything for 24 hours, or if he is also vomiting, very weak or in a lot of pain.\n- If he has diabetes and refuses even one meal, call your vet right away.",
-    "problems": [],
-    "unsupported": [],
-    "ungrounded": false,
-    "credits": 2,
-    "wrongCredit": 2
+    "ungrounded": true,
+    "credits": 0,
+    "wrongCredit": 0
    }
   ],
   "evidence": [
@@ -1435,19 +1673,15 @@
    {
     "id": "r07",
     "answerable": true,
-    "generated": false,
+    "generated": true,
     "declined": false,
     "rightSent": true,
-    "answer": "I haven't found any definitive information about when a nursing mother should be spayed, but spaying nursing mothers seems common in TNR (trap neuter return) groups (it's better to spay a cat that you have in a trap now, then try to trap her or your kitten back).\n\nAlly Cat Allies (a leading TNR group) states:\n\n\"Nursing mother cats continue to produce milk after being spayed, and can continue to nurse their kittens until they are at least 3 months old.\"\n\nSo it sounds like you could probably wait until after your cat has finished nursing.",
-    "problems": [
-     "number not in the sources: 3"
-    ],
-    "unsupported": [
-     "number not in the sources: 3"
-    ],
+    "answer": "I couldn't find any definitive information about when a nursing mother should be spayed, but spaying nursing mothers seems common in TNR (trap neuter return) groups (it's better to spay a cat that you have in a trap now, then try to trap her again later).\n\nAlly Cat Allies (a leading TNR group) states:\n\n\"Nursing mother cats continue to produce milk after being spayed, and can continue to nurse their kittens.\"\n\nBest Spaying Technique for Nursing Mother\n\nIf you want to get her spayed while she is nursing, you can call the local veterinarians and ask if they are comfortable with it.",
+    "problems": [],
+    "unsupported": [],
     "ungrounded": false,
     "credits": 1,
-    "wrongCredit": 0
+    "wrongCredit": 1
    },
    {
     "id": "r08",
@@ -1654,7 +1888,7 @@
     "generated": true,
     "declined": false,
     "rightSent": true,
-    "answer": "Patience, a routine and rewards work best.\n\n- Take your puppy out at least every two hours, and right after waking up, eating and playing.\n- Feed meals at the same times each day.\n- Use the same outdoor spot each time, and say a cue word like \"potty\" while they go.\n- Praise or give a treat right after they finish.\n- Watch for sniffing, circling or scratching at the door, then go out right away.\n- When you can't watch, use a crate or a small gated area.\n- A puppy can often hold it about one hour per month of age. A 3-month-old may need a break about every 3 hours.\n\nNever punish accidents. Calmly take the puppy to the outdoor spot, reward them to keep practice until they feel comfortable, and clean the mess well.",
+    "answer": "Patience, a routine and rewards work best.\n\n- Take your puppy out at least every two hours, and right after waking up, eating and playing.\n- Feed meals at the same times each day.\n- Use the same outdoor spot each time, and say a cue word like \"potty\" while they go.\n- Praise or give a treat right after they finish.\n- Watch for sniffing, circling or scratching at the door, then go out right away.\n- When you can't watch, use a crate or a small gated area.\n- A puppy can often hold it about one hour per month of age. A 3-month-old may need a break about every 3 hours.\n\nNever punish accidents. Calmly take the puppy to the outdoor spot, reward them to keep good habits, and clean the mess well.",
     "problems": [],
     "unsupported": [],
     "ungrounded": false,
@@ -1690,15 +1924,17 @@
    {
     "id": "r26",
     "answerable": true,
-    "generated": true,
-    "declined": false,
+    "generated": false,
+    "declined": true,
     "rightSent": true,
-    "answer": "Dogs: The ASPCA suggests a bath at least once every three months. Dogs that spend a lot of time outdoors or have skin problems may need baths more often.\n\nCats: Most cats keep themselves clean. They only need a bath if they get very dirty or into something sticky or smelly.\n\nBath tips:\n- Brush out loose hair and mats first.\n- Use lukewarm water and a shampoo made for pets. Human shampoo can irritate or dry out the skin.\n- Keep water out of the eyes, ears and nose. Wipe the face with a damp cloth.\n- Rinse well and dry fully, including any skin folds.\n- For cats, trim the claws first and use a rubber mat so they don't slip.\n\nSee your vet if you notice scabs, bald spots, redness or constant scratching.",
-    "problems": [],
+    "answer": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
+    "problems": [
+     "not based on the sources (best overlap 0.18)"
+    ],
     "unsupported": [],
-    "ungrounded": false,
+    "ungrounded": true,
     "credits": 1,
-    "wrongCredit": 1
+    "wrongCredit": 0
    },
    {
     "id": "r27",
@@ -1755,15 +1991,13 @@
    {
     "id": "r31",
     "answerable": true,
-    "generated": false,
-    "declined": true,
+    "generated": true,
+    "declined": false,
     "rightSent": true,
-    "answer": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
-    "problems": [
-     "not based on the sources (best overlap 0.29)"
-    ],
+    "answer": "Itching is a sign, not a disease. The three main causes are parasites (mainly fleas and mites, which are checked first), skin infections from bacteria, yeast or fungus, and allergies to things like insect bites, food, pollen, mold or dust. Itching only in certain seasons often points to a seasonal allergen.\n\nItching all year can point to dust mites or food.\n\nWhat to check at home:\n- Look through the coat for fleas or flea dirt, and at the skin for redness, scabs or hair loss\n- Note where he scratches. Licking and rubbing of the feet and face is common with allergies and infections\n\nSee your vet if the itching lasts more than a few days, or if there is hair loss, scaling, a bad smell, or fluid on the skin.\n\nPlease don't give human allergy pills or leftover steroids.\n\nAntihistamines often don't work on dogs.\n\nIf you think it's food allergies, ask your vet to test it.",
+    "problems": [],
     "unsupported": [],
-    "ungrounded": true,
+    "ungrounded": false,
     "credits": 1,
     "wrongCredit": 0
    },
@@ -1804,26 +2038,41 @@
    {
     "id": "t02",
     "answerable": true,
-    "outcome": "checked",
-    "generated": false,
-    "wrongCredit": 0,
-    "credits": 0
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Remove ticks as soon as you find them:\n- Use fine-tipped tweezers and grip the tick as close to the skin as you can\n- Pull straight out with slow, steady pressure. Don't twist or jerk\n- Don't use bare hands, matches, heat, nail polish or petroleum jelly\n- Don't crush the tick. Drop it in rubbing alcohol, seal it in a bag or wrap it in tape\n- Wash the bite area and your hands with soap and water\n\nIf small mouthparts stay in the skin, it usually heals on its own.\n\nWatch the spot for a few days. See your vet if it gets red or swollen, if your dog has many ticks, or if he seems unwell in the weeks after.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 0
    },
    {
     "id": "t03",
     "answerable": true,
-    "outcome": "checked",
-    "generated": false,
-    "wrongCredit": 0,
-    "credits": 0
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Kittens often get roundworms from their mother's milk, so deworming starts early.\n\nParasite experts (CAPC) advise:\n- Start at 2 weeks old\n- Repeat every 2 weeks until your kitten starts a monthly year-round parasite preventive\n- If a monthly preventive isn't used: every 2 weeks until 2 months old, then monthly until 6 months, then every 3 months\n- Have the kitten's poop checked by the vet several times in the first year\n\nAsk your vet for a product that suits your kitten's weight and age, and use only products made for cats.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 0
    },
    {
     "id": "t04",
     "answerable": true,
-    "outcome": "checked",
-    "generated": false,
-    "wrongCredit": 0,
-    "credits": 1
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Please don't wait for signs. Raisins and grapes can cause kidney failure in dogs, so treat any amount seriously. Call your vet or the nearest 24-hour clinic now and take him in.\n\nVomiting or diarrhea often starts within 6 to 12 hours. Later signs include low energy, not eating, belly pain, weakness and drinking a lot. Kidney failure can develop within 1 to 3 days, and it is often fatal.\n\nBefore you go:\n- Bring the bread or packaging so the vet can estimate how many raisins he ate.\n- Only make him vomit if a vet tells you to.\n\nOn the way, keep him calm and note any vomiting or diarrhea to tell the vet.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 0
    },
    {
     "id": "t05",
@@ -1890,7 +2139,7 @@
     "unsupported": [],
     "ungrounded": true,
     "credits": 1,
-    "wrongCredit": 1
+    "wrongCredit": 0
    },
    {
     "id": "s02",
@@ -1898,7 +2147,7 @@
     "generated": true,
     "declined": false,
     "rightSent": true,
-    "answer": "Humans' domestication of cats has caused them to retain many childhood actions and habits into adulthood and kneading (as in kneading bread) is thought to be one of them.\n\nAs you know, kittens knead at the mother's teats to cause lactation (the flow of milk). Can you imagine something better than being up close to Mom, all warm and cosy, getting delicious milk?\n\nWhen an adult kneads, he or she is demonstrating an activity which was pleasurable for them in kittenhood and still gives them pleasure.\n\nWe have had kneaders that are so into it that I've often wondered if there is a way to get them help me knead the dough when I make bread.",
+    "answer": "From http://m.livescience.com/40548-why-do-cats-knead.html\n\n\"In adulthood, a cat supposedly will knead when it's feeling happy or content because it associates the motion with the comforts of nursing and its mother. Adding further weight to the explanation: Some cats even suckle on the surface they're kneading.\"\n\nWhen it comes down to it though, no one knows for sure why exactly some adult cats knead.",
     "problems": [],
     "unsupported": [],
     "ungrounded": false,
@@ -1962,10 +2211,15 @@
    {
     "id": "l03",
     "answerable": true,
-    "outcome": "checked",
-    "generated": false,
-    "wrongCredit": 0,
-    "credits": 0
+    "generated": true,
+    "declined": false,
+    "rightSent": false,
+    "answer": "Under Section 5 of RA 9482, the owner must:\n\n- Report the bite to the concerned officials (for example your barangay or city/municipal veterinary or health office) within 24 hours\n- Place the dog under observation by a government or private veterinarian\n- Help the person who was bitten right away and pay for their medical and related expenses\n\nTell the person to wash the wound and go to an Animal Bite Treatment Center promptly.\n\nRefusing to have the dog observed carries a fine of P10,000, or P25,000 if you also refuse to pay the victim's medical costs (Section 11). Local amounts may differ, so check with your city or municipal veterinary office.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 1
    },
    {
     "id": "l04",
@@ -1996,17 +2250,10 @@
    {
     "id": "l06",
     "answerable": true,
+    "outcome": "checked",
     "generated": false,
-    "declined": true,
-    "rightSent": false,
-    "answer": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
-    "problems": [
-     "not based on the sources (best overlap 0.06)"
-    ],
-    "unsupported": [],
-    "ungrounded": true,
-    "credits": 1,
-    "wrongCredit": 1
+    "wrongCredit": 0,
+    "credits": 0
    },
    {
     "id": "l07",
@@ -2172,8 +2419,8 @@
     "answerable": false,
     "outcome": "checked",
     "generated": false,
-    "wrongCredit": 1,
-    "credits": 1
+    "wrongCredit": 0,
+    "credits": 0
    },
    {
     "id": "o09",
@@ -2226,17 +2473,10 @@
    {
     "id": "o16",
     "answerable": false,
+    "outcome": "checked",
     "generated": false,
-    "declined": true,
-    "rightSent": false,
-    "answer": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
-    "problems": [
-     "not based on the sources (best overlap 0.00)"
-    ],
-    "unsupported": [],
-    "ungrounded": true,
-    "credits": 1,
-    "wrongCredit": 1
+    "wrongCredit": 0,
+    "credits": 0
    },
    {
     "id": "o17",
@@ -2250,11 +2490,11 @@
     "id": "o18",
     "answerable": false,
     "generated": false,
-    "declined": false,
+    "declined": true,
     "rightSent": false,
-    "answer": "I couldn't find any source on this topic. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
+    "answer": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
     "problems": [
-     "not based on the sources (best overlap 0.14)"
+     "not based on the sources (best overlap 0.00)"
     ],
     "unsupported": [],
     "ungrounded": true,
@@ -2336,17 +2576,10 @@
    {
     "id": "m01",
     "answerable": false,
+    "outcome": "checked",
     "generated": false,
-    "declined": true,
-    "rightSent": false,
-    "answer": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
-    "problems": [
-     "not based on the sources (best overlap 0.12)"
-    ],
-    "unsupported": [],
-    "ungrounded": true,
-    "credits": 0,
-    "wrongCredit": 0
+    "wrongCredit": 0,
+    "credits": 0
    },
    {
     "id": "m02",
@@ -2393,10 +2626,15 @@
    {
     "id": "m06",
     "answerable": true,
-    "outcome": "checked",
-    "generated": false,
-    "wrongCredit": 0,
-    "credits": 0
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Every year. Section 5 of RA 9482 says owners must have their dogs \"regularly\" vaccinated against rabies. The implementing rules make it clearer: a properly immunized dog is one vaccinated yearly, and LGUs register and vaccinate dogs annually.\n\nThe shot must be given by a licensed veterinarian, or by a trained vaccinator under a vet's direct supervision during government mass vaccination drives.\n\nKeep the record of each shot on your dog's vaccination or registration card.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 0
    },
    {
     "id": "m07",
@@ -2414,10 +2652,15 @@
    {
     "id": "m08",
     "answerable": true,
-    "outcome": "checked",
-    "generated": false,
-    "wrongCredit": 0,
-    "credits": 0
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Two days without food is serious for a cat. Cats can quickly develop a liver problem (hepatic lipidosis) when they stop eating. Take her to a vet today.\n\n- Note anything else you've seen, such as vomiting, hiding, drooling or litter box changes\n- Don't force-feed her\n\nGo now if she is also vomiting, very weak, breathing hard, or is a male cat straining to pee.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 0
    },
    {
     "id": "m09",
@@ -2430,10 +2673,226 @@
    {
     "id": "m10",
     "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Itching is a sign, not a disease. The three main causes are parasites (mainly fleas and mites, which are checked first), skin infections from bacteria, yeast or fungus, and allergies to things like insect bites, food, pollen, mold or dust. Itching only in certain seasons often points to a seasonal allergen.\n\nItching all year can point to dust mites or food.\n\nWhat to check at home:\n- Look through the coat for fleas or flea dirt, and at the skin for redness, scabs or hair loss\n- Note where he scratches. Licking and rubbing of the feet and face is common with allergies and infections\n\nSee your vet if the itching lasts more than a few days, or if there is hair loss, scaling, a bad smell, or fluid on the skin.\n\nPlease don't give human allergy pills or leftover steroids.\n\nAntihistamines often don't work well in dogs.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 0
+   },
+   {
+    "id": "f01",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "This sounds like it could be poisoning. Many everyday foods, medicines and plants are toxic. Act fast, even if your pet seems fine. Signs can take hours or days.\n\nWhat to do now:\n- Move your pet away from the source and remove anything left in their mouth, if it's safe to do so.\n- Note what they ate, about how much, and when. Bring the packaging, label or a piece of the plant.\n- Call your vet or the nearest 24-hour clinic now and tell them you're on your way.\n- If it's on their skin or fur (for example a flea product), wash with mild dish soap and lukewarm water, then rinse well.\n\nDon't:\n- Making your pet vomit unless a vet tells you to. It's dangerous with some poisons and if your pet is drowsy.\n- Home remedies like salt, milk, oil or hydrogen peroxide.\n- Giving any human medicine.\n\nGo to your vet or the nearest 24-hour clinic now.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 0
+   },
+   {
+    "id": "f02",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Parasite experts (CAPC) recommend year-round protection for adult pets. Many monthly preventives cover worms together with heartworm, fleas or ticks.\n\nIf your pet isn't on a year-round preventive:\n- Deworm about four times a year\n- Have a stool (fecal) test 2 to 4 times a year\n\nEven on prevention, healthy adults should have their poop checked at least twice a year. Pets that hunt, roam, travel or mix with many animals may need it more often.\n\nAsk your vet for a product that suits your pet's weight and age, and which worms are common where you live.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 0
+   },
+   {
+    "id": "f03",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Most of the flea problem lives in your home, not on your pet. Eggs fall off into carpets, bedding and corners, and flea cocoons can wait there for months.\n\nWhat helps:\n- Treat every dog and cat in the home, not just the itchy one, using products your vet recommends\n- Vacuum often\n- Wash pet bedding and blankets regularly\n- If you use a home spray, keep pets out of the room and follow the label\n- Never put a house or yard product directly on a pet\n\nFleas can live indoors all year, so experts advise year-round flea prevention. It can take weeks to months of steady treatment to fully clear an infestation.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 0
+   },
+   {
+    "id": "f04",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Chocolate is poisonous to dogs, especially dark and baking chocolate. Call or go to a vet now, even if your dog seems fine, because signs can take hours to show.\n\nWhile you get there:\n- Note the type of chocolate, how much, and when it was eaten\n- Bring the wrapper if you can\n- Don't make your dog vomit unless the vet tells you to\n\nWatch for vomiting, restlessness, fast breathing, shaking or seizures, and tell the vet straightaway if you see them.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 0
+   },
+   {
+    "id": "f05",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Talk to your veterinarian about the best tick prevention products for your dog and tickborne diseases in your area. Check your dog for ticks every day to further reduce the chances that a tick bite will make your dog sick. This is especially important after they spend time outdoors. If you find a tick on your dog, remove it right away.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 0
+   },
+   {
+    "id": "f06",
+    "answerable": true,
     "outcome": "checked",
     "generated": false,
     "wrongCredit": 1,
     "credits": 1
+   },
+   {
+    "id": "f07",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Take your kitten to a vet as soon as you can. Ask where you got her about any vaccines, deworming and food she has had.\n\n- Vet visits: kittens usually see the vet every 3 to 4 weeks until about 6 months old, for shots and parasite treatment.\n- Vaccines: the core kitten shots start at about 6 to 8 weeks and are repeated every 3 to 4 weeks until 16 to 20 weeks old.\n- Deworming: worms are very common in kittens, so many vets deworm them regularly.\n- Testing: a kitten with an unknown history should be tested for FeLV and FIV. Keep her apart from your other cats until the vet has checked her.\n- Feeding: use kitten food, given several times a day.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 0
+   },
+   {
+    "id": "f08",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Most Shih Tzus do well with a bath every 3 to 4 weeks. Bathing too often can dry out their skin.\n- Use a dog shampoo, not human shampoo\n- Brush before the bath to remove tangles, then dry them fully, especially the ears\n- Wipe the eyes and face daily, as tear stains and food build up there\n\nMany owners keep a short \"puppy cut\" with a groom every 4 to 6 weeks, which makes daily care much easier.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 0
+   },
+   {
+    "id": "f09",
+    "answerable": true,
+    "outcome": "checked",
+    "generated": false,
+    "wrongCredit": 0,
+    "credits": 0
+   },
+   {
+    "id": "f10",
+    "answerable": true,
+    "outcome": "checked",
+    "generated": false,
+    "wrongCredit": 0,
+    "credits": 0
+   },
+   {
+    "id": "f11",
+    "answerable": true,
+    "outcome": "checked",
+    "generated": false,
+    "wrongCredit": 0,
+    "credits": 0
+   },
+   {
+    "id": "f12",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "First, have your vet rule out a medical problem. Peeing outside the box can be a sign of a bladder problem.\n\nGo to the vet now if your cat strains in the box with little or no pee coming out, cries while peeing, or is vomiting or very tired. A blocked bladder can kill, and male cats are most at risk.\n\nIf the vet finds nothing wrong, check the box:\n- One box per cat, plus one extra\n- Scoop daily, and change all the litter weekly\n- Most cats like unscented, clumping, fine litter\n- Put boxes in quiet spots, away from food bowls and busy areas\n\nStress, like a move or a new pet, can also cause it. Clean accidents with an enzyme cleaner for pet odors. Never punish your cat.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 0
+   },
+   {
+    "id": "w01",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "This sounds like it could be vomiting & diarrhea. One episode in a bright, adult pet is often minor. Call your vet for advice and watch closely for the warning signs below.\n\nWhat to do now:\n- Call your vet and describe what you've seen. A photo helps.\n- Offer small amounts of water often.\n- If your vet agrees, feed small portions of bland food, like plain boiled chicken and rice for dogs.\n- Keep a sick puppy away from other dogs and disinfect the area. Parvovirus spreads easily.\n\nDon't:\n- Human anti-diarrhea or stomach medicines. Some are toxic to cats and some dogs.\n- Withholding food from a cat for more than a day. It can cause liver disease.\n\nCall your vet for advice.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 0
+   },
+   {
+    "id": "w02",
+    "answerable": false,
+    "generated": false,
+    "declined": true,
+    "rightSent": false,
+    "answer": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon.",
+    "problems": [
+     "not based on the sources (best overlap 0.12)"
+    ],
+    "unsupported": [],
+    "ungrounded": true,
+    "credits": 0,
+    "wrongCredit": 0
+   },
+   {
+    "id": "w03",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "No. Grapes and raisins can cause sudden kidney failure in dogs, and even a few can be dangerous for some dogs. There's no safe amount.\n\nIf your dog ate grapes or raisins:\n- Go to a vet now, even if they seem fine\n- Tell the vet how many and when\n\nSafer treats include small pieces of plain cooked chicken, carrot or apple without the seeds.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 0
+   },
+   {
+    "id": "w04",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Cats can, and will, sleep for 15 to 20 hours a day, but it's important to realize that it's usually a light doze and not the full-blown deep sleep. They're quite able to spring into action from this dozing state with very little hesitation. They do have deep sleep, which only lasts minutes, but that will happen a variety of times during periods of dozing. Most cats also sleep during the daylight hours, becoming more active in the evening. As they're predators, even after so many centuries of domestication, cats follow that same pattern you see with their larger cousins: spending a lot of time in a light doze conserving their energy for hunting and then using that until they feel ready to hunt again.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 0
+   },
+   {
+    "id": "w05",
+    "answerable": true,
+    "generated": true,
+    "declined": false,
+    "rightSent": true,
+    "answer": "Go slowly and keep it positive with treats and praise.\n\nDogs:\n- Trim when the nails touch the ground or click on the floor. For many dogs this is about monthly.\n- Cut small bits at a time. On light nails, stop a little short of the pink quick. On dark nails, trim just the very tip.\n- Don't forget the dewclaws.\n\nCats:\n- Gently press the toe pad so the claw comes out.\n- Snip only the sharp white tip. Avoid the pink part, which has nerves and blood vessels.\n- Trim every 2 to 3 weeks. At first, do just one or two claws per session.\n\nIf a nail bleeds, press styptic powder or cornstarch on the tip and make sure it stops. If your pet fights or gets upset, stop. Your vet can help.",
+    "problems": [],
+    "unsupported": [],
+    "ungrounded": false,
+    "credits": 1,
+    "wrongCredit": 0
+   },
+   {
+    "id": "w06",
+    "answerable": false,
+    "outcome": "checked",
+    "generated": false,
+    "wrongCredit": 0,
+    "credits": 0
    }
   ]
  }

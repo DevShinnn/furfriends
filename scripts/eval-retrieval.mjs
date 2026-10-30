@@ -19,7 +19,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { pipeline } from "@huggingface/transformers";
 import { EMBED_MODEL, EMBED_OPTIONS, chatReply, compose, decodeIndex, queryText, safetyReply, search } from "../src/lib/knowledge.js";
-import { ANSWER, EVIDENCE, checkAnswer, selectEvidence } from "../src/lib/evidence.js";
+import { ANSWER, EVIDENCE, checkAnswer, planAnswer } from "../src/lib/evidence.js";
 import { chatMessages, sourcesFor, SOURCES } from "../src/lib/prompt.js";
 import { urgentGuides } from "../src/lib/emergency.js";
 import PROMPT from "../src/lib/aiPrompt.json";
@@ -54,9 +54,10 @@ const POLICIES = {
     const ids = new Set(p.pinned.map((e) => e.id));
     return { sent: [...p.pinned, ...p.results.filter((e) => !ids.has(e.of || e.id))].slice(0, SOURCES), shown: compose(p.results, p.q) };
   },
+  // Now: planAnswer() in evidence.js, exactly as askKnowledge() calls it.
   evidence: (p, rule = EVIDENCE) => {
-    const { evidence, answers, shows, near } = selectEvidence(p.results, p.q, index.keywords.idf, { pinned: p.pinned, limit: SOURCES, rule });
-    return { sent: evidence, shown: compose(p.results, p.q, { fits: shows, sure: answers, near }) };
+    const { evidence, fallback } = planAnswer(index, p.results, p.q, p.turns.at(-1), rule);
+    return { sent: evidence, shown: fallback };
   },
 };
 const idOf = (e) => e.of || e.id;
@@ -81,37 +82,49 @@ function measure(policy, split, rule) {
     wrongOnly: pct(rows.filter((r) => r.sent.length && !r.good).length, rows.length),   // model gets only wrong passages
     shownWrong: pct(rows.filter((r) => !r.shownOk).length, rows.length),               // search-only reply shows a wrong passage
     shownWrongSure: pct(rows.filter((r) => !r.shownOk && r.shownSure).length, rows.length),   // ... as the answer, without "I'm not sure"
+    shownRight: pct(A.filter((r) => r.shown && r.shownOk).length, A.length),            // answerable: search-only reply shows a right passage
   };
   m.balanced = Math.round(((m.recall ?? 0) + (m.correctAbstain ?? 0)) * 5) / 10;
   return { m, rows };
 }
 
-/* ---------------------------------------------------------------- calibration on the dev half */
-/* The operating policy the limits are chosen by, on the dev half: decline at least MIN_ABSTAIN % of the
-   questions the library can't answer, give the model only wrong passages for at most MAX_WRONG_ONLY % of
-   questions, and within that answer as many answerable questions as possible. Declining everything would be
-   "safe" but useless; the model's own "couldn't find it" and checkAnswer() are the second line of defence. */
+/* ---------------------------------------------------------------- calibration */
+/* The operating policy the limits are chosen by: decline at least MIN_ABSTAIN % of the questions the library
+   can't answer, give the model only wrong passages for at most MAX_WRONG_ONLY % of questions, and within that
+   answer as many answerable questions as possible. Declining everything would be "safe" but useless; the model's
+   own "couldn't find it" and checkAnswer() are the second line of defence.
+   With ~55 questions per half one split is noisy, so it is cross-validated: tune on dev and score on test, tune
+   on test and score on dev; the held-out scores are what to report. The app's limits are tuned on all questions. */
 const MIN_ABSTAIN = 85, MAX_WRONG_ONLY = 5;
-let rule = EVIDENCE;
-if (CALIBRATE) {
+const better = (a, b) => { for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return a[i] > b[i]; return false; };
+const range = (a, b, s) => Array.from({ length: Math.round((b - a) / s) + 1 }, (_, i) => Math.round((a + i * s) * 1000) / 1000);
+function tune(split) {
   let best = null;
-  const better = (a, b) => { for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return a[i] > b[i]; return false; };
-  const range = (a, b, s) => Array.from({ length: Math.round((b - a) / s) + 1 }, (_, i) => Math.round((a + i * s) * 1000) / 1000);
-  const frontier = new Map();   // recall -> best abstain at that recall, to show the trade-off
-  for (const strong of range(0.66, 1.0, 0.02)) for (const min of range(0.4, 0.8, 0.02)) for (const cover of range(0, 0.9, 0.05)) {
+  for (const strong of range(0.7, 0.96, 0.02)) for (const min of range(0.5, 0.8, 0.02)) for (const cover of range(0, 0.9, 0.05)) for (const focus of [0, 0.01, 0.3]) {
     if (min > strong) continue;
-    const { m } = measure("evidence", "dev", { strong, min, cover });
-    if (!frontier.has(m.recall) || frontier.get(m.recall).correctAbstain < m.correctAbstain) frontier.set(m.recall, { ...m, rule: { strong, min, cover } });
+    const r = { strong, min, cover, focus };
+    const { m } = measure("evidence", split, r);
     if (m.correctAbstain < MIN_ABSTAIN || m.wrongOnly > MAX_WRONG_ONLY) continue;
     // Most answerable questions with a right passage; then cleaner passages; then more declines; then looser limits.
-    const key = [m.recall, m.precision, m.correctAbstain, -strong, -min, -cover];
-    if (!best || better(key, best.key)) best = { key, rule: { strong, min, cover }, m };
+    const key = [m.recall, m.precision, m.correctAbstain, -strong, -min, -cover, -focus];
+    if (!best || better(key, best.key)) best = { key, rule: r, m };
   }
-  console.log("\nTrade-off on dev (best decline rate for each recall):\n  recall correctAbstain wrongOnly precision  limits");
-  for (const [r, m] of [...frontier].sort((a, b) => b[0] - a[0]).slice(0, 14)) console.log(`  ${String(r).padStart(6)} ${String(m.correctAbstain).padStart(14)} ${String(m.wrongOnly).padStart(9)} ${String(m.precision).padStart(9)}  ${JSON.stringify(m.rule)}`);
-  if (!best) throw new Error(`No limits meet the policy (abstain >= ${MIN_ABSTAIN}%, wrong-only <= ${MAX_WRONG_ONLY}%) on dev`);
-  rule = best.rule;
-  console.log(`\nCalibrated on dev (policy: abstain >= ${MIN_ABSTAIN}%, wrong-only <= ${MAX_WRONG_ONLY}%): ${JSON.stringify(rule)}  (dev recall ${best.m.recall}, precision ${best.m.precision})`);
+  if (!best) throw new Error(`No limits meet the policy (abstain >= ${MIN_ABSTAIN}%, wrong-only <= ${MAX_WRONG_ONLY}%) on ${split || "all"}`);
+  return best.rule;
+}
+let rule = EVIDENCE, heldOut = null;
+if (CALIBRATE) {
+  const folds = [["dev", "test"], ["test", "dev"]].map(([on, off]) => ({ on, off, rule: tune(on), m: null }));
+  for (const f of folds) f.m = measure("evidence", f.off, f.rule).m;
+  const keys = Object.keys(folds[0].m).filter((k) => typeof folds[0].m[k] === "number");
+  heldOut = Object.fromEntries(keys.map((k) => [k, Math.round(((folds[0].m[k] ?? 0) + (folds[1].m[k] ?? 0)) * 5) / 10]));
+  heldOut.cases = folds[0].m.cases + folds[1].m.cases;
+  console.log(`
+Cross-validation (policy: abstain >= ${MIN_ABSTAIN}%, wrong-only <= ${MAX_WRONG_ONLY}%):`);
+  for (const f of folds) console.log(`  tuned on ${f.on.padEnd(4)} ${JSON.stringify(f.rule)} -> on ${f.off}: ${JSON.stringify(f.m)}`);
+  console.log(`  held-out average: ${JSON.stringify(heldOut)}`);
+  rule = tune(null);
+  console.log(`Limits tuned on all ${cases.length} questions: ${JSON.stringify(rule)}`);
   if (JSON.stringify(rule) !== JSON.stringify(EVIDENCE)) console.log(`  → set EVIDENCE in src/lib/evidence.js to ${JSON.stringify(rule)}`);
 }
 
@@ -135,7 +148,7 @@ console.log("\nEvidence check per question (✗ = only wrong passages sent, ∅ 
 for (const [c, list] of Object.entries(byCat)) console.log(`  ${c.padEnd(13)} ${list.join(" ")}`);
 
 mkdirSync(join(ROOT, "ai-server", "results"), { recursive: true });
-writeFileSync(join(ROOT, "ai-server", "results", "retrieval-eval.json"), JSON.stringify({ index: { version: raw.version, built: raw.built }, rule, report }, null, 1));
+writeFileSync(join(ROOT, "ai-server", "results", "retrieval-eval.json"), JSON.stringify({ index: { version: raw.version, built: raw.built }, rule, heldOut, report }, null, 1));
 // The questions' vectors, so tests/ai-evidence.test.js can run the real search without downloading the model.
 mkdirSync(join(ROOT, "tests", "fixtures"), { recursive: true });
 writeFileSync(join(ROOT, "tests", "fixtures", "retrieval-queries.json"), JSON.stringify({

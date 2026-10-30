@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { supabase } from "../src/lib/supabase";
-import { decodeIndex, queryText, search } from "../src/lib/knowledge";
+import { decodeIndex, queryText, search, withEnglish } from "../src/lib/knowledge";
 import { EVIDENCE, checkAnswer, planAnswer } from "../src/lib/evidence";
 import { sourcesFor } from "../src/lib/prompt";
 import PROMPT from "../src/lib/aiPrompt.json";
@@ -54,7 +54,7 @@ describe("AI evidence: which passages the model may answer from", () => {
   });
 
   it("Questions that only share a place or a legal word with the law Q&As get no law passages", () => {
-    for (const id of ["o06", "o08", "o10", "o11", "o21", "o22", "o24", "o27", "o28", "m09"]) {
+    for (const id of ["o06", "o08", "o10", "o11", "o16", "o21", "o22", "o24", "o27", "o28", "m09"]) {
       const { evidence } = plan(id);
       expect(evidence.filter(isLaw).map(idOf), id).toEqual([]);
     }
@@ -98,6 +98,62 @@ describe("AI evidence: which passages the model may answer from", () => {
       const { evidence } = plan(id);
       expect(evidence.filter((e) => e.sp === "dog").map(idOf), id).toEqual([]);
     }
+  });
+});
+
+describe("AI follow-ups, Tagalog and keywords: what the search is asked", () => {
+  const qt = (...turns) => queryText(turns.map((content) => ({ role: "user", content })));
+
+  it("A follow-up keeps the subject of the message it refers to, however long it is", () => {
+    expect(qt("Is a Siberian Husky a good family dog?", "Is that breed suitable for a hot tropical climate like ours?")).toMatch(/Husky.*tropical/);
+    expect(qt("My dog ate some grapes", "Is that something I should take him to the vet for right away?")).toMatch(/grapes.*vet/);
+    expect(qt("Can dogs eat chocolate?", "What happens if he already ate a small piece of it?")).toMatch(/chocolate.*piece/);
+    expect(qt("Ayaw kumain ng pusa ko", "tatlong araw na po")).toMatch(/not eating.*days/);
+  });
+
+  it("A chain of follow-ups resolves step by step", () => {
+    expect(qt("My dog has ticks", "How do I remove them?", "Can they make him sick?")).toMatch(/ticks.*remove.*sick/);
+  });
+
+  it("A new animal replaces the old one in a follow-up", () => {
+    const q = qt("How often should I deworm my puppy?", "what about kittens?");
+    expect(q).toMatch(/deworm.*kittens/);
+    expect(q).not.toMatch(/puppy/);
+  });
+
+  it("A new topic stands alone, even after a long conversation", () => {
+    expect(qt("How often should I bathe my dog?", "My cat is vomiting a lot, what should I do?")).not.toMatch(/bathe/);
+    expect(qt("How often should I bathe my dog?", "Is it okay to give grapes to dogs as a treat?")).not.toMatch(/bathe/);   // "is it okay to" points forward
+    expect(qt("Can dogs eat grapes?", "How do I take care of a hamster?")).not.toMatch(/grapes/);
+    expect(qt("How often should I bathe my dog?", "Why does my cat knead blankets?")).not.toMatch(/bathe/);
+  });
+
+  it("Follow-ups get a passage that answers them", () => {
+    for (const id of ["f01", "f02", "f03", "f04", "f05", "f07", "f08", "f12", "m06", "m08"]) {
+      const { c, evidence } = plan(id);
+      expect(evidence.some((e) => c.relevant.includes(idOf(e))), id).toBe(true);
+    }
+  });
+
+  it("A follow-up asking something the library doesn't cover gets nothing from the earlier topic", () => {
+    expect(plan("m09").evidence.map(idOf), "cost of kitten vaccines").toEqual([]);
+    expect(plan("w06").evidence.map(idOf), "husky in a tropical climate").toEqual([]);
+    expect(plan("m01").evidence.map(idOf), "husky in a hot climate").toEqual([]);
+  });
+
+  it("Tagalog question words are translated, not taken for the subject, and Tagalog questions find their answer", () => {
+    expect(withEnglish("Kailangan ko bang iparehistro ang aso ko?")).toBe("need register dog ?");
+    expect(withEnglish("Ilang beses dapat paliguan ang aso?")).toMatch(/how often should bath dog/);
+    for (const id of ["t01", "t02", "t03", "t04", "t05", "t06", "t07", "t08"]) {
+      const { c, evidence } = plan(id);
+      expect(evidence.some((e) => c.relevant.includes(idOf(e))), id).toBe(true);
+    }
+  });
+
+  it("One shared word (Philippines) no longer gives a passage the full keyword bonus; matching the whole question does", () => {
+    const at = (id) => index.entries.findIndex((e) => e.id === id);
+    expect(index.keywords(fixture.queries.o01.q)[at("q0f7a59")]).toBeLessThan(0.4);
+    expect(index.keywords("Can dogs eat grapes?")[at("q7bf34c")]).toBe(1);
   });
 });
 
@@ -198,6 +254,18 @@ describe("AI evidence: what the owner sees (askAssistant end to end)", () => {
     const r = await ask("r11");
     expect(r.generated).toBeFalsy();
     expect(r.reply).not.toMatch(/sled|snow/i);
+  });
+
+  it("In a conversation, the AI gets the owner's messages but never the app's earlier answers", async () => {
+    const [first, follow] = cases.f05.turns;   // "My dog has ticks" / "Can those make him really sick?"
+    const earlier = "Under Republic Act No. 9482, huskies were bred for sledding in the snow.";   // an earlier reply that must not become evidence
+    const { evidence } = plan("f05");
+    serverReply = evidence[0].a.split(/(?<=\.)\s/).slice(0, 2).join(" ");
+    const r = await askAssistant({ messages: [{ role: "user", content: first }, { role: "assistant", content: earlier }, { role: "user", content: follow }], pet: null });
+    expect(serverCalls).toHaveLength(1);
+    expect(serverCalls[0].messages).toEqual([{ role: "user", content: first }, { role: "user", content: follow }]);
+    expect(JSON.stringify(serverCalls[0])).not.toMatch(/9482|sledding/);
+    expect(r.generated).toBe(true);
   });
 
   it("When the AI says the passages don't answer it, the checked answer shows, as before", async () => {

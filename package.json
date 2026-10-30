@@ -16,7 +16,8 @@
     "check-secrets": "node scripts/check-secrets.mjs",
     "check-secrets:all": "node scripts/check-secrets.mjs --all",
     "check-secrets:install": "node scripts/check-secrets.mjs --install-hook",
-    "eval:retrieval": "vite-node scripts/eval-retrieval.mjs"
+    "eval:retrieval": "vite-node scripts/eval-retrieval.mjs",
+    "eval:conversation": "vite-node scripts/eval-conversation.mjs"
   },
   "dependencies": {
     "@huggingface/transformers": "4.3.0",

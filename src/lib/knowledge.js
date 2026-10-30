@@ -97,8 +97,11 @@ function keywordIndex(texts) {
       if (!f) return sum;
       return sum + idf(w) * (f * 2.2) / (f + 1.2 * (0.25 + 0.75 * len[i] / avg));
     }, 0));
-    const max = Math.max(...s) || 1;
-    return s.map((x) => x / max);   // 0–1, relative to the best keyword match
+    // 0–1: how much of the question's keywords (weighted by rarity) the entry matches. Not relative to the best
+    // match: then one shared word ("Philippines") gave a law Q&A the full keyword bonus for any question about
+    // the Philippines, whatever the question was about.
+    const full = q.reduce((sum, w) => sum + idf(w), 0) || 1;
+    return s.map((x) => Math.min(1, x / full));
   };
   search.idf = idf;
   return search;
@@ -147,23 +150,42 @@ export function search(index, queryVector, queryText, { species = "", limit = 3 
     .slice(0, limit);
 }
 
-/* The text searched for: the latest question, plus the one before if it is a short follow-up, with
-   common Tagalog words explained in English (the model reads English). */
-const FOLLOW_UP = /^(what about|how about|and|also|but|what if|how much|how many|how long|how often|why|when|which|is it|can i|should i|what should|what do|paano naman|pano naman|paano kung|pano kung|e kung|eh kung|e sa|eh sa)\b/i;
-const REFERS_BACK = /\b(it|its|that|this|they|them|those|these)\b/i;
+/* The text searched for: the latest question, joined to what it refers back to, with common Tagalog words
+   explained in English (the model reads English). "Is that breed suitable for our climate?" after a question
+   about huskies is searched as a question about huskies.
+
+   A message leans on the one before when it opens like a follow-up ("what about kittens?", "and is it the
+   same for adults?"), is a short question ("is it safe?"), or points back ("that breed", "them", "ganyan")
+   without naming an animal of its own. A new symptom or topic ("she is not eating", "why does my cat knead?")
+   stands alone. Chains ("my dog has ticks" / "how do I remove them?" / "can they make him sick?") resolve step
+   by step, each message joined to the resolved one before it. */
+const FOLLOWS = /^(what about|how about|and|also|but|what if|paano naman|pano naman|paano kung|pano kung|e kung|eh kung|e sa|eh sa)\b/i;
+const SHORT_FOLLOW_UP = /^(how much|how many|how long|how often|why|when|which|is it|can i|should i|what should|what do)\b/i;
+const REFERS_BACK = /\b(it|its|that|this|they|them|those|these|ganyan|ganun|ganoon|iyan|yun|iyon)\b|\b(the same|the (very )?first one|the next one|that one|this one)\b/i;
+// "Is it okay to give grapes to dogs?": this "it" points forward, not back.
+const EMPTY_IT = /\bit('?s| is)? (okay|ok|safe|normal|bad|good|true|possible|necessary|dangerous|fine|alright|legal|common|better|best|wise|important|harmful)( for \w+)? (to|if|that|when)\b/gi;
+const CARRY = 30;   // words of the earlier question carried along, so long chains stay focused
+function leansBack(text) {
+  const names = DOG.test(text) || CAT.test(text);
+  if (FOLLOWS.test(text)) return true;
+  if (SHORT_FOLLOW_UP.test(text) && text.split(/\s+/).length < 5) return true;
+  // A reply with almost nothing of its own ("tatlong araw na po", "since yesterday") adds to the question before.
+  if (!names && tokens(withEnglish(text)).length <= 2) return true;
+  return !names && REFERS_BACK.test(text.replace(EMPTY_IT, " "));
+}
 export function queryText(messages) {
   const asked = messages.filter((m) => m.role === "user" && !m.error).map((m) => m.content.trim());
-  const last = asked.at(-1) || "";
-  const own = withEnglish(last);
-  // Only a short message that leans on the one before it ("is it safe?", "what about kittens?") is
-  // joined to it. A new symptom or topic ("she is not eating") stands alone, even when it is short.
-  const names = DOG.test(own) || CAT.test(own);
-  const leans = FOLLOW_UP.test(last) || (!names && REFERS_BACK.test(last));
-  if (asked.length < 2 || last.split(/\s+/).length >= 5 || !leans) return own;
-  // "What about kittens?" after a puppy question: the new animal replaces the old one.
-  const before = withEnglish(asked.at(-2));
-  const topic = names ? before.replace(new RegExp(DOG.source, "gi"), " ").replace(new RegExp(CAT.source, "gi"), " ") : before;
-  return `${topic} ${own}`.replace(/\s+/g, " ").trim();
+  let resolved = "";
+  for (const [i, text] of asked.entries()) {
+    const own = withEnglish(text);
+    if (i === 0 || !leansBack(text)) { resolved = own; continue; }
+    // "What about kittens?" after a puppy question: the new animal replaces the old one.
+    const names = DOG.test(own) || CAT.test(own);
+    const before = resolved.split(/\s+/).slice(-CARRY).join(" ");
+    const topic = names ? before.replace(new RegExp(DOG.source, "gi"), " ").replace(new RegExp(CAT.source, "gi"), " ") : before;
+    resolved = `${topic} ${own}`.replace(/\s+/g, " ").trim();
+  }
+  return resolved;
 }
 
 const TAGALOG = [   // phrases first, so "nakagat ako" (bit me) isn't read as just "bite"
@@ -187,9 +209,12 @@ const TAGALOG = [   // phrases first, so "nakagat ako" (bit me) isn't read as ju
   [/\bmatanda na\b|\bmatandang\b/, "old senior"], [/\bpalaka\b/, "toad"], [/\bahas\b/, "snake"],
   [/\bpagkain\b|\bpakain\b/, "food feeding"], [/\bpaliguan\b|\bligo\b/, "bath"], [/\bkapitbahay\b/, "neighbor"],
   [/\bnaligaw\b|\bnawala\b/, "lost"], [/\bbuntis\b/, "pregnant"], [/\bkapon\b|\bkinapon\b/, "neuter spay"],
+  // Question words, so they aren't taken for what the question is about.
+  [/\bilang beses\b/, "how often"], [/\bkailan\b/, "when"], [/\bpwede\b|\bpuwede\b/, "can"], [/\bdapat\b/, "should"],
+  [/\bgagawin\b|\bgawin\b/, "do"], [/\btanggalin\b|\balisin\b|\btatanggalin\b/, "remove"], [/\bdelikado\b|\bmapanganib\b/, "dangerous"],
 ];
 // Small Tagalog words that carry no meaning for the search ("ang", "ng", "ko" …).
-const FILLER = /\b(ang|ng|nang|ko|mo|niya|nya|ako|ka|siya|sya|kami|kayo|sila|namin|natin|nila|yung|iyong|ung|sa|si|ni|may|mayroon|meron|na|ba|po|ho|ano|anong|paano|bakit|ito|iyan|yan|lang|din|rin|pa|kasi|tapos|pag|kapag|dahil|para|mga|eh|naman|talaga|ganito|ganun)\b/g;
+const FILLER = /\b(ang|ng|nang|ko|mo|niya|nya|ako|ka|siya|sya|kami|kayo|sila|namin|natin|nila|yung|iyong|ung|sa|si|ni|may|mayroon|meron|na|ba|po|ho|ano|anong|paano|bakit|ito|iyan|yan|lang|din|rin|pa|kasi|tapos|pag|kapag|dahil|para|mga|eh|naman|talaga|ganito|ganun|ganyan|ganoon|bang|kong|mong|siyang|niyang|nyang)\b/g;
 export function withEnglish(text) {
   let t = text.toLowerCase(), found = false;
   for (const [re, en] of TAGALOG) {

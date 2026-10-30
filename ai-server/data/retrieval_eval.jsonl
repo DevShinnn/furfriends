@@ -92,3 +92,21 @@
 {"id":"m08","category":"multi-turn","turns":["Ayaw kumain ng pusa ko","tatlong araw na po"],"relevant":["qc01447"],"split":"test"}
 {"id":"m09","category":"multi-turn","turns":["What vaccines does my kitten need?","And how much do those usually cost in the Philippines?"],"relevant":[],"split":"dev"}
 {"id":"m10","category":"multi-turn","turns":["My dog keeps scratching","Could it be because of the food he eats?"],"relevant":["qfc1a24","q163a45"],"split":"test"}
+{"id":"f01","category":"follow-up","turns":["My dog ate some grapes","Is that something I should take him to the vet for right away?"],"relevant":["guide-poisoning","q7bf34c","qa6febf"],"split":"dev"}
+{"id":"f02","category":"follow-up","turns":["How often should I deworm my kitten?","And is it the same schedule for an adult cat that stays indoors?"],"relevant":["q8ebfd7","q4c4e74"],"split":"test"}
+{"id":"f03","category":"follow-up","turns":["My cat has fleas","What's the safest way to get rid of them in the house too?"],"relevant":["q8559cb"],"split":"dev"}
+{"id":"f04","category":"follow-up","turns":["Can dogs eat chocolate?","What happens if he already ate a small piece of it?"],"relevant":["q37381b","q9e32f9"],"split":"test"}
+{"id":"f05","category":"follow-up","turns":["My dog has ticks","Can those make him really sick?"],"relevant":["qab5df5","gov-114"],"split":"dev"}
+{"id":"f06","category":"follow-up","turns":["Ayaw kumain ng aso ko","dalawang araw na siyang ganyan, delikado ba?"],"relevant":["q05288f"],"split":"test"}
+{"id":"f07","category":"follow-up","turns":["What vaccines does my kitten need?","When should she get the very first one?"],"relevant":["qb27a0e","qb9e0e6"],"split":"dev"}
+{"id":"f08","category":"follow-up","turns":["I have a Shih Tzu","How often should I bathe that breed?"],"relevant":["q3374af","q105b9d","q105b9d-2","qa9bf28"],"split":"test"}
+{"id":"f09","category":"follow-up","turns":["My dog is scared of fireworks","Is there anything I can buy to help with that?"],"relevant":["q12ca1f-2","q472397-2","q12ca1f","qb6653f","q472397"],"split":"dev"}
+{"id":"f10","category":"follow-up","turns":["My dog has ticks","How do I remove them?","Can they make him sick?"],"relevant":["qab5df5","gov-114"],"split":"test"}
+{"id":"f11","category":"follow-up","turns":["My puppy keeps biting my hands","How long does this phase usually last?"],"relevant":["qd0b9a8","qf707e3"],"split":"dev"}
+{"id":"f12","category":"follow-up","turns":["Why is my cat peeing outside the litter box?","Could it be a medical problem that needs a vet?"],"relevant":["q285fc9","qb0335e"],"split":"test"}
+{"id":"w01","category":"topic-switch","turns":["How often should I bathe my dog?","My cat is vomiting a lot, what should I do?"],"relevant":["q8d57d9","q9b9f6e","qecf1bf","guide-vomiting"],"split":"dev"}
+{"id":"w02","category":"topic-switch","turns":["Can dogs eat grapes?","How do I take care of a hamster?"],"relevant":[],"split":"test"}
+{"id":"w03","category":"topic-switch","turns":["How often should I bathe my dog?","Is it okay to give grapes to dogs as a treat?"],"relevant":["q7bf34c","qa6febf","guide-poisoning"],"split":"dev"}
+{"id":"w04","category":"topic-switch","turns":["What vaccines does my kitten need?","Is it normal for cats to sleep most of the day?"],"relevant":["qa90a14"],"split":"test"}
+{"id":"w05","category":"topic-switch","turns":["My dog has fleas","How do I trim my dog's nails safely?"],"relevant":["q95d19a","q10f229"],"split":"dev"}
+{"id":"w06","category":"topic-switch","turns":["Is a Siberian Husky a good family dog?","Is that breed suitable for a hot tropical climate like ours?"],"relevant":[],"split":"test"}
