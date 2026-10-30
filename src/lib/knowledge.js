@@ -67,7 +67,20 @@ export const POISON_NOTE = "If your pet may have eaten, licked or touched someth
   + "even if your pet seems fine. Bring the package or label, and only make your pet vomit if a vet tells you to.";
 const SAYS_VET = /\b(vet|vets|veterinarian|clinic)\b/i;
 const SAYS_SOON = /\b(now|immediately|right away|straight away|urgent|urgently|today|as soon as)\b/i;
-export function withVetAdvice(question, answer) {
+/* A cat that hasn't eaten for a day or more needs a vet today (from the checked answer "My cat hasn't eaten for 2
+   days", qc01447): it comes first, before anything about feeding, whatever answer follows. */
+const NOT_EATING = /\b(not|isn'?t|won'?t|doesn'?t|didn'?t|hasn'?t|has not|stop(s|ped)?|refus(es|ed|ing)?)\s+(eat|eating|eaten)\b|\b(no|lost|loss of) appetite\b|\boff (his|her|its|their) food\b/i;
+const DAYS = /\b(days?|weeks?|since (yesterday|last night|monday|tuesday|wednesday|thursday|friday|saturday|sunday)|24 hours|(a|one|two|three|\d+) (whole )?days?|overnight)\b/i;
+export const CAT_APPETITE_NOTE = "A cat that hasn't eaten for a day or more needs a vet today. Cats can quickly develop a serious liver problem "
+  + "(hepatic lipidosis) when they stop eating. Don't force-feed her, and go now if she is also vomiting, very weak or breathing hard.";
+export function withAppetiteAdvice(question, answer, species = "") {
+  const cat = CAT.test(question) || (species === "cat" && !DOG.test(question));
+  const urgent = cat && NOT_EATING.test(question) && DAYS.test(question);
+  return urgent && !(SAYS_VET.test(answer) && /\b(today|now|immediately)\b/i.test(answer)) ? `${CAT_APPETITE_NOTE}\n\n${answer}` : answer;
+}
+export function withVetAdvice(question, answer, species = "") {
+  const first = withAppetiteAdvice(question, answer, species);
+  if (first !== answer) return first;
   if (SAYS_VET.test(answer) && SAYS_SOON.test(answer)) return answer;
   if (SWALLOWED.test(question)) return `${answer}\n\n${POISON_NOTE}`;
   return SYMPTOM.test(question) ? `${answer}\n\n${VET_NOTE}` : answer;
@@ -161,7 +174,7 @@ export function search(index, queryVector, queryText, { species = "", limit = 3 
    by step, each message joined to the resolved one before it. */
 const FOLLOWS = /^(what about|how about|and|also|but|what if|paano naman|pano naman|paano kung|pano kung|e kung|eh kung|e sa|eh sa)\b/i;
 const SHORT_FOLLOW_UP = /^(how much|how many|how long|how often|why|when|which|is it|can i|should i|what should|what do)\b/i;
-const REFERS_BACK = /\b(it|its|that|this|they|them|those|these|ganyan|ganun|ganoon|iyan|yun|iyon)\b|\b(the same|the (very )?first one|the next one|that one|this one)\b/i;
+const REFERS_BACK = /\b(it|its|that|this|they|them|those|these|ganyan|ganyang|ganun|ganung|ganoon|ganoong|iyan|yun|iyon)\b|\b(the same|the (very )?first one|the next one|that one|this one)\b/i;
 // "Is it okay to give grapes to dogs?": this "it" points forward, not back.
 const EMPTY_IT = /\bit('?s| is)? (okay|ok|safe|normal|bad|good|true|possible|necessary|dangerous|fine|alright|legal|common|better|best|wise|important|harmful)( for \w+)? (to|if|that|when)\b/gi;
 const CARRY = 30;   // words of the earlier question carried along, so long chains stay focused
@@ -190,7 +203,9 @@ export function queryText(messages) {
 
 const TAGALOG = [   // phrases first, so "nakagat ako" (bit me) isn't read as just "bite"
   [/\b(nakagat|kinagat) ako\b/, "bit me what do i do"], [/\b(nakalmot|kinalmot) ako\b/, "scratched me what do i do"],
-  [/\bdila nang dila\b|\bdila ng dila\b/, "licking"], [/\bkamot nang kamot\b|\bkamot ng kamot\b/, "scratching a lot itchy"],
+  [/\bdila nang dila\b|\bdila ng dila\b/, "licking"],
+  // Hot weather, before "mainit" (fever) below: "sa init", "tag-init", "mainit na panahon".
+  [/\b(sa|ang|ng) init\b|\btag-?init\b|\bmainit (na|ang) panahon\b/, "hot weather heat"], [/\bpilipinas\b/, "philippines"], [/\bkamot nang kamot\b|\bkamot ng kamot\b/, "scratching a lot itchy"],
   [/\bnalalagas\b|\bnagkakalagas\b|\bnagkalagas\b|\bpagkalagas\b|\blagas\b/, "hair loss shedding"], [/\bkalbo\b/, "bald patches"],
   [/\bbalahibo\b|\bbuhok\b/, "fur hair"], [/\bmakati\b|\bkati\b|\bnangangati\b|\bkinakamot\b|\bkamot\b/, "itchy scratching"],
   [/\bkailangan\b/, "need"], [/\b(iparehistro|irehistro|parehistro|rehistro)\b/, "register"],

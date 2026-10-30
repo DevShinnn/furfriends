@@ -2,7 +2,8 @@ import { readFileSync } from "node:fs";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { supabase } from "../src/lib/supabase";
 import { decodeIndex, queryText, search, withEnglish } from "../src/lib/knowledge";
-import { EVIDENCE, checkAnswer, planAnswer } from "../src/lib/evidence";
+import { EMERGENCY_NOTE, EVIDENCE, checkAnswer, planAnswer, selectEvidence, withEmergency } from "../src/lib/evidence";
+import { BREED_DB } from "../src/lib/breeds";
 import { sourcesFor } from "../src/lib/prompt";
 import { urgentGuides } from "../src/lib/emergency";
 import PROMPT from "../src/lib/aiPrompt.json";
@@ -41,17 +42,47 @@ describe("AI evidence: the fixtures match the index and the questions", () => {
 });
 
 describe("AI evidence: which passages the model may answer from", () => {
-  it("The reported question (best dog breed for a tropical country) gets no passages, and no law is offered", () => {
+  it("The reported question (best dog breed for a tropical country) gets the breed guide on the heat, and no law is offered", () => {
     for (const species of ["", "dog"]) {
       const c = cases.o01, { q, vector } = fixture.queries.o01;
       const results = search(index, vector, q, { species });
-      expect(results.slice(0, 2).every(isLaw), "the search alone still finds the laws").toBe(true);
       const { evidence, fallback } = planAnswer(index, results, q, c.turns.at(-1));
-      expect(evidence).toEqual([]);
-      expect(fallback.match).toBeNull();
-      expect(fallback.reply).toMatch(/don't have a checked answer/);
+      expect(evidence.map(idOf)).toContain("breed-heat-dog");
+      expect(evidence.filter(isLaw)).toEqual([]);
+      expect(fallback.match.id).toBe("breed-heat-dog");
       expect(fallback.related.map((r) => r.q).join(" ")).not.toMatch(/dog meat|put to sleep|legal/i);
     }
+  });
+
+  it("Regression: 'Is a Siberian Husky suitable for the Philippines?' is answered from the Husky's breed guide (heat, cooling, exercise), never from laws", () => {
+    for (const id of ["o04", "m01", "w06"]) {
+      const { evidence } = plan(id);
+      expect(evidence.map(idOf)[0], id).toBe("breed-siberian-husky");
+      expect(evidence.every((e) => e.src === "FurFriends breed guide"), id).toBe(true);   // the Husky's guide, maybe the heat summary
+      expect(evidence[0].a).toMatch(/hot, humid climate.*heatstroke/s);
+      expect(evidence[0].a).toMatch(/air-con|shaded room/);
+      expect(evidence[0].a).toMatch(/dawn or after sunset/);
+    }
+  });
+
+  it("Every breed in the breed guide can be found (the index was rebuilt after the guide changed)", () => {
+    for (const b of BREED_DB) expect(index.entries.some((e) => e.id === `breed-${b.slug}`), b.name).toBe(true);
+  });
+
+  it("A law passage is evidence only for a question about rules, rights or penalties", () => {
+    const law = index.entries.find((e) => e.id === "q41a64b");   // RA 9482: walking a dog without a leash
+    const as = (question) => selectEvidence([{ ...law, score: 0.66 }], question, index.keywords.idf, { rule: { ...EVIDENCE, cover: 0 } }).evidence.length;
+    expect(as("Is it okay to walk my dog in Manila at noon?")).toBe(0);
+    expect(as("Can my dog walk in Manila without a leash?")).toBe(1);
+  });
+
+  it("Prices and other animals are out of scope: nothing is sent, even when a passage shares words", () => {
+    const passage = (id) => ({ ...index.entries.find((e) => e.id === id), score: 0.95 });
+    expect(planAnswer(index, [passage("breed-shih-tzu")], "How much is a Shih Tzu puppy in Manila?", "How much is a Shih Tzu puppy in Manila?").evidence).toEqual([]);
+    expect(planAnswer(index, [passage("gov-202")], "How do I care for my pet turtle?", "How do I care for my pet turtle?").evidence).toEqual([]);
+    // An emergency still gets its first-aid guide, and a question about a dog isn't "another animal".
+    expect(planAnswer(index, [], "A snake bit my pet", "A snake bit my pet").evidence.map(idOf)).toEqual(["guide-snake"]);
+    expect(planAnswer(index, [passage("q0c19b6")], "How often should I feed my dog?", "How often should I feed my dog?").evidence.map(idOf)).toEqual(["q0c19b6"]);
   });
 
   it("Questions that only share a place or a legal word with the law Q&As get no law passages", () => {
@@ -69,7 +100,7 @@ describe("AI evidence: which passages the model may answer from", () => {
   });
 
   it("Questions the library has no answer for get no passages", () => {
-    for (const id of ["o02", "o03", "o04", "o09", "o12", "o13", "o14", "o17", "o19", "o20", "o23", "o25"]) {
+    for (const id of ["o02", "o09", "o12", "o13", "o14", "o17", "o19", "o20", "o23", "o25"]) {
       expect(plan(id).evidence.map(idOf), id).toEqual([]);
     }
   });
@@ -140,8 +171,6 @@ describe("AI follow-ups, Tagalog and keywords: what the search is asked", () => 
 
   it("A follow-up asking something the library doesn't cover gets nothing from the earlier topic", () => {
     expect(plan("m09").evidence.map(idOf), "cost of kitten vaccines").toEqual([]);
-    expect(plan("w06").evidence.map(idOf), "husky in a tropical climate").toEqual([]);
-    expect(plan("m01").evidence.map(idOf), "husky in a hot climate").toEqual([]);
   });
 
   it("Tagalog question words are translated, not taken for the subject, and Tagalog questions find their answer", () => {
@@ -175,6 +204,25 @@ describe("AI safety: emergencies, vet advice, doses", () => {
     expect(urgentGuides("my kitten ate a lily").map((g) => g.slug)).toContain("poisoning");
     expect(urgentGuides("My cat Lily is sneezing")).toEqual([]);
     expect(urgentGuides("Lily my dog won't eat")).toEqual([]);
+  });
+
+  it("Heatstroke is recognised from collapse or hard panting in the heat, not from collapse alone", () => {
+    expect(urgentGuides("My dog collapsed after a walk in the heat and is panting hard").map((g) => g.slug)).toContain("heatstroke");
+    expect(urgentGuides("my dog is panting heavily after playing in the sun").map((g) => g.slug)).toContain("heatstroke");
+    expect(urgentGuides("my dog's back legs collapsed when he stood up").map((g) => g.slug)).not.toContain("heatstroke");
+  });
+
+  it("An emergency reply always says to go to a vet now, without repeating it when it already does", () => {
+    expect(withEmergency("My dog was hit by a car", "Keep him still and warm.")).toBe(`Keep him still and warm.\n\n${EMERGENCY_NOTE}`);
+    expect(withEmergency("Nasagasaan ang aso ko", "Keep him still.")).toContain(EMERGENCY_NOTE);
+    expect(withEmergency("My dog was hit by a car", "Go to a vet now.")).toBe("Go to a vet now.");
+    expect(withEmergency("How often should I bathe my dog?", "Every 1 to 3 months.")).toBe("Every 1 to 3 months.");
+  });
+
+  it("An AI answer that names a medicine its passages don't is rejected; one they name (to warn) is fine", () => {
+    const src = [{ label: "x", text: "Q: My dog is itchy\nA: Itching is often caused by fleas or allergies. See your vet, who can find the cause. Never give paracetamol." }];
+    expect(checkAnswer("Itching is often caused by fleas or allergies. Give Benadryl and see your vet, who can find the cause.", src).problems.join()).toMatch(/medicine the sources don't: benadryl/);
+    expect(checkAnswer("Itching is often caused by fleas or allergies. Never give paracetamol. See your vet, who can find the cause.", src).ok).toBe(true);
   });
 
   it("An AI answer that gives a medicine dose is rejected, even if a passage has one", () => {
@@ -241,17 +289,33 @@ describe("AI evidence: what the owner sees (askAssistant end to end)", () => {
   });
   const ask = (id, pet = null) => askAssistant({ messages: cases[id].turns.map((content) => ({ role: "user", content })), pet });
 
-  it("The reported tropical-breed question: the AI isn't asked, no law is shown or credited, and the reply says there's no checked answer", async () => {
-    serverReply = "Under Republic Act No. 9482 ...";   // what a wrongly asked model might say
+  it("The reported tropical-breed question: the AI gets only the breed guide, an answer citing a law is rejected, and no law is shown or credited", async () => {
+    serverReply = "Under Republic Act No. 9482 ...";   // what a wrongly prompted model might say
     for (const pet of [null, { id: "p1", name: "Bantay", species: "Dog", breed: "", medical: [], vaccinations: [] }]) {
+      serverCalls = [];
       const r = await ask("o01", pet);
-      expect(serverCalls).toEqual([]);
-      expect(r.reply).toMatch(/don't have a checked answer for that yet, so I'd rather not guess/);
-      expect(r.reply).not.toMatch(/9482|8485|Republic Act/);
+      expect(serverCalls).toHaveLength(1);
+      expect(serverCalls[0].sources.map((s) => s.label).join()).toMatch(/^FurFriends breed guide/);
+      expect(JSON.stringify(serverCalls[0].sources)).not.toMatch(/9482|8485|Republic Act/);
       expect(r.generated).toBeFalsy();
-      expect(r.sources).toBeUndefined();
-      expect(r.match).toBeNull();
+      expect(r.reply).not.toMatch(/9482|8485|Republic Act/);
+      expect(r.match.source).toBe("FurFriends breed guide");
     }
+  });
+
+  it("Regression, end to end: the Husky question is answered from the Husky's guide and credited to it; a sledding story is rejected", async () => {
+    const husky = index.entries.find((e) => e.id === "breed-siberian-husky");
+    serverReply = husky.a.split("\n").slice(0, 2).join(" ");   // an answer written from the passage
+    let r = await ask("o04");
+    expect(serverCalls[0].sources[0]).toEqual(sourcesFor([husky])[0]);
+    expect(serverCalls[0].sources.every((s) => s.label.startsWith("FurFriends breed guide"))).toBe(true);
+    expect(r.generated).toBe(true);
+    expect(r.sources.map((s) => s.id)).toEqual(["breed-siberian-husky"]);
+    expect(r.reply).toMatch(/heat/);
+    serverReply = "Siberian Huskies were bred by the Chukchi people to pull sleds across the snow for long distances.";
+    r = await ask("o04");
+    expect(r.generated).toBeFalsy();
+    expect(r.reply).not.toMatch(/sled|Chukchi/);
   });
 
   it("A question with evidence goes to the AI with only that evidence, and the passage it uses is credited", async () => {

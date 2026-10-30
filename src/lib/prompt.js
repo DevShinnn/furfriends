@@ -50,6 +50,7 @@ function sourceOf(e) {
     return { label: `FurFriends first-aid guide: ${g.title}`, text };
   }
   if (e.kind === "gov") return { label: e.src, text: `${e.q}\n${e.a}` };
+  if (e.kind === "breed") return { label: `FurFriends breed guide: ${e.q.includes(" (") ? e.q.split(" (")[0] : "breeds and the heat"}`, text: e.a };
   return { label: /^Pets Stack Exchange/.test(e.src || "") ? "Pets Stack Exchange answer" : "FurFriends checked answer", text: `Q: ${clipWords(e.q, 40)}\nA: ${e.a}` };
 }
 export function describePet(c) {

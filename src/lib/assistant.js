@@ -1,8 +1,8 @@
 import { supabase } from "./supabase";
 import { breedFor } from "./breeds";
-import { chatReply, decodeIndex, queryText, safetyReply, search, withEnglish, withVetAdvice } from "./knowledge";
+import { chatReply, decodeIndex, queryText, safetyReply, search, withAppetiteAdvice, withEnglish, withVetAdvice } from "./knowledge";
 import { MODEL_HISTORY, chatMessages, conversation, describePet, petContext, sourcesFor } from "./prompt";
-import { EVIDENCE, planAnswer, reviewAnswer } from "./evidence";
+import { EVIDENCE, planAnswer, reviewAnswer, withEmergency } from "./evidence";
 import PROMPT from "./aiPrompt.json";
 
 /* Client for the FurFriends assistant.
@@ -131,11 +131,12 @@ async function askKnowledge({ messages, pet, signal, onStatus, onText }) {
   const rule = chatReply(last) || safetyReply(q) || breedReply(withEnglish(last), pet);
   const index = await ready;
   if (rule) return { reply: rule.reply, model: index.version, match: rule.match, related: rule.related };
-  const results = search(index, await embed(q, onStatus), q, { species: (pet?.species || "").toLowerCase() });
+  const species = (pet?.species || "").toLowerCase();
+  const results = search(index, await embed(q, onStatus), q, { species });
   if (signal?.aborted) throw new Error("Cancelled");
   // Only passages that are about the question are evidence (evidence.js). The search-only reply is the fallback.
   const { evidence, fallback } = planAnswer(index, results, q, last);
-  const checked = { reply: fallback.reply, model: index.version, match: fallback.match, related: fallback.related };
+  const checked = { reply: withEmergency(last, withAppetiteAdvice(q, fallback.reply, species)), model: index.version, match: fallback.match, related: fallback.related };
   // Nothing checked is about the question: the model isn't asked, so it can't fill the gap with a guess.
   if (!evidence.length) return checked;
   // FurFriends' trained model writes the answer from the evidence: on the server, or on this device if the
@@ -158,7 +159,7 @@ async function askKnowledge({ messages, pet, signal, onStatus, onText }) {
           // the pet ate and the answer doesn't already say to see a vet soon.
           // Written only from passages that cleared the lower limit: say it's the closest checked information.
           const uncertain = review.used.every((e) => e.kind !== "guide" && e.score < EVIDENCE.strong);
-          return { reply: withVetAdvice(q, reply), model, match: sources[0], sources, related: fallback.related, generated: true, uncertain };
+          return { reply: withEmergency(last, withVetAdvice(q, reply, species)), model, match: sources[0], sources, related: fallback.related, generated: true, uncertain };
         }
         console.warn("FurFriends AI answer isn't backed by its checked sources, showing the checked answer instead:", review.problems);
       }

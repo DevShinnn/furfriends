@@ -403,7 +403,7 @@ export const findGuide = (slug) => GUIDES.find((g) => g.slug === slug) || null;
 const URGENT = [
   ["cpr", /not breathing|no heartbeat|unconscious|won'?t wake|unresponsive/],
   ["breathing", /can'?t breathe|cannot breathe|trouble breathing|struggling to breathe|gasping|blue gums|grey gums|gray gums|pale gums|white gums|breathing (very |really |so )?(fast|hard|heavily|quickly)|(fast|rapid|heavy) breathing/],
-  ["heatstroke", /heat ?stroke|overheat|too hot/],
+  ["heatstroke", /heat ?stroke|overheat|too hot|(heat|hot|sun)\b[^.]{0,40}\b(collaps|panting (very |really |so )?(hard|heavily)|heavy panting)|(collaps\w*|panting (very |really |so )?(hard|heavily)|heavy panting)[^.]{0,40}\b(heat|hot|sun)\b/],
   ["poisoning", /poison|chocolate|grape|raisin|xylitol|(ate|eat(en|s)?|chew\w*|lick\w*|swallow\w*)\b[^.]{0,30}\blil(y|ies)|lil(y|ies) (pollen|plant|flower|lea(f|ves))|macadamia|onion|garlic|rat bait|rodenticide|antifreeze|coolant|radiator|bleach|paracetamol|ibuprofen|insecticide/],
   ["toad", /\btoads?\b|palaka/],
   ["choking", /chok/],

@@ -1,0 +1,17 @@
+{"id":"R01","category":"cat-appetite","turns":["My cat has not eaten for three days"],"accept":["qc01447","qcf4aff"],"reject":["q0c19b6","q911e89"],"appetite":true}
+{"id":"R02","category":"cat-appetite","turns":["Ayaw kumain ng pusa ko","tatlong araw na po"],"accept":["qc01447","qcf4aff"],"reject":["q0c19b6","q911e89"],"appetite":true,"note":"m08 in retrieval_eval.jsonl: was answered with a feeding schedule (release check 2026-10-30)"}
+{"id":"R03","category":"cat-appetite","turns":["Hindi kumakain ang pusa ko ng dalawang araw"],"accept":["qc01447","qcf4aff"],"reject":["q0c19b6","q911e89"],"appetite":true}
+{"id":"R04","category":"cat-appetite","turns":["My kitten won't eat and it's been 2 days"],"accept":["qc01447","qcf4aff"],"reject":["q0c19b6","q911e89"],"appetite":true}
+{"id":"R05","category":"cat-appetite","turns":["My cat stopped eating since yesterday"],"accept":["qc01447","qcf4aff"],"reject":["q0c19b6","q911e89"],"appetite":true}
+{"id":"R06","category":"dog-appetite","turns":["Ayaw kumain ng aso ko","dalawang araw na siyang ganyan, delikado ba?"],"accept":["q05288f"],"reject":["q03cef8","qa6febf","q7dce56"],"note":"f06 in retrieval_eval.jsonl: was answered with macadamia-nut poisoning"}
+{"id":"R07","category":"dog-appetite","turns":["My dog stopped eating two days ago, is it dangerous?"],"accept":["q05288f"],"reject":["q03cef8","qa6febf","q7dce56"]}
+{"id":"R08","category":"dog-appetite","turns":["Hindi kumakain ang aso ko ng tatlong araw"],"accept":["q05288f"],"reject":["q03cef8","qa6febf","q7dce56"]}
+{"id":"R09","category":"dog-appetite","turns":["My dog has no appetite since yesterday"],"accept":["q05288f"],"reject":["q03cef8","qa6febf","q7dce56"]}
+{"id":"R10","category":"cross-species-food","turns":["Can I give my cat dog food?"],"accept":[],"reject":["gov-189","q0c19b6","gov-182"],"note":"s01: no checked passage covers dog food for cats, so it declines"}
+{"id":"R11","category":"cross-species-food","turns":["Pwede bang pakainin ng dog food ang pusa ko?"],"accept":[],"reject":["gov-189","q0c19b6","gov-182"]}
+{"id":"R12","category":"cross-species-food","turns":["Is it okay if my cat eats the dog's food sometimes?"],"accept":[],"reject":["gov-189","q0c19b6","gov-182","gov-180"]}
+{"id":"R13","category":"cross-species-food","turns":["Can my dog eat cat food?"],"accept":[],"reject":["gov-189","q0c19b6","gov-182"]}
+{"id":"R14","category":"husky-follow-up","turns":["Is a Siberian Husky a good family dog?","Is that breed suitable for our hot climate?"],"accept":["breed-siberian-husky"],"exact":["breed-siberian-husky"],"note":"the heat summary sent beside it was copied and the Husky's lines went uncredited"}
+{"id":"R15","category":"husky-follow-up","turns":["Is a Siberian Husky a good family dog?","Okay ba ang ganyang breed sa init dito sa Pilipinas?"],"accept":["breed-siberian-husky"],"exact":["breed-siberian-husky"]}
+{"id":"R16","category":"husky-follow-up","turns":["Tell me about the Siberian Husky","How do I keep it cool in summer?"],"accept":["breed-siberian-husky"],"exact":["breed-siberian-husky"]}
+{"id":"R17","category":"heat-summary","turns":["Which dog breeds handle hot humid weather best?"],"accept":["breed-heat-dog"],"note":"the heat summary itself must still be found when it is the best match (o03)"}
