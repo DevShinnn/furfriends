@@ -7,11 +7,15 @@ import { PetContextChips } from "../components/Health";
 import { ASSISTANT_URL, CHAT_MODEL, askAssistant, chatChoice, chatSupport, conversation, petContext, setChatChoice, urgentGuides, wakeServer } from "../lib/assistant";
 import { uid } from "../lib/utils";
 
-/* Chat with the FurFriends assistant, optionally about one pet.
-   The conversation lives in this tab only (sessionStorage). Only answers someone rates are saved,
+/* Chat with the FurFriends assistant: one conversation per pet, and one about pets in general, so a follow-up
+   never mixes two pets ("what about him?" after a question about another pet). Picking a pet opens its chat.
+   The conversations live in this tab only (sessionStorage). Only answers someone rates are saved,
    to the assistant_feedback table, so the team can measure accuracy and retrain. */
-const chatKey = (user) => `ff-ai-chat:${user.id}`;
-const loadChat = (user) => { try { return JSON.parse(sessionStorage.getItem(chatKey(user))) || []; } catch { return []; } };
+const chatKey = (user, room) => `ff-ai-chat:${user.id}:${room || "general"}`;
+const loadChat = (user, room) => { try { return JSON.parse(sessionStorage.getItem(chatKey(user, room))) || []; } catch { return []; } };
+const saveChat = (user, room, chat) => {
+  try { chat.length ? sessionStorage.setItem(chatKey(user, room), JSON.stringify(chat)) : sessionStorage.removeItem(chatKey(user, room)); } catch { /* ignore */ }
+};
 
 const REASONS = ["Wrong or inaccurate", "Not about my pet", "Unsafe advice", "Didn't answer my question", "Hard to understand", "Other"];
 
@@ -32,9 +36,14 @@ export default function Assistant() {
   const [params, setParams] = useSearchParams();
   const petId = params.get("pet") || "";
   const pet = pets.find((p) => p.id === petId) || null;
-  const [chat, setChat] = useState(() => loadChat(user));
+  const room = pet?.id || "";                          // whose chat is open: a pet's id, or "" for pets in general
+  const [chats, setChats] = useState({});             // the conversations opened so far, by room
+  const chat = chats[room] ?? loadChat(user, room);
+  const setChatIn = (r, update) => setChats((all) => ({ ...all, [r]: update(all[r] ?? loadChat(user, r)) }));
+  const hasChat = (r) => (chats[r] ?? loadChat(user, r)).length > 0;
   const [text, setText] = useState("");
-  const [busy, setBusy] = useState(false);
+  const [asking, setAsking] = useState(null);         // the room waiting for an answer, or null
+  const busy = asking !== null;
   const [preparing, setPreparing] = useState(null);   // % of the search model downloaded (first time only), or "waking"
   const [draft, setDraft] = useState("");              // the trained model's answer as it's being written
   const [aiChoice, setAiChoice] = useState(chatChoice);
@@ -46,8 +55,10 @@ export default function Assistant() {
   const end = useRef(null);
   const input = useRef(null);
 
-  useEffect(() => { try { sessionStorage.setItem(chatKey(user), JSON.stringify(chat)); } catch { /* ignore */ } }, [chat, user]);
-  useEffect(() => { end.current?.scrollIntoView({ block: "end", behavior: "smooth" }); }, [chat, busy]);
+  useEffect(() => { for (const [r, c] of Object.entries(chats)) saveChat(user, r, c); }, [chats, user]);
+  // Before 2026-11-20 every pet shared one chat; it can't be split, so it's dropped.
+  useEffect(() => { try { sessionStorage.removeItem(`ff-ai-chat:${user.id}`); } catch { /* ignore */ } }, [user]);
+  useEffect(() => { end.current?.scrollIntoView({ block: "end", behavior: "smooth" }); }, [chat, busy, room]);
   useEffect(() => () => abort.current?.abort(), []);
 
   const pickPet = (id) => setParams(id ? { pet: id } : {}, { replace: true });
@@ -55,30 +66,32 @@ export default function Assistant() {
   const send = async (q = text) => {
     q = q.trim();
     if (!q || busy) return;
-    const mine = { id: uid(), role: "user", content: q, petName: pet?.name, urgent: urgentGuides(q).map((g) => g.slug) };
+    // The answer goes to the chat it was asked in, even if the owner opens another pet's chat meanwhile.
+    const r = room, about = pet;
+    const mine = { id: uid(), role: "user", content: q, urgent: urgentGuides(q).map((g) => g.slug) };
     const next = [...chat, mine];
-    setChat(next); setText(""); setBusy(true);
+    setChatIn(r, () => next); setText(""); setAsking(r);
     abort.current = new AbortController();
     try {
       const { reply, model, match, related, generated, sources, uncertain } = await askAssistant({
-        user, messages: next.filter((m) => !m.error), pet, signal: abort.current.signal, onStatus: setPreparing, onText: setDraft,
+        user, messages: next.filter((m) => !m.error), pet: about, signal: abort.current.signal, onStatus: setPreparing, onText: setDraft,
       });
       // Keep what the assistant saw alongside the answer, in case it's rated later.
-      setChat((c) => [...c, {
+      setChatIn(r, (c) => [...c, {
         id: uid(), fid: crypto.randomUUID(), role: "assistant", content: reply, model, match, related, generated, sources, uncertain,
-        q, petId: pet?.id || null, ctx: petContext(pet), convo: conversation(chat), rating: 0,
+        q, petId: about?.id || null, ctx: petContext(about), convo: conversation(chat), rating: 0,
       }]);
     } catch (e) {
       if (e.message === "Cancelled") return;
-      setChat((c) => [...c, { id: uid(), role: "assistant", error: true, content: e.message }]);
+      setChatIn(r, (c) => [...c, { id: uid(), role: "assistant", error: true, content: e.message }]);
     } finally {
-      setBusy(false); setPreparing(null); setDraft("");
+      setAsking(null); setPreparing(null); setDraft("");
       input.current?.focus();
     }
   };
 
   // Ratings save in order, so a quick change of mind can't be overwritten by an older request.
-  const patch = (id, fields) => setChat((c) => c.map((m) => (m.id === id ? { ...m, ...fields } : m)));
+  const patch = (id, fields) => setChatIn(room, (c) => c.map((m) => (m.id === id ? { ...m, ...fields } : m)));
   const saveRating = (m) => {
     saving.current = saving.current.then(async () => {
       const err = m.rating
@@ -99,24 +112,30 @@ export default function Assistant() {
     if (reason || comment) { saveRating(next); toast("Thanks, that helps the team improve the assistant."); }
   };
 
-  const clear = () => { abort.current?.abort(); setChat([]); setBusy(false); };
+  // "New chat" starts this pet's conversation over; the other pets' chats stay.
+  const clear = () => {
+    if (asking === room) { abort.current?.abort(); setAsking(null); }
+    setChatIn(room, () => []);
+  };
   const onKey = (e) => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); send(); } };
 
   return (
     <>
       <div className="topbar">
         <div><h1>Ask FurFriends</h1><p>Ask in English, Tagalog or Taglish about food, care, behavior or symptoms. Answers come from checked pet-care sources.</p></div>
-        {chat.length > 0 && <div className="actions"><button className="btn btn-ghost" onClick={clear}><Icon name="plus" /> New chat</button></div>}
+        {chat.length > 0 && <div className="actions"><button className="btn btn-ghost" onClick={clear}><Icon name="plus" /> New chat{pet ? ` about ${pet.name}` : ""}</button></div>}
       </div>
 
       {pets.length > 0 && (
         <div className="ai-about">
-          <span>Asking about</span>
+          <span>Chat about</span>
           <div className="chips">
-            <button className={`chip ${!pet ? "on" : ""}`} onClick={() => pickPet("")}>Pets in general</button>
+            <button className={`chip ${!pet ? "on" : ""}`} onClick={() => pickPet("")} aria-pressed={!pet}>
+              Pets in general{hasChat("") && <span className="chip-dot" aria-label=", has a conversation" />}
+            </button>
             {pets.map((p) => (
-              <button key={p.id} className={`chip ${pet?.id === p.id ? "on" : ""}`} onClick={() => pickPet(p.id)}>
-                {p.photo && <img src={p.photo} alt="" />}{p.name}
+              <button key={p.id} className={`chip ${pet?.id === p.id ? "on" : ""}`} onClick={() => pickPet(p.id)} aria-pressed={pet?.id === p.id}>
+                {p.photo && <img src={p.photo} alt="" />}{p.name}{hasChat(p.id) && <span className="chip-dot" aria-label=", has a conversation" />}
               </button>
             ))}
           </div>
@@ -139,7 +158,7 @@ export default function Assistant() {
           ) : (
             chat.map((m) => <Message key={m.id} m={m} onRate={rate} onExplain={explain} onAsk={send} />)
           )}
-          {busy && (
+          {asking === room && (
             <div className="ai-msg bot">
               {draft
                 ? <><span className="ai-avatar" aria-hidden="true"><Icon name="sparkle" size={17} /></span><div className="ai-turn"><div className="ai-bubble"><Reply text={draft} /></div></div></>
@@ -165,7 +184,8 @@ export default function Assistant() {
         <form className="ai-compose" onSubmit={(e) => { e.preventDefault(); send(); }}>
           <div className="ai-row">
             <textarea ref={input} className="textarea ai-input" rows={1} value={text} onChange={(e) => setText(e.target.value)} onKeyDown={onKey}
-              placeholder={pet ? `Ask about ${pet.name}…` : "Ask a question…"} aria-label="Your question" disabled={busy} />
+              placeholder={busy && asking !== room ? `Waiting for the answer in ${pets.find((p) => p.id === asking)?.name || "the general"} chat…` : pet ? `Ask about ${pet.name}…` : "Ask a question…"}
+              aria-label="Your question" disabled={busy} />
             <button className="btn btn-primary ai-send" type="submit" disabled={busy || !text.trim()} aria-label="Send"><Icon name="send" size={18} /></button>
           </div>
           <div className="ai-foot">Pilot: it can pick the wrong answer, and it isn't a vet. In an emergency, go to a vet now.
@@ -193,7 +213,7 @@ export function Message({ m, onRate, onExplain, onAsk }) {
     const guides = urgentGuides(m.content);
     return (
       <>
-        <div className="ai-msg me"><div className="ai-bubble">{m.content}{m.petName && <small>About {m.petName}</small>}</div></div>
+        <div className="ai-msg me"><div className="ai-bubble">{m.content}</div></div>
         {guides.length > 0 && (
           <div className="ai-urgent" role="alert">
             <Icon name="alert" size={18} />
