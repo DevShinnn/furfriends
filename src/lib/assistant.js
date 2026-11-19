@@ -4,6 +4,7 @@ import { chatReply, decodeIndex, queryText, safetyReply, search, withAppetiteAdv
 import { MODEL_HISTORY, basicPet, chatMessages, conversation, describePet, knowsProfiles, petContext, sourcesFor } from "./prompt";
 import { EVIDENCE, planAnswer, reviewAnswer, withEmergency } from "./evidence";
 import { noteQuery, petNotes, stripPetNotes, withPetNotes } from "./petNotes";
+import { petAsSpecies, recordsReply } from "./petAnswers";
 import PROMPT from "./aiPrompt.json";
 
 /* Client for the FurFriends assistant.
@@ -126,10 +127,13 @@ function embed(text, onStatus) {
 }
 
 async function askKnowledge({ messages, pet, signal, onStatus, onText }) {
-  const q = queryText(messages);
+  // The search gets "my cat" for the pet's name (petAnswers.js); the model still gets the owner's own words.
+  const searched = messages.map((m) => (m.role === "user" ? { ...m, content: petAsSpecies(m.content, pet) } : m));
+  const q = queryText(searched);
   const ready = loadIndex();
-  const last = messages.filter((m) => m.role === "user" && !m.error).at(-1)?.content || "";
-  const rule = chatReply(last) || safetyReply(q) || breedReply(withEnglish(last), pet);
+  const asked = messages.filter((m) => m.role === "user" && !m.error).at(-1)?.content || "";
+  const last = petAsSpecies(asked, pet);
+  const rule = chatReply(last) || safetyReply(q) || recordsReply(asked, pet) || breedReply(withEnglish(last), pet);
   const index = await ready;
   if (rule) return { reply: rule.reply, model: index.version, match: rule.match, related: rule.related };
   const species = (pet?.species || "").toLowerCase();
