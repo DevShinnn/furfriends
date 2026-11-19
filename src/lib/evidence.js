@@ -226,3 +226,16 @@ export function reviewAnswer(answer, evidence, options) {
   const check = checkAnswer(answer, sourcesFor(evidence), options);
   return { ...check, used: check.used.map((i) => evidence[i]) };
 }
+
+/* Passages strong enough that the model's "couldn't find" is likely a miss: a first-aid guide, or a close match. */
+export const strongEvidence = (evidence) => evidence.some((e) => e.kind === "guide" || e.score >= EVIDENCE.strong);
+
+/* An answer the model was pushed to give (no "I"/"Yes"/"No" at the start, api/ask.py) is kept only when it is a real
+   answer: not "I don't know" in other words, built on the best passage (evidence[0], the guide or the closest match;
+   drifting to a lower one gave "blood in vomit" for plain vomiting), and not talking about "records" (rag-v6 wrote
+   "Snow's records in this list"). Tested offline on 2026-11-20 (ai-server/README.md): 27 of 31 forced answers kept,
+   the 4 dropped were the wrong ones. */
+const STILL_DECLINES = /^\W*(?:yes|no)?\W*(?:i\s+(?:don't|do not|can't|cannot|couldn't|could not|am not sure|'m not sure)\b|.{0,40}\b(?:don't want to guess|can't find|couldn't find)\b)/i;
+export function forcedAnswerOk(answer, review, evidence) {
+  return !STILL_DECLINES.test(answer) && !/\b(?:\w+['’ʼ]s|my|your) records\b/i.test(answer) && review.used.includes(evidence[0]);
+}

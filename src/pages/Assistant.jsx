@@ -5,15 +5,16 @@ import { useUI } from "../components/UIContext";
 import Icon from "../components/Icon";
 import { PetContextChips } from "../components/Health";
 import { ASSISTANT_URL, CHAT_MODEL, askAssistant, chatChoice, chatSupport, conversation, petContext, setChatChoice, urgentGuides, wakeServer } from "../lib/assistant";
-import { uid } from "../lib/utils";
+import { newId } from "../lib/utils";
 
 /* Chat with the FurFriends assistant: one conversation per pet, and one about pets in general, so a follow-up
    never mixes two pets ("what about him?" after a question about another pet). Picking a pet opens its chat.
-   The conversations live in this tab only (sessionStorage). Only answers someone rates are saved,
-   to the assistant_feedback table, so the team can measure accuracy and retrain. */
+   The chats are saved to the owner's account (assistant_messages, src/lib/chatHistory.js), so they're there on
+   any device; without that table, and on the shared demo and sample accounts, they stay in this tab
+   (sessionStorage). Ratings go to the assistant_feedback table, so the team can measure accuracy and retrain. */
 const chatKey = (user, room) => `ff-ai-chat:${user.id}:${room || "general"}`;
-const loadChat = (user, room) => { try { return JSON.parse(sessionStorage.getItem(chatKey(user, room))) || []; } catch { return []; } };
-const saveChat = (user, room, chat) => {
+const tabChat = (user, room) => { try { return JSON.parse(sessionStorage.getItem(chatKey(user, room))) || []; } catch { return []; } };
+const saveTabChat = (user, room, chat) => {
   try { chat.length ? sessionStorage.setItem(chatKey(user, room), JSON.stringify(chat)) : sessionStorage.removeItem(chatKey(user, room)); } catch { /* ignore */ }
 };
 
@@ -31,16 +32,20 @@ function suggestions(pet) {
 }
 
 export default function Assistant() {
-  const { user, pets, rateAnswer, clearRating } = useStore();
+  const { user, pets, rateAnswer, clearRating, chatSaved, loadChat, chatRooms, saveChatMessage, updateChatMessage, clearChat } = useStore();
   const { toast } = useUI();
   const [params, setParams] = useSearchParams();
   const petId = params.get("pet") || "";
   const pet = pets.find((p) => p.id === petId) || null;
   const room = pet?.id || "";                          // whose chat is open: a pet's id, or "" for pets in general
   const [chats, setChats] = useState({});             // the conversations opened so far, by room
-  const chat = chats[room] ?? loadChat(user, room);
-  const setChatIn = (r, update) => setChats((all) => ({ ...all, [r]: update(all[r] ?? loadChat(user, r)) }));
-  const hasChat = (r) => (chats[r] ?? loadChat(user, r)).length > 0;
+  const [loaded, setLoaded] = useState({});           // rooms whose saved chat has been read from the account
+  const [rooms, setRooms] = useState(() => new Set()); // rooms with a saved chat, for the dots on the pet buttons
+  const start = (r) => (chatSaved ? [] : tabChat(user, r));
+  const chat = chats[room] ?? start(room);
+  const setChatIn = (r, update) => setChats((all) => ({ ...all, [r]: update(all[r] ?? start(r)) }));
+  const hasChat = (r) => (chats[r] ? chats[r].length > 0 : chatSaved ? rooms.has(r) : tabChat(user, r).length > 0);
+  const loading = chatSaved && !loaded[room];
   const [text, setText] = useState("");
   const [asking, setAsking] = useState(null);         // the room waiting for an answer, or null
   const busy = asking !== null;
@@ -55,7 +60,19 @@ export default function Assistant() {
   const end = useRef(null);
   const input = useRef(null);
 
-  useEffect(() => { for (const [r, c] of Object.entries(chats)) saveChat(user, r, c); }, [chats, user]);
+  useEffect(() => { if (!chatSaved) for (const [r, c] of Object.entries(chats)) saveTabChat(user, r, c); }, [chats, user, chatSaved]);
+  useEffect(() => { if (chatSaved) chatRooms().then(setRooms); }, [chatSaved]);   // eslint-disable-line react-hooks/exhaustive-deps
+  // A pet's saved chat is read from the account the first time it's opened.
+  useEffect(() => {
+    if (!chatSaved || loaded[room]) return;
+    let alive = true;
+    loadChat(room).then((saved) => {
+      if (!alive) return;
+      if (saved) setChats((all) => ({ ...all, [room]: all[room]?.length ? all[room] : saved }));
+      setLoaded((l) => ({ ...l, [room]: true }));
+    });
+    return () => { alive = false; };
+  }, [chatSaved, room]);   // eslint-disable-line react-hooks/exhaustive-deps
   // Before 2026-11-20 every pet shared one chat; it can't be split, so it's dropped.
   useEffect(() => { try { sessionStorage.removeItem(`ff-ai-chat:${user.id}`); } catch { /* ignore */ } }, [user]);
   useEffect(() => { end.current?.scrollIntoView({ block: "end", behavior: "smooth" }); }, [chat, busy, room]);
@@ -65,25 +82,29 @@ export default function Assistant() {
 
   const send = async (q = text) => {
     q = q.trim();
-    if (!q || busy) return;
+    if (!q || busy || loading) return;
     // The answer goes to the chat it was asked in, even if the owner opens another pet's chat meanwhile.
     const r = room, about = pet;
-    const mine = { id: uid(), role: "user", content: q, urgent: urgentGuides(q).map((g) => g.slug) };
+    const mine = { id: newId(), role: "user", content: q, urgent: urgentGuides(q).map((g) => g.slug) };
     const next = [...chat, mine];
     setChatIn(r, () => next); setText(""); setAsking(r);
+    saveChatMessage(r, mine);
+    setRooms((s) => new Set(s).add(r));
     abort.current = new AbortController();
     try {
       const { reply, model, match, related, generated, sources, uncertain } = await askAssistant({
         user, messages: next.filter((m) => !m.error), pet: about, signal: abort.current.signal, onStatus: setPreparing, onText: setDraft,
       });
       // Keep what the assistant saw alongside the answer, in case it's rated later.
-      setChatIn(r, (c) => [...c, {
-        id: uid(), fid: crypto.randomUUID(), role: "assistant", content: reply, model, match, related, generated, sources, uncertain,
+      const answer = {
+        id: newId(), fid: newId(), role: "assistant", content: reply, model, match, related, generated, sources, uncertain,
         q, petId: about?.id || null, ctx: petContext(about), convo: conversation(chat), rating: 0,
-      }]);
+      };
+      setChatIn(r, (c) => [...c, answer]);
+      saveChatMessage(r, answer);
     } catch (e) {
       if (e.message === "Cancelled") return;
-      setChatIn(r, (c) => [...c, { id: uid(), role: "assistant", error: true, content: e.message }]);
+      setChatIn(r, (c) => [...c, { id: newId(), role: "assistant", error: true, content: e.message }]);
     } finally {
       setAsking(null); setPreparing(null); setDraft("");
       input.current?.focus();
@@ -104,18 +125,22 @@ export default function Assistant() {
   const rate = (m, rating) => {
     const next = { ...m, rating: m.rating === rating ? 0 : rating, reason: null, comment: "", reasonDone: false };
     patch(m.id, next);
+    updateChatMessage(next);
     saveRating(next);
   };
   const explain = (m, reason, comment) => {
     const next = { ...m, reason, comment, reasonDone: true };
     patch(m.id, next);
+    updateChatMessage(next);
     if (reason || comment) { saveRating(next); toast("Thanks, that helps the team improve the assistant."); }
   };
 
-  // "New chat" starts this pet's conversation over; the other pets' chats stay.
+  // "New chat" starts this pet's conversation over (and deletes the saved one); the other pets' chats stay.
   const clear = () => {
     if (asking === room) { abort.current?.abort(); setAsking(null); }
     setChatIn(room, () => []);
+    clearChat(room);
+    setRooms((s) => { const n = new Set(s); n.delete(room); return n; });
   };
   const onKey = (e) => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); send(); } };
 
@@ -145,7 +170,9 @@ export default function Assistant() {
 
       <section className="card ai-card">
         <div className="ai-log" aria-live="polite">
-          {!chat.length ? (
+          {loading && !chat.length ? (
+            <div className="ai-start"><p>Opening your chat{pet ? ` about ${pet.name}` : ""}…</p></div>
+          ) : !chat.length ? (
             <div className="ai-start">
               <div className="ai-start-ic"><Icon name="sparkle" size={28} /></div>
               <h3>{pet ? `What would you like to know about ${pet.name}?` : "What would you like to know?"}</h3>
@@ -185,7 +212,7 @@ export default function Assistant() {
           <div className="ai-row">
             <textarea ref={input} className="textarea ai-input" rows={1} value={text} onChange={(e) => setText(e.target.value)} onKeyDown={onKey}
               placeholder={busy && asking !== room ? `Waiting for the answer in ${pets.find((p) => p.id === asking)?.name || "the general"} chat…` : pet ? `Ask about ${pet.name}…` : "Ask a question…"}
-              aria-label="Your question" disabled={busy} />
+              aria-label="Your question" disabled={busy || loading} />
             <button className="btn btn-primary ai-send" type="submit" disabled={busy || !text.trim()} aria-label="Send"><Icon name="send" size={18} /></button>
           </div>
           <div className="ai-foot">Pilot: it can pick the wrong answer, and it isn't a vet. In an emergency, go to a vet now.
@@ -196,7 +223,8 @@ export default function Assistant() {
                 : aiChoice === "yes"
                 ? "FurFriends' own AI model, trained by the team, runs on your device. It finds the best-matching checked sources (FurFriends' guides, CDC and FDA pages, open pet-care Q&As) and writes the answer from them. It can still get things wrong, so check the source. "
                 : "An open-source AI on your device picks the closest answer from FurFriends' guides and open pet-care Q&As. Check the question it matched. "}
-              Rating an answer shares it with the FurFriends team to improve the assistant.
+              Rating an answer shares it with the FurFriends team to improve the assistant.{" "}
+              {chatSaved ? "Your chats are saved to your account, one for each pet; \"New chat\" deletes that chat." : "Chats stay in this browser tab."}
               {CHAT_MODEL && aiSupported && aiChoice && (
                 <> <button type="button" className="linkish" onClick={() => chooseAi(aiChoice === "yes" ? "no" : "yes")}>{aiChoice === "yes" ? "Use checked answers only" : "Turn on the FurFriends AI"}</button></>
               )}

@@ -47,7 +47,9 @@ class OnnxChat:
         config, tokenizer, model = (get(f) for f in FILES)
         return cls(json.loads(config), Tokenizer.from_str(tokenizer.decode("utf-8")), model, threads)
 
-    def stream(self, messages, max_new_tokens=300, penalty=1.1):
+    def stream(self, messages, max_new_tokens=300, penalty=1.1, ban_first=()):
+        """ban_first: tokens the answer may not start with (api/ask.py: the start of "I couldn't find this ...",
+        when the app's passages are strong, see no_decline_tokens)."""
         ids = self.tok.encode(chat_text(messages), add_special_tokens=False).ids
         seen = np.zeros(self.tok.get_vocab_size(with_added_tokens=True) + 512, dtype=bool)
         seen[ids] = True
@@ -62,6 +64,8 @@ class OnnxChat:
             # Repetition penalty as in transformers: every token already in the prompt or the answer is made less likely.
             hit = seen[: logits.shape[0]]
             logits[hit] = np.where(logits[hit] > 0, logits[hit] / penalty, logits[hit] * penalty)
+            if not out and ban_first:
+                logits[list(ban_first)] = -np.inf
             nxt = int(logits.argmax())
             if nxt in STOP:
                 break
@@ -70,6 +74,13 @@ class OnnxChat:
             past = {name.replace("present", "past_key_values"): v for name, v in zip(self.outputs[1:], res[1:])}
             step, total = np.array([[nxt]], dtype=np.int64), total + 1
             yield self.tok.decode(out)
+
+    def no_decline_tokens(self):
+        """First tokens a forced answer may not use: "I" (the model's "I couldn't find this in FurFriends' checked
+        sources ..." reply), and "Yes"/"No", which it then picked whatever the question ("Yes, I don't think so.
+        Paracetamol is poisonous ..."), so the answer starts with its content. Tested offline 2026-11-20 on rag-v6
+        (ai-server/README.md)."""
+        return tuple(sorted({self.tok.encode(t, add_special_tokens=False).ids[0] for t in ("I couldn't", "I", "Yes", "No")}))
 
     def answer(self, messages, **kw):
         text = ""

@@ -105,8 +105,8 @@ export function petNoteText(question, ctx, options) {
   return notes.length ? `${NOTES_HEAD(ctx.name)}\n${notes.map((x) => `- ${x.text}`).join("\n")}` : "";
 }
 /* The answer without any notes the model wrote (they start with "From <name>'s records:", also with a curly
-   apostrophe, or with the first note on the same line). */
-export const stripPetNotes = (answer) => answer.replace(/\s*\n\s*From [^\n]{1,60}['’ʼ]s records:[\s\S]*$/, "").trimEnd();
+   apostrophe, with the first note on the same line, or as "From my records:", which rag-v6 sometimes writes). */
+export const stripPetNotes = (answer) => answer.replace(/\s*\n\s*From (?:[^\n]{1,60}['’ʼ]s|my|your|our) records:[\s\S]*$/i, "").trimEnd();
 /* The answer with the rule's notes at the end, in place of any the model wrote. */
 export function withPetNotes(question, answer, ctx, options) {
   const core = stripPetNotes(answer);

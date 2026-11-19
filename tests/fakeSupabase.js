@@ -32,8 +32,10 @@ export function fakeSupabase() {
       eq(col, val) { q.filters.push([col, val]); return chain; },
       match(obj) { q.filters.push(...Object.entries(obj)); return chain; },
       in(col, vals) { q.filters.push([col, vals]); return chain; },
+      is(col, val) { q.filters.push([col, val]); return chain; },
       gte() { return chain; },
       order() { return chain; },
+      limit() { return chain; },
       maybeSingle() { q.single = true; return chain; },
       then(resolve, reject) { return Promise.resolve(result()).then(resolve, reject); },
     };

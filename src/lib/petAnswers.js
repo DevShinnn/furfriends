@@ -30,38 +30,56 @@ export function petAsSpecies(text, pet) {
   });
 }
 
-/* Is this a question about the selected pet's own records (condition, allergies, vaccines due, medicines)? */
-export function isRecordsQuestion(text, pet) {
+/* What a question asks about the selected pet's own records: "overall", "vaccines", "checkup", "parasites",
+   "weight", "diet", "age", "allergies", "medicines", or null when it isn't about its records. */
+export function recordsTopic(text, pet) {
   const name = (pet?.name || "").trim();
-  if (!name || !text || SYMPTOM.test(withEnglish(text))) return false;
+  if (!name || !text || SYMPTOM.test(withEnglish(text))) return null;
   const t = text.replace(/[’ʼ]/g, "'");
   const me = `(?:${esc(name)}|he|she|him|her|his|siya|niya|my (?:pet|cat|dog|kitten|puppy))`;
-  if (!new RegExp(`\\b${me}\\b`, "i").test(t)) return false;
+  if (!new RegExp(`\\b${me}\\b`, "i").test(t)) return null;
   const not = "(?!\\s+(?:if|when|to|for|after|with|eating)\\b)";   // "is my dog okay to eat mango?" is about mango
-  return [
-    /\b(condition|kalagayan|lagay|kalusugan|health (status|check|records?)|medical (records?|history)|records)\b/i,
-    new RegExp(`\\bhow(?:'s| is) ${me}(?: doing| now| lately| today)?\\s*[?.!]*$`, "i"),
-    new RegExp(`\\bis ${me} (?:healthy|okay|ok|fine|well|alright|in good (?:health|shape))\\b${not}`, "i"),
-    /\b(kumusta|kamusta)\b/i,
-    new RegExp(`\\b(?:what is ${me} allergic to|is ${me} allergic to (?:anything|something)|${me}(?:'s)? allergies|does ${me} have (?:any )?allergies)\\b`, "i"),
-    new RegExp(`\\b(?:is ${me} (?:up to date|updated|due|overdue)|${me}(?:'s)? (?:vaccines?|shots?|vaccinations?|bakuna)\\b.*\\b(?:up to date|overdue|status|due|next)|when is ${me}(?:'s)? next (?:vaccine|shot|vaccination|checkup|deworming))\\b`, "i"),
-    new RegExp(`\\b(?:what (?:medicines?|medications?|meds) (?:is|does) ${me}|${me}(?:'s)? (?:medicines?|medications?|meds))\\b`, "i"),
-  ].some((r) => r.test(t));
+  const own = `${me}(?:'s)?`;
+  const topics = [
+    ["allergies", `\\b(?:what is ${me} allergic to|is ${me} allergic to (?:anything|something)|${own} allergies|does ${me} have (?:any )?allergies)\\b`],
+    ["vaccines", `\\b(?:is ${me} (?:up to date|updated|due|overdue)|${own} (?:vaccines?|shots?|vaccinations?|bakuna)\\b.*\\b(?:up to date|overdue|status|due|next|last)|when (?:is|was) ${own} (?:next|last) (?:vaccines?|shots?|vaccinations?)|what (?:vaccines?|shots?) (?:has|did) ${me} (?:had|have|get|got))\\b`],
+    ["checkup", `\\b(?:when (?:is|was) ${own} (?:next|last) (?:vet visit|visit to the vet|checkup|check-up|vet appointment)|when did ${me} (?:last )?(?:see|visit|go to) the vet|last time ${me} (?:saw|visited|went to) the vet)\\b`],
+    ["parasites", `\\b(?:when (?:is|was) ${own} (?:next|last) (?:deworming|dewormer|flea|tick|heartworm)|is ${me} due for (?:deworming|a dewormer|flea|tick|heartworm))\\b`],
+    ["weight", `\\b(?:how (?:much|heavy) (?:does|is) ${me}(?: weigh)?|${own} (?:current )?weight)\\b`],
+    ["diet", `\\b(?:what (?:does|do I feed|food does) ${me} (?:eat|get|have)|what do I feed ${me}|${own} (?:diet|food|meals|feeding (?:schedule|plan)))\\b`],
+    ["age", `\\bhow old is ${me}\\b|\\b${own} age\\b`],
+    ["medicines", `\\b(?:what (?:medicines?|medications?|meds) (?:is|does) ${me}|${own} (?:medicines?|medications?|meds))\\b`],
+    ["overall", "\\b(?:condition|kalagayan|lagay|kalusugan|health (?:status|check|records?)|medical (?:records?|history)|records)\\b"],
+    ["overall", `\\bhow(?:'s| is) ${me}(?: doing| now| lately| today)?\\s*[?.!]*$`],
+    ["overall", `\\bis ${me} (?:healthy|okay|ok|fine|well|alright|in good (?:health|shape))\\b${not}`],
+    ["overall", "\\b(?:kumusta|kamusta)\\b"],
+  ];
+  return topics.find(([, re]) => new RegExp(re, "i").test(t))?.[0] || null;
 }
+export const isRecordsQuestion = (text, pet) => recordsTopic(text, pet) !== null;
 
-/* The pet's health check as a reply, or null when the question isn't about its records. */
+/* The pet's health check as a reply, the part asked about first, or null when the question isn't about its records. */
 export function recordsReply(text, pet, today) {
-  if (!isRecordsQuestion(text, pet)) return null;
+  const topic = recordsTopic(text, pet);
+  if (!topic) return null;
   const h = healthCheck(pet, today), ctx = petContext(pet), name = pet.name;
-  const lines = h.checks.filter((c) => c.detail).map((c) =>
-    `- ${c.label}${c.status === "danger" || c.status === "warn" ? ` (${STATUS_TEXT[c.status].toLowerCase()})` : ""}: ${c.detail}`);
+  const line = (c) => `- ${c.label}${c.status === "danger" || c.status === "warn" ? ` (${STATUS_TEXT[c.status].toLowerCase()})` : ""}: ${c.detail}`;
+  const asked = h.checks.find((c) => c.key === topic && c.detail);
+  const lines = h.checks.filter((c) => c.detail && c !== asked).map(line);
+  const facts = {
+    allergies: ctx.allergies?.length ? `Allergies on record: ${ctx.allergies.join(", ")}.` : `${name} has no allergy on record.`,
+    medicines: ctx.medications?.length ? `Medicines on record: ${ctx.medications.join(", ")}.` : `${name} has no medicine on record.`,
+    age: `${name} is ${ageText(pet)} old${h.stage ? ` (${h.stage.label.toLowerCase()})` : ""}.`,
+  };
+  const first = asked ? `From ${name}'s records:\n${line(asked)}` : facts[topic] ? `From ${name}'s records: ${facts[topic]}` : "";
   const extra = [
-    ctx.allergies?.length ? `Allergies on record: ${ctx.allergies.join(", ")}.` : "",
-    ctx.medications?.length ? `Medicines on record: ${ctx.medications.join(", ")}.` : "",
+    topic !== "allergies" && ctx.allergies?.length ? facts.allergies : "",
+    topic !== "medicines" && ctx.medications?.length ? facts.medicines : "",
   ].filter(Boolean).join("\n");
   return {
     reply: [
-      `Here's how ${name} is doing, from ${name}'s records in FurFriends. Health check: ${h.label}, ${h.onTrack} of ${h.total} on track.`,
+      first,
+      `${first ? `The rest of ${name}'s health check` : `Here's how ${name} is doing, from ${name}'s records in FurFriends. Health check`}: ${h.label}, ${h.onTrack} of ${h.total} on track.`,
       lines.join("\n"),
       extra,
       `This is what's saved in the app, not an exam. If ${name} seems unwell, see your vet.`,
@@ -69,4 +87,10 @@ export function recordsReply(text, pet, today) {
     sure: true, related: [],
     match: { q: `${name}'s health check`, source: `${name}'s records`, url: `#/app/pets/${pet.id}`, kind: "records", score: 1 },
   };
+}
+
+function ageText(pet) {
+  const y = Number(pet.ageYears) || 0, m = Number(pet.ageMonths) || 0;
+  const parts = [y ? `${y} year${y === 1 ? "" : "s"}` : "", m ? `${m} month${m === 1 ? "" : "s"}` : ""].filter(Boolean);
+  return parts.join(" ") || "less than a month";
 }

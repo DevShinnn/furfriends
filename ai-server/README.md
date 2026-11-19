@@ -150,6 +150,17 @@ What we learned (keep these when retraining):
   "From <pet>'s records" notes for 43 of them, 18 where the app adds none, and both models copy he/she from the
   checked answer instead of the pet's sex; the app replaces those notes with its own. Results:
   `results/answer-eval-cmp-v6.json`, `results/answer-eval-cmp-v2.json`, `results/pets/pets-eval-v6.json`, `results/pets/pets-eval-v2.json`.
+- **v6 is used with a second try instead of retraining** (2026-11-20). When v6 says "couldn't find" although its
+  passages are strong (a first-aid guide, or a match at or above `EVIDENCE.strong`), the app asks once more with
+  `no_decline` (api/ask.py): the answer may not start with "I", "Yes" or "No" (`OnnxChat.no_decline_tokens`). With
+  only "I" banned it started with "Yes" whatever the question ("Yes, I don't think so. Paracetamol is poisonous").
+  The app keeps that answer only if it passes `reviewAnswer` and `forcedAnswerOk` (evidence.js): not a decline in
+  other words, built on the best passage, not talking about "records". Offline, on the same prompts as above: 31
+  answers were asked again, 27 kept (the 4 dropped were the wrong ones: twice "blood in vomit" for plain vomiting,
+  one garbled, one decline). Benchmark (99 questions): AI answer shown on 84.8% of answerable ones (v6 71.2%, v2
+  92.4%), on unanswerable ones 6.1% (v6 3.0%, v2 6.1%), 0 unsupported, wrong credits 4 (v6 4, v2 3). Pet test: 97.1%
+  passed the checks (v6 89.7%, v2 94.1%), 0 invented health facts. It costs a second answer only for those questions.
+  The same run found rag-v6 writing "From my records:", now also stripped (stripPetNotes).
 - **Never train on the evaluation questions.** v2 and v3 were trained on 11 questions that are also in
   `retrieval_eval.jsonl` and `safety_eval.json` (the library's own questions, such as "How often should I deworm my
   kitten?"). `build_rag_data.py` now leaves them out, also as earlier messages in a conversation, and

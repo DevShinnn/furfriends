@@ -6,6 +6,7 @@ import { DEMO_EMAIL, DEMO_PASS, DEMO_PROFILE } from "../lib/demoData";
 import { clearChats } from "../lib/assistant";
 import { addDemoPets, browserFiles, clearPets } from "../lib/seedDemo";
 import { PET_SELECT, TABLES, TO, petFromRow, petToDb, petWeights } from "../lib/petRows";
+import { chatOf, chatRoomsOf, chatTableReady, clearChatRows, saveChatRow, updateChatRow } from "../lib/chatHistory";
 
 /* Accounts live in Supabase (Auth + Postgres + Storage, see supabase/migrations).
    The demo account is a real, shared account (made by scripts/seed-sample-accounts.mjs) that
@@ -25,7 +26,7 @@ const PHOTOS = "pet-photos";
 const DOCS = "pet-documents";
 const URL_TTL = 60 * 60 * 24 * 7; // signed file links last a week
 const FED_DAYS = 14;              // only the last 2 weeks of feeding log are loaded
-const EMPTY = { user: null, pets: [], weightLog: false };
+const EMPTY = { user: null, pets: [], weightLog: false, chatTable: false };
 const SYNC_TABLES = ["profiles", "pets", "medical_records", "vaccinations", "documents", "feeding_schedules", "feeding_log", "care_tasks"];
 const SYNC_DELAY = 1200;          // wait for a burst of changes to settle before reloading
 const STALE_AFTER = 30 * 1000;    // reload when the app returns after being hidden this long
@@ -91,10 +92,11 @@ async function fetchAll(authUser) {
   if (res.error) throw res.error;
 
   const pets = res.data.map(petFromRow);
-  const [photoUrls, docUrls, weightLog] = await Promise.all([
+  const [photoUrls, docUrls, weightLog, chatTable] = await Promise.all([
     signAll(PHOTOS, pets.map((p) => p.photoPath)),
     signAll(DOCS, pets.flatMap((p) => p.documents.map((d) => d.filePath))),
     petWeights(supabase, pets),   // false until the weight_log table exists
+    chatTableReady(supabase),     // false until the assistant_messages table exists
   ]);
   for (const p of pets) {
     p.photo = photoUrls[p.photoPath] || null;
@@ -109,7 +111,7 @@ async function fetchAll(authUser) {
     // the demo and sample accounts, whose passwords are public (docs/sample-accounts.md); the database enforces this too
     isShared: authUser.email === DEMO_EMAIL || /^sample\..+@example\.com$/.test(authUser.email || ""),
   };
-  return { user, pets, weightLog };
+  return { user, pets, weightLog, chatTable };
 }
 
 function authMessage(error) {
@@ -216,7 +218,9 @@ export function StoreProvider({ children }) {
   }, [userId, weightLogOn, syncNow]);
 
   const api = useMemo(() => {
-    const { user, pets, weightLog } = db;
+    const { user, pets, weightLog, chatTable } = db;
+    // Chats are saved to the account once their table exists, except on the shared accounts anyone can log into.
+    const chatSaved = !!(chatTable && user && !user.isShared);
     const getPet = (id) => pets.find((p) => p.id === id) || null;
     const setPets = (fn) => commit((d) => ({ ...d, pets: fn(d.pets) }));
     const mapPet = (ps, id, fn) => ps.map((p) => (p.id === id ? fn(p) : p));
@@ -521,6 +525,16 @@ export function StoreProvider({ children }) {
         const { error } = await supabase.from("assistant_feedback").delete().eq("id", id);
         return error ? error.message : null;
       },
+
+      /* ------------------------------------------------ assistant chats (assistant_messages), one per pet
+         room: a pet's id, or "" for the chat about pets in general. Off (chats stay in the tab) without the table
+         or on a shared account. */
+      chatSaved,
+      async loadChat(room) { return chatSaved ? chatOf(supabase, room) : null; },
+      async chatRooms() { return chatSaved ? chatRoomsOf(supabase) : new Set(); },
+      saveChatMessage(room, m) { if (chatSaved && !m.error) remote(() => saveChatRow(supabase, room, m)); },
+      updateChatMessage(m) { if (chatSaved) remote(() => updateChatRow(supabase, m)); },
+      clearChat(room) { if (chatSaved) remote(() => clearChatRows(supabase, room)); },
     };
   }, [db, ready, syncError, commit, set, remote, reload]);
 

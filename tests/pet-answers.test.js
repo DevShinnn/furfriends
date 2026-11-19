@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isRecordsQuestion, petAsSpecies, recordsReply } from "../src/lib/petAnswers";
+import { isRecordsQuestion, petAsSpecies, recordsReply, recordsTopic } from "../src/lib/petAnswers";
 import { demoPets } from "../src/lib/demoData";
 
 const pets = demoPets("owner");
@@ -44,11 +44,33 @@ describe("questions about the pet's own records", () => {
     expect(isRecordsQuestion("What is mochi condition now", null)).toBe(false);
   });
 
+  it("know which part of the records is asked about", () => {
+    const cases = {
+      "When was Mochi's last vet visit?": "checkup", "When did she last see the vet?": "checkup", "When is Mochi's next deworming?": "parasites",
+      "How much does Mochi weigh?": "weight", "What does Mochi eat?": "diet", "What is Mochi's feeding schedule?": "diet",
+      "How old is Mochi?": "age", "When was Mochi's last vaccine?": "vaccines", "What vaccines has Mochi had?": "vaccines",
+      "Is Mochi allergic to anything?": "allergies", "What is mochi condition now": "overall",
+    };
+    for (const [q, topic] of Object.entries(cases)) expect(recordsTopic(q, mochi), q).toBe(topic);
+    expect(recordsTopic("How much should I feed a kitten?", mochi)).toBeNull();
+    expect(recordsTopic("What food is best for an older cat?", mochi)).toBeNull();
+  });
+
+  it("put the part asked about first, then the rest of the health check", () => {
+    const r = recordsReply("When was Mochi's last vet visit?", mochi).reply;
+    expect(r).toMatch(/^From Mochi's records:\n- Vet checkup: Last checkup 12 days ago\n\nThe rest of Mochi's health check: Check soon, 5 of 6 on track\./);
+    expect(r.match(/Vet checkup/g)).toHaveLength(1);
+    expect(recordsReply("How old is Mochi?", mochi).reply).toMatch(/^From Mochi's records: Mochi is 3 years 4 months old \(adult\)\./);
+    expect(recordsReply("What medicines is Mochi on?", mochi).reply).toMatch(/^From Mochi's records: Mochi has no medicine on record\./);
+    expect(recordsReply("What does Bori eat?", bori).reply).toMatch(/^From Bori's records:\n- Diet: 2 meals a day: Salmon & rice kibble \(avoids chicken\)/);
+  });
+
   it("answer from the health check, with no diagnosis, and link to the pet", () => {
     const r = recordsReply("Is Bori allergic to anything?", bori);
-    expect(r.reply).toMatch(/^Here's how Bori is doing, from Bori's records in FurFriends\. Health check: Needs attention, \d of 6 on track\./);
+    expect(r.reply).toMatch(/^From Bori's records: Allergies on record: Chicken protein sensitivity[^\n]*\n\nThe rest of Bori's health check: Needs attention, \d of 6 on track\./);
     expect(r.reply).toContain("- Vaccines (act now): DHPP overdue");
-    expect(r.reply).toContain("Allergies on record: Chicken protein sensitivity");
+    expect(r.reply.match(/Allergies on record/g)).toHaveLength(1);
+    expect(recordsReply("What is Bori's condition?", bori).reply).toMatch(/^Here's how Bori is doing, from Bori's records in FurFriends\. Health check: Needs attention, \d of 6 on track\./);
     expect(r.reply).toMatch(/not an exam\. If Bori seems unwell, see your vet\.$/);
     expect(r.match).toMatchObject({ source: "Bori's records", url: `#/app/pets/${bori.id}`, kind: "records" });
     expect(recordsReply("How do I keep Mochi cool on hot days?", mochi)).toBeNull();

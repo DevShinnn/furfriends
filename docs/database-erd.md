@@ -3,7 +3,7 @@
 The live Supabase database, as built by `supabase/migrations/`. Checked against the live project on
 2026-10-20: all 12 tables then existed, each account sees only its own rows, and visitors who aren't logged
 in see nothing. `ai_usage` (the AI's CPU-time counter) was added on 2026-10-28, and `clinic_search_cache` (saved clinic
-searches) plus `profiles.address` on 2026-10-29, and `weight_log` (each pet's weight history) on 2026-11-12, making 15 tables. Use this to check the ERD in the thesis manuscript. Every table, key and relationship
+searches) plus `profiles.address` on 2026-10-29, `weight_log` (each pet's weight history) on 2026-11-12, and `assistant_messages` (each pet's saved assistant chat) on 2026-11-20, making 16 tables. Use this to check the ERD in the thesis manuscript. Every table, key and relationship
 below should appear there.
 
 ```mermaid
@@ -20,6 +20,8 @@ erDiagram
     PETS ||--o{ WEIGHT_LOG : "weighed"
     AUTH_USERS ||--o{ ASSISTANT_FEEDBACK : "rates"
     PETS |o--o{ ASSISTANT_FEEDBACK : "asked about"
+    AUTH_USERS ||--o{ ASSISTANT_MESSAGES : "chats"
+    PETS |o--o{ ASSISTANT_MESSAGES : "chat about"
     AUTH_USERS ||--o{ PUSH_SUBSCRIPTIONS : "has devices"
     AUTH_USERS ||--o{ PUSH_LOG : "was sent"
     AUTH_USERS ||--o{ USABILITY_RESPONSES : "submits"
@@ -119,6 +121,15 @@ erDiagram
         numeric weight_kg
         timestamptz created_at
     }
+    ASSISTANT_MESSAGES {
+        uuid id PK
+        uuid owner_id FK
+        uuid pet_id FK "null = the chat about pets in general"
+        text role "user or assistant"
+        text content
+        jsonb meta "sources, model, rating shown with an answer"
+        timestamptz created_at
+    }
     ASSISTANT_FEEDBACK {
         uuid id PK
         uuid user_id FK
@@ -190,6 +201,7 @@ erDiagram
 | `feeding_log` | a meal ticked as fed on one day | `feeding_id` + `fed_on` | feeding schedule (and pet) |
 | `care_tasks` | a grooming, deworming or vaccination reminder, or a vet appointment | `id` | pet |
 | `weight_log` | a pet's weight on one day: its weight history (a trigger saves each new weight; owners can add earlier ones) | `id` | pet |
+| `assistant_messages` | one message in an owner's assistant chat: one chat per pet, and one about pets in general ("New chat" deletes it; not saved for the shared demo and sample accounts) | `id` | user (and optionally pet) |
 | `assistant_feedback` | a 👍/👎 rating of one assistant answer | `id` | user (and optionally pet) |
 | `push_subscriptions` | a phone or browser that allowed notifications | `id` | user |
 | `push_log` | a reminder already pushed, so it isn't sent twice | `user_id` + `key` | user |

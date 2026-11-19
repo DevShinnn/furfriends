@@ -162,6 +162,7 @@ describe("Notes from the pet's records under an answer", () => {
     // However the model types it: a curly apostrophe, the first note on the same line, another name.
     expect(stripPetNotes("Feed twice a day.\n\nFrom Bori’s records: Bori is diabetic.")).toBe("Feed twice a day.");
     expect(stripPetNotes("Feed twice a day.\nFrom Max's records:\n- Max takes insulin.")).toBe("Feed twice a day.");
+    expect(stripPetNotes("Treat fleas monthly.\n\nFrom my records:\n- There's no mention of this in my records.")).toBe("Treat fleas monthly.");
     expect(stripPetNotes("Records from the vet help: bring them.")).toBe("Records from the vet help: bring them.");
   });
 });

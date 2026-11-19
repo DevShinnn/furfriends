@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { supabase } from "../src/lib/supabase";
 import { decodeIndex, queryText, search, withEnglish } from "../src/lib/knowledge";
-import { EMERGENCY_NOTE, EVIDENCE, checkAnswer, planAnswer, selectEvidence, withEmergency } from "../src/lib/evidence";
+import { EMERGENCY_NOTE, EVIDENCE, checkAnswer, forcedAnswerOk, planAnswer, selectEvidence, strongEvidence, withEmergency } from "../src/lib/evidence";
 import { BREED_DB } from "../src/lib/breeds";
 import { sourcesFor } from "../src/lib/prompt";
 import { urgentGuides } from "../src/lib/emergency";
@@ -278,7 +278,8 @@ describe("AI evidence: what the owner sees (askAssistant end to end)", () => {
     vi.stubGlobal("fetch", async (url, init) => {
       if (String(url).endsWith("knowledge/index.json")) return new Response(JSON.stringify(raw));
       serverCalls.push(JSON.parse(init.body));
-      return new Response(serverReply, { headers: { "X-Model": "rag-v2" } });
+      // A list: one reply per call (the first answer, then the one asked again).
+      return new Response(Array.isArray(serverReply) ? serverReply.shift() : serverReply, { headers: { "X-Model": "rag-v2" } });
     });
     ({ askAssistant } = await import("../src/lib/assistant"));
   });
@@ -373,5 +374,53 @@ describe("AI evidence: what the owner sees (askAssistant end to end)", () => {
     const { fallback } = plan("r11");
     const r = await ask("r11");
     expect(r.reply).toBe(fallback.reply);
+  });
+
+  it("'Couldn't find' with a strong passage (rag-v6's habit): asked once more, and an answer built on the best passage is shown", async () => {
+    const { evidence } = plan("r05");   // "How can I tell if my dog is overheating on a hot day?" → the heatstroke guide
+    expect(strongEvidence(evidence)).toBe(true);
+    // What rag-v6 wrote when asked again (2026-11-20, offline), up to the guide's first two sentences as the app sends them.
+    const fromGuide = sourcesFor(evidence)[0].text.split(/(?<=\.)\s/).slice(1, 3).join(" ");
+    serverReply = [PROMPT.notFound, `This sounds like it could be heatstroke. ${fromGuide}`];
+    const shown = [];
+    const r = await askAssistant({ messages: [{ role: "user", content: cases.r05.turns[0] }], pet: null, onText: (t) => shown.push(t) });
+    expect(serverCalls.map((c) => !!c.no_decline)).toEqual([false, true]);
+    expect(r.generated).toBe(true);
+    expect(r.reply).toMatch(/^This sounds like it could be heatstroke/);
+    expect(shown.some((t) => t.startsWith("I couldn"))).toBe(false);   // the "couldn't find" draft never flashes up
+  });
+
+  it("A forced answer that still declines, or leans on a lower passage, is dropped for the checked answer", async () => {
+    const { evidence, fallback } = plan("t01");   // "Nagsusuka ang aso ko" → the vomiting guide, then another passage
+    expect(evidence.length).toBeGreaterThan(1);
+    for (const second of ["Yes, I don't know. I can't guess. Please ask your vet.", evidence[1].a.split(/(?<=\.)\s/).slice(0, 3).join(" ")]) {
+      serverCalls = [];
+      serverReply = [PROMPT.notFound, second];
+      const r = await ask("t01");
+      expect(serverCalls).toHaveLength(2);
+      expect(r.generated).toBeFalsy();
+      expect(r.reply).toBe(withEmergency(cases.t01.turns[0], fallback.reply));
+    }
+  });
+
+  it("Without a strong passage, 'couldn't find' stands: no second try", async () => {
+    const id = Object.keys(cases).find((k) => { const { evidence } = plan(k); return evidence.length && !strongEvidence(evidence) && !cases[k].turns.some((t) => urgentGuides(t).length); });
+    serverReply = [PROMPT.notFound, "should never be asked"];
+    const r = await ask(id);
+    expect(serverCalls).toHaveLength(1);
+    expect(r.generated).toBeFalsy();
+  });
+});
+
+describe("Forced answers (forcedAnswerOk)", () => {
+  const evidence = [{ id: "a" }, { id: "b" }];
+  const review = (...used) => ({ ok: true, used: used.map((i) => evidence[i]) });
+  it("keeps a real answer on the best passage, drops declines in other words, lower passages and 'records' talk", () => {
+    expect(forcedAnswerOk("Move your dog into the shade right away.", review(0), evidence)).toBe(true);
+    expect(forcedAnswerOk("Move your dog into the shade right away.", review(1), evidence)).toBe(false);
+    expect(forcedAnswerOk("Yes, I don't think so. Paracetamol is poisonous to cats.", review(0), evidence)).toBe(false);
+    expect(forcedAnswerOk("Sorry, I couldn't find this in FurFriends' checked sources.", review(0), evidence)).toBe(false);
+    expect(forcedAnswerOk("This sounds like it could be Snow's records in this list.", review(0), evidence)).toBe(false);
+    expect(forcedAnswerOk("Keep the record of each shot on the dog's registration card.", review(0), evidence)).toBe(true);
   });
 });

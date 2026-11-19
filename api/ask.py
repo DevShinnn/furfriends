@@ -12,7 +12,7 @@ is public before deploying a new default.)
 
   POST /api/ask
   Authorization: Bearer <Supabase access token>   (only logged-in FurFriends users get answers)
-  body  { messages: [{ role, content }], pet: {...} | null, sources: [{ label, text }] }
+  body  { messages: [{ role, content }], pet: {...} | null, sources: [{ label, text }], no_decline?: true }
   200 → the answer as plain text, streamed as it's written; header X-Model: the model version
   429 → the monthly AI allowance is used up; 401 → not logged in; 400 → no sources (the model never answers
   without checked passages). The app then shows the closest checked answer.
@@ -100,6 +100,10 @@ class AskBody(BaseModel):
     messages: list[Message]
     pet: dict | None = None
     sources: list[Source] | None = None
+    # The app asks again with this when the model said "couldn't find" although its passages are strong (a
+    # first-aid guide, or a close match): the answer may then not start with "I", "Yes" or "No" (no_decline_tokens),
+    # and the app keeps it only if it passes its checks (assistant.js). rag-v6 declined such questions too often.
+    no_decline: bool = False
 
 
 @app.post("/api/ask")
@@ -120,7 +124,9 @@ def ask(body: AskBody, authorization: str | None = Header(default=None)):
             start = time.process_time()   # this process's CPU time, the same thing Vercel counts
             try:
                 last = ""
-                for text in chat().stream(msgs, max_new_tokens=MAX_NEW_TOKENS):
+                model = chat()
+                ban = model.no_decline_tokens() if body.no_decline else ()
+                for text in model.stream(msgs, max_new_tokens=MAX_NEW_TOKENS, ban_first=ban):
                     yield text[len(last):]
                     last = text
             finally:

@@ -2,7 +2,7 @@ import { supabase } from "./supabase";
 import { breedFor } from "./breeds";
 import { chatReply, decodeIndex, queryText, safetyReply, search, withAppetiteAdvice, withEnglish, withVetAdvice } from "./knowledge";
 import { MODEL_HISTORY, basicPet, chatMessages, conversation, describePet, knowsProfiles, petContext, sourcesFor } from "./prompt";
-import { EVIDENCE, planAnswer, reviewAnswer, withEmergency } from "./evidence";
+import { EVIDENCE, forcedAnswerOk, planAnswer, reviewAnswer, strongEvidence, withEmergency } from "./evidence";
 import { noteQuery, petNotes, stripPetNotes, withPetNotes } from "./petNotes";
 import { petAsSpecies, recordsReply } from "./petAnswers";
 import PROMPT from "./aiPrompt.json";
@@ -55,7 +55,7 @@ export function wakeServer() {
 /* The server writes the answer from the passages; it arrives piece by piece. A Space that is waking up
    answers 502/503 (or not at all), so for a Space this keeps trying for a while and says so
    (onStatus("waking")). Anywhere else, or offline, a failure shows the checked answer straight away. */
-async function askServer(messages, pet, used, { signal, onStatus, onText }) {
+async function askServer(messages, pet, used, { signal, onStatus, onText, noDecline = false }) {
   const { data } = await supabase.auth.getSession();
   const token = data.session?.access_token;
   if (!token) throw new Error("signed out");
@@ -64,7 +64,8 @@ async function askServer(messages, pet, used, { signal, onStatus, onText }) {
   const stop = () => ctrl.abort();
   signal?.addEventListener("abort", stop);
   const timer = setTimeout(stop, SERVER_TIMEOUT);
-  const body = JSON.stringify({ messages: conversation(messages, MODEL_HISTORY), pet: petContext(pet), sources: sourcesFor(used), stream: true });
+  const body = JSON.stringify({ messages: conversation(messages, MODEL_HISTORY), pet: petContext(pet), sources: sourcesFor(used), stream: true,
+    ...(noDecline ? { no_decline: true } : {}) });
   try {
     for (;;) {
       const res = await fetch(ASSISTANT_URL, {
@@ -98,6 +99,11 @@ async function askServer(messages, pet, used, { signal, onStatus, onText }) {
   }
 }
 const SERVER_TIMEOUT = 300000;   // Vercel's limit; a sleeping Space can also take a minute or two to wake
+
+/* The model's own "I couldn't find this in FurFriends' checked sources ..." reply, and a draft that is still
+   becoming it ("I", "I couldn't ..."), which isn't shown. */
+const declines = (reply) => reply.trim().startsWith(PROMPT.notFound.slice(0, 40));
+const declineDraft = (text) => { const t = text.trim(); return PROMPT.notFound.startsWith(t) || declines(t); };
 
 /* ------------------------------------------------------------------ on-device knowledge search */
 let indexPromise = null;
@@ -151,22 +157,31 @@ async function askKnowledge({ messages, pet, signal, onStatus, onText }) {
   if (!evidence.length) return checked;
   // FurFriends' trained model writes the answer from the evidence: on the server, or on this device if the
   // owner turned that on.
-  const write = ASSISTANT_URL ? () => askServer(messages, pet, evidence, { signal, onStatus, onText })
+  // The model's "couldn't find" isn't shown while it's written: on the server it may be asked again (below).
+  const draft = onText && ((t) => { if (!declineDraft(t)) onText(t); });
+  const write = ASSISTANT_URL ? (more = {}) => askServer(messages, pet, evidence, { signal, onStatus, onText: draft, ...more })
     : (await chatReady()) ? () => generate(chatMessages(messages, pet, evidence, MODEL_HISTORY, knowsProfiles(CHAT_VERSION)), { signal, onStatus, onText }).then((reply) => ({ reply, model: CHAT_VERSION }))
       : null;
   if (write) {
     try {
-      const written = await write();
+      let written = await write(), forced = false;
+      // rag-v6 often said "couldn't find" although a first-aid guide or a close match was among its passages.
+      // Then it's asked once more with the answer not allowed to start with "I", "Yes" or "No" (api/ask.py), and
+      // that answer is kept only if it passes the check below and forcedAnswerOk (evidence.js).
+      if (ASSISTANT_URL && declines(stripPetNotes(written.reply)) && strongEvidence(evidence)) {
+        written = await write({ noDecline: true });
+        forced = true;
+      }
       // Notes about the pet the model wrote are swapped for the rule's own below, and aren't part of the check.
       const reply = stripPetNotes(written.reply), model = written.model;
       // The model says so when the passages don't answer the question; the search's own reply is then more useful.
-      if (!reply.startsWith(PROMPT.notFound.slice(0, 40))) {
+      if (!declines(reply)) {
         // The answer must lean on its passages and name no law, organisation or number they don't. Only the
         // passages it actually uses are credited (CC BY-SA asks for credit).
         // (The pet details as this model was given them: the whole profile from v6 on, see knowsProfiles.)
         const context = [describePet(knowsProfiles(model) ? ctx : basicPet(ctx)), ...conversation(messages).filter((m) => m.role === "user").map((m) => m.content)].join("\n");
         const review = reviewAnswer(reply, evidence, { context });
-        if (review.ok) {
+        if (review.ok && (!forced || forcedAnswerOk(reply, review, evidence))) {
           const sources = review.used.map(pickSource);
           // The same vet advice as the checked answers get, when the question is about a symptom or something
           // the pet ate and the answer doesn't already say to see a vet soon.
