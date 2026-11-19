@@ -3,7 +3,7 @@
 The live Supabase database, as built by `supabase/migrations/`. Checked against the live project on
 2026-10-20: all 12 tables then existed, each account sees only its own rows, and visitors who aren't logged
 in see nothing. `ai_usage` (the AI's CPU-time counter) was added on 2026-10-28, and `clinic_search_cache` (saved clinic
-searches) plus `profiles.address` on 2026-10-29, making 14 tables. Use this to check the ERD in the thesis manuscript. Every table, key and relationship
+searches) plus `profiles.address` on 2026-10-29, and `weight_log` (each pet's weight history) on 2026-11-12, making 15 tables. Use this to check the ERD in the thesis manuscript. Every table, key and relationship
 below should appear there.
 
 ```mermaid
@@ -17,6 +17,7 @@ erDiagram
     PETS ||--o{ CARE_TASKS : "has"
     FEEDING_SCHEDULES ||--o{ FEEDING_LOG : "ticked as fed"
     PETS ||--o{ FEEDING_LOG : "has"
+    PETS ||--o{ WEIGHT_LOG : "weighed"
     AUTH_USERS ||--o{ ASSISTANT_FEEDBACK : "rates"
     PETS |o--o{ ASSISTANT_FEEDBACK : "asked about"
     AUTH_USERS ||--o{ PUSH_SUBSCRIPTIONS : "has devices"
@@ -111,6 +112,13 @@ erDiagram
         text notes
         timestamptz created_at
     }
+    WEIGHT_LOG {
+        uuid id PK
+        uuid pet_id FK
+        date weighed_on "one per pet per day (UK with pet_id)"
+        numeric weight_kg
+        timestamptz created_at
+    }
     ASSISTANT_FEEDBACK {
         uuid id PK
         uuid user_id FK
@@ -181,6 +189,7 @@ erDiagram
 | `feeding_schedules` | a meal time with food and amount | `id` | pet |
 | `feeding_log` | a meal ticked as fed on one day | `feeding_id` + `fed_on` | feeding schedule (and pet) |
 | `care_tasks` | a grooming, deworming or vaccination reminder, or a vet appointment | `id` | pet |
+| `weight_log` | a pet's weight on one day: its weight history (a trigger saves each new weight; owners can add earlier ones) | `id` | pet |
 | `assistant_feedback` | a 👍/👎 rating of one assistant answer | `id` | user (and optionally pet) |
 | `push_subscriptions` | a phone or browser that allowed notifications | `id` | user |
 | `push_log` | a reminder already pushed, so it isn't sent twice | `user_id` + `key` | user |

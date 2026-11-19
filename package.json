@@ -17,9 +17,14 @@
     "check-secrets:all": "node scripts/check-secrets.mjs --all",
     "check-secrets:install": "node scripts/check-secrets.mjs --install-hook",
     "test": "vitest run",
+    "test:report": "node scripts/test-report.mjs",
+    "symptom-review": "vite-node scripts/symptom-review.mjs",
+    "training-pets": "vite-node scripts/training-pets.mjs",
+    "training-pets:setup": "vite-node scripts/training-pets.mjs setup",
     "eval:retrieval": "vite-node scripts/eval-retrieval.mjs",
     "eval:conversation": "vite-node scripts/eval-conversation.mjs",
     "eval:sets": "vite-node scripts/eval-sets.mjs",
+    "eval:pets": "vite-node scripts/eval-pets.mjs",
     "probe": "vite-node scripts/probe-ask.mjs"
   },
   "dependencies": {

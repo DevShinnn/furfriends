@@ -59,7 +59,7 @@ export function chatReply(question) {
 }
 
 /* Questions about symptoms always end with vet advice, even when the matched answer has none. */
-const SYMPTOM = /\b(not eat|won'?t eat|stopped eating|hasn'?t eaten|isn'?t eating|vomit|throw(ing)? up|diarrh|blood|letharg|weak|limp|cough|sneez|wheez|discharge|swollen|lump|pain|hurt|fever|seiz|not drinking|peeing a lot|drinking a lot)/i;
+export const SYMPTOM = /\b(not eat|won'?t eat|stopped eating|hasn'?t eaten|isn'?t eating|vomit|throw(ing)? up|diarrh|blood|letharg|weak|limp|cough|sneez|wheez|discharge|swollen|lump|pain|hurt|fever|seiz|not drinking|peeing a lot|drinking a lot)/i;
 export const VET_NOTE = "If this has lasted more than a day, keeps coming back, or your pet seems unwell, see your vet. Go now if your pet is very weak, can't keep water down, or has trouble breathing.";
 /* Questions about something a pet ate or touched get poison advice, even when the matched answer has none. */
 const SWALLOWED = /\b(ate|eaten|eats|swallow(ed)?|licked|chewed|drank|got into|ingest(ed)?|bit a)\b/i;

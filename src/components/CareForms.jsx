@@ -120,13 +120,13 @@ function TaskForm({ petId, task, kind }) {
 }
 
 /* ---------------------------------------------------------------- vet appointment */
-export function AppointmentForm({ petId, appt }) {
+export function AppointmentForm({ petId, appt, title = "" }) {   // title: a reason to start with ("Annual checkup")
   const { pets, upsertItem, getPet } = useStore();
   const { closeModal, toast } = useUI();
   const [error, setError] = useState("");
   const [v, setV] = useState(appt
     ? { pet: petId, title: appt.title, nextDue: appt.nextDue, dueTime: appt.dueTime || "", notes: appt.notes || "" }
-    : { pet: petId || pets[0]?.id, title: "", nextDue: addDays(1), dueTime: "09:00", notes: "" });
+    : { pet: petId || pets[0]?.id, title, nextDue: addDays(1), dueTime: "09:00", notes: "" });
   const set = (k) => (e) => setV({ ...v, [k]: e.target.value });
 
   function submit() {

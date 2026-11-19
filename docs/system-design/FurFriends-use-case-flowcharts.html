@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>FurFriends use case flowcharts</title>
+<style>
+  @page { size: A4 portrait; margin: 12mm 12mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 10.5pt/1.45 "Segoe UI", Arial, sans-serif; color: #1b1f1d; }
+  .page { page-break-after: always; break-after: page; width: 186mm; height: 271mm; overflow: hidden; display: flex; flex-direction: column; }
+  .page:last-of-type { page-break-after: auto; break-after: auto; }
+  .fig { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
+  .caption { text-align: center; margin: 4mm 0 1mm; font-size: 11pt; }
+  .src { text-align: center; margin: 0; font-size: 8pt; color: #6b726e; }
+  h1 { color: #123d33; font-size: 20pt; margin: 0 0 2mm; border-bottom: 3px solid #ffc94d; padding-bottom: 2mm; }
+  h2 { color: #123d33; font-size: 13pt; margin: 4mm 0 2mm; }
+  .cover p { margin: 2mm 0; }
+  .key td { vertical-align: middle; }
+  .key td.sym { width: 34mm; height: 13mm; padding: 0.5mm; text-align: center; }
+  .key svg { display: block; margin: 0 auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 9pt; line-height: 1.3; }
+  td, th { border: 1px solid #cfd6d2; padding: 0.9mm 2.4mm; text-align: left; vertical-align: top; }
+  th { background: #e3f1ec; color: #123d33; }
+  .cover .fig { display: none; }
+</style></head><body>
+<section class="page cover">
+  <h1>FurFriends: use case flowcharts</h1>
+  <p>Figures 2.9 to 2.25 show, for each use case, the steps the FurFriends app takes, the checks it makes and the
+  messages the owner sees. Each chart follows the app's code; the files are listed under each figure.</p>
+  <h2>Symbols</h2>
+  <table class="key">
+    <tr><td class="sym"><pre class="mermaid">flowchart LR
+  S(["Start"]):::term
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></td><td>Terminator: where the flow starts or ends</td><td class="sym"><pre class="mermaid">flowchart LR
+  P["Load the owner's data"]
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></td><td>Process: a step the app or the server does</td></tr>
+    <tr><td class="sym"><pre class="mermaid">flowchart LR
+  D{"Valid?"}
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></td><td>Decision: one arrow per answer (Yes / No, or the choices)</td><td class="sym"><pre class="mermaid">flowchart LR
+  I[/"Enter email"/]:::io
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></td><td>Input / output: what the owner enters, taps or is shown</td></tr>
+    <tr><td class="sym"><pre class="mermaid">flowchart LR
+  E["Please enter your name."]:::err
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></td><td>Error message: shown when a check fails; the arrow returns to the step to fix</td><td class="sym"><pre class="mermaid">flowchart LR
+  C((A)):::conn
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></td><td>Connector: the flow continues on another page at the circle with the same letter</td></tr>
+  </table>
+  <p>Arrows show the order of steps. A decision has one arrow per answer. Lettered circles join charts that continue on
+  another page: <b>A</b> links the two parts of UC7 and of UC10, <b>B</b> links a repeated clinic search
+  (Figure 2.18) to the clinic list (Figure 2.19), and <b>C</b> links UC7 to UC8.
+  Messages in quotes are shown to the owner word for word; <i>(name)</i> stands for the pet's or owner's name.</p>
+  <h2>Figures</h2>
+  <table><tr><th>Figure</th><th>Use case</th></tr>
+  <tr><td>2.9</td><td>UC1 Register / Login, Part a: Log in, Demo Account, and Log Out</td></tr>
+  <tr><td>2.10</td><td>UC1 Register / Login, Part b: Create an Account</td></tr>
+  <tr><td>2.11</td><td>UC2 Manage Pet Profile, Part a: Add or Edit a Pet</td></tr>
+  <tr><td>2.12</td><td>UC2 Manage Pet Profile, Part b: Delete a Pet or Add a Health Record</td></tr>
+  <tr><td>2.13</td><td>UC3 Set Care Reminders</td></tr>
+  <tr><td>2.14</td><td>UC4 Receive Notifications, Part a: While the App Is Open</td></tr>
+  <tr><td>2.15</td><td>UC4 Receive Notifications, Part b: When the App Is Closed</td></tr>
+  <tr><td>2.16</td><td>UC5 View Breed Care Tips</td></tr>
+  <tr><td>2.17</td><td>UC6 Open Emergency Guide</td></tr>
+  <tr><td>2.18</td><td>UC7 Locate Veterinary Clinic, Part a: Getting the Owner's Location</td></tr>
+  <tr><td>2.19</td><td>UC7 Locate Veterinary Clinic, Part b: Searching and Showing Clinics</td></tr>
+  <tr><td>2.20</td><td>UC8 Call / Navigate to Clinic</td></tr>
+  <tr><td>2.21</td><td>UC9 Manage Account Settings, Part a: Personal Information</td></tr>
+  <tr><td>2.22</td><td>UC9 Manage Account Settings, Part b: Change Password</td></tr>
+  <tr><td>2.23</td><td>UC9 Manage Account Settings, Part c: Reminders and Log Out</td></tr>
+  <tr><td>2.24</td><td>UC10 Ask FurFriends, Part a: Safety Rules Before the AI</td></tr>
+  <tr><td>2.25</td><td>UC10 Ask FurFriends, Part b: Writing the Answer</td></tr>
+  </table>
+</section>
+
+<section class="page">
+  <div class="fig"><pre class="mermaid">flowchart TD
+  S(["Start"]):::term --&gt; O["Open FurFriends"]
+  O --&gt; L{"Already logged in?"}
+  L --&gt;|Yes| D
+  L --&gt;|No| P["Show the Log in screen"]
+  P --&gt; C{"How does the owner&lt;br/&gt;log in?"}
+  C --&gt;|Email and password| I[/"Enter email and password,&lt;br/&gt;tap Log in"/]:::io
+  C --&gt;|Demo account| DM[/"Tap Log in with demo account,&lt;br/&gt;or pick one of the 4 demo accounts"/]:::io
+  I --&gt; E{"Both filled in?"}
+  E --&gt;|No| E1["Please enter your email&lt;br/&gt;and password."]:::err
+  E1 --&gt; I
+  E --&gt;|Yes| A["Check the email and password&lt;br/&gt;with Supabase Auth"]
+  DM --&gt; A
+  A --&gt; V{"Accepted?"}
+  V --&gt;|No| V1["Show why: Incorrect email or password,&lt;br/&gt;Please confirm your email first, or&lt;br/&gt;The demo account isn't available"]:::err
+  V1 --&gt; P
+  V --&gt;|Yes| F["Load the owner's profile, pets, records,&lt;br/&gt;schedules and documents"]
+  F --&gt; FL{"Loaded?"}
+  FL --&gt;|No| F1["Log out and show:&lt;br/&gt;Couldn't load your data"]:::err
+  F1 --&gt; P
+  FL --&gt;|Yes| D["Show the Dashboard with&lt;br/&gt;Welcome back! or Welcome!"]
+  D --&gt; U["Owner uses the app"]
+  U --&gt; LO[/"Tap Log out&lt;br/&gt;(sidebar or Profile)"/]:::io
+  LO --&gt; CL["End the Supabase session; clear the&lt;br/&gt;AI chat and the data on screen"]
+  CL --&gt; M["Show: You've been logged out"]
+  M --&gt; R["Return to the Log in screen"]
+  R --&gt; X(["End"]):::term
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></div>
+  <p class="caption"><b>Figure 2.9</b> Flowchart: UC1 Register / Login, Part a: Log in, Demo Account, and Log Out</p>
+  <p class="src">Source: src/pages/Auth.jsx, src/components/DemoAccounts.jsx, src/store/StoreContext.jsx (login, logout, fetchAll)</p>
+</section>
+
+<section class="page">
+  <div class="fig"><pre class="mermaid">flowchart TD
+  S(["Start"]):::term --&gt; P["On the Log in screen,&lt;br/&gt;tap Create an account"]
+  P --&gt; R[/"Enter full name, email, password&lt;br/&gt;and confirm password; tap Create account"/]:::io
+  R --&gt; CK["Check, in order: name filled in; valid email;&lt;br/&gt;password at least 8 characters; passwords match"]
+  CK --&gt; V{"All checks pass?"}
+  V --&gt;|No| VE["Show the first problem: Please enter your name. /&lt;br/&gt;Please enter a valid email address. / Password must&lt;br/&gt;be at least 8 characters. / Passwords don't match."]:::err
+  VE --&gt; R
+  V --&gt;|Yes| SU["Create the account in Supabase Auth;&lt;br/&gt;a profile row is made with the name"]
+  SU --&gt; OK{"Created?"}
+  OK --&gt;|No| SE["Show why: An account with this email&lt;br/&gt;already exists, or Too many emails sent"]:::err
+  SE --&gt; R
+  OK --&gt;|Yes| CF{"Email confirmation&lt;br/&gt;required?"}
+  CF --&gt;|Yes| CE["Show Check your email: a confirmation&lt;br/&gt;link was sent; Go to log in"]
+  CE --&gt; X
+  CF --&gt;|No| LD["Load the new owner's data"]
+  LD --&gt; W["Show the Dashboard: Account created —&lt;br/&gt;welcome to FurFriends!"]
+  W --&gt; X(["End"]):::term
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></div>
+  <p class="caption"><b>Figure 2.10</b> Flowchart: UC1 Register / Login, Part b: Create an Account</p>
+  <p class="src">Source: src/pages/Auth.jsx (Register), src/store/StoreContext.jsx (register), supabase/migrations/20261017000000_init.sql (handle_new_user)</p>
+</section>
+
+<section class="page">
+  <div class="fig"><pre class="mermaid">flowchart TD
+  S(["Start"]):::term --&gt; T{"Add a new pet&lt;br/&gt;or edit one?"}
+  T --&gt;|Add| A["Tap Add pet: open Add a new pet&lt;br/&gt;(Cat and Female by default)"]
+  T --&gt;|Edit| B["Open the pet and tap Edit:&lt;br/&gt;the form shows its details"]
+  A --&gt; IN
+  B --&gt; IN
+  IN[/"Enter photo (optional), name, species, breed,&lt;br/&gt;age in years and months, weight and gender"/]:::io
+  IN --&gt; PH{"Photo chosen?"}
+  PH --&gt;|Yes| PR{"Readable image?"}
+  PR --&gt;|No| PE["That file couldn't be&lt;br/&gt;read as an image."]:::err
+  PE --&gt; IN
+  PR --&gt;|Yes| RS["Shrink the photo&lt;br/&gt;to 900 px JPEG"]
+  RS --&gt; SV
+  PH --&gt;|No| SV[/"Tap Create profile&lt;br/&gt;or Save changes"/]:::io
+  SV --&gt; CK["Check, in order: name filled in; age not negative&lt;br/&gt;and months 0 to 11; weight empty or more than 0"]
+  CK --&gt; V{"All checks pass?"}
+  V --&gt;|No| VE["Show the first problem: Please give your pet a name. /&lt;br/&gt;Age months must be between 0 and 11. /&lt;br/&gt;Weight must be greater than 0."]:::err
+  VE --&gt; IN
+  V --&gt;|Yes| MD{"Adding or editing?"}
+  MD --&gt;|Adding| AD["Show the new pet right away and&lt;br/&gt;open its profile: (name) added"]
+  MD --&gt;|Editing| ED["Update the profile on screen:&lt;br/&gt;(name)'s profile updated"]
+  AD --&gt; DB
+  ED --&gt; DB
+  DB["Save in Supabase in the background:&lt;br/&gt;photo to storage, then the pets table"]
+  DB --&gt; OK{"Saved?"}
+  OK --&gt;|No| ER["Couldn't save to the server: reload&lt;br/&gt;from the server, undoing the change"]:::err
+  ER --&gt; X
+  OK --&gt;|Yes| X(["End"]):::term
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></div>
+  <p class="caption"><b>Figure 2.11</b> Flowchart: UC2 Manage Pet Profile, Part a: Add or Edit a Pet</p>
+  <p class="src">Source: src/components/Forms.jsx (PetForm), src/pages/Pets.jsx, src/pages/PetDetail.jsx, src/store/StoreContext.jsx (addPet, updatePet)</p>
+</section>
+
+<section class="page">
+  <div class="fig"><pre class="mermaid">flowchart TD
+  S(["Start"]):::term --&gt; P["Open the pet's profile"]
+  P --&gt; C{"What does the&lt;br/&gt;owner do?"}
+  C --&gt;|Delete the pet| D1[/"Tap Delete"/]:::io
+  D1 --&gt; CF["Ask: Delete (name)? This permanently removes&lt;br/&gt;the profile with its medical records,&lt;br/&gt;vaccinations and documents"]
+  CF --&gt; CO{"Confirmed?"}
+  CO --&gt;|Cancel| X
+  CO --&gt;|Delete profile| RM["Remove the pet from the screen:&lt;br/&gt;(name)'s profile deleted"]
+  RM --&gt; DD["Delete the pet in Supabase; its records,&lt;br/&gt;schedules and files go with it"]
+  DD --&gt; OK
+  C --&gt;|Add a health record| TB{"Which tab?"}
+  TB --&gt;|Medical history| M[/"Date, type, title or diagnosis,&lt;br/&gt;vet or clinic, notes"/]:::io
+  M --&gt; MV{"Date and title&lt;br/&gt;filled in?"}
+  MV --&gt;|No| ME["Date and title&lt;br/&gt;are required."]:::err
+  ME --&gt; M
+  MV --&gt;|Yes| SAVE
+  TB --&gt;|Vaccinations| V[/"Vaccine, date given, next due,&lt;br/&gt;clinic, lot number"/]:::io
+  V --&gt; VV{"Vaccine and date given filled&lt;br/&gt;in; next due after it?"}
+  VV --&gt;|No| VE["Vaccine name and date given are&lt;br/&gt;required, or Next due date must&lt;br/&gt;be after the date given."]:::err
+  VE --&gt; V
+  VV --&gt;|Yes| SAVE
+  TB --&gt;|Documents| F[/"Photo, scan or PDF (up to 10 MB),&lt;br/&gt;title, type, date, notes"/]:::io
+  F --&gt; FV{"Image or PDF chosen,&lt;br/&gt;and a title?"}
+  FV --&gt;|No| FE["Please choose a photo, a scan or a&lt;br/&gt;PDF; That PDF is over 10 MB; or&lt;br/&gt;Please give the document a title."]:::err
+  FE --&gt; F
+  FV --&gt;|Yes| SAVE
+  SAVE["Show the record on its tab&lt;br/&gt;with a confirmation message"]
+  SAVE --&gt; SDB["Save in Supabase in the background&lt;br/&gt;(a document's file goes to storage first)"]
+  SDB --&gt; OK{"Saved?"}
+  OK --&gt;|No| ER["Couldn't save to the server: reload&lt;br/&gt;from the server, undoing the change"]:::err
+  ER --&gt; X
+  OK --&gt;|Yes| X(["End"]):::term
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></div>
+  <p class="caption"><b>Figure 2.12</b> Flowchart: UC2 Manage Pet Profile, Part b: Delete a Pet or Add a Health Record</p>
+  <p class="src">Source: src/components/Forms.jsx (useDeletePet, MedForm, VaxForm, DocForm), src/pages/PetDetail.jsx, src/store/StoreContext.jsx (deletePet, upsertItem)</p>
+</section>
+
+<section class="page">
+  <div class="fig"><pre class="mermaid">flowchart TD
+  S(["Start"]):::term --&gt; P["Open the pet's Feeding &amp; care tab,&lt;br/&gt;then Manage"]
+  P --&gt; K{"What kind of&lt;br/&gt;reminder?"}
+  K --&gt;|Meal| FM[/"Time, food, amount,&lt;br/&gt;which days, notes"/]:::io
+  FM --&gt; FV{"Time and food filled in,&lt;br/&gt;and at least one day?"}
+  FV --&gt;|No| FE["Pick a feeding time, Add the food,&lt;br/&gt;or Choose at least one day"]:::err
+  FE --&gt; FM
+  K --&gt;|Grooming, deworming&lt;br/&gt;or vaccine task| TM[/"Type, name, due date,&lt;br/&gt;how often, notes"/]:::io
+  TM --&gt; TV{"Name and due date&lt;br/&gt;filled in?"}
+  TV --&gt;|No| TE["Give this task a name, or&lt;br/&gt;Choose when it's due"]:::err
+  TE --&gt; TM
+  K --&gt;|Vet appointment| AM[/"What it's for, date, time,&lt;br/&gt;clinic and notes"/]:::io
+  AM --&gt; AV{"Reason and date&lt;br/&gt;filled in?"}
+  AV --&gt;|No| AE["What's the visit for? or&lt;br/&gt;Choose the appointment date"]:::err
+  AE --&gt; AM
+  K --&gt;|Vaccine booster| VX["Add a vaccination with a Next due date&lt;br/&gt;(Figure 2.12); it shows as a reminder"]
+  FV --&gt;|Yes| SH
+  TV --&gt;|Yes| SH
+  AV --&gt;|Yes| SH
+  SH["Show the reminder right away in Upcoming,&lt;br/&gt;Chart and Manage, with a confirmation"]
+  SH --&gt; DB["Save in Supabase: meals in feeding_schedules,&lt;br/&gt;tasks and visits in care_tasks"]
+  DB --&gt; OK{"Saved?"}
+  OK --&gt;|No| ER["Couldn't save to the server: reload&lt;br/&gt;from the server, undoing the change"]:::err
+  ER --&gt; X
+  OK --&gt;|Yes| X
+  VX --&gt; X(["End"]):::term
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></div>
+  <p class="caption"><b>Figure 2.13</b> Flowchart: UC3 Set Care Reminders</p>
+  <p class="src">Source: src/pages/Care.jsx (PetCarePanel, PetSchedule), src/components/CareForms.jsx (FeedingForm, TaskForm, AppointmentForm), src/lib/care.js</p>
+</section>
+
+<section class="page">
+  <div class="fig"><pre class="mermaid">flowchart TD
+  S(["Start: app open&lt;br/&gt;and logged in"]):::term --&gt; ON{"Reminders switched&lt;br/&gt;on in Profile?"}
+  ON --&gt;|No| OFF["No reminders; the bell says&lt;br/&gt;Reminders are turned off"]
+  OFF --&gt; X
+  ON --&gt;|Yes| T["Check the pets' meals, tasks, visits and&lt;br/&gt;vaccine due dates on the device"]
+  T --&gt; RU["Due: a meal within 15 minutes, a task due today&lt;br/&gt;or overdue, a vet visit today or tomorrow"]
+  RU --&gt; DUE{"Anything due?"}
+  DUE --&gt;|No| W["Wait 60 seconds"]
+  W --&gt; T
+  DUE --&gt;|Yes| BELL["Show the number on the bell"]
+  BELL --&gt; NEW{"Not announced yet, and&lt;br/&gt;app not just opened?"}
+  NEW --&gt;|No| W
+  NEW --&gt;|Yes| PERM{"Notifications allowed&lt;br/&gt;on this device?"}
+  PERM --&gt;|Yes| SYS["Show a system notification&lt;br/&gt;(up to 3 at a time)"]
+  PERM --&gt;|No| TOAST["Show an in-app message"]
+  SYS --&gt; TAP
+  TOAST --&gt; TAP
+  TAP{"Owner taps the notification&lt;br/&gt;or opens the bell?"}
+  TAP --&gt;|No| W
+  TAP --&gt;|Yes| OPEN["Open the pet's care or vaccines tab,&lt;br/&gt;or Appointments"]
+  OPEN --&gt; ACT[/"Tap Mark fed or Done"/]:::io
+  ACT --&gt; X(["End"]):::term
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></div>
+  <p class="caption"><b>Figure 2.14</b> Flowchart: UC4 Receive Notifications, Part a: While the App Is Open</p>
+  <p class="src">Source: src/components/Reminders.jsx (useReminders, ReminderWatcher, BellButton), src/lib/reminders.js (dueReminders, showSystemNotification)</p>
+</section>
+
+<section class="page">
+  <div class="fig"><pre class="mermaid">flowchart TD
+  S(["Start"]):::term --&gt; AL["Owner allows notifications&lt;br/&gt;in Profile (Figure 2.23)"]
+  AL --&gt; PS{"Browser supports&lt;br/&gt;web push?"}
+  PS --&gt;|No| NO["Alerts arrive only while the app&lt;br/&gt;is open (Figure 2.14)"]
+  NO --&gt; X
+  PS --&gt;|Yes| SUB["Subscribe this device and save it&lt;br/&gt;in push_subscriptions"]
+  SUB --&gt; CRON["Every 5 minutes, the Supabase scheduler&lt;br/&gt;calls the send-reminders function"]
+  CRON --&gt; AU{"Correct secret?"}
+  AU --&gt;|No| AE["Refuse the call&lt;br/&gt;(401 Unauthorized)"]:::err
+  AE --&gt; X
+  AU --&gt;|Yes| LOAD["Load owners with reminders on:&lt;br/&gt;their devices, pets, meals, tasks and vaccines"]
+  LOAD --&gt; RU["Due in the last 10 minutes (owner's time zone): a meal&lt;br/&gt;at its time; a task at 8 AM or its time; a vet visit&lt;br/&gt;2 h before and at 6 PM the day before; overdue at 8 AM"]
+  RU --&gt; DUE{"Anything due?"}
+  DUE --&gt;|No| NX["Wait for the next run"]
+  NX --&gt; CRON
+  DUE --&gt;|Yes| SENT{"Already sent?&lt;br/&gt;(push_log)"}
+  SENT --&gt;|Yes| NX
+  SENT --&gt;|No| PUSH["Send a web push to each&lt;br/&gt;of the owner's devices"]
+  PUSH --&gt; GONE{"Device no longer&lt;br/&gt;subscribed (404 or 410)?"}
+  GONE --&gt;|Yes| DEL["Delete that device's subscription"]
+  DEL --&gt; X
+  GONE --&gt;|No| SHOW["The phone shows the notification,&lt;br/&gt;even with FurFriends closed"]
+  SHOW --&gt; TAP{"Owner taps it?"}
+  TAP --&gt;|No| X
+  TAP --&gt;|Yes| WIN{"A FurFriends window&lt;br/&gt;already open?"}
+  WIN --&gt;|Yes| NAV["Switch to it and go to&lt;br/&gt;the reminder's page"]
+  WIN --&gt;|No| OW["Open FurFriends at&lt;br/&gt;the reminder's page"]
+  NAV --&gt; X
+  OW --&gt; X(["End"]):::term
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></div>
+  <p class="caption"><b>Figure 2.15</b> Flowchart: UC4 Receive Notifications, Part b: When the App Is Closed</p>
+  <p class="src">Source: src/lib/push.js, public/sw-notify.js, supabase/functions/send-reminders/index.ts, supabase/migrations/20261019020000_push_notifications.sql</p>
+</section>
+
+<section class="page">
+  <div class="fig"><pre class="mermaid">flowchart TD
+  S(["Start"]):::term --&gt; E{"Where does the&lt;br/&gt;owner start?"}
+  E --&gt;|Breed guide menu| L["Open the breed list&lt;br/&gt;(29 dog and cat breeds, built into the app)"]
+  E --&gt;|Pet profile| M{"Pet's breed is&lt;br/&gt;in the guide?"}
+  M --&gt;|Yes| BG[/"Tap Breed guide on&lt;br/&gt;the Breed card"/]:::io
+  BG --&gt; DT
+  M --&gt;|No| L
+  L --&gt; F[/"Search by name, or pick All breeds,&lt;br/&gt;Dogs, Cats or My pets' breeds"/]:::io
+  F --&gt; MA{"Any breed matches?"}
+  MA --&gt;|No| NM["No breeds match. Mixed-breed dogs are under&lt;br/&gt;Aspin and mixed-breed cats under Puspin."]:::err
+  NM --&gt; F
+  MA --&gt;|Yes| C[/"Tap a breed card"/]:::io
+  C --&gt; DT["Open the breed page"]
+  DT --&gt; FD{"Breed found?"}
+  FD --&gt;|No| NF["Breed not found,&lt;br/&gt;with an All breeds button"]:::err
+  NF --&gt; L
+  FD --&gt;|Yes| SH["Show facts, care tips (feeding, exercise,&lt;br/&gt;grooming, behavior), trait meters,&lt;br/&gt;health watch-list and care tips"]
+  SH --&gt; YP{"Owner has a pet&lt;br/&gt;of this breed?"}
+  YP --&gt;|Yes| WC["Compare the pet's weight with the&lt;br/&gt;breed's typical range"]
+  WC --&gt; X
+  YP --&gt;|No| X(["End"]):::term
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></div>
+  <p class="caption"><b>Figure 2.16</b> Flowchart: UC5 View Breed Care Tips</p>
+  <p class="src">Source: src/pages/Breeds.jsx (Breeds, BreedDetail), src/lib/breeds.js, src/lib/breedCare.js, src/pages/PetDetail.jsx</p>
+</section>
+
+<section class="page">
+  <div class="fig"><pre class="mermaid">flowchart TD
+  S(["Start"]):::term --&gt; E{"How does the owner&lt;br/&gt;get there?"}
+  E --&gt;|Emergency menu| L["Open the emergency page: when to go to a vet now,&lt;br/&gt;Find a vet near me, each pet's card"]
+  E --&gt;|Ask FurFriends| AI["The question sounds like an emergency:&lt;br/&gt;show the red box with up to 3 guides"]
+  AI --&gt; G
+  L --&gt; NV{"Needs a vet&lt;br/&gt;right away?"}
+  NV --&gt;|Yes| CL["Tap Find a vet near me:&lt;br/&gt;Locate Veterinary Clinic (Figure 2.18)"]
+  CL --&gt; X
+  NV --&gt;|No| Q[/"Search, e.g. poison, bleeding, heat,&lt;br/&gt;or pick a type"/]:::io
+  Q --&gt; MA{"Any guide matches?"}
+  MA --&gt;|No| NM["No guide matches.&lt;br/&gt;If you're unsure, call your vet."]:::err
+  NM --&gt; Q
+  MA --&gt;|Yes| T[/"Tap a guide"/]:::io
+  T --&gt; G["Open the guide (16 guides,&lt;br/&gt;built into the app, work offline)"]
+  G --&gt; FD{"Guide found?"}
+  FD --&gt;|No| NF["Guide not found, with an&lt;br/&gt;All emergency guides button"]:::err
+  NF --&gt; L
+  FD --&gt;|Yes| SHOW["Show the urgency, What to do now steps,&lt;br/&gt;Signs to look for and Don't list"]
+  SHOW --&gt; CD{"Heading to the vet?"}
+  CD --&gt;|Yes| CARD["Open the pet's emergency card: allergies,&lt;br/&gt;medicine, recent conditions, vaccines,&lt;br/&gt;owner's phone and usual vet"]
+  CARD --&gt; X
+  CD --&gt;|No| X(["End"]):::term
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></div>
+  <p class="caption"><b>Figure 2.17</b> Flowchart: UC6 Open Emergency Guide</p>
+  <p class="src">Source: src/pages/Emergency.jsx (Emergency, EmergencyGuide, EmergencyCard), src/lib/emergency.js, src/pages/Assistant.jsx</p>
+</section>
+
+<section class="page">
+  <div class="fig"><pre class="mermaid">flowchart TD
+  S(["Start"]):::term --&gt; O["Open Find a vet"]
+  O --&gt; RC{"Searched in the last&lt;br/&gt;10 minutes?"}
+  RC --&gt;|Yes| RS["Show that result again"]
+  RS --&gt; B((B)):::conn
+  RC --&gt;|No| G{"Location already&lt;br/&gt;allowed?"}
+  G --&gt;|Yes| GPS
+  G --&gt;|No| AD{"Address or city saved&lt;br/&gt;in Profile?"}
+  AD --&gt;|Yes| ADDR["Use the saved address"]
+  AD --&gt;|No| IDLE["Show Find clinics near you: share your&lt;br/&gt;location, or add your address in Profile"]
+  IDLE --&gt; BTN[/"Tap Use my location"/]:::io
+  BTN --&gt; GPS["Ask the browser for the location&lt;br/&gt;(the permission prompt shows the first time;&lt;br/&gt;15-second limit)"]
+  GPS --&gt; OK{"Location found?"}
+  OK --&gt;|Yes| A((A)):::conn
+  OK --&gt;|No| ERR["Show why: the browser can't share it,&lt;br/&gt;location is blocked, or GPS is off / timed out"]:::err
+  ERR --&gt; NX{"What does the&lt;br/&gt;owner do?"}
+  NX --&gt;|Try again| GPS
+  NX --&gt;|Use my address| ADDR
+  NX --&gt;|Add my address| PR["Enter the address in Profile&lt;br/&gt;(Figure 2.21)"]
+  PR --&gt; X(["End"]):::term
+  ADDR --&gt; A
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></div>
+  <p class="caption"><b>Figure 2.18</b> Flowchart: UC7 Locate Veterinary Clinic, Part a: Getting the Owner's Location</p>
+  <p class="src">Source: src/pages/Clinics.jsx, src/lib/clinics.js (locate, locationAllowed), src/pages/Profile.jsx (address)</p>
+</section>
+
+<section class="page">
+  <div class="fig"><pre class="mermaid">flowchart TD
+  A((A)):::conn --&gt; ON{"Online?"}
+  ON --&gt;|No| OFF["You're offline. Connect to the&lt;br/&gt;internet to find clinics."]:::err
+  OFF --&gt; X
+  ON --&gt;|Yes| CALL["Send the location or address&lt;br/&gt;to the find-clinics function"]
+  CALL --&gt; LG{"Logged in?"}
+  LG --&gt;|No| LE["Please log in to find clinics."]:::err
+  LE --&gt; X
+  LG --&gt;|Yes| HA{"Address sent&lt;br/&gt;instead of a location?"}
+  HA --&gt;|Yes| GEO["Find the address with TomTom&lt;br/&gt;(kept for 30 days)"]
+  GEO --&gt; GF{"Address found?"}
+  GF --&gt;|No| NF["We couldn't find that address. Try&lt;br/&gt;adding the barangay and city."]:::err
+  NF --&gt; X
+  GF --&gt;|Yes| CA
+  HA --&gt;|No| CA{"Same area searched in&lt;br/&gt;the last 7 days?"}
+  CA --&gt;|Yes| USE["Use the saved clinic list"]
+  CA --&gt;|No| TT["Ask TomTom for vets within 10 km&lt;br/&gt;(25 km if fewer than 5 are found)"]
+  TT --&gt; TA{"TomTom answers?"}
+  TA --&gt;|No| TE["The clinic search isn't answering&lt;br/&gt;right now. Try again in a minute."]:::err
+  TE --&gt; X
+  TA --&gt;|Yes| FIL["Remove non-clinics and duplicates;&lt;br/&gt;save the list for 7 days"]
+  FIL --&gt; USE
+  USE --&gt; DIST["Work out each clinic's distance&lt;br/&gt;and sort nearest first"]
+  B((B)):::conn --&gt; SHOW
+  DIST --&gt; ANY{"Any clinics?"}
+  ANY --&gt;|No| NONE["No clinics found within&lt;br/&gt;10 or 25 km"]
+  NONE --&gt; X(["End"]):::term
+  ANY --&gt;|Yes| SHOW["Show the map and numbered list with opening&lt;br/&gt;hours; filter All, Open now or 24 hours"]
+  SHOW --&gt; SEL[/"Tap a pin or a card"/]:::io
+  SEL --&gt; DET["Highlight the clinic and show its hours&lt;br/&gt;for the week (call or navigate: Figure 2.20)"]
+  DET --&gt; C((C)):::conn
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></div>
+  <p class="caption"><b>Figure 2.19</b> Flowchart: UC7 Locate Veterinary Clinic, Part b: Searching and Showing Clinics</p>
+  <p class="src">Source: src/lib/clinics.js (searchClinics), supabase/functions/find-clinics/index.ts and clinics.js, src/pages/Clinics.jsx (ClinicMap)</p>
+</section>
+
+<section class="page">
+  <div class="fig"><pre class="mermaid">flowchart TD
+  C((C)):::conn --&gt; SEL["Clinic selected in the list&lt;br/&gt;(Figure 2.19)"]
+  SEL --&gt; CH{"Call or get&lt;br/&gt;directions?"}
+  CH --&gt;|Directions| DR[/"Tap Directions"/]:::io
+  DR --&gt; SRC{"Search used the&lt;br/&gt;saved address?"}
+  SRC --&gt;|Yes| O1["Open Google Maps directions from&lt;br/&gt;the address to the clinic"]
+  SRC --&gt;|No| O2["Open Google Maps directions from&lt;br/&gt;the phone's location to the clinic"]
+  O1 --&gt; GM
+  O2 --&gt; GM["Google Maps opens in a new tab&lt;br/&gt;or in the Maps app"]
+  GM --&gt; X
+  CH --&gt;|Call| PH{"Clinic has a phone&lt;br/&gt;number listed?"}
+  PH --&gt;|No| NB["No Call button is shown;&lt;br/&gt;use Directions instead"]:::err
+  NB --&gt; DR
+  PH --&gt;|Yes| TEL[/"Tap Call (number)"/]:::io
+  TEL --&gt; DIAL["The phone's dialer opens&lt;br/&gt;with the clinic's number"]
+  DIAL --&gt; X(["End"]):::term
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></div>
+  <p class="caption"><b>Figure 2.20</b> Flowchart: UC8 Call / Navigate to Clinic</p>
+  <p class="src">Source: src/pages/Clinics.jsx (clinic card actions), src/lib/clinics.js (directionsUrl, telUrl)</p>
+</section>
+
+<section class="page">
+  <div class="fig"><pre class="mermaid">flowchart TD
+  S(["Start"]):::term --&gt; O["Open Profile"]
+  O --&gt; IN[/"Edit full name, email, and the optional&lt;br/&gt;phone, city and address (up to 200 characters)"/]:::io
+  IN --&gt; SV[/"Tap Save changes"/]:::io
+  SV --&gt; CK["Check, in order: name filled in; valid email;&lt;br/&gt;not a shared demo account changing its email"]
+  CK --&gt; V{"All checks pass?"}
+  V --&gt;|No| VE["Show the first problem: Name can't be empty. /&lt;br/&gt;Please enter a valid email address. /&lt;br/&gt;This shared account's email can't be changed."]:::err
+  VE --&gt; IN
+  V --&gt;|Yes| UP["Save the name, phone, city and&lt;br/&gt;address in the profiles table"]
+  UP --&gt; OK{"Saved?"}
+  OK --&gt;|No| ER["Show the server's message"]:::err
+  ER --&gt; IN
+  OK --&gt;|Yes| EC{"Email changed?"}
+  EC --&gt;|No| DONE["Show: Profile updated"]
+  EC --&gt;|Yes| AU["Ask Supabase Auth to&lt;br/&gt;change the email"]
+  AU --&gt; AOK{"Accepted?"}
+  AOK --&gt;|No| AER["Show the error"]:::err
+  AER --&gt; IN
+  AOK --&gt;|Yes| LINK["We sent a confirmation link to (email).&lt;br/&gt;Your email changes once you click it."]
+  DONE --&gt; X
+  LINK --&gt; X(["End"]):::term
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></div>
+  <p class="caption"><b>Figure 2.21</b> Flowchart: UC9 Manage Account Settings, Part a: Personal Information</p>
+  <p class="src">Source: src/pages/Profile.jsx, src/store/StoreContext.jsx (updateUser)</p>
+</section>
+
+<section class="page">
+  <div class="fig"><pre class="mermaid">flowchart TD
+  S(["Start"]):::term --&gt; O["Open Profile, Change password"]
+  O --&gt; IN[/"Enter current password, new password&lt;br/&gt;and confirm new password"/]:::io
+  IN --&gt; SV[/"Tap Update password"/]:::io
+  SV --&gt; SA{"A shared demo account?"}
+  SA --&gt;|Yes| SE["This shared account's password&lt;br/&gt;can't be changed."]:::err
+  SE --&gt; X
+  SA --&gt;|No| L{"New password at least 8&lt;br/&gt;characters, and matches?"}
+  L --&gt;|No| LE["New password must be at least&lt;br/&gt;8 characters, or New passwords&lt;br/&gt;don't match."]:::err
+  LE --&gt; IN
+  L --&gt;|Yes| CUR["Check the current password&lt;br/&gt;with Supabase Auth"]
+  CUR --&gt; CK{"Correct?"}
+  CK --&gt;|No| CE["Current password is incorrect."]:::err
+  CE --&gt; IN
+  CK --&gt;|Yes| UP["Set the new password"]
+  UP --&gt; UOK{"Accepted?"}
+  UOK --&gt;|No| UE["Show the server's message"]:::err
+  UE --&gt; IN
+  UOK --&gt;|Yes| DONE["Clear the fields and show Password updated;&lt;br/&gt;the owner stays logged in"]
+  DONE --&gt; X(["End"]):::term
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></div>
+  <p class="caption"><b>Figure 2.22</b> Flowchart: UC9 Manage Account Settings, Part b: Change Password</p>
+  <p class="src">Source: src/pages/Profile.jsx, src/store/StoreContext.jsx (changePassword)</p>
+</section>
+
+<section class="page">
+  <div class="fig"><pre class="mermaid">flowchart TD
+  S(["Start"]):::term --&gt; O["Open Profile"]
+  O --&gt; C{"What does the&lt;br/&gt;owner do?"}
+  C --&gt;|Reminders| SW[/"Tap the Reminders switch"/]:::io
+  SW --&gt; SV["Save the setting in profiles; show&lt;br/&gt;Reminders turned on or off"]
+  SV --&gt; ON{"Turned on?"}
+  ON --&gt;|No| DROP["Unsubscribe this device from push&lt;br/&gt;and remove it from the server"]
+  DROP --&gt; X
+  ON --&gt;|Yes| PERM{"Notification permission&lt;br/&gt;on this device?"}
+  PERM --&gt;|Allowed| SUB["Subscribe this device to push and save it:&lt;br/&gt;Alerts also arrive when FurFriends is closed"]
+  SUB --&gt; X
+  PERM --&gt;|Not asked yet| ASK[/"Tap Allow notifications"/]:::io
+  ASK --&gt; BR{"Owner allows it in&lt;br/&gt;the browser prompt?"}
+  BR --&gt;|Yes| SUB
+  BR --&gt;|No| BLK
+  PERM --&gt;|Blocked| BLK["Notifications are blocked for this site.&lt;br/&gt;Change the site's setting in the browser, then reload."]:::err
+  BLK --&gt; X
+  PERM --&gt;|Not supported| NS["This browser can't show notifications.&lt;br/&gt;On iPhone, add FurFriends to the Home Screen first."]:::err
+  NS --&gt; X
+  C --&gt;|Log out| LO[/"Tap Log out"/]:::io
+  LO --&gt; END1["End the session and clear the data on screen;&lt;br/&gt;show You've been logged out"]
+  END1 --&gt; LOGIN["Go to the Log in screen"]
+  LOGIN --&gt; X(["End"]):::term
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></div>
+  <p class="caption"><b>Figure 2.23</b> Flowchart: UC9 Manage Account Settings, Part c: Reminders and Log Out</p>
+  <p class="src">Source: src/pages/Profile.jsx (NotificationSettings), src/lib/push.js, src/store/StoreContext.jsx (setNotifications, logout)</p>
+</section>
+
+<section class="page">
+  <div class="fig"><pre class="mermaid">flowchart TD
+  S(["Start"]):::term --&gt; Q[/"Owner types a question,&lt;br/&gt;in English or Tagalog"/]:::io
+  Q --&gt; EM{"Sounds like an&lt;br/&gt;emergency?"}
+  EM --&gt;|Yes| RED["Show the red box with links to the&lt;br/&gt;first-aid guides (Figure 2.17)"]
+  RED --&gt; QT
+  EM --&gt;|No| QT["Join a follow-up with the earlier question;&lt;br/&gt;add English for Tagalog words"]
+  QT --&gt; CH{"Greeting, thanks, or&lt;br/&gt;What can you do?"}
+  CH --&gt;|Yes| IR["Reply with a short introduction"]
+  IR --&gt; X
+  CH --&gt;|No| DO{"Asks for a&lt;br/&gt;medicine dose?"}
+  DO --&gt;|Yes| DR["Reply that FurFriends doesn't give&lt;br/&gt;doses: ask your vet"]
+  DR --&gt; X
+  DO --&gt;|No| BR{"About the selected pet's&lt;br/&gt;breed weight or health?"}
+  BR --&gt;|Yes| BG["Reply from the breed guide"]
+  BG --&gt; X
+  BR --&gt;|No| MD{"Search model already&lt;br/&gt;on this device?"}
+  MD --&gt;|No| DL["Download it once, showing Getting&lt;br/&gt;the assistant ready on your device (%)"]
+  DL --&gt; SE
+  MD --&gt;|Yes| SE["Search the 610 checked passages on the device&lt;br/&gt;(meaning match plus keyword match)"]
+  SE --&gt; PL["Keep only passages about the question:&lt;br/&gt;emergency guide first when urgent; none for prices&lt;br/&gt;or other animals; laws only for legal questions;&lt;br/&gt;must cover the question's main words"]
+  PL --&gt; EV{"Any passage left?"}
+  EV --&gt;|Yes| A((A)):::conn
+  EV --&gt;|No| FB["Show the closest checked answer, or&lt;br/&gt;I don't have a checked answer for that"]
+  FB --&gt; EN["Add the cat appetite note, and go to a vet&lt;br/&gt;now when it is an emergency"]
+  EN --&gt; X(["End"]):::term
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></div>
+  <p class="caption"><b>Figure 2.24</b> Flowchart: UC10 Ask FurFriends, Part a: Safety Rules Before the AI</p>
+  <p class="src">Source: src/pages/Assistant.jsx, src/lib/assistant.js (askKnowledge), src/lib/knowledge.js (queryText, chatReply, safetyReply, search), src/lib/evidence.js (planAnswer), src/lib/emergency.js</p>
+</section>
+
+<section class="page">
+  <div class="fig"><pre class="mermaid">flowchart TD
+  A((A)):::conn --&gt; LG{"Logged in&lt;br/&gt;and online?"}
+  LG --&gt;|No| FB
+  LG --&gt;|Yes| SEND["Send the owner's messages, a short pet&lt;br/&gt;summary and up to 2 passages to /api/ask"]
+  SEND --&gt; SC["Server checks the login, the AI's monthly&lt;br/&gt;time limit and that passages were sent"]
+  SC --&gt; SV{"Checks pass?"}
+  SV --&gt;|No| FB
+  SV --&gt;|Yes| LD{"Model already&lt;br/&gt;loaded?"}
+  LD --&gt;|No| WK["Load furfriends-rag-v2 from Hugging Face&lt;br/&gt;(about 45 s; the app shows Waking up)"]
+  WK --&gt; GEN
+  LD --&gt;|Yes| GEN["Write the answer from the passages, stream it&lt;br/&gt;to the app and record the CPU time"]
+  GEN --&gt; NF{"Model says the passages&lt;br/&gt;don't cover it?"}
+  NF --&gt;|Yes| FB
+  NF --&gt;|No| RV["Check the answer: no doses; every law, organisation,&lt;br/&gt;number, link and medicine is in the passages;&lt;br/&gt;most of its words come from them"]
+  RV --&gt; CK{"Passes?"}
+  CK --&gt;|No| FB["Use the checked answer instead"]
+  CK --&gt;|Yes| CR["Credit only the passages it used;&lt;br/&gt;add vet advice for symptoms"]
+  CR --&gt; ADD
+  FB --&gt; ADD["Add the cat appetite note, and go to a vet&lt;br/&gt;now when it is an emergency"]
+  ADD --&gt; SHOW["Show the answer with its sources (and a note&lt;br/&gt;when only weaker passages matched)"]
+  SHOW --&gt; RT{"Owner rates it?"}
+  RT --&gt;|Thumbs up| SAVE
+  RT --&gt;|Thumbs down| RS[/"Pick a reason, e.g. Wrong&lt;br/&gt;or inaccurate, Unsafe advice"/]:::io
+  RS --&gt; SAVE["Save the rating"]
+  SAVE --&gt; X
+  RT --&gt;|No| X(["End"]):::term
+
+  classDef term fill:#123d33,stroke:#123d33,color:#ffffff
+  classDef io fill:#fff7dd,stroke:#b38600,color:#3d2e00
+  classDef err fill:#fdecea,stroke:#b3261e,color:#5c1410
+  classDef conn fill:#ffc94d,stroke:#8a6500,color:#3d2e00</pre></div>
+  <p class="caption"><b>Figure 2.25</b> Flowchart: UC10 Ask FurFriends, Part b: Writing the Answer</p>
+  <p class="src">Source: src/lib/assistant.js (askServer, askKnowledge), api/ask.py, src/lib/evidence.js (reviewAnswer, withEmergency), src/lib/knowledge.js (withAppetiteAdvice, withVetAdvice), src/pages/Assistant.jsx (rating)</p>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: false, securityLevel: "loose", theme: "base", fontFamily: "Segoe UI, Arial, sans-serif",
+    themeVariables: { primaryColor: "#e3f1ec", primaryBorderColor: "#1f6f5a", primaryTextColor: "#123d33", lineColor: "#5b625e", fontSize: "17px" },
+    flowchart: { htmlLabels: true, curve: "basis", nodeSpacing: 20, rankSpacing: 22, padding: 8, wrappingWidth: 480, useMaxWidth: false } });
+  // Each chart is scaled to fit its page (never enlarged past 1.25×); the key's symbols are drawn at 0.7×.
+  mermaid.run({ querySelector: ".mermaid", suppressErrors: true }).finally(() => {
+    for (const svg of document.querySelectorAll(".fig svg, .key svg")) {
+      const [, , w, h] = svg.getAttribute("viewBox").split(/[ ,]+/).map(Number);
+      const box = svg.closest(".fig");
+      const k = box ? Math.min(box.clientWidth / w, box.clientHeight / h, 1.25) : 0.7;
+      svg.style.maxWidth = "none";
+      svg.setAttribute("width", Math.floor(w * k));
+      svg.setAttribute("height", Math.floor(h * k));
+      svg.dataset.scale = k.toFixed(2);
+    }
+    document.body.dataset.done = "1";
+  });
+</script>
+</body></html>

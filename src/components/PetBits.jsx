@@ -2,7 +2,8 @@ import { useNavigate } from "react-router-dom";
 import Icon from "./Icon";
 import { useUI } from "./UIContext";
 import { PetForm, useDeletePet } from "./Forms";
-import { ageText, petVaxSummary, plural, isPdf, DOC_COLORS } from "../lib/utils";
+import { HealthBadge } from "./Health";
+import { ageText, plural, isPdf, DOC_COLORS } from "../lib/utils";
 
 export const PetThumb = ({ pet, size }) => (
   <div className={`pet-thumb ${pet.species === "Cat" ? "cat" : "dog"}`} style={size ? { width: size, height: size } : undefined}>
@@ -34,7 +35,6 @@ export function PetCard({ pet }) {
   const navigate = useNavigate();
   const { openModal } = useUI();
   const deletePet = useDeletePet();
-  const s = petVaxSummary(pet);
   const n = pet.documents.length;
   const open = () => navigate(`/app/pets/${pet.id}`);
   const stop = (fn) => (e) => { e.stopPropagation(); fn(); };
@@ -55,7 +55,7 @@ export function PetCard({ pet }) {
       <div className="body">
         <div><h3>{pet.name}</h3><div className="breed">{pet.breed || "Unknown breed"}</div></div>
         <div className="meta"><span>{ageText(pet)}</span><span>{pet.gender || "—"}</span><span>{pet.weight ? `${pet.weight} kg` : "—"}</span></div>
-        <div className="foot"><StatusPill s={s} /></div>
+        <div className="foot"><HealthBadge pet={pet} /></div>
       </div>
     </article>
   );

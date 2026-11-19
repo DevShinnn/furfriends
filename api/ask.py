@@ -1,12 +1,14 @@
 """The FurFriends AI on Vercel: POST /api/ask writes the answer from the app's checked passages with the team's
-own model (DevShin00/furfriends-rag-v2) and streams it back, so owners download nothing.
+own model (DevShin00/furfriends-rag-v6) and streams it back, so owners download nothing.
 
 The model is FURFRIENDS_AI_MODEL if that is set in Vercel (Project → Settings → Environment Variables, Production),
 otherwise the default below. It is read when an instance starts, so a change needs a redeploy; it must be a PUBLIC
 Hugging Face repo with config.json, tokenizer.json and onnx/model_q4.onnx (the function downloads without a token).
-v2 is the default: on 2026-10-30 furfriends-rag-v4 was not public (Hugging Face answered 401), so every answer
-failed, and in the release check its answers were rejected by the evidence check more often than v2's.
-To try v4 once it is public: set FURFRIENDS_AI_MODEL=DevShin00/furfriends-rag-v4 and redeploy.
+v6 (trained with pet profiles) is the default on branch ai-evidence-check since 2026-11-19, to try it on the preview.
+In the offline test it declined more answerable questions than v2 (the app then shows the checked answer), see
+ai-server/README.md. To go back to v2: set FURFRIENDS_AI_MODEL=DevShin00/furfriends-rag-v2 and redeploy.
+(On 2026-10-30 furfriends-rag-v4 was not public, Hugging Face answered 401, and every answer failed: check the repo
+is public before deploying a new default.)
 
   POST /api/ask
   Authorization: Bearer <Supabase access token>   (only logged-in FurFriends users get answers)
@@ -34,10 +36,13 @@ from pydantic import BaseModel
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "ai-server"))
 from onnx_chat import OnnxChat  # noqa: E402
-from prompting import build_messages  # noqa: E402
+from prompting import build_messages, knows_profiles  # noqa: E402
 
-MODEL = os.getenv("FURFRIENDS_AI_MODEL") or "DevShin00/furfriends-rag-v2"   # empty counts as unset
+MODEL = os.getenv("FURFRIENDS_AI_MODEL") or "DevShin00/furfriends-rag-v6"   # empty counts as unset
 VERSION = MODEL.split("/")[-1].removeprefix("furfriends-")          # saved with ratings, e.g. "rag-v2"
+# The pet's whole profile (life stage, diet, last checkup, health concerns) only for a model trained with it (v6 on);
+# earlier models get the pet details they were trained with. FURFRIENDS_PET_CONTEXT=full|basic overrides it.
+PET_FULL = (os.getenv("FURFRIENDS_PET_CONTEXT") or ("full" if knows_profiles(VERSION) else "basic")) == "full"
 LIMIT = float(os.getenv("AI_CPU_SECONDS_30D", str(3 * 3600)))      # 75% of the Hobby plan's 4 CPU-hours
 CHECK_USAGE = os.getenv("AI_USAGE_CHECK", "on") != "off"             # "off" only for testing on a laptop
 MAX_NEW_TOKENS = 260
@@ -108,7 +113,7 @@ def ask(body: AskBody, authorization: str | None = Header(default=None)):
     if not body.sources:
         raise HTTPException(400, "No checked sources were sent with the question.")
     msgs = build_messages([m.model_dump() for m in body.messages], body.pet,
-                          [s.model_dump() for s in body.sources[:3]] if body.sources else None)
+                          [s.model_dump() for s in body.sources[:3]] if body.sources else None, full_pet=PET_FULL)
 
     def answer():
         with _run_lock:
@@ -131,4 +136,4 @@ def ask(body: AskBody, authorization: str | None = Header(default=None)):
 
 @app.get("/api/ask")
 def health():
-    return {"ok": True, "model": VERSION, "loaded": _chat is not None}
+    return {"ok": True, "model": VERSION, "loaded": _chat is not None, "petContext": "full" if PET_FULL else "basic"}

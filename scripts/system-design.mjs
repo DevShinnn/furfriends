@@ -28,6 +28,7 @@ erDiagram
   PETS ||--o{ CARE_TASKS : "has"
   FEEDING_SCHEDULES ||--o{ FEEDING_LOG : "ticked as fed"
   PETS ||--o{ FEEDING_LOG : "has"
+  PETS ||--o{ WEIGHT_LOG : "weighed"
 
   AUTH_USERS {
     uuid id PK
@@ -82,6 +83,12 @@ erDiagram
     date next_due
     integer repeat_days
     boolean done
+  }
+  WEIGHT_LOG {
+    uuid id PK
+    uuid pet_id FK
+    date weighed_on
+    numeric weight_kg
   }
 `;
 
@@ -228,6 +235,7 @@ const dictionary = [
   ["feeding_schedules", "a meal time with food and amount", "id", "Days 0 to 6, empty means every day."],
   ["feeding_log", "a meal ticked as fed on one day", "feeding_id + fed_on", "Only the last 14 days are loaded."],
   ["care_tasks", "grooming, deworming, vaccination or a vet appointment", "id", "Repeat in days (0 = once); vet appointments are rows here, not a separate table."],
+  ["weight_log", "a pet's weight on one day (its weight history)", "id", "One per pet per day. A trigger saves the pet's weight here whenever it changes; owners can add earlier weights. Used for weight trends in the health check and the AI."],
   ["assistant_feedback", "a thumbs up or down on one assistant answer", "id", "Keeps the question, answer and model version; rating is 1 or -1."],
   ["push_subscriptions", "a phone or browser that allowed notifications", "id", "Endpoint is unique; keeps the device's time zone."],
   ["push_log", "a reminder already pushed", "user_id + key", "Stops the same reminder going out twice."],
@@ -237,7 +245,7 @@ const dictionary = [
 ];
 
 const security = [
-  ["Each owner sees only their own data", "Row Level Security on all 14 tables; a pet's rows are visible only when its owner is the logged-in user. Visitors who are not logged in see nothing."],
+  ["Each owner sees only their own data", "Row Level Security on all 15 tables; a pet's rows are visible only when its owner is the logged-in user. Visitors who are not logged in see nothing."],
   ["Files are private", "Photos and documents sit under a folder named with the owner's user id, locked by a storage policy, and are opened with links that expire after a week."],
   ["Secrets stay on the server", "The app holds only the public Supabase key. The service-role key and push private key live in the edge function's secrets. A secret scan runs before every push and passed on the whole history."],
   ["Locations aren't kept", "The phone's location is used for one search and never saved. Searches are saved per ~1 km area, and a typed address only as a hash. The TomTom key is an edge-function secret, and only logged-in owners can search."],
@@ -299,7 +307,7 @@ const architecture = () => svg(1080, 570, [
   box(585, 48, 220, 62, ["Auth", "email and password"], "cloud"),
   box(585, 128, 220, 62, ["Private storage", "photos and documents"], "cloud"),
   box(585, 208, 220, 62, ["Realtime", "sync between devices"], "cloud"),
-  box(840, 48, 210, 222, ["Postgres database", "14 tables", "Row Level Security:", "each owner sees only", "their own rows"], "cloud"),
+  box(840, 48, 210, 222, ["Postgres database", "15 tables", "Row Level Security:", "each owner sees only", "their own rows"], "cloud"),
   box(585, 330, 220, 62, ["pg_cron", "every 5 minutes"], "cloud"),
   box(840, 330, 210, 62, ["Edge function", "send-reminders"], "cloud"),
   box(585, 404, 220, 52, ["Edge function", "find-clinics"], "cloud"),
@@ -322,12 +330,12 @@ const architecture = () => svg(1080, 570, [
 
 const assistantFlow = () => svg(1060, 630, [
   box(5, 115, 150, 70, ["Owner asks", "(English, Tagalog", "or Taglish)"], "ext"),
-  diamond(250, 150, 180, 120, ["Greeting, thanks,", "dose or emergency", "wording?"]),
+  diamond(250, 150, 180, 120, ["Greeting, thanks", "or medicine dose", "question?"]),
   diamond(440, 150, 180, 120, ["Weight or breed", "question, and a", "pet selected?"]),
   box(550, 105, 160, 90, ["Search on the device", "2 closest of 2,997", "checked passages;", "emergency guide first"]),
   box(735, 105, 145, 90, ["FurFriends AI", "on Vercel writes", "the answer from", "the 2 passages"], "cloud"),
   diamond(970, 150, 170, 120, ["Did the AI", "answer from the", "passages?"]),
-  box(160, 255, 180, 72, ["Friendly reply, a", "'no doses' note, or", "the first-aid guide"], "rule"),
+  box(160, 255, 180, 72, ["Short reply, or", "'I can't give doses,", "only a vet can'"], "rule"),
   box(350, 255, 180, 72, ["Answer from the breed", "guide, using the pet's", "own weight"], "rule"),
   box(875, 0, 180, 72, ["Show the AI's answer", "with both sources", "and rating buttons"]),
   diamond(970, 320, 170, 130, ["Score 0.68", "or more? (0.76", "for open posts)"]),
@@ -348,7 +356,7 @@ const assistantFlow = () => svg(1060, 630, [
   arrow([[970, 385], [970, 405]], "no", { lx: 988, ly: 400 }),
   arrow([[885, 470], [860, 470]], "yes", { lx: 872, ly: 456 }),
   arrow([[970, 535], [970, 555]], "no", { lx: 988, ly: 550 }),
-  note(10, 400, ["Safety first: the assistant never gives medicine doses, and in an", "emergency the first-aid guide is put in front of the AI.",
+  note(10, 400, ["Emergency wording (e.g. 'ate chocolate') shows a red box linking to the", "first-aid guide, and that guide is put first for the AI. Doses: never.",
     "'No' at the AI also covers: offline, not logged in, or this month's free", "AI allowance used up. The checked answer then shows instead.",
     "Open posts must match more closely than FurFriends' own answers."]),
 ].join(""));
@@ -436,7 +444,7 @@ const html = `<!doctype html>
     <div class="card"><b>How it is built</b><span>A React web app that works offline, a Supabase backend with private per-owner data, push reminders, and the team's own trained AI, running in a free Vercel function.</span></div>
     <div class="card"><b>What this document shows</b><span>1. Architecture 2. Technology 3. ERD and data dictionary 4. Flows: sign-in and sync, the assistant, reminders, research data, deployment 5. Security and limits.</span></div>
   </div>
-  <p class="note">Live at furfriends-black.vercel.app. The database section matches supabase/migrations: 14 tables, 15 relationships (checked against the live project on 2026-10-24; ai_usage added 2026-10-28, clinic_search_cache 2026-10-29). Document date: 2026-10-29.</p>
+  <p class="note">Live at furfriends-black.vercel.app. The database section matches supabase/migrations: 15 tables, 16 relationships (checked against the live project on 2026-10-24; ai_usage added 2026-10-28, clinic_search_cache 2026-10-29, weight_log 2026-11-12). Document date: 2026-11-12.</p>
 </section>
 
 ${figure("1. System architecture", "Three places do the work: the owner's device (app, offline cache and the search), Vercel (serves the app and runs the AI that writes answers) and Supabase (accounts, data, files, sync, reminders and the AI's usage limit).", architecture())}
@@ -449,7 +457,7 @@ ${diagram("3. Entity relationship diagram (1 of 2): owners, pets and their recor
 
 ${diagram("3. Entity relationship diagram (2 of 2): accounts, reminders and research", "The profile, reminder devices, survey answers and assistant ratings hang off the owner's login. A rating may also point to the pet it was about.", erdAccount, `<p class="note">Ratings keep their question and answer if the pet is deleted (the pet link is cleared). One profile per login; the profile shares the login's id. clinic_search_cache stands alone: shared saved clinic searches that only the find-clinics function writes.</p>`)}
 
-<section class="page"><h2>4. Data dictionary</h2><p class="lead">14 tables in the public schema, plus Supabase's own auth.users. Every table has Row Level Security on.</p>
+<section class="page"><h2>4. Data dictionary</h2><p class="lead">15 tables in the public schema, plus Supabase's own auth.users. Every table has Row Level Security on.</p>
 ${table(["Table", "One row is", "Key", "Rules"], dictionary)}
 <p class="note">Not in the database on purpose: the first-aid guides, breed guide and the assistant's answers are built into the app, so they work offline. There is no clinics table: nearby clinics come live from TomTom, and clinic_search_cache only keeps each search for a week.</p>
 </section>

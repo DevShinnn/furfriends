@@ -1,0 +1,45 @@
+# Questions FurFriends doesn't cover (other animals, people's health, things that aren't pet care), for
+# build_rag_data.py --out-of-scope: each is trained with the passages the search would find for it, and the
+# answer that it couldn't find it in the checked sources. Only questions, no facts, so nothing to check.
+# Written so they don't repeat the kinds of question in retrieval_eval.jsonl (no breeds, prices, pet names,
+# laws, clinics, hamsters, parrots, goldfish or monkeys), so the evaluation stays fair.
+How do I set up a tank for a pet turtle?
+What should I feed my rabbit every day?
+My guinea pig is sneezing. What should I do?
+How often should I clean my snake's enclosure?
+How do I keep my chickens from getting sick?
+What temperature does a bearded dragon need?
+How do I take care of koi in a backyard pond?
+My cow isn't eating. What should I do?
+How do I train my horse to stand still?
+Can I keep a hedgehog in an apartment?
+Ano ang pagkain ng manok na panabong?
+Paano alagaan ang kuneho?
+How do I treat a headache without medicine?
+What should I do if my child has a fever?
+How do I lower my blood pressure?
+Is it safe for me to get a tattoo while pregnant?
+How do I stop snoring at night?
+Masakit ang ngipin ko, ano ang dapat kong gawin?
+What's a good recipe for chicken adobo?
+How do I solve a quadratic equation?
+Can you write my essay about climate change?
+How do I reset my phone to factory settings?
+Will it rain in Cebu tomorrow?
+How do I make my laptop run faster?
+What's the exchange rate from dollars to pesos?
+How do I start a vegetable garden on a balcony?
+Who won the last NBA championship?
+How do I write a resume for my first job?
+Paano magluto ng sinigang?
+What is the meaning of life?
+How do I get rid of cockroaches in my kitchen?
+How do I remove a wasp nest from my roof?
+How can I get more followers on Instagram?
+What laptop should I buy for school?
+How do I change a flat tire?
+Can you tell me a joke?
+Translate "good morning" into Japanese.
+How do I lose weight fast?
+Paano mag-apply ng passport?
+What is the tallest mountain in the world?

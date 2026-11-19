@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>FurFriends unit tests and flowcharts</title>
+<style>
+  @page { size: A4; margin: 14mm 14mm 13mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 9.6pt/1.4 "Segoe UI", Arial, sans-serif; color: #1b1f1d; }
+  .page { page-break-after: always; break-after: page; }
+  section.page:last-of-type { page-break-after: auto; break-after: auto; }
+  h1 { font-size: 26pt; margin: 0 0 4px; color: #123d33; letter-spacing: -0.5px; }
+  h2 { font-size: 15pt; margin: 0; color: #123d33; }
+  h3 { font-size: 11pt; color: #123d33; margin: 14px 0 6px; }
+  .lead { color: #4a524e; margin: 6px 0 4px; }
+  .tag { display: inline-block; background: #123d33; color: #fff; border-radius: 5px; padding: 2px 8px; font-size: 9pt; font-weight: 700; }
+  .uc-head { display: flex; gap: 10px; align-items: center; border-bottom: 2px solid #ffc94d; padding-bottom: 6px; flex-wrap: wrap; }
+  .uc-head .part { display: block; font-size: 10.5pt; font-weight: 600; color: #4a524e; margin-top: 2px; }
+  .uc-head .src { margin-left: auto; font-size: 8.5pt; color: #6b736f; }
+  .flow { margin-top: 6px; display: flex; justify-content: center; }
+  .flow .mermaid { margin: 0; width: 100%; display: flex; justify-content: center; }
+  .flow svg { max-width: 100% !important; max-height: 238mm; height: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 8.8pt; }
+  th { text-align: left; background: #123d33; color: #fff; padding: 5px 7px; }
+  td { padding: 4px 7px; border-bottom: 1px solid #e5dfd4; vertical-align: top; }
+  tr { break-inside: avoid; }
+  td.k { font-weight: 700; color: #123d33; white-space: nowrap; }
+  td.num { white-space: nowrap; color: #4a524e; text-align: right; }
+  tr:nth-child(even) td { background: #faf7f1; }
+  .res { font-weight: 700; white-space: nowrap; }
+  .res.passed { color: #238553; } .res.failed { color: #d0453a; }
+  .err { color: #d0453a; font-size: 8pt; margin-top: 2px; }
+  .code { font-size: 8.5pt; color: #6b736f; margin: 6px 0 0; }
+  .note { font-size: 9pt; color: #4a524e; margin-top: 8px; }
+  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 10px 0; }
+  .card { border: 1px solid #ded7cb; border-radius: 8px; padding: 10px 12px; background: #fbf8f3; }
+  .card b { display: block; font-size: 20pt; color: #123d33; }
+  .card span { font-size: 9pt; color: #4a524e; }
+  .card.ok b { color: #238553; } .card.bad b { color: #123d33; }
+  ul { margin: 4px 0 0 18px; padding: 0; } li { margin: 3px 0; }
+  .src2 { font-size: 8pt; color: #6b736f; }
+  .legend { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; font-size: 8.5pt; color: #4a524e; margin-top: 6px; }
+</style></head><body>
+
+<section class="page">
+  <span class="tag">Testing</span>
+  <h1 style="margin-top:10px">FurFriends</h1>
+  <p class="lead" style="font-size:13pt">Unit tests for each functional requirement, and a flowchart for each use case</p>
+  <p>FurFriends: A Mobile-Based Pet Care Companion with Emergency Support System for Cat and Dog Owners. Live at furfriends-black.vercel.app.</p>
+  <div class="cards">
+    <div class="card"><b>11</b><span>use cases (9 from Figure 2.2, 2 added)</span></div>
+    <div class="card"><b>33</b><span>functional requirements</span></div>
+    <div class="card ok"><b>102/102</b><span>unit tests passed</span></div>
+    <div class="card bad"><b>0</b><span>failed</span></div>
+  </div>
+  <h3>Summary by use case</h3>
+  <table><thead><tr><th>Use case</th><th>Name</th><th>Requirements</th><th>Tests</th><th>Passed</th><th>Failed</th><th>Source</th></tr></thead><tbody><tr><td class="k">UC1</td><td>Register / Login</td><td>4</td><td>13</td><td>13</td><td>0</td><td class="src2">Figure 2.2</td></tr><tr><td class="k">UC2</td><td>Manage Pet Profile</td><td>4</td><td>20</td><td>20</td><td>0</td><td class="src2">Figure 2.2</td></tr><tr><td class="k">UC3</td><td>Set Care Reminders</td><td>4</td><td>18</td><td>18</td><td>0</td><td class="src2">Figure 2.2</td></tr><tr><td class="k">UC4</td><td>Receive Notifications</td><td>3</td><td>5</td><td>5</td><td>0</td><td class="src2">Figure 2.2</td></tr><tr><td class="k">UC5</td><td>View Breed Care Tips</td><td>2</td><td>7</td><td>7</td><td>0</td><td class="src2">Figure 2.2</td></tr><tr><td class="k">UC6</td><td>Open Emergency Guide</td><td>3</td><td>7</td><td>7</td><td>0</td><td class="src2">Figure 2.2</td></tr><tr><td class="k">UC7</td><td>Locate Veterinary Clinic</td><td>5</td><td>13</td><td>13</td><td>0</td><td class="src2">Figure 2.2</td></tr><tr><td class="k">UC8</td><td>Call / Navigate to Clinic</td><td>2</td><td>3</td><td>3</td><td>0</td><td class="src2">Figure 2.2</td></tr><tr><td class="k">UC9</td><td>Manage Account Settings</td><td>3</td><td>9</td><td>9</td><td>0</td><td class="src2">Figure 2.2</td></tr><tr><td class="k">UC10</td><td>Ask FurFriends (AI assistant)</td><td>2</td><td>4</td><td>4</td><td>0</td><td class="src2">Added during development, not in Figure 2.2</td></tr><tr><td class="k">UC11</td><td>Usability survey</td><td>1</td><td>3</td><td>3</td><td>0</td><td class="src2">Added during development, not in Figure 2.2</td></tr></tbody></table>
+  
+  
+
+  <h3>How the tests were run</h3>
+  <ul>
+    <li><b>Run:</b> October 29, 2026 at 8:24 AM (Philippine time), with <code>npm run test:report</code>. The results tables below are filled in from that run, not typed by hand.</li>
+    <li><b>Tools:</b> Vitest 3.2.4 in a simulated browser (jsdom 26.1.0), React Testing Library 16.3.0, Node v22.11.0.</li>
+    <li><b>What is tested:</b> the app's real code (forms, the data store, scheduling, reminders, breed and emergency content, the clinic search and the assistant's safety rules). Each test is tagged with the requirement it checks.</li>
+    <li><b>Test doubles:</b> Supabase is replaced by an in-memory fake that records every database call, and TomTom by recorded answers, so tests never touch the live database or use the free TomTom searches. Date tests use a fixed clock: Thursday 29 Oct 2026, 10:00 AM.</li>
+    <li><b>Do the tests catch mistakes?</b> Before this run, three rules were broken on purpose (password length, the clinic filter, the dose refusal). The matching tests failed each time, and passed again once the code was restored.</li>
+  </ul>
+  <h3>Not covered by unit tests</h3>
+  <table><tbody><tr><td class="k" style="white-space:normal;width:32%">Web push when the app is closed (UC4)</td><td>Runs in Supabase's send-reminders edge function on a schedule, outside the app. It uses the same rules as the tested src/lib/reminders.js. It was checked end to end on the live project on 19 Oct 2026 (one real notification sent, none on the rerun).</td></tr><tr><td class="k" style="white-space:normal;width:32%">Live TomTom data (UC7)</td><td>The tests use recorded TomTom answers. The live find-clinics function was checked on 29 Oct 2026: 11 clinics for Batangas City, a repeat search served from the saved search, an address search for Lipa City, and a refusal when not logged in.</td></tr><tr><td class="k" style="white-space:normal;width:32%">Map display and Google Maps app (UC7, UC8)</td><td>Drawing the map and opening Google Maps happen in the browser and the phone; the tests check the exact links the buttons open.</td></tr><tr><td class="k" style="white-space:normal;width:32%">Forgot password</td><td>Listed in the project proposal but not built: the log-in page has no password reset.</td></tr></tbody></table>
+  <h3>Flowchart symbols</h3>
+  <div class="legend"><span>Rounded ends: start and end</span><span>Rectangle: a step</span><span>Slanted box: owner's input</span><span>Diamond: a decision</span><span>Lettered circle: connector; continue at the circle with the same letter</span><span>Double-edged box: continues in another use case</span></div>
+</section>
+
+
+
+<section class="page">
+  <div class="uc-head"><span class="tag">UC1</span><h2>Register / Login<span class="part">Flowchart, Part a: log in, demo account and log out</span></h2><span class="src">Figure 2.2</span></div>
+  <p class="lead">A pet owner creates an account or logs in, so their pets and records are kept private to them.</p>
+  <div class="flow"><pre class="mermaid">flowchart TD
+  S([Start]) --&gt; A[Open FurFriends]
+  A --&gt; B{Logged in on&lt;br/&gt;this device?}
+  B -- Yes --&gt; Z[Dashboard]
+  B -- No --&gt; C[Log-in page]
+  qA((A)) --&gt; C
+  C --&gt; D{Owner chooses}
+  D -- Create account --&gt; UC1b[[Create account, UC1 part b]]
+  D -- Demo account --&gt; E[Log in with the&lt;br/&gt;shared demo account] --&gt; Z
+  D -- Log in --&gt; F[/Enter email and password/]
+  qB((B)) --&gt; F
+  F --&gt; G{Both filled in?}
+  G -- No --&gt; G1[Show: Please enter your&lt;br/&gt;email and password] --&gt; rB1((B))
+  G -- Yes --&gt; H{Correct email&lt;br/&gt;and password?}
+  H -- No --&gt; H1[Show: Incorrect&lt;br/&gt;email or password] --&gt; rB2((B))
+  H -- Yes --&gt; I[Load profile and pets] --&gt; Z
+  Z --&gt; O{Log out?}
+  O -- Yes --&gt; P[End session, clear&lt;br/&gt;data from screen] --&gt; rA((A))
+  O -- No --&gt; X([End])
+  classDef conn fill:#fff4d6,stroke:#c99a1c,color:#7a5a00,font-weight:bold
+  class qA,qB,rB1,rB2,rA conn
+  classDef link fill:#f1ece4,stroke:#8a8272
+  class UC1b link</pre></div>
+</section>
+<section class="page">
+  <div class="uc-head"><span class="tag">UC1</span><h2>Register / Login<span class="part">Flowchart, Part b: create an account</span></h2><span class="src">Figure 2.2</span></div>
+  
+  <div class="flow"><pre class="mermaid">flowchart TD
+  S([From the log-in page:&lt;br/&gt;Create account]) --&gt; J[/Enter name, email, password,&lt;br/&gt;confirm password/]
+  qC((C)) --&gt; J
+  J --&gt; K0[Check: name given, valid email,&lt;br/&gt;8+ characters, passwords match]
+  K0 --&gt; K{All OK?}
+  K -- No --&gt; K1[Show what to fix] --&gt; rC1((C))
+  K -- Yes --&gt; L{Email already&lt;br/&gt;registered?}
+  L -- Yes --&gt; L1[Show: An account with&lt;br/&gt;this email already exists] --&gt; rC2((C))
+  L -- No --&gt; M[Supabase creates the&lt;br/&gt;account and profile]
+  M --&gt; N{Email confirmation&lt;br/&gt;on?}
+  N -- Yes --&gt; N1[Show: Check your email;&lt;br/&gt;owner opens the link, then logs in] --&gt; X1([Log-in page])
+  N -- No --&gt; Z[Logged in: Dashboard] --&gt; X([End])
+  classDef conn fill:#fff4d6,stroke:#c99a1c,color:#7a5a00,font-weight:bold
+  class qC,rC1,rC2 conn
+  classDef link fill:#f1ece4,stroke:#8a8272</pre></div>
+</section>
+<section class="page">
+  <div class="uc-head"><span class="tag">UC1</span><h2>Register / Login: unit tests</h2></div>
+  <h3>Functional requirements</h3>
+  <table class="frs"><tbody><tr><td class="k">FR1.1</td><td>Owners can create an account with name, email and password. The form requires a name, a valid email, a password of at least 8 characters, and matching passwords. If email confirmation is on, the owner is asked to check their email.</td><td class="num">7/7 passed</td></tr><tr><td class="k">FR1.2</td><td>Owners can log in with email and password. Missing fields or wrong details show a clear message.</td><td class="num">3/3 passed</td></tr><tr><td class="k">FR1.3</td><td>Owners can log out, which ends the session and clears their data from the screen.</td><td class="num">1/1 passed</td></tr><tr><td class="k">FR1.4</td><td>Visitors can explore the app with a shared demo account, which no one can register over.</td><td class="num">2/2 passed</td></tr></tbody></table>
+  <p class="code">Code under test: src/pages/Auth.jsx, src/store/StoreContext.jsx (register, login, logout)</p>
+  <h3>Test cases (13 of 13 passed)</h3>
+  <table class="tests"><thead><tr><th>Test ID</th><th>Req.</th><th>Test case and expected result</th><th>Result</th></tr></thead><tbody>
+  <tr><td class="k">UC1-T01</td><td>FR1.1</td><td>Register with an empty name shows 'Please enter your name.'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC1-T02</td><td>FR1.1</td><td>Register with an invalid email shows 'Please enter a valid email address.'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC1-T03</td><td>FR1.1</td><td>Register with a 7-character password shows 'Password must be at least 8 characters.'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC1-T04</td><td>FR1.1</td><td>Register with passwords that don't match shows 'Passwords don't match.'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC1-T05</td><td>FR1.1</td><td>Register with valid details creates the account (email trimmed and lowercased) and logs the owner in</td><td class="res passed">Passed</td></tr><tr><td class="k">UC1-T06</td><td>FR1.1</td><td>Register with an email that already has an account shows 'An account with this email already exists.'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC1-T07</td><td>FR1.1</td><td>Register when email confirmation is required asks the owner to confirm their email</td><td class="res passed">Passed</td></tr><tr><td class="k">UC1-T08</td><td>FR1.2</td><td>Log in with an empty email or password shows 'Please enter your email and password.'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC1-T09</td><td>FR1.2</td><td>Log in with a wrong password shows 'Incorrect email or password.'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC1-T10</td><td>FR1.2</td><td>Log in with correct details (any letter case) loads the owner's profile</td><td class="res passed">Passed</td></tr><tr><td class="k">UC1-T11</td><td>FR1.3</td><td>Log out ends the session and clears the owner's data from the screen</td><td class="res passed">Passed</td></tr><tr><td class="k">UC1-T12</td><td>FR1.4</td><td>The demo button logs in with the shared demo account, marked as demo and shared</td><td class="res passed">Passed</td></tr><tr><td class="k">UC1-T13</td><td>FR1.4</td><td>No one can register a new account with the demo account's email</td><td class="res passed">Passed</td></tr>
+  </tbody></table>
+  
+</section>
+
+
+<section class="page">
+  <div class="uc-head"><span class="tag">UC2</span><h2>Manage Pet Profile<span class="part">Flowchart, Part a: add or edit a pet</span></h2><span class="src">Figure 2.2</span></div>
+  <p class="lead">The owner adds, edits or deletes a pet, and keeps its health records: medical history, vaccinations and documents.</p>
+  <div class="flow"><pre class="mermaid">flowchart TD
+  S([Start]) --&gt; A[My Pets or pet profile]
+  A --&gt; B{Owner chooses}
+  B -- Add pet --&gt; C[/Photo, name, species, breed,&lt;br/&gt;age, gender, weight/]
+  B -- Edit pet --&gt; C0[Form opens with&lt;br/&gt;the pet's details] --&gt; C
+  qB((B)) --&gt; C
+  C --&gt; D0[Check: name given, months 0-11,&lt;br/&gt;weight above 0]
+  D0 --&gt; D{All OK?}
+  D -- No --&gt; D1[Show the error] --&gt; rB((B))
+  D -- Yes --&gt; E[Pet shows on screen at once]
+  E --&gt; F[Photo uploaded to private storage,&lt;br/&gt;pet saved to the database]
+  F --&gt; G{Saved on&lt;br/&gt;the server?}
+  G -- No --&gt; G1([Show: Couldn't save to the server,&lt;br/&gt;reload from the server])
+  G -- Yes --&gt; H[Pet profile page] --&gt; X([End])
+  classDef conn fill:#fff4d6,stroke:#c99a1c,color:#7a5a00,font-weight:bold
+  class qB,rB conn
+  classDef link fill:#f1ece4,stroke:#8a8272</pre></div>
+</section>
+<section class="page">
+  <div class="uc-head"><span class="tag">UC2</span><h2>Manage Pet Profile<span class="part">Flowchart, Part b: delete a pet, or add a health record</span></h2><span class="src">Figure 2.2</span></div>
+  
+  <div class="flow"><pre class="mermaid">flowchart TD
+  S([Start]) --&gt; A[Pet profile]
+  A --&gt; B{Owner chooses}
+  B -- Delete pet --&gt; I{Owner confirms&lt;br/&gt;delete?}
+  I -- No --&gt; X1([Back to the pet])
+  I -- Yes --&gt; J[Remove the pet, its records,&lt;br/&gt;photos and documents] --&gt; X2([My Pets])
+  B -- Add a health record --&gt; K{Record type}
+  qC((C)) --&gt; K
+  K -- Medical --&gt; L[/Date, type, title, vet, notes/]
+  K -- Vaccination --&gt; M[/Vaccine, date given, next due/]
+  K -- Document --&gt; N[/Photo or PDF, title, type, date/]
+  L &amp; M &amp; N --&gt; O0[Check: required fields filled,&lt;br/&gt;next due after date given]
+  O0 --&gt; O{All OK?}
+  O -- No --&gt; O1[Show the error] --&gt; rC((C))
+  O -- Yes --&gt; P[Record saved under the pet,&lt;br/&gt;shown in its tab] --&gt; X([End])
+  classDef conn fill:#fff4d6,stroke:#c99a1c,color:#7a5a00,font-weight:bold
+  class qC,rC conn
+  classDef link fill:#f1ece4,stroke:#8a8272</pre></div>
+</section>
+<section class="page">
+  <div class="uc-head"><span class="tag">UC2</span><h2>Manage Pet Profile: unit tests</h2></div>
+  <h3>Functional requirements</h3>
+  <table class="frs"><tbody><tr><td class="k">FR2.1</td><td>Add a pet with photo, name, species (cat or dog), breed, age, gender and weight. Name is required, age months must be 0 to 11, and weight must be above 0. Photos are kept in private storage under the owner's folder.</td><td class="num">8/8 passed</td></tr><tr><td class="k">FR2.2</td><td>Edit a pet's profile.</td><td class="num">2/2 passed</td></tr><tr><td class="k">FR2.3</td><td>Delete a pet, after confirming, together with all its records, photos and documents.</td><td class="num">1/1 passed</td></tr><tr><td class="k">FR2.4</td><td>Keep health records for each pet: medical history, vaccinations (the next due date must be after the date given) and documents (a photo or a PDF).</td><td class="num">9/9 passed</td></tr></tbody></table>
+  <p class="code">Code under test: src/components/Forms.jsx (PetForm, MedForm, VaxForm, DocForm), src/store/StoreContext.jsx (addPet, updatePet, deletePet, upsertItem, removeItem)</p>
+  <h3>Test cases (20 of 20 passed)</h3>
+  <table class="tests"><thead><tr><th>Test ID</th><th>Req.</th><th>Test case and expected result</th><th>Result</th></tr></thead><tbody>
+  <tr><td class="k">UC2-T01</td><td>FR2.1</td><td>Add pet without a name shows 'Please give your pet a name.' and saves nothing</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T02</td><td>FR2.1</td><td>Add pet with age months above 11 shows 'Age months must be between 0 and 11.'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T03</td><td>FR2.1</td><td>Add pet with weight 0 shows 'Weight must be greater than 0.'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T04</td><td>FR2.1</td><td>Add pet with valid details saves name, species, breed, age, gender and weight</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T05</td><td>FR2.1</td><td>Adding a pet shows it at once and saves it to the database with the right columns</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T06</td><td>FR2.1</td><td>A pet photo is uploaded to private storage under the owner's folder</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T07</td><td>FR2.1</td><td>A pet with no weight is saved with an empty weight (null), not 0</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T08</td><td>FR2.1</td><td>Age is shown in years and months ('2 yrs 3 mo', '1 yr', '5 mo', or '—' when unknown)</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T09</td><td>FR2.2</td><td>Edit pet opens with the pet's details and saves the changes to that pet</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T10</td><td>FR2.2</td><td>Editing a pet updates its profile on screen and in the database</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T11</td><td>FR2.3</td><td>Deleting a pet removes it, its database row, and its photos and documents in storage</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T12</td><td>FR2.4</td><td>Medical record without a title shows 'Date and title are required.'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T13</td><td>FR2.4</td><td>Medical record with a title is saved to the pet's medical history</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T14</td><td>FR2.4</td><td>Vaccination without a vaccine name shows 'Vaccine name and date given are required.'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T15</td><td>FR2.4</td><td>Vaccination whose next due date is not after the date given is refused</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T16</td><td>FR2.4</td><td>Vaccination with a valid next due date is saved</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T17</td><td>FR2.4</td><td>A medical record is saved to medical_records under the pet</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T18</td><td>FR2.4</td><td>A vaccination is saved with its next due date; an empty next due date is saved as null</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T19</td><td>FR2.4</td><td>A PDF document is uploaded to the documents bucket as a .pdf file</td><td class="res passed">Passed</td></tr><tr><td class="k">UC2-T20</td><td>FR2.4</td><td>Removing a record deletes it from the screen and the database</td><td class="res passed">Passed</td></tr>
+  </tbody></table>
+  
+</section>
+
+
+<section class="page">
+  <div class="uc-head"><span class="tag">UC3</span><h2>Set Care Reminders</h2><span class="src">Figure 2.2</span></div>
+  <p class="lead">The owner sets feeding times, grooming, deworming, vaccine reminders and vet appointments, and marks them done.</p>
+  <div class="flow"><pre class="mermaid">flowchart TD
+  S([Start]) --&gt; A[Pet profile, Care tab&lt;br/&gt;or Vet visits page]
+  A --&gt; B{What to schedule}
+  B -- Feeding --&gt; C[/Time, food, amount, days/]
+  B -- Grooming, deworming&lt;br/&gt;or vaccine --&gt; D[/Task, due date, how often/]
+  B -- Vet appointment --&gt; E[/Reason, date, time,&lt;br/&gt;clinic and notes/]
+  C --&gt; C1{Time and&lt;br/&gt;food given?}
+  D --&gt; D1{Name and&lt;br/&gt;date given?}
+  E --&gt; E1{Reason and&lt;br/&gt;date given?}
+  C1 -- No --&gt; W1([Show the error])
+  D1 -- No --&gt; W2([Show the error])
+  E1 -- No --&gt; W3([Show the error])
+  C1 -- Yes --&gt; F[Saved to the pet's schedule]
+  D1 -- Yes --&gt; F
+  E1 -- Yes --&gt; F
+  V[Vaccination records&lt;br/&gt;with a next due date] --&gt; G
+  F --&gt; G[Dashboard and care list: overdue first,&lt;br/&gt;then today, then coming up]
+  G --&gt; H{Owner marks&lt;br/&gt;an item done}
+  H -- Meal --&gt; I[Ticked as fed for today]
+  H -- Task --&gt; J{Does it repeat?}
+  J -- Yes --&gt; K[Next due = today + repeat]
+  J -- No --&gt; L[Marked completed]
+  I &amp; K &amp; L --&gt; X([End])
+  classDef conn fill:#fff4d6,stroke:#c99a1c,color:#7a5a00,font-weight:bold
+  classDef link fill:#f1ece4,stroke:#8a8272</pre></div>
+</section>
+<section class="page">
+  <div class="uc-head"><span class="tag">UC3</span><h2>Set Care Reminders: unit tests</h2></div>
+  <h3>Functional requirements</h3>
+  <table class="frs"><tbody><tr><td class="k">FR3.1</td><td>Set feeding times (time, food, amount, days of the week) and tick each meal as fed for the day.</td><td class="num">5/5 passed</td></tr><tr><td class="k">FR3.2</td><td>Schedule grooming, deworming, vaccine reminders and vet appointments, once or repeating (every day up to every year).</td><td class="num">7/7 passed</td></tr><tr><td class="k">FR3.3</td><td>Show what is overdue, due today and coming up. Marking a repeating task done moves it to its next date; a one-time task is closed. Vet visits are split into upcoming and past.</td><td class="num">4/4 passed</td></tr><tr><td class="k">FR3.4</td><td>Vaccinations with a next due date become reminders automatically, with their booster status.</td><td class="num">2/2 passed</td></tr></tbody></table>
+  <p class="code">Code under test: src/components/CareForms.jsx, src/lib/care.js, src/store/StoreContext.jsx (toggleFed, completeCare)</p>
+  <h3>Test cases (18 of 18 passed)</h3>
+  <table class="tests"><thead><tr><th>Test ID</th><th>Req.</th><th>Test case and expected result</th><th>Result</th></tr></thead><tbody>
+  <tr><td class="k">UC3-T01</td><td>FR3.1</td><td>Feeding time without food shows 'What are they eating? Add the food.'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC3-T02</td><td>FR3.1</td><td>Feeding time with all days selected is saved as every day (empty day list)</td><td class="res passed">Passed</td></tr><tr><td class="k">UC3-T03</td><td>FR3.1</td><td>Unticking Sunday saves the meal for Monday to Saturday only</td><td class="res passed">Passed</td></tr><tr><td class="k">UC3-T04</td><td>FR3.1</td><td>A meal set for weekdays is on Thursday's list but not Sunday's; a meal with no days is every day</td><td class="res passed">Passed</td></tr><tr><td class="k">UC3-T05</td><td>FR3.1</td><td>Ticking a meal as fed records it for today; ticking again un-ticks it</td><td class="res passed">Passed</td></tr><tr><td class="k">UC3-T06</td><td>FR3.2</td><td>Grooming task without a name shows 'Give this task a name.'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC3-T07</td><td>FR3.2</td><td>A grooming task repeats every 2 weeks by default, starting today</td><td class="res passed">Passed</td></tr><tr><td class="k">UC3-T08</td><td>FR3.2</td><td>A deworming task repeats every 3 months by default</td><td class="res passed">Passed</td></tr><tr><td class="k">UC3-T09</td><td>FR3.2</td><td>Vet appointment without a reason shows 'What's the visit for?'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC3-T10</td><td>FR3.2</td><td>Vet appointment is saved as a one-time 'Vet appointment' task, tomorrow at 9:00 AM by default</td><td class="res passed">Passed</td></tr><tr><td class="k">UC3-T11</td><td>FR3.2</td><td>A weekly task due 1 Oct falls on 29 Oct, 5 Nov and 12 Nov in the next two weeks</td><td class="res passed">Passed</td></tr><tr><td class="k">UC3-T12</td><td>FR3.2</td><td>A one-time task occurs once, and repeat choices have readable labels</td><td class="res passed">Passed</td></tr><tr><td class="k">UC3-T13</td><td>FR3.3</td><td>Task status: 2 days late is 'Overdue 2d', today is 'Due today', in 5 days is 'In 5d', done is 'Completed'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC3-T14</td><td>FR3.3</td><td>The care list shows overdue items first, then today's feedings and tasks by time</td><td class="res passed">Passed</td></tr><tr><td class="k">UC3-T15</td><td>FR3.3</td><td>Marking a repeating task done moves it to its next date; a one-time task is closed</td><td class="res passed">Passed</td></tr><tr><td class="k">UC3-T16</td><td>FR3.3</td><td>Vet appointments are split into upcoming (soonest first) and past</td><td class="res passed">Passed</td></tr><tr><td class="k">UC3-T17</td><td>FR3.4</td><td>A vaccination with a next due date becomes a read-only vaccine reminder</td><td class="res passed">Passed</td></tr><tr><td class="k">UC3-T18</td><td>FR3.4</td><td>Vaccine status: overdue, due within 30 days, up to date, or no booster</td><td class="res passed">Passed</td></tr>
+  </tbody></table>
+  
+</section>
+
+
+<section class="page">
+  <div class="uc-head"><span class="tag">UC4</span><h2>Receive Notifications<span class="part">Flowchart, Part a: while the app is open</span></h2><span class="src">Figure 2.2</span></div>
+  <p class="lead">The owner is reminded of meals, care tasks, vaccines and vet visits, in the app and on the phone even when the app is closed.</p>
+  <div class="flow"><pre class="mermaid">flowchart TD
+  S([Start]) --&gt; A{Reminders on?}
+  A -- No --&gt; X1([No reminders])
+  A -- Yes --&gt; B{App open?}
+  B -- No --&gt; UC4b[[App closed, UC4 part b]]
+  B -- Yes --&gt; C[Every minute: work out what is due:&lt;br/&gt;meals from 15 min before, tasks due&lt;br/&gt;today or overdue, vet visits the day before too]
+  C --&gt; D{Already&lt;br/&gt;announced?}
+  D -- Yes --&gt; D1([Skip it])
+  D -- No --&gt; E[List it under the bell]
+  E --&gt; E1{App just&lt;br/&gt;opened?}
+  E1 -- Yes --&gt; I[Remember it was announced]
+  E1 -- No --&gt; F{Notifications&lt;br/&gt;allowed?}
+  F -- Yes --&gt; G[Phone or computer notification]
+  F -- No --&gt; H[Message inside the app]
+  G &amp; H --&gt; I
+  I --&gt; X([End])
+  classDef conn fill:#fff4d6,stroke:#c99a1c,color:#7a5a00,font-weight:bold
+  classDef link fill:#f1ece4,stroke:#8a8272
+  class UC4b link</pre></div>
+</section>
+<section class="page">
+  <div class="uc-head"><span class="tag">UC4</span><h2>Receive Notifications<span class="part">Flowchart, Part b: when the app is closed</span></h2><span class="src">Figure 2.2</span></div>
+  
+  <div class="flow"><pre class="mermaid">flowchart TD
+  S([Reminders on,&lt;br/&gt;app closed]) --&gt; J[Every 5 minutes: Supabase runs&lt;br/&gt;send-reminders with the same rules,&lt;br/&gt;in each device's time zone]
+  J --&gt; K{Already sent?}
+  K -- Yes --&gt; K1([Skip it])
+  K -- No --&gt; L[Web push notification&lt;br/&gt;to the phone]
+  L --&gt; M{Owner taps it?}
+  M -- Yes --&gt; N[App opens on the pet's care tab&lt;br/&gt;or the vet visits page]
+  M -- No --&gt; X([End])
+  N --&gt; X
+  classDef conn fill:#fff4d6,stroke:#c99a1c,color:#7a5a00,font-weight:bold
+  classDef link fill:#f1ece4,stroke:#8a8272</pre></div>
+</section>
+<section class="page">
+  <div class="uc-head"><span class="tag">UC4</span><h2>Receive Notifications: unit tests</h2></div>
+  <h3>Functional requirements</h3>
+  <table class="frs"><tbody><tr><td class="k">FR4.1</td><td>Work out which reminders are due: meals from 15 minutes before mealtime until ticked as fed, tasks due today or overdue, and vet visits also the day before.</td><td class="num">3/3 passed</td></tr><tr><td class="k">FR4.2</td><td>Announce each reminder only once on each device.</td><td class="num">1/1 passed</td></tr><tr><td class="k">FR4.3</td><td>Owners can turn reminders on or off in Profile.</td><td class="num">1/1 passed</td></tr></tbody></table>
+  <p class="code">Code under test: src/lib/reminders.js, src/components/Reminders.jsx, supabase/functions/send-reminders (web push, every 5 minutes)</p>
+  <h3>Test cases (5 of 5 passed)</h3>
+  <table class="tests"><thead><tr><th>Test ID</th><th>Req.</th><th>Test case and expected result</th><th>Result</th></tr></thead><tbody>
+  <tr><td class="k">UC4-T01</td><td>FR4.1</td><td>A meal reminder starts 15 minutes before mealtime, and stops once the meal is ticked as fed</td><td class="res passed">Passed</td></tr><tr><td class="k">UC4-T02</td><td>FR4.1</td><td>Tasks remind when due today or overdue (overdue first); vet visits also remind the day before</td><td class="res passed">Passed</td></tr><tr><td class="k">UC4-T03</td><td>FR4.1</td><td>A vaccine due today from the vaccination records reminds, and opens the pet's vaccines tab</td><td class="res passed">Passed</td></tr><tr><td class="k">UC4-T04</td><td>FR4.2</td><td>Each reminder has its own key, and announced reminders are remembered per user (kept 3 days)</td><td class="res passed">Passed</td></tr><tr><td class="k">UC4-T05</td><td>FR4.3</td><td>Turning reminders off saves the choice to the owner's profile</td><td class="res passed">Passed</td></tr>
+  </tbody></table>
+  
+</section>
+
+
+<section class="page">
+  <div class="uc-head"><span class="tag">UC5</span><h2>View Breed Care Tips</h2><span class="src">Figure 2.2</span></div>
+  <p class="lead">The owner reads care tips for their pet's breed: feeding, exercise, grooming, behavior, health risks and healthy weight.</p>
+  <div class="flow"><pre class="mermaid">flowchart TD
+  S([Start]) --&gt; A{Opened from}
+  A -- Breed guide menu --&gt; B[List of cat and dog breeds]
+  B --&gt; C[/Search, or filter: All breeds,&lt;br/&gt;Dogs, Cats, My pets' breeds/]
+  C --&gt; D[Owner opens a breed]
+  A -- Pet profile --&gt; E{Breed in&lt;br/&gt;the guide?}
+  E -- No --&gt; E1[Breed shown as typed,&lt;br/&gt;no guide link] --&gt; X([End])
+  E -- Yes --&gt; F[Breed guide link] --&gt; D
+  D --&gt; G[Summary, traits, healthy weight&lt;br/&gt;and life span, health risks]
+  G --&gt; H[Feeding, exercise, grooming&lt;br/&gt;and behavior tips]
+  H --&gt; X
+  classDef conn fill:#fff4d6,stroke:#c99a1c,color:#7a5a00,font-weight:bold
+  classDef link fill:#f1ece4,stroke:#8a8272</pre></div>
+</section>
+<section class="page">
+  <div class="uc-head"><span class="tag">UC5</span><h2>View Breed Care Tips: unit tests</h2></div>
+  <h3>Functional requirements</h3>
+  <table class="frs"><tbody><tr><td class="k">FR5.1</td><td>Match a pet's breed, or one of its other names (for example Aspin, Puspin), to the breed guide.</td><td class="num">4/4 passed</td></tr><tr><td class="k">FR5.2</td><td>Every breed has feeding, exercise, grooming and behavior tips, health risks, traits, and a healthy weight and life span range.</td><td class="num">3/3 passed</td></tr></tbody></table>
+  <p class="code">Code under test: src/lib/breeds.js, src/lib/breedCare.js, src/pages/Breeds.jsx, src/pages/PetDetail.jsx</p>
+  <h3>Test cases (7 of 7 passed)</h3>
+  <table class="tests"><thead><tr><th>Test ID</th><th>Req.</th><th>Test case and expected result</th><th>Result</th></tr></thead><tbody>
+  <tr><td class="k">UC5-T01</td><td>FR5.1</td><td>A pet's breed is matched to the guide ignoring letter case and extra spaces</td><td class="res passed">Passed</td></tr><tr><td class="k">UC5-T02</td><td>FR5.1</td><td>A breed is also matched by its other names (Aspin, Puspin)</td><td class="res passed">Passed</td></tr><tr><td class="k">UC5-T03</td><td>FR5.1</td><td>A cat breed is not matched for a dog, and an unknown or empty breed gives no tips</td><td class="res passed">Passed</td></tr><tr><td class="k">UC5-T04</td><td>FR5.1</td><td>The pet form suggests only breeds of the chosen species</td><td class="res passed">Passed</td></tr><tr><td class="k">UC5-T05</td><td>FR5.2</td><td>Every breed in the guide (29) has feeding, exercise, grooming and behavior tips</td><td class="res passed">Passed</td></tr><tr><td class="k">UC5-T06</td><td>FR5.2</td><td>Every breed has health risks, care tips, traits rated 1 to 5, and a healthy weight and life span range</td><td class="res passed">Passed</td></tr><tr><td class="k">UC5-T07</td><td>FR5.2</td><td>Each breed page has its own address (slug) and opens by it</td><td class="res passed">Passed</td></tr>
+  </tbody></table>
+  
+</section>
+
+
+<section class="page">
+  <div class="uc-head"><span class="tag">UC6</span><h2>Open Emergency Guide</h2><span class="src">Figure 2.2</span></div>
+  <p class="lead">In an emergency the owner opens step-by-step first aid while getting to a vet.</p>
+  <div class="flow"><pre class="mermaid">flowchart TD
+  S([Start]) --&gt; A[Emergency page]
+  A --&gt; B[Shows: call your vet now,&lt;br/&gt;and the go to a vet now warning signs]
+  B --&gt; C{Owner chooses}
+  qA((A)) --&gt; C
+  C -- Find a vet near me --&gt; UC7[[Locate Veterinary Clinic, UC7]]
+  C -- Pet's emergency card --&gt; D[Allergies, medicines and&lt;br/&gt;vaccines to show the vet]
+  C -- A guide --&gt; E[/Search, or pick an emergency type/]
+  E --&gt; F[Open the guide]
+  F --&gt; G{How urgent?}
+  G -- Go to a vet now --&gt; H[Red label: Go to a vet now]
+  G -- Call your vet --&gt; I[Label: Call your vet]
+  H &amp; I --&gt; J[Warning signs, numbered steps,&lt;br/&gt;what not to do, lists such as&lt;br/&gt;common poisons]
+  J --&gt; K[Back to Emergency guides] --&gt; rA((A))
+  D --&gt; X([End])
+  classDef conn fill:#fff4d6,stroke:#c99a1c,color:#7a5a00,font-weight:bold
+  class qA,rA conn
+  classDef link fill:#f1ece4,stroke:#8a8272
+  class UC7 link</pre></div>
+</section>
+<section class="page">
+  <div class="uc-head"><span class="tag">UC6</span><h2>Open Emergency Guide: unit tests</h2></div>
+  <h3>Functional requirements</h3>
+  <table class="frs"><tbody><tr><td class="k">FR6.1</td><td>Provide step-by-step first-aid guides for common emergencies, each with warning signs, steps, what not to do, and how urgent it is. The 8 emergencies named in the proposal are covered.</td><td class="num">2/2 passed</td></tr><tr><td class="k">FR6.2</td><td>Group the guides into 7 types, make them searchable, and include a common poisons list and the 'go to a vet now' warning signs.</td><td class="num">4/4 passed</td></tr><tr><td class="k">FR6.3</td><td>Recognise emergency wording in a question (for example 'ate chocolate', 'not breathing') and bring up the matching guide.</td><td class="num">1/1 passed</td></tr></tbody></table>
+  <p class="code">Code under test: src/lib/emergency.js, src/pages/Emergency.jsx</p>
+  <h3>Test cases (7 of 7 passed)</h3>
+  <table class="tests"><thead><tr><th>Test ID</th><th>Req.</th><th>Test case and expected result</th><th>Result</th></tr></thead><tbody>
+  <tr><td class="k">UC6-T01</td><td>FR6.1</td><td>Every first-aid guide (16) has signs, numbered steps, what not to do, and an urgency</td><td class="res passed">Passed</td></tr><tr><td class="k">UC6-T02</td><td>FR6.1</td><td>The 8 emergencies named in the proposal each have a guide</td><td class="res passed">Passed</td></tr><tr><td class="k">UC6-T03</td><td>FR6.2</td><td>The poisoning guide lists common poisons (chocolate, grapes, onions)</td><td class="res passed">Passed</td></tr><tr><td class="k">UC6-T04</td><td>FR6.2</td><td>Every guide belongs to one of the 7 emergency types, and every type has a guide</td><td class="res passed">Passed</td></tr><tr><td class="k">UC6-T05</td><td>FR6.2</td><td>Guides open by their address, and each address is unique</td><td class="res passed">Passed</td></tr><tr><td class="k">UC6-T06</td><td>FR6.2</td><td>The 'go to a vet now' warning signs list is shown</td><td class="res passed">Passed</td></tr><tr><td class="k">UC6-T07</td><td>FR6.3</td><td>Emergency wording brings up the right guide first</td><td class="res passed">Passed</td></tr>
+  </tbody></table>
+  
+</section>
+
+
+<section class="page">
+  <div class="uc-head"><span class="tag">UC7</span><h2>Locate Veterinary Clinic<span class="part">Flowchart, Part a: getting the owner's location</span></h2><span class="src">Figure 2.2</span></div>
+  <p class="lead">The owner finds vet clinics near them, with opening hours, nearest first.</p>
+  <div class="flow"><pre class="mermaid">flowchart TD
+  S([Start]) --&gt; A[Open Find a vet: from Emergency,&lt;br/&gt;Vet visits, Dashboard or menu]
+  A --&gt; B{Location&lt;br/&gt;allowed?}
+  B -- Yes --&gt; L[Read the phone's location]
+  B -- No --&gt; C{Address or city&lt;br/&gt;saved?}
+  C -- Yes --&gt; G[Turn the address into a location:&lt;br/&gt;TomTom, Philippines only]
+  G --&gt; G1{Found?}
+  G1 -- No --&gt; G2([Show: couldn't find&lt;br/&gt;that address])
+  G1 -- Yes --&gt; F
+  C -- No --&gt; D[Owner taps Use my location]
+  D --&gt; E{Owner&lt;br/&gt;allows?}
+  E -- No --&gt; E1([Show how to allow it,&lt;br/&gt;or add an address in Profile])
+  E -- Yes --&gt; L
+  L --&gt; F[Send the location to&lt;br/&gt;the find-clinics function]
+  F --&gt; UC7b[[Search and show clinics, UC7 part b]]
+  classDef conn fill:#fff4d6,stroke:#c99a1c,color:#7a5a00,font-weight:bold
+  classDef link fill:#f1ece4,stroke:#8a8272
+  class UC7b link</pre></div>
+</section>
+<section class="page">
+  <div class="uc-head"><span class="tag">UC7</span><h2>Locate Veterinary Clinic<span class="part">Flowchart, Part b: searching and showing clinics</span></h2><span class="src">Figure 2.2</span></div>
+  
+  <div class="flow"><pre class="mermaid">flowchart TD
+  S([Location received]) --&gt; H{Logged in?}
+  H -- No --&gt; H1([Show: Please log in])
+  H -- Yes --&gt; I{Saved search for&lt;br/&gt;this area this week?}
+  I -- Yes --&gt; P[Use the saved clinics]
+  I -- No --&gt; J[TomTom: veterinarians&lt;br/&gt;within 10 km]
+  J --&gt; K{Fewer than 5?}
+  K -- Yes --&gt; K1[Search again&lt;br/&gt;within 25 km] --&gt; M
+  K -- No --&gt; M[Leave out bite centers and shops,&lt;br/&gt;merge duplicates, save for a week]
+  M --&gt; P
+  P --&gt; Q[Map and list, nearest first:&lt;br/&gt;distance, and Open now, Closed&lt;br/&gt;or Hours not listed]
+  Q --&gt; R[/Filter: All, Open now, 24 hours/]
+  R --&gt; T[Owner taps a clinic: pin&lt;br/&gt;highlighted, week's hours shown]
+  T --&gt; UC8[[Call / Navigate to Clinic, UC8]]
+  classDef conn fill:#fff4d6,stroke:#c99a1c,color:#7a5a00,font-weight:bold
+  classDef link fill:#f1ece4,stroke:#8a8272
+  class UC8 link</pre></div>
+</section>
+<section class="page">
+  <div class="uc-head"><span class="tag">UC7</span><h2>Locate Veterinary Clinic: unit tests</h2></div>
+  <h3>Functional requirements</h3>
+  <table class="frs"><tbody><tr><td class="k">FR7.1</td><td>Find vet clinics near the phone's location, or near the address (or city) saved in Profile when location is off.</td><td class="num">5/5 passed</td></tr><tr><td class="k">FR7.2</td><td>List only vet clinics: animal-bite centers, health centers and supply stores are left out, and a clinic listed twice is shown once.</td><td class="num">2/2 passed</td></tr><tr><td class="k">FR7.3</td><td>List clinics nearest first, with the distance.</td><td class="num">1/1 passed</td></tr><tr><td class="k">FR7.4</td><td>Show each clinic's opening hours for the week and whether it is open now; say so when hours are not listed.</td><td class="num">3/3 passed</td></tr><tr><td class="k">FR7.5</td><td>Widen the search to 25 km when fewer than 5 clinics are within 10 km, and reuse a search for the same ~1 km area for a week.</td><td class="num">2/2 passed</td></tr></tbody></table>
+  <p class="code">Code under test: src/pages/Clinics.jsx, src/lib/clinics.js, supabase/functions/find-clinics (TomTom Places Search)</p>
+  <h3>Test cases (13 of 13 passed)</h3>
+  <table class="tests"><thead><tr><th>Test ID</th><th>Req.</th><th>Test case and expected result</th><th>Result</th></tr></thead><tbody>
+  <tr><td class="k">UC7-T01</td><td>FR7.1</td><td>A search near a location asks TomTom for veterinarians within 10 km, with the key in a header, not the URL</td><td class="res passed">Passed</td></tr><tr><td class="k">UC7-T02</td><td>FR7.1</td><td>An address from Profile is turned into a location (Philippines only); an unknown address says so</td><td class="res passed">Passed</td></tr><tr><td class="k">UC7-T03</td><td>FR7.1</td><td>The app sends the phone's location to the find-clinics function and shows its error messages</td><td class="res passed">Passed</td></tr><tr><td class="k">UC7-T04</td><td>FR7.1</td><td>Offline, the search says to connect instead of failing silently</td><td class="res passed">Passed</td></tr><tr><td class="k">UC7-T05</td><td>FR7.1</td><td>The phone's location is read once; if location is blocked, the owner is told how to fix it</td><td class="res passed">Passed</td></tr><tr><td class="k">UC7-T06</td><td>FR7.2</td><td>Animal-bite centers, health centers and supply stores are left out; clinics that also sell supplies stay</td><td class="res passed">Passed</td></tr><tr><td class="k">UC7-T07</td><td>FR7.2</td><td>The same clinic listed twice nearby is shown once, keeping the listing with hours</td><td class="res passed">Passed</td></tr><tr><td class="k">UC7-T08</td><td>FR7.3</td><td>Distances are worked out from the owner's location and shown in m or km</td><td class="res passed">Passed</td></tr><tr><td class="k">UC7-T09</td><td>FR7.4</td><td>TomTom's dated hours become a weekly timetable; no hours means 'not listed'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC7-T10</td><td>FR7.4</td><td>Open now: at 10 AM Thursday a 8-5 clinic is open until 5; at 6 PM it opens 8 AM tomorrow; Saturday night it opens Monday</td><td class="res passed">Passed</td></tr><tr><td class="k">UC7-T11</td><td>FR7.4</td><td>A clinic open 00:00-23:59 every day shows 'Open 24 hours'; one without hours shows 'Hours not listed'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC7-T12</td><td>FR7.5</td><td>With fewer than 5 clinics within 10 km, the search widens to 25 km</td><td class="res passed">Passed</td></tr><tr><td class="k">UC7-T13</td><td>FR7.5</td><td>Owners within the same ~1 km area share one saved search, so TomTom is asked only once</td><td class="res passed">Passed</td></tr>
+  </tbody></table>
+  
+</section>
+
+
+<section class="page">
+  <div class="uc-head"><span class="tag">UC8</span><h2>Call / Navigate to Clinic</h2><span class="src">Figure 2.2</span></div>
+  <p class="lead">From a clinic in the list, the owner gets directions or calls it.</p>
+  <div class="flow"><pre class="mermaid">flowchart TD
+  S([Start]) --&gt; A[Clinic in the Find a vet list]
+  A --&gt; B{Owner taps}
+  B -- Directions --&gt; C{Clinics found&lt;br/&gt;from}
+  C -- Phone's location --&gt; D[Google Maps opens with the route&lt;br/&gt;from where the phone is]
+  C -- Saved address --&gt; E[Google Maps opens with the route&lt;br/&gt;from the saved address]
+  D &amp; E --&gt; F[Owner follows the route&lt;br/&gt;in Google Maps]
+  B -- Call --&gt; G{Has a phone&lt;br/&gt;number?}
+  G -- No --&gt; G1[No Call button:&lt;br/&gt;use Directions instead]
+  G -- Yes --&gt; H[Phone dialer opens&lt;br/&gt;with the number]
+  F &amp; G1 &amp; H --&gt; X([End])
+  classDef conn fill:#fff4d6,stroke:#c99a1c,color:#7a5a00,font-weight:bold
+  classDef link fill:#f1ece4,stroke:#8a8272</pre></div>
+</section>
+<section class="page">
+  <div class="uc-head"><span class="tag">UC8</span><h2>Call / Navigate to Clinic: unit tests</h2></div>
+  <h3>Functional requirements</h3>
+  <table class="frs"><tbody><tr><td class="k">FR8.1</td><td>Directions open Google Maps (the app on phones) with the route to the clinic: from the phone's location, or from the saved address when that was used.</td><td class="num">2/2 passed</td></tr><tr><td class="k">FR8.2</td><td>Call opens the phone's dialer with the clinic's number.</td><td class="num">1/1 passed</td></tr></tbody></table>
+  <p class="code">Code under test: src/lib/clinics.js (directionsUrl, telUrl), src/pages/Clinics.jsx</p>
+  <h3>Test cases (3 of 3 passed)</h3>
+  <table class="tests"><thead><tr><th>Test ID</th><th>Req.</th><th>Test case and expected result</th><th>Result</th></tr></thead><tbody>
+  <tr><td class="k">UC8-T01</td><td>FR8.1</td><td>Directions open Google Maps with the clinic as the destination, starting from the phone's location</td><td class="res passed">Passed</td></tr><tr><td class="k">UC8-T02</td><td>FR8.1</td><td>When searching from a saved address, directions start from that address</td><td class="res passed">Passed</td></tr><tr><td class="k">UC8-T03</td><td>FR8.2</td><td>Call dials the clinic's number with spaces and dashes removed</td><td class="res passed">Passed</td></tr>
+  </tbody></table>
+  
+</section>
+
+
+<section class="page">
+  <div class="uc-head"><span class="tag">UC9</span><h2>Manage Account Settings<span class="part">Flowchart, Part a: personal information</span></h2><span class="src">Figure 2.2</span></div>
+  <p class="lead">The owner updates their details and password, and turns reminders on or off.</p>
+  <div class="flow"><pre class="mermaid">flowchart TD
+  S([Start]) --&gt; A[Profile page]
+  A --&gt; C[/Name, email, phone,&lt;br/&gt;city, address/]
+  qA((A)) --&gt; C
+  C --&gt; D{Name and&lt;br/&gt;email valid?}
+  D -- No --&gt; D1[Show the error] --&gt; rA1((A))
+  D -- Yes --&gt; E{Shared account,&lt;br/&gt;new email?}
+  E -- Yes --&gt; E1[Show: this shared account's&lt;br/&gt;email can't be changed] --&gt; rA2((A))
+  E -- No --&gt; F[Details saved]
+  F --&gt; G{Email changed?}
+  G -- Yes --&gt; G1[Confirmation link sent&lt;br/&gt;to the new email] --&gt; X([End])
+  G -- No --&gt; X
+  classDef conn fill:#fff4d6,stroke:#c99a1c,color:#7a5a00,font-weight:bold
+  class qA,rA1,rA2 conn
+  classDef link fill:#f1ece4,stroke:#8a8272</pre></div>
+</section>
+<section class="page">
+  <div class="uc-head"><span class="tag">UC9</span><h2>Manage Account Settings<span class="part">Flowchart, Part b: change password</span></h2><span class="src">Figure 2.2</span></div>
+  
+  <div class="flow"><pre class="mermaid">flowchart TD
+  S([Start]) --&gt; A[Profile page: Change password]
+  A --&gt; H{Shared account?}
+  H -- Yes --&gt; H1([Show: this shared account's&lt;br/&gt;password can't be changed])
+  H -- No --&gt; I[/Current, new and&lt;br/&gt;confirm password/]
+  qB((B)) --&gt; I
+  I --&gt; J{8+ characters&lt;br/&gt;and match?}
+  J -- No --&gt; J1[Show the error] --&gt; rB1((B))
+  J -- Yes --&gt; K{Current password&lt;br/&gt;correct?}
+  K -- No --&gt; K1[Show: Current password&lt;br/&gt;is incorrect] --&gt; rB2((B))
+  K -- Yes --&gt; L[New password saved] --&gt; X([End])
+  classDef conn fill:#fff4d6,stroke:#c99a1c,color:#7a5a00,font-weight:bold
+  class qB,rB1,rB2 conn
+  classDef link fill:#f1ece4,stroke:#8a8272</pre></div>
+</section>
+<section class="page">
+  <div class="uc-head"><span class="tag">UC9</span><h2>Manage Account Settings<span class="part">Flowchart, Part c: reminders and log out</span></h2><span class="src">Figure 2.2</span></div>
+  
+  <div class="flow"><pre class="mermaid">flowchart TD
+  S([Start]) --&gt; A[Profile page]
+  A --&gt; B{Owner chooses}
+  B -- Log out --&gt; UC1[[Register / Login, UC1]]
+  B -- Reminders switch --&gt; M[On or off saved&lt;br/&gt;to the profile]
+  M --&gt; M1{On, and notifications&lt;br/&gt;not yet allowed?}
+  M1 -- No --&gt; X([End])
+  M1 -- Yes --&gt; M2[Owner taps Allow notifications,&lt;br/&gt;the browser asks permission]
+  M2 --&gt; M3{Allowed?}
+  M3 -- Yes --&gt; M4[Device registered for alerts&lt;br/&gt;when the app is closed] --&gt; X
+  M3 -- No --&gt; M5[Alerts only while&lt;br/&gt;the app is open] --&gt; X
+  classDef conn fill:#fff4d6,stroke:#c99a1c,color:#7a5a00,font-weight:bold
+  classDef link fill:#f1ece4,stroke:#8a8272
+  class UC1 link</pre></div>
+</section>
+<section class="page">
+  <div class="uc-head"><span class="tag">UC9</span><h2>Manage Account Settings: unit tests</h2></div>
+  <h3>Functional requirements</h3>
+  <table class="frs"><tbody><tr><td class="k">FR9.1</td><td>Update name, email, phone, city and address. Name is required and the email must be valid; a new email changes only after its confirmation link is opened.</td><td class="num">4/4 passed</td></tr><tr><td class="k">FR9.2</td><td>Change the password: at least 8 characters, typed twice, and the current password must be correct.</td><td class="num">3/3 passed</td></tr><tr><td class="k">FR9.3</td><td>The shared demo and sample accounts can't change their password or email.</td><td class="num">2/2 passed</td></tr></tbody></table>
+  <p class="code">Code under test: src/pages/Profile.jsx, src/store/StoreContext.jsx (updateUser, changePassword, setNotifications)</p>
+  <h3>Test cases (9 of 9 passed)</h3>
+  <table class="tests"><thead><tr><th>Test ID</th><th>Req.</th><th>Test case and expected result</th><th>Result</th></tr></thead><tbody>
+  <tr><td class="k">UC9-T01</td><td>FR9.1</td><td>Saving the profile with an empty name shows 'Name can't be empty.'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC9-T02</td><td>FR9.1</td><td>Saving the profile with an invalid email shows 'Please enter a valid email address.'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC9-T03</td><td>FR9.1</td><td>Name, phone, city and address are saved (trimmed) to the owner's profile</td><td class="res passed">Passed</td></tr><tr><td class="k">UC9-T04</td><td>FR9.1</td><td>Changing the email sends a confirmation link to the new address first</td><td class="res passed">Passed</td></tr><tr><td class="k">UC9-T05</td><td>FR9.2</td><td>A new password under 8 characters, or not matching, is refused</td><td class="res passed">Passed</td></tr><tr><td class="k">UC9-T06</td><td>FR9.2</td><td>A wrong current password shows 'Current password is incorrect.'</td><td class="res passed">Passed</td></tr><tr><td class="k">UC9-T07</td><td>FR9.2</td><td>With the right current password, the new password is saved</td><td class="res passed">Passed</td></tr><tr><td class="k">UC9-T08</td><td>FR9.3</td><td>The shared demo account can't change its password or email</td><td class="res passed">Passed</td></tr><tr><td class="k">UC9-T09</td><td>FR9.3</td><td>The sample accounts (sample.*@example.com) are shared too and can't change their password</td><td class="res passed">Passed</td></tr>
+  </tbody></table>
+  
+</section>
+
+
+<section class="page">
+  <div class="uc-head"><span class="tag">UC10</span><h2>Ask FurFriends (AI assistant)<span class="part">Flowchart, Part a: safety rules before the AI</span></h2><span class="src">Added during development, not in Figure 2.2</span></div>
+  <p class="lead">The owner asks a pet-care question in English, Tagalog or Taglish and gets an answer from checked sources.</p>
+  <div class="flow"><pre class="mermaid">flowchart TD
+  S([Start]) --&gt; A[/Owner asks a question:&lt;br/&gt;English, Tagalog or Taglish/]
+  A --&gt; U{Emergency&lt;br/&gt;wording?}
+  U -- Yes --&gt; U1[Red box links to the first-aid guide;&lt;br/&gt;the guide is given to the AI first]
+  U -- No --&gt; B{Greeting, thanks&lt;br/&gt;or dose question?}
+  U1 --&gt; B
+  B -- Yes --&gt; B1[Short reply, or: I can't give doses,&lt;br/&gt;only a vet can prescribe] --&gt; X([End])
+  B -- No --&gt; C{Weight or breed&lt;br/&gt;question, pet chosen?}
+  C -- Yes --&gt; C1[Answer from the breed guide,&lt;br/&gt;using the pet's own weight] --&gt; X
+  C -- No --&gt; UC10b[[Writing the answer, UC10 part b]]
+  classDef conn fill:#fff4d6,stroke:#c99a1c,color:#7a5a00,font-weight:bold
+  classDef link fill:#f1ece4,stroke:#8a8272
+  class UC10b link</pre></div>
+</section>
+<section class="page">
+  <div class="uc-head"><span class="tag">UC10</span><h2>Ask FurFriends (AI assistant)<span class="part">Flowchart, Part b: writing the answer</span></h2><span class="src">Added during development, not in Figure 2.2</span></div>
+  
+  <div class="flow"><pre class="mermaid">flowchart TD
+  S([Question not answered&lt;br/&gt;by a rule]) --&gt; D[Search on the device:&lt;br/&gt;2 closest checked passages]
+  D --&gt; E[FurFriends AI on Vercel writes&lt;br/&gt;the answer from the 2 passages]
+  E --&gt; F{AI answered?}
+  F -- Yes --&gt; G[Show the answer, both sources&lt;br/&gt;and rating buttons]
+  F -- No: offline, limit used up,&lt;br/&gt;or not in the passages --&gt; H{Checked answer&lt;br/&gt;close enough?}
+  H -- Yes --&gt; I[Show the checked answer&lt;br/&gt;with its source]
+  H -- No --&gt; J[Say there is no checked answer&lt;br/&gt;yet, offer similar questions]
+  G &amp; I &amp; J --&gt; X([End])
+  classDef conn fill:#fff4d6,stroke:#c99a1c,color:#7a5a00,font-weight:bold
+  classDef link fill:#f1ece4,stroke:#8a8272</pre></div>
+</section>
+<section class="page">
+  <div class="uc-head"><span class="tag">UC10</span><h2>Ask FurFriends (AI assistant): unit tests</h2></div>
+  <h3>Functional requirements</h3>
+  <table class="frs"><tbody><tr><td class="k">FR10.1</td><td>Never give medicine doses; dose questions get 'only a vet can prescribe' advice.</td><td class="num">2/2 passed</td></tr><tr><td class="k">FR10.2</td><td>Give a short reply to greetings and thanks, and understand common Tagalog words.</td><td class="num">2/2 passed</td></tr></tbody></table>
+  <p class="code">Code under test: src/lib/knowledge.js, src/lib/assistant.js, src/pages/Assistant.jsx, api/ask.py</p>
+  <h3>Test cases (4 of 4 passed)</h3>
+  <table class="tests"><thead><tr><th>Test ID</th><th>Req.</th><th>Test case and expected result</th><th>Result</th></tr></thead><tbody>
+  <tr><td class="k">UC10-T01</td><td>FR10.1</td><td>Questions asking for a medicine dose are refused with 'see a vet' advice, whatever the wording</td><td class="res passed">Passed</td></tr><tr><td class="k">UC10-T02</td><td>FR10.1</td><td>Ordinary care questions are not blocked by the dose rule</td><td class="res passed">Passed</td></tr><tr><td class="k">UC10-T03</td><td>FR10.2</td><td>Greetings and thanks (English or Tagalog) get a short reply instead of a search</td><td class="res passed">Passed</td></tr><tr><td class="k">UC10-T04</td><td>FR10.2</td><td>Tagalog words are turned into English before searching</td><td class="res passed">Passed</td></tr>
+  </tbody></table>
+  <p class="note">These tests cover the assistant's fixed safety rules. How accurate the AI's own answers are is measured separately, with the 31 held-out questions graded by the team (ai-server/evaluate.py).</p>
+</section>
+
+
+<section class="page">
+  <div class="uc-head"><span class="tag">UC11</span><h2>Usability survey</h2><span class="src">Added during development, not in Figure 2.2</span></div>
+  <p class="lead">A tester fills in the System Usability Scale (SUS) survey after trying the app, for the thesis results.</p>
+  <div class="flow"><pre class="mermaid">flowchart TD
+  S([Start]) --&gt; A[Survey page]
+  A --&gt; B[/Participant code, device, task results,&lt;br/&gt;10 SUS statements, comments/]
+  qA((A)) --&gt; B
+  B --&gt; C{All 10&lt;br/&gt;answered?}
+  C -- No --&gt; C1[Show which statements&lt;br/&gt;are missing] --&gt; rA((A))
+  C -- Yes --&gt; D{Shared&lt;br/&gt;account?}
+  D -- Yes --&gt; D1[Show: this shared account&lt;br/&gt;can't send survey answers]
+  D -- No --&gt; E[Saved to usability_responses;&lt;br/&gt;SUS score computed by the database]
+  E --&gt; F[Thank-you message]
+  D1 &amp; F --&gt; X([End])
+  classDef conn fill:#fff4d6,stroke:#c99a1c,color:#7a5a00,font-weight:bold
+  class qA,rA conn
+  classDef link fill:#f1ece4,stroke:#8a8272</pre></div>
+</section>
+<section class="page">
+  <div class="uc-head"><span class="tag">UC11</span><h2>Usability survey: unit tests</h2></div>
+  <h3>Functional requirements</h3>
+  <table class="frs"><tbody><tr><td class="k">FR11.1</td><td>Collect the 10 standard SUS statements and compute the SUS score the standard way; shared demo accounts can't send answers.</td><td class="num">3/3 passed</td></tr></tbody></table>
+  <p class="code">Code under test: src/lib/survey.js, src/pages/Survey.jsx, table usability_responses</p>
+  <h3>Test cases (3 of 3 passed)</h3>
+  <table class="tests"><thead><tr><th>Test ID</th><th>Req.</th><th>Test case and expected result</th><th>Result</th></tr></thead><tbody>
+  <tr><td class="k">UC11-T01</td><td>FR11.1</td><td>The survey has the 10 standard SUS statements</td><td class="res passed">Passed</td></tr><tr><td class="k">UC11-T02</td><td>FR11.1</td><td>The SUS score is computed the standard way (all 3s = 50; best answers = 100; worst = 0)</td><td class="res passed">Passed</td></tr><tr><td class="k">UC11-T03</td><td>FR11.1</td><td>Shared demo accounts can't send survey answers</td><td class="res passed">Passed</td></tr>
+  </tbody></table>
+  
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, securityLevel: "loose", theme: "base", fontFamily: "Segoe UI, Arial, sans-serif",
+    themeVariables: { primaryColor: "#e3f1ec", primaryBorderColor: "#1f6f5a", primaryTextColor: "#123d33", lineColor: "#5b625e", fontSize: "15px", edgeLabelBackground: "#ffffff" },
+    flowchart: { htmlLabels: true, curve: "basis", nodeSpacing: 26, rankSpacing: 34, useMaxWidth: true, padding: 8 } });
+</script>
+</body></html>

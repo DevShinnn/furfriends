@@ -28,12 +28,72 @@ def merge(base, adapter, out):
     model = AutoModelForCausalLM.from_pretrained(base, dtype=torch.float32)
     model = PeftModel.from_pretrained(model, adapter).merge_and_unload()
     model.save_pretrained(out)
-    AutoTokenizer.from_pretrained(adapter if os.path.exists(os.path.join(adapter, "tokenizer_config.json")) else base).save_pretrained(out)
+    tokenizer_for(base, adapter).save_pretrained(out)
+
+
+def tokenizer_for(base, adapter):
+    """The adapter's tokenizer, if this transformers can read it. train_lora.py with transformers 5 saves it in a form
+    4.x can't read; then the base model's is used, after checking it is the same (vocabulary with special tokens,
+    and chat format). Checked on rag-v6 (2026-11-13): all 183,307 tokens of its training text came out identical."""
+    if not os.path.exists(os.path.join(adapter, "tokenizer_config.json")):
+        return AutoTokenizer.from_pretrained(base)
+    try:
+        return AutoTokenizer.from_pretrained(adapter)
+    except Exception as e:
+        from tokenizers import Tokenizer
+        tok = AutoTokenizer.from_pretrained(base)
+        mine = Tokenizer.from_file(os.path.join(adapter, "tokenizer.json"))
+        jinja = os.path.join(adapter, "chat_template.jinja")
+        same_vocab = mine.get_vocab(with_added_tokens=True) == tok.backend_tokenizer.get_vocab(with_added_tokens=True)
+        same_chat = not os.path.exists(jinja) or open(jinja, encoding="utf-8").read().strip() == (tok.chat_template or "").strip()
+        if not (same_vocab and same_chat):
+            raise SystemExit(f"Can't read the tokenizer in {adapter} ({e}), and it differs from {base}'s: export with the "
+                             "transformers version it was trained with.")
+        print(f"  The adapter's tokenizer was saved by a newer transformers ({type(e).__name__}); using {base}'s, which is the same.")
+        return tok
 
 
 def export(merged, out):
     from optimum.exporters.onnx import main_export
     main_export(merged, output=out, task="text-generation-with-past", device="cpu")
+
+
+def rope_theta(cfg):
+    """The positions setting, as transformers 4 (top level) or 5 (inside rope_parameters) saves it."""
+    return cfg.get("rope_theta") or (cfg.get("rope_parameters") or {}).get("rope_theta")
+
+
+def check_merged(base, merged):
+    """Stops before exporting if optimum's transformers (4.x) would misread the merged model: transformers 5 saves
+    rope_theta inside rope_parameters, where 4.x doesn't look, so it used its default 10000 instead of Qwen2.5's
+    1000000 and the exported model got the wrong word positions (2026-11-13, rag-v6). Merge and export with the
+    same Python (the one optimum works with, C:\\Python312 on the team laptop)."""
+    from transformers import AutoConfig
+    want = rope_theta(AutoConfig.from_pretrained(base).to_dict())
+    cfg = json.load(open(os.path.join(merged, "config.json"), encoding="utf-8"))
+    if cfg.get("rope_theta") != want:
+        raise SystemExit(f"{merged}/config.json has rope_theta {cfg.get('rope_theta')} at the top level, not {want}: it was "
+                         "merged with another transformers than this one. Delete the export folder and run export_onnx.py "
+                         "again with the Python that has optimum (see the top of this file).")
+
+
+def check_export(base, out):
+    """Stops if the export lost something the app needs: the base model's positions setting, the tokenizer, or
+    the chat format (all three went missing in a mixed-version export on 2026-11-13)."""
+    from transformers import AutoConfig
+    want = rope_theta(AutoConfig.from_pretrained(base).to_dict())
+    problems = []
+    cfg = json.load(open(os.path.join(out, "config.json"), encoding="utf-8"))
+    if cfg.get("rope_theta") != want:
+        problems.append(f"config.json has rope_theta {cfg.get('rope_theta')}, the base model {want}")
+    for f in ("tokenizer.json", "tokenizer_config.json"):
+        if not os.path.exists(os.path.join(out, f)):
+            problems.append(f"{f} is missing")
+    tok = os.path.join(out, "tokenizer_config.json")
+    if os.path.exists(tok) and not json.load(open(tok, encoding="utf-8")).get("chat_template"):
+        problems.append("tokenizer_config.json has no chat_template")
+    if problems:
+        raise SystemExit("The export is not usable: " + "; ".join(problems) + ". The in-between files are kept to look at.")
 
 
 def fold_transposes(model):
@@ -116,6 +176,7 @@ def main():
     if not os.path.exists(os.path.join(merged, "config.json")):
         print("1/3 Merging the adapter ...")
         merge(args.base, args.adapter, merged)
+    check_merged(args.base, merged)
     if not os.path.exists(os.path.join(full, "model.onnx")):
         print("2/3 Exporting to ONNX ...")
         export(merged, full)
@@ -138,6 +199,7 @@ def main():
         cfg = json.load(open(cfg_path, encoding="utf-8"))
         cfg["chat_template"] = open(jinja, encoding="utf-8").read()
         json.dump(cfg, open(cfg_path, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    check_export(args.base, args.out)
     if not args.keep_full:
         shutil.rmtree(full)
         shutil.rmtree(merged)

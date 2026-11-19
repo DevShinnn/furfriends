@@ -28,7 +28,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
-from prompting import build_messages
+from prompting import build_messages, knows_profiles
 
 DEFAULT_BASE = "Qwen/Qwen2.5-1.5B-Instruct"
 MODEL_ID = os.getenv("MODEL_ID", "")         # base model from Hugging Face; empty = the one the adapter was trained on
@@ -179,7 +179,9 @@ async def ask(body: AskBody, authorization: str | None = Header(default=None)):
     if not body.sources:
         raise HTTPException(400, "No checked sources were sent with the question.")
     sources = [s.model_dump() for s in body.sources[:3]] if body.sources else None
-    chat = build_messages([m.model_dump() for m in body.messages], body.pet, sources)
+    # The pet's whole profile only for a model trained with it (v6 on), as in api/ask.py.
+    chat = build_messages([m.model_dump() for m in body.messages], body.pet, sources,
+                          full_pet=knows_profiles(f"{MODEL_VERSION} {ADAPTER_PATH} {MODEL_ONNX}"))
     if body.stream:
         return StreamingResponse(stream(chat, bool(sources)), media_type="text/plain; charset=utf-8", headers={"X-Model": MODEL_VERSION})
     reply = await asyncio.to_thread(generate, chat, greedy=bool(sources))

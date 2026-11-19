@@ -9,6 +9,7 @@ const DOC = (file, title, type, days, notes = "") => ({ id: uid(), src: `/assets
 const med = (days, type, title, vet, notes) => ({ id: uid(), date: addDays(days), type, title, vet, notes });
 const vax = (name, given, due, vet, lot = "") => ({ id: uid(), name, dateGiven: addDays(given), nextDue: addDays(due), vet, lot });
 
+const wt = (days, kg) => ({ id: uid(), date: addDays(days), kg });   // a saved weight (weight_log)
 const meal = (time, food, amount, days = []) => ({ id: uid(), time, food, amount, days, notes: "" });
 const appt = (title, due, dueTime, notes, done = false) => ({ id: uid(), kind: "Vet appointment", title, nextDue: addDays(due), dueTime, repeatDays: 0, lastDone: done ? addDays(due) : null, notes, done });
 const care = (kind, title, due, repeatDays, lastDone = null, notes = "") => ({ id: uid(), kind, title, nextDue: addDays(due), repeatDays, lastDone: lastDone === null ? null : addDays(lastDone), notes, done: false });
@@ -45,6 +46,7 @@ export function demoPets(ownerId) {
         med(-410, "Surgery", "Spay procedure", `Dr. Reyes · ${RIVER}`, "No complications. Stitches removed after 10 days."),
       ],
       vaccinations: [vax("FVRCP", -352, 13, MAPLE, "FV-22871"), vax("Rabies", -200, 530, MAPLE, "RB-10934")],
+      weights: [wt(-352, 3.9), wt(-140, 4.0), wt(-12, 4.2), wt(0, 4.2)],
     },
     {
       id: uid(), ownerId, name: "Bori", species: "Dog", breed: "Golden Retriever", ageYears: 5, ageMonths: 0, gender: "Male", weight: 29.4,
@@ -59,6 +61,7 @@ export function demoPets(ownerId) {
         med(-260, "Allergy", "Chicken protein sensitivity", `Dr. Cruz · ${RIVER}`, "Switched to salmon-based diet. Itching resolved."),
       ],
       vaccinations: [vax("DHPP", -380, -15, RIVER, "DH-55120"), vax("Rabies", -90, 640, RIVER, "RB-11820"), vax("Bordetella", -160, 22, RIVER)],
+      weights: [wt(-300, 31.2), wt(-95, 30.6), wt(-30, 29.8), wt(0, 29.4)],   // a little lighter since the paw injury
     },
     {
       id: uid(), ownerId, name: "Ginger", species: "Cat", breed: "Maine Coon", ageYears: 2, ageMonths: 1, gender: "Male", weight: 6.1,
@@ -69,6 +72,7 @@ export function demoPets(ownerId) {
         med(-300, "Surgery", "Neuter procedure", `Dr. Santos · ${MAPLE}`, "Routine. Back to normal within 3 days."),
       ],
       vaccinations: [vax("FVRCP", -120, 245, MAPLE, "FV-23110"), vax("FeLV", -360, 5, MAPLE, "FL-00871")],
+      weights: [wt(-300, 5.1), wt(-60, 5.9), wt(0, 6.1)],
     },
     {
       id: uid(), ownerId, name: "Kong", species: "Dog", breed: "French Bulldog", ageYears: 1, ageMonths: 3, gender: "Male", weight: 11.2,
@@ -76,6 +80,7 @@ export function demoPets(ownerId) {
       documents: [DOC("kong-microchip", "Microchip registration", "Microchip / registration", -300, "Needed for travel.")],
       medical: [med(-45, "Checkup", "Puppy exam & deworming", `Dr. Santos · ${MAPLE}`, "Growing well. Watch breathing in hot weather.")],
       vaccinations: [vax("DHPP", -45, 320, MAPLE, "DH-60012"), vax("Rabies", -20, 345, MAPLE, "RB-12004")],
+      weights: [wt(-300, 7.4), wt(-45, 10.6), wt(0, 11.2)],
     },
   ];
   return [

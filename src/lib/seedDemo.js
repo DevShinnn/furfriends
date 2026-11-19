@@ -26,12 +26,16 @@ export async function clearPets(db, uid) {
 
 /* Adds the named demo pets (all four if `names` is empty) to the signed-in account. Dates are
    relative to today, so due vaccines and upcoming appointments are always current. */
-export async function addDemoPets(db, uid, files, names = []) {
-  const pets = demoPets(uid).filter((p) => !names.length || names.includes(p.name));
+export const addDemoPets = (db, uid, files, names = []) => addPets(db, uid, demoPets(uid).filter((p) => !names.length || names.includes(p.name)), files);
+
+/* Adds pets (as the app holds them) with all their records to the signed-in account. Also used for the AI's training
+   pets (scripts/training-pets.mjs), which have no photos or documents (files can then be null).
+   `id` keeps a pet's own id if it has one that should stay (the training pets' ids decide training vs. evaluation). */
+export async function addPets(db, uid, pets, files) {
   for (const p of pets) {
-    const petId = newId();
+    const petId = p.keepId && p.id ? p.id : newId();
     let photo_path = null;
-    if (p.photo) {
+    if (p.photo && files) {
       photo_path = `${uid}/${petId}/${newId()}.jpg`;
       check(await db.storage.from("pet-photos").upload(photo_path, await files.photo(p.photo), { contentType: "image/jpeg" }), "photo");
     }
@@ -45,7 +49,7 @@ export async function addDemoPets(db, uid, files, names = []) {
     await rows("vaccinations", p.vaccinations.map((x) => ({ pet_id: petId, name: x.name, date_given: x.dateGiven, next_due: orNull(x.nextDue), vet: x.vet || "", lot: x.lot || "" })));
 
     const docs = [];
-    for (const d of p.documents) {
+    for (const d of files ? p.documents : []) {
       const png = await files.doc(d.src);
       if (!png) continue;
       const file_path = `${uid}/${petId}/${newId()}.png`;
@@ -60,6 +64,12 @@ export async function addDemoPets(db, uid, files, names = []) {
     await rows("feeding_log", Object.entries(p.fedLog).flatMap(([day, ids]) => ids.map((id) => ({ feeding_id: mealId.get(id), pet_id: petId, fed_on: day }))));
     await rows("care_tasks", p.care.map((x) => ({ pet_id: petId, kind: x.kind, title: x.title, next_due: x.nextDue, due_time: orNull(x.dueTime),
       repeat_days: Number(x.repeatDays) || 0, last_done: orNull(x.lastDone), done: !!x.done, notes: x.notes || "" })));
+    // Earlier weights. (Today's is already saved by the database when the pet is added.) Skipped on a database
+    // without the weight_log table yet (migration 20261112000000_weight_log.sql).
+    if (p.weights?.length) {
+      const r = await db.from("weight_log").upsert(p.weights.map((w) => ({ pet_id: petId, weighed_on: w.date, weight_kg: w.kg })), { onConflict: "pet_id,weighed_on" });
+      if (r.error && !/weight_log/.test(r.error.message || "")) check(r, "weights");
+    }
   }
 }
 

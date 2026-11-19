@@ -33,6 +33,9 @@ def load_examples(path):
             ex = json.loads(line)
             if "_review" in ex:
                 raise ValueError(f"{path}:{n}: not reviewed yet. Check the answer against your sources, then delete \"_review\".")
+            if ex.get("unreviewed_rules"):
+                raise ValueError(f"{path}:{n}: made with symptom rules the team hasn't approved (add_pet_profiles.py --unreviewed "
+                                 "is a preview only). Review them (npm run symptom-review), then rebuild without --unreviewed.")
             msgs = ex["messages"]
             if not msgs or msgs[-1]["role"] != "assistant":
                 raise ValueError(f"{path}:{n}: the last message must be the assistant's answer")

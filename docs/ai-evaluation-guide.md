@@ -110,6 +110,9 @@ only credits the passages its answer actually uses. This test measures that part
   answer it, or none. The labels were made by reading each question's top search results: they say whether a
   passage answers the question, not whether it is veterinary-correct. **Keep these questions out of training**,
   like `test.jsonl`. 112 questions since Phase 2 (18 follow-ups and topic switches added).
+  Since the app answers only from checked sources (2026-10-30), the Stack Exchange passages that answered a
+  question are kept in its `community` list instead of `relevant`; 11 questions answered only by them now count as
+  questions the library can't answer, until the team adds checked answers (`docs/ai-knowledge-gaps.md`).
 - **Limits:** `--calibrate` tunes them on one half and scores the other, both ways round (cross-validation): the
   "held-out average" it prints is the number to report. The app's limits are then tuned on all questions, so the
   plain table after it is optimistic.
@@ -122,6 +125,14 @@ only credits the passages its answer actually uses. This test measures that part
   ```
   If it suggests new limits, copy them into `EVIDENCE` / `ANSWER` in `src/lib/evidence.js`, run it again, then `npm test`
   (the tests check the app uses the reported limits). Run it again after `npm run knowledge`: a new index changes the scores.
+- **Comparing two models** (e.g. a retrained one against the live one): answer the same prompts with each export,
+  then score each with its own label. Leave out questions either model was trained on (`--skip`):
+  ```
+  cd ai-server && python answer_prompts.py --prompts results/eval-prompts.jsonl --out results/eval-answers-v4.jsonl --model exports/furfriends-rag-v4
+  cd .. && npm run eval:retrieval -- --answers ai-server/results/eval-answers-v4.jsonl --label v4 --skip <ids>
+  ```
+  and for conversations `python answer_prompts.py --serve 8790 --model exports/furfriends-rag-v4` with
+  `npm run eval:conversation -- --history=owner --label=v4`.
 - **What it reports**, for the old behaviour (`baseline`) and the evidence check:
   - *precision*: of the passages sent to the AI, how many answer the question
   - *recall*: answerable questions where the AI got at least one right passage
@@ -138,6 +149,19 @@ only credits the passages its answer actually uses. This test measures that part
 - **Emergencies:** `ai-server/data/safety_eval.json` lists emergency questions in English and Tagalog with the
   first-aid guide each should bring up, and everyday questions that should bring up none. `npm test` checks every
   one (`tests/ai-evidence.test.js`). The expected guides follow the app's own guides, not a vet's review.
+- **Pet profiles:** `npm run eval:pets` (`scripts/eval-pets.mjs`) asks about the owner's own pet. It uses the
+  evaluation pets in `ai-server/data/training_pets.json` (1 in 5 of the training account's pets, never trained on;
+  **simulated**, not real owners' pets) and the single-question cases of the evaluation sets that aren't in the
+  training data. Each pet gets one question its records are about and one that isn't. The prompts are the app's own:
+  the whole profile for rag-v6 and later, the basic pet details for earlier models (`knowsProfiles`). It reports how
+  often the answer passes the evidence check, and three word checks to read by hand: a health word that is in neither
+  the prompt nor the question (*invented*), the wrong species, and the wrong pronoun for the pet.
+  ```
+  npm run eval:pets -- --prompts ai-server/results/pets
+  cd ai-server && python answer_prompts.py --prompts results/pets/pets-full.jsonl --out results/pets/answers-v6.jsonl --model exports/furfriends-rag-v6
+  cd .. && npm run eval:pets -- --score ai-server/results/pets/answers-v6.jsonl --context full --label v6
+  ```
+  The first run (2026-11-13, v6 against v2) is in `ai-server/README.md` (what we learned).
 - These are automatic measures. They don't replace the graders' accuracy and safety grades above.
 
 **References**

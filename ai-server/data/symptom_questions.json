@@ -1,0 +1,60 @@
+{
+  "_about": "Other ways owners ask a checked question about a symptom (English and Taglish), for add_pet_profiles.py. Each is trained with that checked answer and its sources unchanged, so the symptom rules (src/lib/symptomNotes.js) have enough examples. Keys are ids in data/train.jsonl. Never put an evaluation question here (the script checks).",
+  "q394ce7": [
+    "My puppy has diarrhea",
+    "My dog has loose stool since yesterday",
+    "My cat has watery poop",
+    "Nagtatae ang aso ko",
+    "Nagtatae ang pusa ko",
+    "My kitten has diarrhea, what should I do?",
+    "My dog has had diarrhea for a day, should I worry?"
+  ],
+  "q8d9eb1": [
+    "There are worms in my cat's poop",
+    "May bulate ang pusa ko",
+    "My kitten has worms, what do I do?",
+    "I found little white bits on my cat's fur near the tail",
+    "My cat pooped out a worm"
+  ],
+  "q9885b7": [
+    "My cat is drinking a lot more water than before",
+    "My senior cat pees a lot",
+    "Laging umiinom ng tubig ang pusa ko",
+    "My cat drinks so much water lately, why?",
+    "My 12 year old cat keeps peeing a lot"
+  ],
+  "q3a26e3": [
+    "My cat scratches her ears a lot",
+    "Kinakamot ng pusa ko ang tenga niya",
+    "My cat's ears are dirty and itchy",
+    "My cat keeps shaking her head"
+  ],
+  "q285fc9": [
+    "My cat pees outside the litter box",
+    "Umiihi sa labas ng litter box ang pusa ko",
+    "Why does my cat pee on the floor?",
+    "My male cat started peeing on the bed"
+  ],
+  "qce12f1": [
+    "My cat keeps sneezing",
+    "May sipon ang pusa ko",
+    "My kitten has runny eyes and keeps sneezing",
+    "My cat has a runny nose"
+  ],
+  "q0e1e08": [
+    "My dog is limping on his back leg",
+    "Paika-ika maglakad ang aso ko",
+    "My old dog is stiff and limps after resting",
+    "My dog suddenly started limping"
+  ],
+  "q75621c": [
+    "My old dog's breath smells really bad",
+    "My senior cat has bad breath",
+    "Mabaho ang hininga ng aso ko"
+  ],
+  "qab5df5": [
+    "My dog has ticks, can he get tick fever?",
+    "May garapata ang aso ko, delikado ba?",
+    "How do I know if my dog has tick fever?"
+  ]
+}

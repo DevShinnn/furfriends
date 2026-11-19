@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useStore } from "../store/StoreContext";
 import { useUI } from "../components/UIContext";
 import Icon from "../components/Icon";
+import { PetContextChips } from "../components/Health";
 import { ASSISTANT_URL, CHAT_MODEL, askAssistant, chatChoice, chatSupport, conversation, petContext, setChatChoice, urgentGuides, wakeServer } from "../lib/assistant";
 import { uid } from "../lib/utils";
 
@@ -119,6 +120,7 @@ export default function Assistant() {
               </button>
             ))}
           </div>
+          {pet && <PetContextChips pet={pet} />}
         </div>
       )}
 

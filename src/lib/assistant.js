@@ -1,8 +1,9 @@
 import { supabase } from "./supabase";
 import { breedFor } from "./breeds";
 import { chatReply, decodeIndex, queryText, safetyReply, search, withAppetiteAdvice, withEnglish, withVetAdvice } from "./knowledge";
-import { MODEL_HISTORY, chatMessages, conversation, describePet, petContext, sourcesFor } from "./prompt";
+import { MODEL_HISTORY, basicPet, chatMessages, conversation, describePet, knowsProfiles, petContext, sourcesFor } from "./prompt";
 import { EVIDENCE, planAnswer, reviewAnswer, withEmergency } from "./evidence";
+import { noteQuery, petNotes, stripPetNotes, withPetNotes } from "./petNotes";
 import PROMPT from "./aiPrompt.json";
 
 /* Client for the FurFriends assistant.
@@ -138,22 +139,28 @@ async function askKnowledge({ messages, pet, signal, onStatus, onText }) {
   const { evidence, fallback } = planAnswer(index, results, q, last);
   // The owner's own words, for what the search text loses ("tatlong araw" is searched as just "days").
   const owner = conversation(messages).filter((m) => m.role === "user").map((m) => m.content).join("\n");
-  const checked = { reply: withEmergency(last, withAppetiteAdvice(q, fallback.reply, species, owner)), model: index.version, match: fallback.match, related: fallback.related };
+  // Notes from the selected pet's records that are about the question (allergies for a food question, ...): petNotes.js.
+  const ctx = petContext(pet), about = noteQuery(messages);
+  const personal = (reply) => withPetNotes(about, reply, ctx);
+  const checked = { reply: withEmergency(last, withAppetiteAdvice(q, personal(fallback.reply), species, owner)), model: index.version, match: fallback.match, related: fallback.related };
   // Nothing checked is about the question: the model isn't asked, so it can't fill the gap with a guess.
   if (!evidence.length) return checked;
   // FurFriends' trained model writes the answer from the evidence: on the server, or on this device if the
   // owner turned that on.
   const write = ASSISTANT_URL ? () => askServer(messages, pet, evidence, { signal, onStatus, onText })
-    : (await chatReady()) ? () => generate(chatMessages(messages, pet, evidence), { signal, onStatus, onText }).then((reply) => ({ reply, model: CHAT_VERSION }))
+    : (await chatReady()) ? () => generate(chatMessages(messages, pet, evidence, MODEL_HISTORY, knowsProfiles(CHAT_VERSION)), { signal, onStatus, onText }).then((reply) => ({ reply, model: CHAT_VERSION }))
       : null;
   if (write) {
     try {
-      const { reply, model } = await write();
+      const written = await write();
+      // Notes about the pet the model wrote are swapped for the rule's own below, and aren't part of the check.
+      const reply = stripPetNotes(written.reply), model = written.model;
       // The model says so when the passages don't answer the question; the search's own reply is then more useful.
       if (!reply.startsWith(PROMPT.notFound.slice(0, 40))) {
         // The answer must lean on its passages and name no law, organisation or number they don't. Only the
         // passages it actually uses are credited (CC BY-SA asks for credit).
-        const context = [describePet(petContext(pet)), ...conversation(messages).filter((m) => m.role === "user").map((m) => m.content)].join("\n");
+        // (The pet details as this model was given them: the whole profile from v6 on, see knowsProfiles.)
+        const context = [describePet(knowsProfiles(model) ? ctx : basicPet(ctx)), ...conversation(messages).filter((m) => m.role === "user").map((m) => m.content)].join("\n");
         const review = reviewAnswer(reply, evidence, { context });
         if (review.ok) {
           const sources = review.used.map(pickSource);
@@ -161,7 +168,8 @@ async function askKnowledge({ messages, pet, signal, onStatus, onText }) {
           // the pet ate and the answer doesn't already say to see a vet soon.
           // Written only from passages that cleared the lower limit: say it's the closest checked information.
           const uncertain = review.used.every((e) => e.kind !== "guide" && e.score < EVIDENCE.strong);
-          return { reply: withEmergency(last, withAppetiteAdvice(q, withVetAdvice(q, reply), species, owner)), model, match: sources[0], sources, related: fallback.related, generated: true, uncertain };
+          return { reply: withEmergency(last, withAppetiteAdvice(q, personal(withVetAdvice(q, reply)), species, owner)), model, match: sources[0], sources, related: fallback.related, generated: true, uncertain,
+            petNotes: petNotes(about, ctx).map((x) => x.topic), modelNotes: written.reply !== reply };
         }
         console.warn("FurFriends AI answer isn't backed by its checked sources, showing the checked answer instead:", review.problems);
       }

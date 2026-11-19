@@ -1557,3 +1557,71 @@ table.data td.actions { text-align: right; white-space: nowrap; }
   .clinic-actions, .clinic-hours { margin-left: 0; width: 100%; }
   .clinic-actions .btn { flex: 1; justify-content: center; }
 }
+
+/* ---------- Pet health check (components/Health.jsx) ---------- */
+.health-card { margin-bottom: 22px; }
+.health-top { display: flex; align-items: center; gap: 18px; }
+.health-top .grow { min-width: 0; flex: 1; }
+.health-title { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.health-title h3 { font-size: 20px; letter-spacing: -0.02em; }
+.health-sub { margin-top: 4px; font-weight: 700; color: var(--ink-2); font-size: 14px; }
+.health-note { margin-top: 4px; color: var(--ink-3); font-size: 12.5px; line-height: 1.45; }
+.health-note svg { vertical-align: -2px; }
+.health-ring { flex: none; display: block; }
+.health-ring .seg { stroke: var(--line-2); }
+.health-ring .seg.ok { stroke: var(--ok); }
+.health-ring .seg.warn { stroke: #e9a23b; }
+.health-ring .seg.danger { stroke: var(--danger); }
+.health-ring text { font-family: var(--sans); fill: var(--ink); }
+.health-ring .n { font-size: 24px; font-weight: 800; }
+.health-ring .of { font-size: 13px; font-weight: 700; fill: var(--ink-3); }
+.health-list { list-style: none; margin: 18px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; align-items: start; }
+.hc details { border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--surface); }
+.hc details[open] { border-color: var(--line-2); }
+.hc summary { display: flex; align-items: center; gap: 12px; padding: 10px 12px; cursor: pointer; list-style: none; }
+.hc summary::-webkit-details-marker { display: none; }
+.hc summary .grow { min-width: 0; flex: 1; }
+.hc summary b { display: block; font-size: 14px; }
+.hc summary small { display: block; color: var(--ink-2); font-size: 13px; line-height: 1.4; margin-top: 1px; }
+.hc-ic { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; flex: none; background: var(--bg-2); color: var(--ink-3); }
+.hc.ok .hc-ic { background: var(--ok-soft); color: var(--ok); }
+.hc.warn .hc-ic { background: var(--warn-soft); color: var(--warn); }
+.hc.danger .hc-ic { background: var(--danger-soft); color: var(--danger); }
+.hc.info .hc-ic { background: var(--sky-soft); color: var(--ink-2); }
+.hc-st { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; margin-left: 4px; color: var(--ink-3); white-space: nowrap; }
+.hc.ok .hc-st { color: var(--ok); }
+.hc.warn .hc-st { color: var(--warn); }
+.hc.danger .hc-st { color: var(--danger); }
+.hc-chev { flex: none; color: var(--ink-3); transition: transform .2s var(--ease); }
+.hc details[open] .hc-chev { transform: rotate(90deg); }
+.hc-more { padding: 0 12px 12px 58px; font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+.hc-more ul { margin: 6px 0 0; padding-left: 18px; }
+.hc-more .btn { margin-top: 10px; }
+.health-more { margin-top: 12px; font-size: 13px; }
+.health-badge { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.health-badge .grow { min-width: 0; flex: 1; }
+.health-badge b { display: block; font-size: 13px; }
+.health-badge small { display: block; font-size: 12px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.health-badge.ok b { color: var(--ok); }
+.health-badge.warn b { color: var(--warn); }
+.health-badge.danger b { color: var(--danger); }
+.health-badge.neutral b { color: var(--ink-2); }
+.ai-context { flex-basis: 100%; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.ai-context > span:first-child { font-size: 12.5px; font-weight: 700; color: var(--ink-3); margin-right: 2px; }
+.ai-context .pill { font-size: 11.5px; padding: 3px 9px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 980px) { .health-list { grid-template-columns: 1fr; } }
+@media (max-width: 600px) {
+  .health-top { gap: 14px; align-items: flex-start; }
+  .health-ring { width: 68px; height: 68px; }
+  .health-title h3 { font-size: 18px; }
+  .hc-more { padding-left: 12px; }
+}
+.weights { margin-top: 10px; display: grid; gap: 8px; }
+.sparkline { display: block; max-width: 320px; }
+.sparkline polyline { stroke: var(--primary); }
+.sparkline circle { fill: var(--primary); }
+.weight-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; max-width: 320px; }
+.weight-list li { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+.weight-list li span { color: var(--ink-3); min-width: 96px; }
+.weight-list li b { flex: 1; }
+.weights .btn { justify-self: start; }

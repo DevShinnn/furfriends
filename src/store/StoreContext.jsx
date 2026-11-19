@@ -5,6 +5,7 @@ import { shiftISO } from "../lib/care";
 import { DEMO_EMAIL, DEMO_PASS, DEMO_PROFILE } from "../lib/demoData";
 import { clearChats } from "../lib/assistant";
 import { addDemoPets, browserFiles, clearPets } from "../lib/seedDemo";
+import { PET_SELECT, TABLES, TO, petFromRow, petToDb, petWeights } from "../lib/petRows";
 
 /* Accounts live in Supabase (Auth + Postgres + Storage, see supabase/migrations).
    The demo account is a real, shared account (made by scripts/seed-sample-accounts.mjs) that
@@ -24,36 +25,16 @@ const PHOTOS = "pet-photos";
 const DOCS = "pet-documents";
 const URL_TTL = 60 * 60 * 24 * 7; // signed file links last a week
 const FED_DAYS = 14;              // only the last 2 weeks of feeding log are loaded
-const EMPTY = { user: null, pets: [] };
+const EMPTY = { user: null, pets: [], weightLog: false };
 const SYNC_TABLES = ["profiles", "pets", "medical_records", "vaccinations", "documents", "feeding_schedules", "feeding_log", "care_tasks"];
 const SYNC_DELAY = 1200;          // wait for a burst of changes to settle before reloading
 const STALE_AFTER = 30 * 1000;    // reload when the app returns after being hidden this long
 
 const redirectTo = () => window.location.origin + window.location.pathname;
 
-/* ---------------------------------------------------------------- row mapping (app camelCase ↔ db snake_case) */
-const TABLES = { medical: "medical_records", vaccinations: "vaccinations", documents: "documents", feeding: "feeding_schedules", care: "care_tasks" };
-const hhmm = (t) => (t ? t.slice(0, 5) : "");
-const orNull = (v) => (v === "" || v == null ? null : v);
-
-const FROM = {
-  medical: (r) => ({ id: r.id, date: r.date, type: r.type, title: r.title, vet: r.vet, notes: r.notes }),
-  vaccinations: (r) => ({ id: r.id, name: r.name, dateGiven: r.date_given, nextDue: r.next_due || "", vet: r.vet, lot: r.lot }),
-  documents: (r) => ({ id: r.id, title: r.title, type: r.type, date: r.date, notes: r.notes, filePath: r.file_path, mimeType: r.mime_type, src: null }),
-  feeding: (r) => ({ id: r.id, time: hhmm(r.time), food: r.food, amount: r.amount, days: r.days || [], notes: r.notes }),
-  care: (r) => ({ id: r.id, kind: r.kind, title: r.title, nextDue: r.next_due, dueTime: hhmm(r.due_time), repeatDays: r.repeat_days, lastDone: r.last_done, done: r.done, notes: r.notes }),
-};
-const TO = {
-  medical: (x) => ({ date: x.date, type: x.type, title: x.title, vet: x.vet || "", notes: x.notes || "" }),
-  vaccinations: (x) => ({ name: x.name, date_given: x.dateGiven, next_due: orNull(x.nextDue), vet: x.vet || "", lot: x.lot || "" }),
-  documents: (x) => ({ title: x.title, type: x.type, date: x.date, notes: x.notes || "", file_path: x.filePath, mime_type: x.mimeType || "image/jpeg" }),
-  feeding: (x) => ({ time: x.time, food: x.food, amount: x.amount || "", days: x.days || [], notes: x.notes || "" }),
-  care: (x) => ({ kind: x.kind, title: x.title, next_due: x.nextDue, due_time: orNull(x.dueTime), repeat_days: Number(x.repeatDays) || 0, last_done: orNull(x.lastDone), done: !!x.done, notes: x.notes || "" }),
-};
-const petToDb = (p) => ({
-  name: p.name, species: p.species, breed: p.breed || "", age_years: Number(p.ageYears) || 0, age_months: Number(p.ageMonths) || 0,
-  gender: p.gender || null, weight_kg: orNull(p.weight),
-});
+/* Row mapping (app camelCase ↔ db snake_case) is in lib/petRows.js, shared with the scripts. */
+// A weight history with this day's weight added or replaced, oldest first.
+const withWeight = (list, w) => [...(list || []).filter((x) => x.date !== w.date), { id: newId(), ...w }].sort((a, b) => a.date.localeCompare(b.date));
 
 /* ---------------------------------------------------------------- server I/O */
 const isNewFile = (src) => typeof src === "string" && src.startsWith("data:");
@@ -97,7 +78,7 @@ async function fetchAll(authUser) {
   const [prof, res] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", authUser.id).maybeSingle(),
     supabase.from("pets")
-      .select("*, medical_records(*), vaccinations(*), documents(*), feeding_schedules(*), care_tasks(*), feeding_log(feeding_id, fed_on)")
+      .select(PET_SELECT)
       .gte("feeding_log.fed_on", shiftISO(todayISO(), -FED_DAYS))
       .order("created_at")
       .order("created_at", { referencedTable: "medical_records" })
@@ -109,25 +90,11 @@ async function fetchAll(authUser) {
   if (prof.error) throw prof.error;
   if (res.error) throw res.error;
 
-  const pets = res.data.map((r) => {
-    const fedLog = {};
-    for (const l of r.feeding_log) (fedLog[l.fed_on] ||= []).push(l.feeding_id);
-    return {
-      id: r.id, ownerId: r.owner_id, createdAt: Date.parse(r.created_at),
-      name: r.name, species: r.species, breed: r.breed, ageYears: r.age_years, ageMonths: r.age_months,
-      gender: r.gender || "", weight: r.weight_kg == null ? "" : Number(r.weight_kg),
-      photoPath: r.photo_path, photo: null,
-      medical: r.medical_records.map(FROM.medical),
-      vaccinations: r.vaccinations.map(FROM.vaccinations),
-      documents: r.documents.map(FROM.documents),
-      feeding: r.feeding_schedules.map(FROM.feeding),
-      care: r.care_tasks.map(FROM.care),
-      fedLog,
-    };
-  });
-  const [photoUrls, docUrls] = await Promise.all([
+  const pets = res.data.map(petFromRow);
+  const [photoUrls, docUrls, weightLog] = await Promise.all([
     signAll(PHOTOS, pets.map((p) => p.photoPath)),
     signAll(DOCS, pets.flatMap((p) => p.documents.map((d) => d.filePath))),
+    petWeights(supabase, pets),   // false until the weight_log table exists
   ]);
   for (const p of pets) {
     p.photo = photoUrls[p.photoPath] || null;
@@ -142,7 +109,7 @@ async function fetchAll(authUser) {
     // the demo and sample accounts, whose passwords are public (docs/sample-accounts.md); the database enforces this too
     isShared: authUser.email === DEMO_EMAIL || /^sample\..+@example\.com$/.test(authUser.email || ""),
   };
-  return { user, pets };
+  return { user, pets, weightLog };
 }
 
 function authMessage(error) {
@@ -224,12 +191,13 @@ export function StoreProvider({ children }) {
 
   // Live sync: Realtime changes, returning to the app, and coming back online.
   const userId = db.user ? db.user.id : null;
+  const weightLogOn = db.weightLog;   // weight_log joins live sync only once the table exists (one bad table fails the channel)
   useEffect(() => {
     if (!userId) return;
     let timer = null;
     const soon = () => { clearTimeout(timer); timer = setTimeout(syncNow, SYNC_DELAY); };
     const channel = supabase.channel(`sync-${userId}`);
-    for (const table of SYNC_TABLES) channel.on("postgres_changes", { event: "*", schema: "public", table }, soon);
+    for (const table of weightLogOn ? [...SYNC_TABLES, "weight_log"] : SYNC_TABLES) channel.on("postgres_changes", { event: "*", schema: "public", table }, soon);
     channel.subscribe();
 
     let hiddenAt = 0;
@@ -245,10 +213,10 @@ export function StoreProvider({ children }) {
       document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("online", soon);
     };
-  }, [userId, syncNow]);
+  }, [userId, weightLogOn, syncNow]);
 
   const api = useMemo(() => {
-    const { user, pets } = db;
+    const { user, pets, weightLog } = db;
     const getPet = (id) => pets.find((p) => p.id === id) || null;
     const setPets = (fn) => commit((d) => ({ ...d, pets: fn(d.pets) }));
     const mapPet = (ps, id, fn) => ps.map((p) => (p.id === id ? fn(p) : p));
@@ -272,7 +240,7 @@ export function StoreProvider({ children }) {
     }
 
     return {
-      ready, user, pets, getPet,
+      ready, user, pets, getPet, weightLog,
       syncError, clearSyncError: () => setSyncError(null),
 
       /* ------------------------------------------------ account */
@@ -388,7 +356,9 @@ export function StoreProvider({ children }) {
       /* ------------------------------------------------ pets */
       addPet(fields) {
         const id = newId();
-        const pet = { id, ownerId: user.id, createdAt: Date.now(), photo: null, photoPath: null, medical: [], vaccinations: [], documents: [], feeding: [], care: [], fedLog: {}, ...fields };
+        // The weight history starts with today's weight (the database trigger saves the same row).
+        const weights = fields.weight ? [{ id: newId(), date: todayISO(), kg: Number(fields.weight) }] : [];
+        const pet = { id, ownerId: user.id, createdAt: Date.now(), photo: null, photoPath: null, medical: [], vaccinations: [], documents: [], feeding: [], care: [], fedLog: {}, weights, ...fields };
         if (!setPets((ps) => [...ps, pet])) return null;
         const owner = user.id;
         remote(async () => {
@@ -402,7 +372,10 @@ export function StoreProvider({ children }) {
       },
 
       updatePet(id, fields) {
-        if (!setPets((ps) => mapPet(ps, id, (p) => ({ ...p, ...fields })))) return false;
+        // A new weight goes into today's place in the history too (the database trigger does the same on the server).
+        const logWeight = (p) => ("weight" in fields && fields.weight !== "" && Number(fields.weight) !== Number(p.weight)
+          ? { weights: withWeight(p.weights, { date: todayISO(), kg: Number(fields.weight) }) } : {});
+        if (!setPets((ps) => mapPet(ps, id, (p) => ({ ...p, ...fields, ...logWeight(p) })))) return false;
         const owner = user.id;
         remote(async () => {
           const cur = live(id);
@@ -429,6 +402,27 @@ export function StoreProvider({ children }) {
           await Promise.all([removeFolder(PHOTOS, prefix), removeFolder(DOCS, prefix)]);
           return r;
         });
+        return true;
+      },
+
+      /* ------------------------------------------------ weight history (weight_log)
+         Adds or corrects the weight on a day (one per day). The newest one is also the pet's current weight. */
+      saveWeight(petId, { date, kg }) {
+        const pet = live(petId);
+        if (!pet || !weightLog) return false;
+        const newest = !pet.weights?.some((w) => w.date > date);
+        setPets((ps) => mapPet(ps, petId, (p) => ({ ...p, weights: withWeight(p.weights, { date, kg }), ...(newest ? { weight: kg } : {}) })));
+        remote(async () => {
+          const r = await supabase.from("weight_log").upsert({ pet_id: petId, ...TO.weights({ date, kg }) }, { onConflict: "pet_id,weighed_on" });
+          if (r.error || !newest) return r;
+          return supabase.from("pets").update({ weight_kg: kg }).eq("id", petId);
+        });
+        return true;
+      },
+      // Takes a weight out of the history (the pet's current weight stays as it is).
+      removeWeight(petId, date) {
+        if (!setPets((ps) => mapPet(ps, petId, (p) => ({ ...p, weights: (p.weights || []).filter((w) => w.date !== date) })))) return false;
+        remote(() => supabase.from("weight_log").delete().match({ pet_id: petId, weighed_on: date }));
         return true;
       },
 

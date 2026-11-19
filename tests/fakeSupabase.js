@@ -14,9 +14,11 @@ export function fakeSupabase() {
     const q = { table, op: "select", payload: null, filters: [], single: false };
     const result = () => {
       state.calls.push({ table: q.table, op: q.op, payload: q.payload, filters: q.filters });
+      // A table the test says isn't in the database yet (like weight_log before its migration).
+      if (state.missingTables?.includes(q.table)) return { data: null, error: { code: "42P01", message: `relation "public.${q.table}" does not exist` } };
       if (q.op === "select") {
         let data = state.rows[q.table] || [];
-        for (const [col, val] of q.filters) data = data.filter((r) => r[col] === val);
+        for (const [col, val] of q.filters) data = data.filter((r) => (Array.isArray(val) ? val.includes(r[col]) : r[col] === val));
         return { data: q.single ? data[0] ?? null : data, error: null };
       }
       return { data: [], error: null };
@@ -29,6 +31,7 @@ export function fakeSupabase() {
       delete() { q.op = "delete"; return chain; },
       eq(col, val) { q.filters.push([col, val]); return chain; },
       match(obj) { q.filters.push(...Object.entries(obj)); return chain; },
+      in(col, vals) { q.filters.push([col, vals]); return chain; },
       gte() { return chain; },
       order() { return chain; },
       maybeSingle() { q.single = true; return chain; },

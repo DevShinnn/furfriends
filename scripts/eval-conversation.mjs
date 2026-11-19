@@ -13,7 +13,7 @@
      - aiAnswered:    the AI's answer is shown
      - contamination: share of the AI's raw answer made of words found in the app's earlier answers but not in
                       its passages or the owner's messages (earlier answers treated as facts)
-   Writes ai-server/results/conversation-eval.json. */
+   Writes ai-server/results/conversation-eval.json (conversation-eval-v4.json with --label=v4, to compare models). */
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -25,6 +25,7 @@ import PROMPT from "../src/lib/aiPrompt.json";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const MODEL_URL = process.env.EVAL_MODEL_URL || "http://127.0.0.1:8790/";
+const LABEL = process.argv.find((a) => a.startsWith("--label="))?.split("=")[1];
 const SETTINGS = (process.argv.find((a) => a.startsWith("--history="))?.split("=")[1] || "full,owner,question").split(",");
 
 const index = decodeIndex(JSON.parse(readFileSync(join(ROOT, "public", "knowledge", "index.json"), "utf8")));
@@ -103,4 +104,4 @@ for (const setting of SETTINGS) {
   };
 }
 console.table(summary);
-writeFileSync(join(ROOT, "ai-server", "results", "conversation-eval.json"), JSON.stringify({ summary, rows }, null, 1));
+writeFileSync(join(ROOT, "ai-server", "results", `conversation-eval${LABEL ? `-${LABEL}` : ""}.json`), JSON.stringify({ summary, rows }, null, 1));

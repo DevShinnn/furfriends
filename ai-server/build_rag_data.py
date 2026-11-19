@@ -11,16 +11,30 @@ Most examples include the passage that holds the answer, plus one look-alike pas
 same length, so the model learns to pick the right one by meaning. About 80 are owner-style questions
 made from the first-aid guides' signs, with the guide as the right passage. About 1 in 10 (all Stack Exchange questions) has only unrelated passages, and the answer says it
 couldn't find it in the checked sources, so the model learns not to guess.
+v4 adds (each off unless asked, so the commands for v1-v3 still give the same data):
+  --near-miss-share   the same question again with only look-alike passages (close by meaning, but with none of the
+                      question's subject words, by the app's own rule), answered "couldn't find": the kind of passage
+                      that caused off-topic answers
+  --multi-turn-share  conversations as the app sends them (the owner's messages only, src/lib/prompt.js): a new
+                      topic after an earlier one, a follow-up with the earlier question's passage beside the right one,
+                      and "what about my cat?" after the same question about a dog
+  --out-of-scope      questions FurFriends doesn't cover (data/out_of_scope.txt), with what the search finds for them
+v5: --checked-only leaves Pets Stack Exchange out entirely, as questions and as passages: the app answers only from
+checked sources since 2026-10-30 (scripts/build-knowledge.mjs), and the model shouldn't learn owners' opinions.
+Emergencies and poisons never get a "couldn't find" example: in the app their first-aid guide is always sent.
+The evaluation questions (retrieval_eval.jsonl, safety_eval.json) are never used.
 Personal-story answers ("my cat...") and very long answers stay in the library but aren't trained on,
 so the model learns FurFriends' voice.
 """
 import argparse
 import csv
 import json
+import os
 import random
 import re
 import subprocess
-from collections import Counter
+import tempfile
+from collections import Counter, defaultdict
 
 import torch
 from transformers import AutoModel, AutoTokenizer
@@ -149,6 +163,118 @@ def embed(texts, tok, model, batch=64):
     return torch.cat(out)
 
 
+def coverages(pairs):
+    """For each (question, passage text): how much of the question's subject the passage covers, by the app's own
+    rule (coverage() in src/lib/evidence.js, via scripts/coverage.mjs), so training and the evidence check agree:
+    {"cover": 0-1, "stems": subject words it has even loosely ("dewormer" for "deworm")}."""
+    if not pairs:
+        return []
+    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as f:
+        json.dump([{"q": q, "text": t} for q, t in pairs], f)
+    try:
+        out = subprocess.run(f'npx vite-node scripts/coverage.mjs -- "{f.name}"', cwd="..", shell=True,
+                             capture_output=True, text=True, encoding="utf-8", check=True)
+    finally:
+        os.remove(f.name)
+    return json.loads(out.stdout.strip().splitlines()[-1])
+
+
+def held_out():
+    """The evaluation questions, lower-cased: never trained on."""
+    qs = {t for l in open("data/retrieval_eval.jsonl", encoding="utf-8") if l.strip() for t in json.loads(l)["turns"]}
+    qs |= {c["q"] for c in json.load(open("data/safety_eval.json", encoding="utf-8"))["cases"]}
+    return {q.strip().lower() for q in qs}
+
+
+SPECIES = r"\b(dogs?|pupp(y|ies)|cats?|kittens?)\b"
+FOLLOW = {"dog": ["What about for my dog?", "How about puppies?", "Same question, but for my dog.", "Paano naman sa aso?"],
+          "cat": ["What about for my cat?", "How about kittens?", "Same question, but for my cat.", "Paano naman sa pusa?"]}
+
+
+def v4_examples(asks, lib, lib_vec, sims, qa, embed_q, rnd, args):
+    """The v4 examples (see the top of this file). `qa`: library id -> (owner's question, answer) for the Q&As."""
+    rows, kinds = [], Counter()
+    src = lambda x: passage(x, args.source_words)
+    say = lambda *qs: [{"role": "user", "content": q} for q in qs]
+    def row(id, cat, sources, msgs, answer, kind):
+        kinds[kind] += 1
+        return {"id": id, "category": cat, "sources": sources, "messages": msgs + [{"role": "assistant", "content": answer}], "_kind": kind}
+    pos = {x["id"]: j for j, x in enumerate(lib)}
+
+    def near(i, own, n=40):   # library passages closest to ask i, not its own
+        return [lib[j] for j in torch.argsort(sims[i], descending=True)[:n].tolist() if lib[j]["of"] != own]
+
+    short = lambda q: len(q.split()) <= 40
+    by_cat = defaultdict(list)
+    for ex, q in asks:
+        if short(q):
+            by_cat[ex["category"]].append(q)
+
+    # Pick the questions and their candidate passages first, so the coverage is worked out in one go.
+    plans, pairs = [], []
+    for i, (ex, q) in enumerate(asks):
+        own = ex["id"].split("-")[0]
+        urgent = ex["category"] in ("emergency", "poison")
+        if args.near_miss_share and not urgent and len(q.split()) <= 20 and rnd.random() < args.near_miss_share:
+            cands = near(i, own)[:10]
+            plans.append(("near", i, cands))
+            pairs += [(q, x["text"]) for x in cands]
+        if args.multi_turn_share and rnd.random() < args.multi_turn_share:
+            # (A follow-up given only the earlier question's passages was tried too, but those passages nearly always
+            # share words with the follow-up, so they can't be called near misses safely: 1 example in 1,000.)
+            if rnd.random() < 0.5:
+                cats = [c for c in by_cat if c != ex["category"]]
+                plans.append(("switch", i, rnd.choice(by_cat[rnd.choice(cats)])))
+                continue
+            earlier = next((x for x in near(i, own) if x["id"] in qa and short(qa[x["id"]][0])), None)
+            if not earlier:
+                continue
+            plans.append(("continue", i, earlier))
+    # A look-alike passage is close by meaning but has none of the question's subject words, not even loosely: a
+    # stricter line than the app's (which answers from 0.6 coverage), so a passage that might answer is never one.
+    cover = dict(zip(pairs, coverages(pairs)))
+    misses = lambda q, xs: list({x["text"][:100]: x for x in xs if not cover[(q, x["text"])]["stems"] and not cover[(q, x["text"])]["cover"]}.values())   # one per question
+
+    for kind, i, extra in plans:
+        ex, q = asks[i]
+        gold = src(lib[pos[ex["id"]]])
+        if kind == "near":
+            look = misses(q, extra)[:2]
+            if look:
+                rows.append(row(f"{ex['id']}-near", ex["category"], [src(x) for x in look], say(q), NOT_FOUND, "near miss: couldn't find"))
+        elif kind == "switch":
+            sources = [gold, src(near(i, ex["id"].split("-")[0])[0])]
+            rnd.shuffle(sources)
+            rows.append(row(f"{ex['id']}-switch", ex["category"], sources, say(extra, q), ex["messages"][-1]["content"], "new topic after an earlier one"))
+        else:
+            sources = [gold, src(extra)]
+            rnd.shuffle(sources)
+            rows.append(row(f"{ex['id']}-follow", ex["category"], sources, say(qa[extra["id"]][0], q), ex["messages"][-1]["content"], "follow-up, earlier question's passage beside it"))
+
+    # "What about my cat?" after the same question about a dog (and the other way round).
+    if args.multi_turn_share:
+        groups = defaultdict(dict)
+        for id, (q, _) in qa.items():
+            m = re.search(SPECIES, q.lower())
+            if m:
+                groups[re.sub(SPECIES, "X", q.lower()).strip(" ?.!")]["cat" if m.group(1).startswith(("cat", "kitten")) else "dog"] = id
+        for g in groups.values():
+            if len(g) == 2:
+                for a, b in (("dog", "cat"), ("cat", "dog")):
+                    for k, follow in enumerate(FOLLOW[b]):
+                        sources = [src(lib[pos[g[b]]]), src(lib[pos[g[a]]])]
+                        rnd.shuffle(sources)
+                        rows.append(row(f"{g[b]}-{a}-{k}", "general", sources, say(qa[g[a]][0], follow), qa[g[b]][1], "'what about my cat?' follow-up"))
+
+    if args.out_of_scope:
+        qs = [l.strip() for l in open("data/out_of_scope.txt", encoding="utf-8") if l.strip() and not l.startswith("#")]
+        v = embed_q(qs) @ lib_vec.T
+        for k, q in enumerate(qs):
+            found = [src(lib[j]) for j in torch.argsort(v[k], descending=True)[:2].tolist()]
+            rows.append(row(f"oos-{k}", "out of scope", found, say(q), NOT_FOUND, "out of scope: couldn't find"))
+    return rows, kinds
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--train", default="data/train.jsonl")
@@ -162,10 +288,16 @@ def main():
     p.add_argument("--seed", type=int, default=7)
     p.add_argument("--base", default="Qwen/Qwen2.5-0.5B-Instruct", help="the model to be trained (for counting tokens)")
     p.add_argument("--max-tokens", type=int, default=800, help="longer examples are left out: they slow training on a CPU")
+    p.add_argument("--near-miss-share", type=float, default=0, help="v4: share of short questions also trained with look-alike passages only")
+    p.add_argument("--multi-turn-share", type=float, default=0, help="v4: share of questions also trained as part of a conversation")
+    p.add_argument("--out-of-scope", action="store_true", help="v4: add the questions in data/out_of_scope.txt")
+    p.add_argument("--checked-only", action="store_true", help="v5: no Pets Stack Exchange questions or passages (as the app)")
     args = p.parse_args()
     rnd = random.Random(args.seed)
 
     train = jsonl(args.train)
+    if args.checked_only:
+        train = [ex for ex in train if not (ex.get("source") or "").startswith("Pets Stack Exchange")]
     lib = library(train, args.gov)
     by_id = {x["id"]: x for x in lib}
     print(f"Library: {len(lib)} passages ({Counter(x['label'].split(':')[0] for x in lib).most_common(6)})")
@@ -190,6 +322,11 @@ def main():
     rnd.shuffle(se)
     picked = se[:max(0, args.max - len(ours) - len(alts))]
     asks = [(ex, ex["messages"][0]["content"]) for ex in ours + picked] + alts
+    evals = held_out()
+    left = [a for a in asks if a[1].strip().lower() in evals]
+    if left:
+        print(f"Left out {len(left)} questions that are in the evaluation sets")
+        asks = [a for a in asks if a[1].strip().lower() not in evals]
     print(f"Training on {len(asks)} questions: {len(ours)} of our own answers, {len(alts)} other wordings of them (incl. Taglish), "
           f"{len(picked)} Stack Exchange. Not trained on: " + ", ".join(f"{k} {n}" for k, n in why.items()))
 
@@ -223,6 +360,14 @@ def main():
         rows.append({"id": ex["id"], "category": ex["category"], "pet": ex.get("pet"), "sources": sources,
                      "messages": prompt + [{"role": "assistant", "content": answer}]})
 
+    if args.near_miss_share or args.multi_turn_share or args.out_of_scope:
+        # Earlier messages and "what about my cat?" pairs come from the library: never an evaluation question.
+        qa = {ex["id"]: (ex["messages"][0]["content"], ex["messages"][-1]["content"]) for ex in train
+              if ex["id"] in by_id and ex["messages"][0]["content"].strip().lower() not in evals}
+        more, more_kinds = v4_examples(asks, lib, lib_vec, sims, qa, lambda t: embed(t, tok, model), rnd, args)
+        rows += more
+        kinds.update(more_kinds)
+
     # The first-aid guides as the right passage, next to the most similar Q&A (e.g. bloat next to an answer
     # about vomiting), so the model learns to pick the passage by what the owner describes.
     base_tok = AutoTokenizer.from_pretrained(args.base)
@@ -245,13 +390,14 @@ def main():
     long = [r for r in rows if size(r) > args.max_tokens]
     rows = [r for r in rows if r not in long]
     for r in long:
-        kinds["not found" if r["messages"][-1]["content"] == NOT_FOUND else
-              "first-aid guide in the sources" if r["id"].startswith("guide-") else "answer in the sources"] -= 1
-    print(f"Left out {len(long)} examples over {args.max_tokens} tokens")
+        kinds[r.get("_kind") or ("not found" if r["messages"][-1]["content"] == NOT_FOUND else
+              "first-aid guide in the sources" if r["id"].startswith("guide-") else "answer in the sources")] -= 1
+    print(f"Left out {len(long)} examples over {args.max_tokens} tokens"
+          + (f" ({sum(len(r['messages']) > 2 for r in long)} of them conversations)" if args.multi_turn_share else ""))
     rnd.shuffle(rows)
     with open(args.out, "w", encoding="utf-8", newline="\n") as f:
         for r in rows:
-            f.write(json.dumps({k: v for k, v in r.items() if v is not None}, ensure_ascii=False) + "\n")
+            f.write(json.dumps({k: v for k, v in r.items() if v is not None and not k.startswith("_")}, ensure_ascii=False) + "\n")
     print(f"Wrote {len(rows)} examples to {args.out}: " + ", ".join(f"{k} {n}" for k, n in kinds.items()))
 
 

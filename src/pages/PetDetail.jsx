@@ -1,10 +1,12 @@
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useStore } from "../store/StoreContext";
 import { useUI } from "../components/UIContext";
 import { PetForm, DocForm, MedForm, VaxForm, useDeletePet, useDeleteDoc } from "../components/Forms";
 import { SpeciesPill, StatusPill, DocPill, DocThumb } from "../components/PetBits";
 import Icon from "../components/Icon";
 import { PetCarePanel } from "./Care";
+import { HealthPanel } from "../components/Health";
+import { AppointmentForm } from "../components/CareForms";
 import { EmergencyCard } from "./Emergency";
 import { breedFor } from "../lib/breeds";
 import { ageText, fmtDate, petVaxSummary, vaxStatus, byDateDesc } from "../lib/utils";
@@ -35,6 +37,14 @@ function PetView({ pet, tab, setTab }) {
   const counts = { medical: pet.medical.length, vaccines: pet.vaccinations.length, care: (pet.feeding || []).length + (pet.care || []).filter((t) => !t.done).length, documents: pet.documents.length };
   const edit = () => openModal(<PetForm pet={pet} />);
   const breed = breedFor(pet);
+  const navigate = useNavigate();
+  // What a health check's button does: open a tab, the profile form, the booking form or the breed guide.
+  const act = (a) => {
+    if (a.tab) { setTab(a.tab); document.getElementById("pet-tabs")?.scrollIntoView({ behavior: "smooth", block: "start" }); }
+    else if (a.edit) edit();
+    else if (a.appointment) openModal(<AppointmentForm petId={pet.id} title="Annual checkup" />);
+    else if (a.breed) navigate(`/app/breeds/${a.breed}`);
+  };
 
   return (
     <>
@@ -68,7 +78,9 @@ function PetView({ pet, tab, setTab }) {
         ))}
       </div>
 
-      <div className="tabs" role="tablist">
+      <HealthPanel pet={pet} onAction={act} />
+
+      <div className="tabs" role="tablist" id="pet-tabs">
         {TABS.map(([k, icon, label]) => (
           <button key={k} role="tab" aria-selected={tab === k} className={tab === k ? "on" : ""} onClick={() => setTab(k)}>
             <Icon name={icon} size={17} /> {label} <span className="count">{counts[k]}</span>
