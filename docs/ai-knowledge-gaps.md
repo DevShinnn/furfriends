@@ -15,6 +15,9 @@ comes from the labelled questions in `ai-server/data/retrieval_eval.jsonl` that 
    the evaluation counts a right answer as wrong. Then run `npm run eval:retrieval -- --calibrate` and `npm test`.
 
 Don't write answers from memory or from an AI. The assistant tells owners it only uses checked sources.
+(The v7 *training* answers in `ai-server/data/written_answers.jsonl` are a different thing: they only reword
+checked answers that are already in the library, add no facts, pass the app's evidence check, and two teammates
+check a sample: `docs/answer-review/`.)
 
 ## First: everyday questions that lost their answer
 Since 2026-10-30 the assistant answers only from checked sources. Pets Stack Exchange answers are owners' opinions
@@ -41,6 +44,28 @@ answered by them, and owners ask them often:
 | Fruits not yet covered | o09: "Can my dog eat durian?" | ASPCA Animal Poison Control and Merck pages on fruit; say so plainly if no source covers durian. |
 | Taking a pet abroad | o20: "Can I take my cat with me when I move to Japan?" | Bureau of Animal Industry (export permit) and the destination country's official animal-import page. Point owners to those pages rather than listing rules that change. |
 | Local rules on how many dogs | o28: barangay limits | These are city or barangay ordinances, so the answer can only say to ask the barangay or city vet's office. |
+
+## Checked answers that only partly answer a question
+Found on 2026-11-20 while writing v7's training answers (`ai-server/written_answers.py`). These questions are in the
+library as "other ways owners ask" a checked answer, but that answer doesn't fully cover them, so the AI can only
+give part of an answer. Adding a checked answer for each (the usual process above) fixes the library and the next
+model's training.
+
+| Question (as in the training data) | What the checked answer it uses doesn't cover |
+|---|---|
+| cat spraying in the house | It is about peeing outside the litter box, not spraying (marking). |
+| how much should I feed my puppy; how much water should my cat drink; how much exercise does my old dog need? | No amounts. |
+| kailan ang unang bakuna ng tuta; kailan dapat turukan ng anti-rabies ang aso; rabies vaccine schedule philippines | No age for the first shot, only "every 2 to 3 weeks until about 4 months" and "yearly, by law". |
+| when to deworm a new kitten | No age or interval for kittens. |
+| yearly rabies shot (asked about a cat) | The law's yearly rule is written for dogs. |
+| my cat was bitten by a stray cat | The answer is about a stray dog biting a dog. |
+| my kitten has diarrhea | Rules for puppies and adult pets only. |
+| my old dog is stiff and limps after resting | Limping in general, nothing on stiffness after rest. |
+| my cat's ears are dirty and itchy | Ear mites only; nothing on dirty ears or discharge. |
+| my cat pooped out a worm; there are worms in my cat's poop | Only rice-like tapeworm segments. |
+| my cat is losing hair → how about puppies? | Hair loss in dogs, nothing on puppies. |
+| "bleeding that won't stop" (first aid) | Made from the snake-bite guide's signs; a question about bleeding should get the bleeding guide. |
+| "restless, pacing, can't get comfortable" (first aid) | Made from the bloat guide's signs; restlessness alone has many causes. |
 
 ## Better left unanswered
 Prices and costs (o08, o23, m09), brands and insurance (o11, o22), particular clinics (o24, which the clinic

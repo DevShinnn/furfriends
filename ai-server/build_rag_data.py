@@ -22,6 +22,8 @@ v4 adds (each off unless asked, so the commands for v1-v3 still give the same da
 v5: --checked-only leaves Pets Stack Exchange out entirely, as questions and as passages: the app answers only from
 checked sources since 2026-10-30 (scripts/build-knowledge.mjs), and the model shouldn't learn owners' opinions.
 Emergencies and poisons never get a "couldn't find" example: in the app their first-aid guide is always sent.
+v7 (2026-11-20): a near miss or out-of-scope question never has a first-aid guide among its passages, and the guides
+are read as UTF-8. The answers here are still the checked answers; written_answers.py replaces them afterwards.
 The evaluation questions (retrieval_eval.jsonl, safety_eval.json) are never used.
 Personal-story answers ("my cat...") and very long answers stay in the library but aren't trained on,
 so the model learns FurFriends' voice.
@@ -53,7 +55,8 @@ def jsonl(path):
 def guides():
     """The app's first-aid guides, read from src/lib/emergency.js so they always match the app."""
     code = "import {GUIDES} from './src/lib/emergency.js'; console.log(JSON.stringify(GUIDES))"
-    out = subprocess.run(["node", "--input-type=module", "-e", code], cwd="..", capture_output=True, text=True, check=True)
+    # encoding: Windows would read node's UTF-8 as cp1252 and turn "100–120" into "100â€“120" (in v2-v6's data).
+    out = subprocess.run(["node", "--input-type=module", "-e", code], cwd="..", capture_output=True, text=True, encoding="utf-8", check=True)
     return json.loads(out.stdout)
 
 
@@ -233,7 +236,10 @@ def v4_examples(asks, lib, lib_vec, sims, qa, embed_q, rnd, args):
     # A look-alike passage is close by meaning but has none of the question's subject words, not even loosely: a
     # stricter line than the app's (which answers from 0.6 coverage), so a passage that might answer is never one.
     cover = dict(zip(pairs, coverages(pairs)))
-    misses = lambda q, xs: list({x["text"][:100]: x for x in xs if not cover[(q, x["text"])]["stems"] and not cover[(q, x["text"])]["cover"]}.values())   # one per question
+    # Never a first-aid guide beside "couldn't find" (v6 had 15): in the app a guide is only sent when it fits, and v6
+    # learned to decline with the heatstroke guide in front of it (ai-server/README.md, what we learned).
+    misses = lambda q, xs: list({x["text"][:100]: x for x in xs if not x["id"].startswith("guide-")
+                                 and not cover[(q, x["text"])]["stems"] and not cover[(q, x["text"])]["cover"]}.values())   # one per question
 
     for kind, i, extra in plans:
         ex, q = asks[i]
@@ -270,7 +276,7 @@ def v4_examples(asks, lib, lib_vec, sims, qa, embed_q, rnd, args):
         qs = [l.strip() for l in open("data/out_of_scope.txt", encoding="utf-8") if l.strip() and not l.startswith("#")]
         v = embed_q(qs) @ lib_vec.T
         for k, q in enumerate(qs):
-            found = [src(lib[j]) for j in torch.argsort(v[k], descending=True)[:2].tolist()]
+            found = [src(lib[j]) for j in torch.argsort(v[k], descending=True).tolist() if not lib[j]["id"].startswith("guide-")][:2]
             rows.append(row(f"oos-{k}", "out of scope", found, say(q), NOT_FOUND, "out of scope: couldn't find"))
     return rows, kinds
 

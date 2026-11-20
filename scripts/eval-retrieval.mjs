@@ -177,6 +177,13 @@ if (promptsOut) {
 }
 
 /* ---------------------------------------------------------------- scoring the real model's answers */
+/* Share of an answer's 5-word runs that are in a passage (1 = pasted). ai-server/written_answers.py measures the same. */
+const runsOf = (t, n = 5) => { const w = t.toLowerCase().match(/[a-z0-9']+/g) || []; return w.slice(0, Math.max(0, w.length - n + 1)).map((_, i) => w.slice(i, i + n).join(" ")); };
+function copiedShare(answer, text) {
+  const have = new Set(runsOf(text)), runs = runsOf(answer);
+  return runs.length ? runs.filter((r) => have.has(r)).length / runs.length : 0;
+}
+
 const answersIn = opt("--answers");
 if (answersIn) {
   const answers = readFileSync(answersIn, "utf8").split("\n").filter(Boolean).map((l) => JSON.parse(l));
@@ -204,6 +211,7 @@ if (answersIn) {
       const claims = checkAnswer(a.answer, sourcesFor(sent), { context: p.turns.join("\n") }).problems;
       return {
         id: p.id, answerable: rel.size > 0, generated: kept, declined, rightSent, answer: a.answer, problems: check.problems,
+        pasted: Math.max(0, ...sourcesFor(sent).map((s) => copiedShare(a.answer, s.text))) >= 0.9,
         unsupported: claims.filter((x) => !x.startsWith("not based")), ungrounded: claims.some((x) => x.startsWith("not based")),
         needsVet, vetShown: kept ? vetOk(policy === "baseline" ? a.answer : withVetAdvice(p.q, a.answer)) : vetOk(shown.reply),
         credits: kept ? credited.length : shown.match ? 1 : 0,
@@ -221,6 +229,7 @@ if (answersIn) {
       aiFromWrongOnly: gen.filter((r) => !r.rightSent).length,                      // AI answers shown that were written from wrong passages only
       unsupported: pct(gen.filter((r) => r.unsupported.length).length, gen.length),  // of shown AI answers: a law, body, link or number its passages lack
       ungrounded: pct(gen.filter((r) => r.ungrounded).length, gen.length),           // of shown AI answers: barely uses its passages
+      pasted: pct(gen.filter((r) => r.pasted).length, gen.length),                   // of shown AI answers: 90%+ copied from one passage (v6: pasted whole answers)
       creditPrecision: pct(rows.reduce((n, r) => n + r.credits - r.wrongCredit, 0), rows.reduce((n, r) => n + r.credits, 0)),
       wrongCredits: rows.reduce((n, r) => n + r.wrongCredit, 0),
       vetAdviceShown: pct(rows.filter((r) => r.needsVet && r.vetShown).length, rows.filter((r) => r.needsVet).length),   // symptom / swallowed questions whose reply says to see a vet soon

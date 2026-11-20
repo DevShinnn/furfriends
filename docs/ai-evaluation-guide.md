@@ -142,6 +142,10 @@ only credits the passages its answer actually uses. This test measures that part
     or number not in their passages (*unsupported*), and *creditPrecision* (credited passages that answer the question)
   - *vetAdviceShown*: of the questions about a symptom or something the pet swallowed, how many replies tell the
     owner to see a vet (an AI answer gets the same advice as a checked one)
+  - *pasted*: of the AI answers shown, how many are 90% or more copied from one passage (5-word runs). v6 pasted
+    83.3% (re-scored on 2026-11-20 from its saved answers): it was trained on whole checked answers. From v7 the
+    training answers are written for each question (`ai-server/written_answers.py`), so this should drop while
+    *unsupported* stays at 0
 - **Conversations:** `npm run eval:conversation` (with `python answer_prompts.py --serve 8790` running in
   `ai-server`) plays every labelled conversation through the app turn by turn with the real model, for each way of
   passing the conversation to the model (`MODEL_HISTORY` in `src/lib/prompt.js`), and measures how often the last

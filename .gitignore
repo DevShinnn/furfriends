@@ -15,3 +15,6 @@ supabase/.temp/
 
 # Python bytecode
 __pycache__/
+
+# Colab training bundle (python ai-server/colab/make_bundle.py): rebuilt from the data, not kept
+ai-server/colab/*.zip

@@ -69,6 +69,9 @@ def main():
                    help="attention: train only the attention layers, about 40%% faster on a CPU")
     p.add_argument("--max-length", type=int, default=1024, help="longer examples are cut; shorter is faster")
     p.add_argument("--no-checkpointing", action="store_true", help="faster, but needs more memory")
+    p.add_argument("--fp16", action="store_true",
+                   help="half precision on a GPU: faster, but Qwen2.5 can overflow in it (as its half-precision export did). "
+                        "Full precision, the default, trains the 0.5B model in about 20-30 minutes on a free T4")
     args = p.parse_args()
     keep_awake()
 
@@ -77,6 +80,7 @@ def main():
     print(f"{len(train)} training examples" + (f", {len(evals)} eval" if evals else ""))
 
     gpu = torch.cuda.is_available()
+    half = gpu and args.fp16
     config = SFTConfig(
         output_dir=args.out,
         num_train_epochs=args.epochs,
@@ -90,14 +94,14 @@ def main():
         save_steps=args.save_steps or 500,
         save_total_limit=2,
         eval_strategy="epoch" if evals else "no",
-        fp16=gpu,
+        fp16=half,
         bf16=False,            # the free Colab T4 GPU has no bf16
         use_cpu=not gpu,
         max_length=args.max_length,
         completion_only_loss=True,
         gradient_checkpointing=not args.no_checkpointing,
         report_to=[],
-        model_init_kwargs={"dtype": torch.float16 if gpu else torch.float32},
+        model_init_kwargs={"dtype": torch.float16 if half else torch.float32},
     )
     targets = ["q_proj", "k_proj", "v_proj", "o_proj"] + (["gate_proj", "up_proj", "down_proj"] if args.layers == "all" else [])
     lora = LoraConfig(r=16, lora_alpha=32, lora_dropout=0.05, task_type="CAUSAL_LM", target_modules=targets)

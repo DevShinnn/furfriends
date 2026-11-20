@@ -107,6 +107,32 @@ earlier models get the pet details they were trained with, because given the ext
 records don't say (checked 2026-11-11 on 6 questions: 4 answers unchanged, 1 rephrased, 1 invented "if he has
 diabetes"). The notes from the pet's records are added by the app for every model.
 
+v7 keeps v6's pet profiles but changes **what the model is taught to say**. Until v6, every training answer was a
+checked answer word for word (v6's 954 answers were only 183 different checked answers), so the model learned to paste
+the matching passage whole, parts that don't fit included. v7 trains on an answer written for each of its 382
+questions from that question's passage (`written_answers.py`; the rules are in `data/written/STYLE.md`): it answers
+the question first and keeps only what fits it, such as the cat part for a cat. Every answer passes the app's own
+evidence check with the passages of every example it is used in, and two teammates check a sample (`docs/answer-review/`).
+The answers were drafted with an AI assistant (Claude) from the passages. Of v7's 898 answers, 15 are 90% or more
+copied from their passage (before: 770; median share copied 0.66, before 1.00). v7 also fixes four data problems: the
+first-aid guides were read with the wrong encoding ("100â€“120", in v2-v6's data); 1 example in 5 of v5 taught
+"couldn't find" (v7: 92 of 990), some with a first-aid guide in front of it (v7: none); the first-aid answers came
+from a template ("This sounds like it could be cPR."); and 11 examples were wrong (a dog's first-aid question with a
+cat's sign, "My dog has open-mouth breathing in a cat", and pet profiles of the wrong pet or species), now left out.
+Questions whose checked answer only partly answers them are listed in `docs/ai-knowledge-gaps.md`. v7 trains all layers for 2 passes on Colab's free GPU
+(`colab/train_v7.ipynb`, about 30 minutes) with the same package versions as the export Python:
+```
+python build_rag_data.py --checked-only --near-miss-share 0.15 --multi-turn-share 0.15 --out-of-scope --out data/rag_train_v7_base.jsonl   # 471 examples
+python add_pet_profiles.py --base data/rag_train_v7_base.jsonl --out data/rag_train_v7_pre.jsonl --db-pets data/training_pets.json        # 1,001 examples
+python written_answers.py todo --data data/rag_train_v7_pre.jsonl --answers "" --out data/written/questions.jsonl   # the questions and their passages
+python written_answers.py apply --data data/rag_train_v7_pre.jsonl --answers data/written_answers.jsonl --out data/rag_train_v7.jsonl   # 990 examples
+python answer_review.py sample                     # the team's sample check: docs/answer-review/answer-review.csv
+python colab/make_bundle.py                        # colab/furfriends-train-v7.zip, to upload in colab/train_v7.ipynb
+C:\Python312\python.exe export_onnx.py --adapter adapters/rag-v7 --out exports/furfriends-rag-v7 --only q4
+```
+`build_rag_data.py` gives the same data only with the same library: v5 couldn't be rebuilt exactly on 2026-11-20
+(517 examples instead of 543) because the checked answers had changed since.
+
 Then upload `exports/furfriends-rag-v3` to a public Hugging Face model repo (name it `furfriends-...`, see
 `vite.config.js`), set `MODEL` in `api/ask.py` to it, rebuild the app's index (`npm run knowledge`) and push:
 ```
@@ -169,6 +195,12 @@ What we learned (keep these when retraining):
   the owner's own question says he/she the other way. Re-scored on the same saved answers (`wrongPronounShown` in
   `results/pets/pets-eval-v6.json` and `-v2.json`): v6 1 of 68 (the question itself said "his paw" for a female
   dog), v2 0 of 68; every other number unchanged. No retraining needed.
+- **v6 pastes whole checked answers because it was taught to** (found 2026-11-20). Its 954 training answers were 183
+  checked answers word for word, repeated under 376 questions, and the same checked answer was always one of the
+  passages. On the benchmark, 83.3% of v6's shown answers are 90% or more copied from one passage (*pasted*, re-scored
+  from its saved answers; `answer-eval-cmp-v6-rescored.json`), so a cat owner asking when to spay got the ages for
+  dogs too. v7's written answers (above) are the fix. The model stays at 0.5B: Vercel's free plan gives the AI about
+  3 CPU-hours a month, and a 1.5B model costs about 3 times as much per answer.
 - **Never train on the evaluation questions.** v2 and v3 were trained on 11 questions that are also in
   `retrieval_eval.jsonl` and `safety_eval.json` (the library's own questions, such as "How often should I deworm my
   kitten?"). `build_rag_data.py` now leaves them out, also as earlier messages in a conversation, and
