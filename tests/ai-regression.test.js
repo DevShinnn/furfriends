@@ -24,14 +24,14 @@ const byCategory = (cat) => cases.filter((c) => c.category === cat);
 const entry = (id) => index.entries.find((e) => e.id === id);
 
 describe("AI regressions: the stored vectors match", () => {
-  it("were made for this index (rerun npm run eval:sets -- --set regression --fixture ... if not)", () => {
+  it("[FR10.3] were made for this index (rerun npm run eval:sets -- --set regression --fixture ... if not)", () => {
     expect(fixture.indexBuilt).toBe(raw.built);
     for (const c of cases) expect(fixture.queries[c.id], c.id).toBeTruthy();
   });
 });
 
 describe("AI regressions: a cat that hasn't eaten for days", () => {
-  it("gets the checked answers about a cat not eating, never a feeding schedule (English and Tagalog)", () => {
+  it("[FR10.3] gets the checked answers about a cat not eating, never a feeding schedule (English and Tagalog)", () => {
     for (const c of byCategory("cat-appetite")) {
       const { evidence, fallback } = plan(c);
       const sent = evidence.map(idOf);
@@ -41,7 +41,7 @@ describe("AI regressions: a cat that hasn't eaten for days", () => {
     }
   });
 
-  it("reads how long the owner said, in English and Tagalog", () => {
+  it("[FR10.4] reads how long the owner said, in English and Tagalog", () => {
     expect(howLong("tatlong araw na po")).toBe("Three days");
     expect(howLong("Hindi kumakain ang pusa ko ng dalawang araw")).toBe("Two days");
     expect(howLong("My kitten won't eat and it's been 2 days")).toBe("Two days");
@@ -50,7 +50,7 @@ describe("AI regressions: a cat that hasn't eaten for days", () => {
     expect(howLong("Ayaw kumain ng pusa ko")).toBeNull();
   });
 
-  it("opens with how long the owner said and to go to a vet now, before anything else (English and Tagalog)", () => {
+  it("[FR10.4] opens with how long the owner said and to go to a vet now, before anything else (English and Tagalog)", () => {
     const feeding = entry("q0c19b6").a;
     for (const [q, owner, said] of [["My cat has not eaten for three days", "My cat has not eaten for three days", "Three days"],
       ["not eating cat days", "Ayaw kumain ng pusa ko\ntatlong araw na po", "Three days"],
@@ -70,21 +70,21 @@ describe("AI regressions: a cat that hasn't eaten for days", () => {
     expect(withAppetiteAdvice("not eating cat days", once, "", "tatlong araw na po")).toBe(once);
   });
 
-  it("isn't skipped because the answer says 'if ... 24 hours, ... now' (what rag-v2 copied on the preview)", () => {
+  it("[FR10.4] isn't skipped because the answer says 'if ... 24 hours, ... now' (what rag-v2 copied on the preview)", () => {
     const howLongIsTooLong = entry("qcf4aff").a;   // "If your cat hasn't eaten properly for 24 hours, take her to the vet now."
     const r = withAppetiteAdvice("not eating cat days", howLongIsTooLong, "", "Ayaw kumain ng pusa ko\ntatlong araw na po");
     expect(r.startsWith("Three days without eating is serious for a cat. Take her to a vet now")).toBe(true);
     expect(r.endsWith(howLongIsTooLong)).toBe(true);
   });
 
-  it("the note says only what the checked answers say", () => {
+  it("[FR10.4] the note says only what the checked answers say", () => {
     const checked = `${entry("qc01447").a} ${entry("qcf4aff").a}`.toLowerCase();
     for (const fact of ["is serious for a cat", "take her to the vet now", "hepatic lipidosis", "force-feed", "tell the vet when she last ate"]) expect(checked).toContain(fact);
   });
 });
 
 describe("AI regressions: a dog that hasn't eaten", () => {
-  it("gets the checked answer about a dog not eating, never a poisoning passage about something it ate (English and Tagalog)", () => {
+  it("[FR10.3] gets the checked answer about a dog not eating, never a poisoning passage about something it ate (English and Tagalog)", () => {
     for (const c of byCategory("dog-appetite")) {
       const { evidence, fallback } = plan(c);
       const sent = evidence.map(idOf);
@@ -98,7 +98,7 @@ describe("AI regressions: a dog that hasn't eaten", () => {
 });
 
 describe("AI regressions: dog food for a cat, cat food for a dog", () => {
-  it("is declined (no checked passage covers it), never answered with general pet-food passages", () => {
+  it("[FR10.3] is declined (no checked passage covers it), never answered with general pet-food passages", () => {
     for (const c of byCategory("cross-species-food")) {
       const { evidence, fallback } = plan(c);
       expect(evidence.map(idOf), `${c.id} ${c.turns[0]}`).toEqual([]);
@@ -106,7 +106,7 @@ describe("AI regressions: dog food for a cat, cat food for a dog", () => {
     }
   });
 
-  it("only a passage naming that food and the other animal could ever count", () => {
+  it("[FR10.3] only a passage naming that food and the other animal could ever count", () => {
     const pet = (id) => ({ ...entry(id), score: 0.95 });
     const ask = (q) => planAnswer(index, [pet("gov-182"), pet("gov-189"), pet("q0c19b6")], q, q).evidence.map(idOf);
     expect(ask("Can I give my cat dog food?")).toEqual([]);
@@ -115,16 +115,16 @@ describe("AI regressions: dog food for a cat, cat food for a dog", () => {
 });
 
 describe("AI regressions: Husky follow-ups and their citations", () => {
-  it("a follow-up about the Husky in the heat gets the Husky's guide alone (English and Tagalog)", () => {
+  it("[FR10.5] a follow-up about the Husky in the heat gets the Husky's guide alone (English and Tagalog)", () => {
     for (const c of byCategory("husky-follow-up")) expect(plan(c).evidence.map(idOf), `${c.id} ${c.turns.join(" / ")}`).toEqual(c.exact);
   });
 
-  it("the heat summary is still found when it is the best match", () => {
+  it("[FR10.3] the heat summary is still found when it is the best match", () => {
     const c = byCategory("heat-summary")[0];
     expect(plan(c).evidence.map(idOf)[0]).toBe("breed-heat-dog");
   });
 
-  it("a line taken from a second passage credits it too; a shared line credits nothing extra", () => {
+  it("[FR10.3] a line taken from a second passage credits it too; a shared line credits nothing extra", () => {
     const sources = sourcesFor([entry("breed-heat-dog"), entry("breed-siberian-husky")]);
     const heat = entry("breed-heat-dog").a.split("\n").slice(0, 3).join("\n");
     const mixed = `${heat}\nTypical adult weight 16–27 kg; energy 5 of 5.`;
@@ -161,7 +161,7 @@ describe("AI regressions: what the owner sees (askAssistant end to end)", () => 
   });
   const ask = (id) => askAssistant({ messages: cases.find((c) => c.id === id).turns.map((content) => ({ role: "user", content })), pet: null });
 
-  it("Tagalog 'my cat won't eat' / 'three days now': the AI only gets the not-eating answers, and the reply says to see a vet today", async () => {
+  it("[FR10.4] Tagalog 'my cat won't eat' / 'three days now': the AI only gets the not-eating answers, and the reply says to see a vet today", async () => {
     const passage = entry("qc01447");
     serverReply = passage.a.split("\n")[0];   // an answer written from it
     const r = await ask("R02");
@@ -172,7 +172,7 @@ describe("AI regressions: what the owner sees (askAssistant end to end)", () => 
     expect(r.reply).toMatch(/vet today/);
   });
 
-  it("the exact preview conversation 'Ayaw kumain ng pusa ko' / 'tatlong araw na po': the second reply says three days and to go now", async () => {
+  it("[FR10.4] the exact preview conversation 'Ayaw kumain ng pusa ko' / 'tatlong araw na po': the second reply says three days and to go now", async () => {
     // What rag-v2 wrote for both turns on the preview: the "how long is too long" passage, word for word.
     serverReply = entry("qcf4aff").a;
     const chat = [{ role: "user", content: "Ayaw kumain ng pusa ko" }];   // as pages/Assistant.jsx sends it: the whole chat
@@ -193,7 +193,7 @@ describe("AI regressions: what the owner sees (askAssistant end to end)", () => 
     expect(withPet.reply.startsWith("Three days without eating")).toBe(true);
   });
 
-  it("dog food for a cat: the AI isn't asked and no pet-food passage is shown as the answer", async () => {
+  it("[FR10.3] dog food for a cat: the AI isn't asked and no pet-food passage is shown as the answer", async () => {
     serverReply = "Raw pet food and treats can make your dog or cat sick.";
     const r = await ask("R10");
     expect(serverCalls).toEqual([]);

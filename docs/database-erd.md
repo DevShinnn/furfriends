@@ -3,7 +3,7 @@
 The live Supabase database, as built by `supabase/migrations/`. Checked against the live project on
 2026-10-20: all 12 tables then existed, each account sees only its own rows, and visitors who aren't logged
 in see nothing. `ai_usage` (the AI's CPU-time counter) was added on 2026-10-28, and `clinic_search_cache` (saved clinic
-searches) plus `profiles.address` on 2026-10-29, `weight_log` (each pet's weight history) on 2026-11-12, and `assistant_messages` (each pet's saved assistant chat) on 2026-11-20, making 16 tables. Use this to check the ERD in the thesis manuscript. Every table, key and relationship
+searches) plus `profiles.address` on 2026-10-29, `weight_log` (each pet's weight history) on 2026-11-12, and `assistant_messages` (each pet's saved assistant chat) and `security_questions` (forgot password) on 2026-11-20, making 17 tables. Use this to check the ERD in the thesis manuscript. Every table, key and relationship
 below should appear there.
 
 ```mermaid
@@ -22,6 +22,7 @@ erDiagram
     PETS |o--o{ ASSISTANT_FEEDBACK : "asked about"
     AUTH_USERS ||--o{ ASSISTANT_MESSAGES : "chats"
     PETS |o--o{ ASSISTANT_MESSAGES : "chat about"
+    AUTH_USERS ||--o| SECURITY_QUESTIONS : "resets with"
     AUTH_USERS ||--o{ PUSH_SUBSCRIPTIONS : "has devices"
     AUTH_USERS ||--o{ PUSH_LOG : "was sent"
     AUTH_USERS ||--o{ USABILITY_RESPONSES : "submits"
@@ -130,6 +131,14 @@ erDiagram
         jsonb meta "sources, model, rating shown with an answer"
         timestamptz created_at
     }
+    SECURITY_QUESTIONS {
+        uuid owner_id PK, FK "same as the user's id"
+        text question
+        text answer_hash "bcrypt of the answer, never the answer itself"
+        int failed_attempts
+        timestamptz locked_until "5 wrong answers lock the reset for 15 minutes"
+        timestamptz updated_at
+    }
     ASSISTANT_FEEDBACK {
         uuid id PK
         uuid user_id FK
@@ -202,6 +211,7 @@ erDiagram
 | `care_tasks` | a grooming, deworming or vaccination reminder, or a vet appointment | `id` | pet |
 | `weight_log` | a pet's weight on one day: its weight history (a trigger saves each new weight; owners can add earlier ones) | `id` | pet |
 | `assistant_messages` | one message in an owner's assistant chat: one chat per pet, and one about pets in general ("New chat" deletes it; not saved for the shared demo and sample accounts) | `id` | user (and optionally pet) |
+| `security_questions` | an owner's security question for forgot password, with the answer only as a bcrypt hash, the wrong tries and the 15-minute lock (no API access: only its database functions use it; none for the shared accounts) | `owner_id` (same as the user's) | user, 1 to 0 or 1 |
 | `assistant_feedback` | a 👍/👎 rating of one assistant answer | `id` | user (and optionally pet) |
 | `push_subscriptions` | a phone or browser that allowed notifications | `id` | user |
 | `push_log` | a reminder already pushed, so it isn't sent twice | `user_id` + `key` | user |
@@ -221,6 +231,10 @@ erDiagram
 - **AI allowance.** Users can add `ai_usage` rows but not read or change them; the function
   `ai_cpu_seconds_30d()` gives the 30-day total, and the AI stops answering at 3 CPU-hours so the
   Vercel free plan (4 CPU-hours per 30 days) is never passed.
+- **Forgot password, with no email.** `security_question_for(email)` shows an account's question, and
+  `reset_password_with_answer(email, answer, new password)` sets the new password when the answer matches (any
+  letter case or spacing); 5 wrong answers lock it for 15 minutes. `set_security_question` needs the current
+  password. The table has no policies, so nobody reads it through the API, not even its owner.
 - **Not in the database, on purpose.** The first-aid guides, breed guide and the assistant's checked
   answers are built into the app (`src/lib/emergency.js`, `src/lib/breeds.js`,
   `public/knowledge/index.json`), so they work offline. Vet appointments are `care_tasks` rows with

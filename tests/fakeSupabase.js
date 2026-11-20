@@ -8,6 +8,7 @@ export function fakeSupabase() {
     calls: [],            // { table, op, payload, filters }
     storage: [],          // { bucket, op, args }
     signUpConfirm: false, // true: sign-up needs email confirmation (no session)
+    rpc: {},              // database function name → (args) => { data, error }; others answer { data: null, error: null }
   };
 
   const builder = (table) => {
@@ -47,10 +48,14 @@ export function fakeSupabase() {
   const client = {
     state,
     reset() {
-      Object.assign(state, { users: {}, session: null, rows: { profiles: [], pets: [] }, calls: [], storage: [], signUpConfirm: false });
+      Object.assign(state, { users: {}, session: null, rows: { profiles: [], pets: [] }, calls: [], storage: [], signUpConfirm: false, rpc: {} });
     },
     from: (table) => builder(table),
-    rpc: async () => ({ data: null, error: null }),
+    // Recorded as table "rpc", op = the function's name.
+    rpc: async (name, args) => {
+      state.calls.push({ table: "rpc", op: name, payload: args });
+      return state.rpc[name] ? state.rpc[name](args) : { data: null, error: null };
+    },
     channel: () => ({ on() { return this; }, subscribe() { return this; } }),
     removeChannel: () => {},
     storage: {

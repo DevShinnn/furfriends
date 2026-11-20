@@ -104,6 +104,7 @@ erDiagram
   PETS |o--o{ ASSISTANT_FEEDBACK : "asked about"
   AUTH_USERS ||--o{ ASSISTANT_MESSAGES : "chats"
   PETS |o--o{ ASSISTANT_MESSAGES : "chat about"
+  AUTH_USERS ||--o| SECURITY_QUESTIONS : "resets with"
 
   AUTH_USERS {
     uuid id PK
@@ -141,6 +142,13 @@ erDiagram
     text content
     jsonb meta
     timestamptz created_at
+  }
+  SECURITY_QUESTIONS {
+    uuid owner_id PK, FK
+    text question
+    text answer_hash "bcrypt, never the answer"
+    int failed_attempts
+    timestamptz locked_until
   }
   ASSISTANT_FEEDBACK {
     uuid id PK
@@ -248,6 +256,7 @@ const dictionary = [
   ["care_tasks", "grooming, deworming, vaccination or a vet appointment", "id", "Repeat in days (0 = once); vet appointments are rows here, not a separate table."],
   ["weight_log", "a pet's weight on one day (its weight history)", "id", "One per pet per day. A trigger saves the pet's weight here whenever it changes; owners can add earlier weights. Used for weight trends in the health check and the AI."],
   ["assistant_messages", "one message in an owner's assistant chat", "id", "One chat per pet, and one about pets in general (pet_id empty). \"New chat\" deletes it; deleting the pet or the account deletes its chats. Not saved for the shared demo and sample accounts."],
+  ["security_questions", "an owner's security question for forgot password", "owner_id", "The answer only as a bcrypt hash. No one reads it through the API: only its database functions, which check the answer, lock the reset for 15 minutes after 5 wrong answers, and set the new password. Not for the shared accounts."],
   ["assistant_feedback", "a thumbs up or down on one assistant answer", "id", "Keeps the question, answer and model version; rating is 1 or -1."],
   ["push_subscriptions", "a phone or browser that allowed notifications", "id", "Endpoint is unique; keeps the device's time zone."],
   ["push_log", "a reminder already pushed", "user_id + key", "Stops the same reminder going out twice."],
@@ -257,13 +266,14 @@ const dictionary = [
 ];
 
 const security = [
-  ["Each owner sees only their own data", "Row Level Security on all 16 tables; a pet's rows are visible only when its owner is the logged-in user. Visitors who are not logged in see nothing."],
+  ["Each owner sees only their own data", "Row Level Security on all 17 tables; a pet's rows are visible only when its owner is the logged-in user. Visitors who are not logged in see nothing."],
+  ["Forgot password without email", "The owner answers the security question they picked. The answer is kept only as a bcrypt hash that no one can read through the API, 5 wrong answers lock the reset for 15 minutes, and changing the question needs the current password."],
   ["Files are private", "Photos and documents sit under a folder named with the owner's user id, locked by a storage policy, and are opened with links that expire after a week."],
   ["Secrets stay on the server", "The app holds only the public Supabase key. The service-role key and push private key live in the edge function's secrets. A secret scan runs before every push and passed on the whole history."],
   ["Locations aren't kept", "The phone's location is used for one search and never saved. Searches are saved per ~1 km area, and a typed address only as a hash. The TomTom key is an edge-function secret, and only logged-in owners can search."],
-  ["Questions go only to FurFriends' own AI", "Only logged-in owners can use it. The question and 2 checked passages go to the team's function on Vercel, not to a paid AI service, and are not stored. A question is shared with the team only when the owner rates the answer."],
+  ["Questions go only to FurFriends' own AI", "Only logged-in owners can use it. The question and 2 checked passages go to the team's function on Vercel, not to a paid AI service, and the function keeps nothing. The owner's chats are saved in their own account only. A question is shared with the team only when the owner rates the answer."],
   ["The free plan can't be overrun", "Each answer's CPU time is logged in Supabase. Above 3 of the free 4 CPU-hours per 30 days, the AI stops and the checked answer shows instead, so the app is never paused."],
-  ["Shared demo accounts are protected", "The demo and sample logins have public passwords, so the database refuses changes to their password or email, and refuses their survey answers and ratings."],
+  ["Shared demo accounts are protected", "The demo and sample logins have public passwords, so the database refuses changes to their password or email, refuses their survey answers and ratings, and gives them no security question (so no one can reset them)."],
   ["The assistant is cautious", "It writes only from 2 checked passages, never gives medicine doses, puts the first-aid guide first in an emergency, shows its sources, and says when the passages don't answer the question."],
 ];
 
@@ -319,7 +329,7 @@ const architecture = () => svg(1080, 570, [
   box(585, 48, 220, 62, ["Auth", "email and password"], "cloud"),
   box(585, 128, 220, 62, ["Private storage", "photos and documents"], "cloud"),
   box(585, 208, 220, 62, ["Realtime", "sync between devices"], "cloud"),
-  box(840, 48, 210, 222, ["Postgres database", "16 tables", "Row Level Security:", "each owner sees only", "their own rows"], "cloud"),
+  box(840, 48, 210, 222, ["Postgres database", "17 tables", "Row Level Security:", "each owner sees only", "their own rows"], "cloud"),
   box(585, 330, 220, 62, ["pg_cron", "every 5 minutes"], "cloud"),
   box(840, 330, 210, 62, ["Edge function", "send-reminders"], "cloud"),
   box(585, 404, 220, 52, ["Edge function", "find-clinics"], "cloud"),
@@ -456,7 +466,7 @@ const html = `<!doctype html>
     <div class="card"><b>How it is built</b><span>A React web app that works offline, a Supabase backend with private per-owner data, push reminders, and the team's own trained AI, running in a free Vercel function.</span></div>
     <div class="card"><b>What this document shows</b><span>1. Architecture 2. Technology 3. ERD and data dictionary 4. Flows: sign-in and sync, the assistant, reminders, research data, deployment 5. Security and limits.</span></div>
   </div>
-  <p class="note">Live at furfriends-black.vercel.app. The database section matches supabase/migrations: 16 tables, 18 relationships (checked against the live project on 2026-10-24; ai_usage added 2026-10-28, clinic_search_cache 2026-10-29, weight_log 2026-11-12, assistant_messages 2026-11-20). Document date: 2026-11-20.</p>
+  <p class="note">Live at furfriends-black.vercel.app. The database section matches supabase/migrations: 17 tables, 19 relationships (checked against the live project on 2026-10-24; ai_usage added 2026-10-28, clinic_search_cache 2026-10-29, weight_log 2026-11-12, assistant_messages and security_questions 2026-11-20). Document date: 2026-11-20.</p>
 </section>
 
 ${figure("1. System architecture", "Three places do the work: the owner's device (app, offline cache and the search), Vercel (serves the app and runs the AI that writes answers) and Supabase (accounts, data, files, sync, reminders and the AI's usage limit).", architecture())}
@@ -467,9 +477,9 @@ ${table(["Layer", "Technology", "Why"], stack)}
 
 ${diagram("3. Entity relationship diagram (1 of 2): owners, pets and their records", "Every owner owns pets, and every health record, document, schedule and task belongs to a pet. Key columns are shown; the data dictionary lists every table.", erdPets, `<p class="note">PK = primary key, FK = foreign key, UK = unique. Deleting an account deletes its pets, and deleting a pet deletes everything under it.</p>`)}
 
-${diagram("3. Entity relationship diagram (2 of 2): accounts, reminders and research", "The profile, reminder devices, survey answers and assistant ratings hang off the owner's login. A rating may also point to the pet it was about.", erdAccount, `<p class="note">Ratings keep their question and answer if the pet is deleted (the pet link is cleared). One profile per login; the profile shares the login's id. clinic_search_cache stands alone: shared saved clinic searches that only the find-clinics function writes.</p>`)}
+${diagram("3. Entity relationship diagram (2 of 2): accounts, reminders and research", "The profile, reminder devices, survey answers, assistant chats and ratings, and the security question hang off the owner's login. A rating may also point to the pet it was about.", erdAccount, `<p class="note">Ratings keep their question and answer if the pet is deleted (the pet link is cleared). One profile per login; the profile shares the login's id. clinic_search_cache stands alone: shared saved clinic searches that only the find-clinics function writes.</p>`)}
 
-<section class="page"><h2>4. Data dictionary</h2><p class="lead">16 tables in the public schema, plus Supabase's own auth.users. Every table has Row Level Security on.</p>
+<section class="page"><h2>4. Data dictionary</h2><p class="lead">17 tables in the public schema, plus Supabase's own auth.users. Every table has Row Level Security on.</p>
 ${table(["Table", "One row is", "Key", "Rules"], dictionary)}
 <p class="note">Not in the database on purpose: the first-aid guides, breed guide and the assistant's answers are built into the app, so they work offline. There is no clinics table: nearby clinics come live from TomTom, and clinic_search_cache only keeps each search for a week.</p>
 </section>

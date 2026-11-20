@@ -4,7 +4,7 @@ import { StoreProvider } from "./store/StoreContext";
 import { UIProvider } from "./components/UIContext";
 import AppShell from "./components/AppShell";
 // Landing page is parked for now (src/pages/Landing.jsx is kept, just not routed).
-import { Login, Register, DemoLink } from "./pages/Auth";
+import { Login, Register, ForgotPassword, DemoLink } from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Pets from "./pages/Pets";
 import PetDetail from "./pages/PetDetail";
@@ -27,6 +27,7 @@ export default function App() {
             <Route path="/" element={<Navigate to="/app" replace />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/forgot" element={<ForgotPassword />} />
             <Route path="/demo" element={<DemoLink />} />
             <Route path="/app" element={<AppShell />}>
               <Route index element={<Dashboard />} />

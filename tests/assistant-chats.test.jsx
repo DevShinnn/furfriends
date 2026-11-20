@@ -33,7 +33,7 @@ beforeEach(() => {
 });
 
 describe("One chat per pet on the Ask page", () => {
-  it("switching pets opens that pet's own chat, and the assistant only gets that pet's questions", async () => {
+  it("[FR10.7] switching pets opens that pet's own chat, and the assistant only gets that pet's questions", async () => {
     open(mochi.id);
     await say("How is Mochi?", "Answer about Mochi, after 1 question(s)");
     await say("And her vaccines?", "Answer about Mochi, after 2 question(s)");
@@ -51,7 +51,7 @@ describe("One chat per pet on the Ask page", () => {
     expect(chip("Bori").querySelector(".chip-dot")).toBeTruthy();   // Bori has a conversation waiting
   });
 
-  it("'New chat' starts only this pet's conversation over", async () => {
+  it("[FR10.7] 'New chat' starts only this pet's conversation over", async () => {
     open(mochi.id);
     await say("How is Mochi?", "Answer about Mochi, after 1 question(s)");
     fireEvent.click(chip("Bori"));
@@ -62,7 +62,7 @@ describe("One chat per pet on the Ask page", () => {
     expect(screen.getByText("How is Mochi?")).toBeTruthy();
   });
 
-  it("the chats are kept per pet in this tab, and the general chat is separate", async () => {
+  it("[FR10.7] the chats are kept per pet in this tab, and the general chat is separate", async () => {
     open("");
     await say("How often should I deworm?", "Answer about pets, after 1 question(s)");
     fireEvent.click(chip("Bori"));
@@ -84,7 +84,7 @@ describe("Chats saved to the account (assistant_messages)", () => {
     chatRooms: vi.fn(async () => new Set([mochi.id])),
   }));
 
-  it("a pet's saved chat opens from the account, on any device, with a dot on pets that have one", async () => {
+  it("[FR10.7] a pet's saved chat opens from the account, on any device, with a dot on pets that have one", async () => {
     open(mochi.id);
     expect(await screen.findByText("Mochi is on track.")).toBeTruthy();
     expect(store.loadChat).toHaveBeenCalledWith(mochi.id);
@@ -95,7 +95,7 @@ describe("Chats saved to the account (assistant_messages)", () => {
     expect(chip("Bori").querySelector(".chip-dot")).toBeNull();
   });
 
-  it("every question and answer is saved to that pet's chat, and 'New chat' deletes only it", async () => {
+  it("[FR10.7] every question and answer is saved to that pet's chat, and 'New chat' deletes only it", async () => {
     open(mochi.id);
     await screen.findByText("Mochi is on track.");
     await say("And her vaccines?", "Answer about Mochi, after 2 question(s)");

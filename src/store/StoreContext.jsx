@@ -7,6 +7,7 @@ import { clearChats } from "../lib/assistant";
 import { addDemoPets, browserFiles, clearPets } from "../lib/seedDemo";
 import { PET_SELECT, TABLES, TO, petFromRow, petToDb, petWeights } from "../lib/petRows";
 import { chatOf, chatRoomsOf, chatTableReady, clearChatRows, saveChatRow, updateChatRow } from "../lib/chatHistory";
+import { MIN_ANSWER, myQuestion, questionFor, resetWithAnswer, saveQuestion } from "../lib/passwordReset";
 
 /* Accounts live in Supabase (Auth + Postgres + Storage, see supabase/migrations).
    The demo account is a real, shared account (made by scripts/seed-sample-accounts.mjs) that
@@ -26,7 +27,7 @@ const PHOTOS = "pet-photos";
 const DOCS = "pet-documents";
 const URL_TTL = 60 * 60 * 24 * 7; // signed file links last a week
 const FED_DAYS = 14;              // only the last 2 weeks of feeding log are loaded
-const EMPTY = { user: null, pets: [], weightLog: false, chatTable: false };
+const EMPTY = { user: null, pets: [], weightLog: false, chatTable: false, securityQuestion: undefined };
 const SYNC_TABLES = ["profiles", "pets", "medical_records", "vaccinations", "documents", "feeding_schedules", "feeding_log", "care_tasks"];
 const SYNC_DELAY = 1200;          // wait for a burst of changes to settle before reloading
 const STALE_AFTER = 30 * 1000;    // reload when the app returns after being hidden this long
@@ -92,11 +93,14 @@ async function fetchAll(authUser) {
   if (res.error) throw res.error;
 
   const pets = res.data.map(petFromRow);
-  const [photoUrls, docUrls, weightLog, chatTable] = await Promise.all([
+  // the demo and sample accounts, whose passwords are public (docs/sample-accounts.md); the database enforces this too
+  const isShared = authUser.email === DEMO_EMAIL || /^sample\..+@example\.com$/.test(authUser.email || "");
+  const [photoUrls, docUrls, weightLog, chatTable, securityQuestion] = await Promise.all([
     signAll(PHOTOS, pets.map((p) => p.photoPath)),
     signAll(DOCS, pets.flatMap((p) => p.documents.map((d) => d.filePath))),
     petWeights(supabase, pets),   // false until the weight_log table exists
     chatTableReady(supabase),     // false until the assistant_messages table exists
+    myQuestion(supabase),         // for forgot password: undefined until its migration is applied
   ]);
   for (const p of pets) {
     p.photo = photoUrls[p.photoPath] || null;
@@ -107,11 +111,9 @@ async function fetchAll(authUser) {
   const user = {
     id: authUser.id, email: authUser.email, name: p.name || "", phone: p.phone || "", city: p.city || "", address: p.address || "",
     notificationsEnabled: p.notifications_enabled ?? true, createdAt: Date.parse(authUser.created_at),
-    isDemo: authUser.email === DEMO_EMAIL,
-    // the demo and sample accounts, whose passwords are public (docs/sample-accounts.md); the database enforces this too
-    isShared: authUser.email === DEMO_EMAIL || /^sample\..+@example\.com$/.test(authUser.email || ""),
+    isDemo: authUser.email === DEMO_EMAIL, isShared,
   };
-  return { user, pets, weightLog, chatTable };
+  return { user, pets, weightLog, chatTable, securityQuestion };
 }
 
 function authMessage(error) {
@@ -218,7 +220,7 @@ export function StoreProvider({ children }) {
   }, [userId, weightLogOn, syncNow]);
 
   const api = useMemo(() => {
-    const { user, pets, weightLog, chatTable } = db;
+    const { user, pets, weightLog, chatTable, securityQuestion } = db;
     // Chats are saved to the account once their table exists, except on the shared accounts anyone can log into.
     const chatSaved = !!(chatTable && user && !user.isShared);
     const getPet = (id) => pets.find((p) => p.id === id) || null;
@@ -243,8 +245,13 @@ export function StoreProvider({ children }) {
       return enter(data.user);
     }
 
+    const noQuestion = "There's no security question for this email. If you never set one, ask the FurFriends team to reset your password.";
+    const resetOff = "Password reset isn't available yet. Ask the FurFriends team to reset your password.";
+
     return {
       ready, user, pets, getPet, weightLog,
+      // This account's security question: the question, null if it has none, undefined if the feature isn't set up.
+      securityQuestion,
       syncError, clearSyncError: () => setSyncError(null),
 
       /* ------------------------------------------------ account */
@@ -268,13 +275,16 @@ export function StoreProvider({ children }) {
       },
 
       // Resolves to { error } or { confirmEmail: true } when Supabase requires email confirmation.
-      async register({ name, email, password, confirm }) {
+      // question/answer: the security question for forgot password, when the sign-up form asks for one.
+      async register({ name, email, password, confirm, question, answer }) {
         email = (email || "").trim().toLowerCase();
         if (!name.trim()) return { error: "Please enter your name." };
         if (!isEmail(email)) return { error: "Please enter a valid email address." };
         if (email === DEMO_EMAIL) return { error: "An account with this email already exists." };
         if ((password || "").length < 8) return { error: "Password must be at least 8 characters." };
         if (password !== confirm) return { error: "Passwords don't match." };
+        if (question !== undefined && (question || "").trim().length < 5) return { error: "Please choose a security question." };
+        if (question !== undefined && (answer || "").trim().length < MIN_ANSWER) return { error: "Please type an answer to your security question (at least 2 characters)." };
         const { data, error } = await supabase.auth.signUp({
           email, password, options: { data: { name: name.trim() }, emailRedirectTo: redirectTo() },
         });
@@ -282,7 +292,47 @@ export function StoreProvider({ children }) {
         // With confirmation on, an existing email comes back as a user with no identities.
         if (data.user && !data.user.identities?.length) return { error: "An account with this email already exists." };
         if (!data.session) return { confirmEmail: true };
+        // If saving the question fails, the account still works: Profile and the dashboard ask for it again.
+        if (question !== undefined) await saveQuestion(supabase, { question: question.trim(), answer, password });
         return { error: await enter(data.user) };
+      },
+
+      /* ------------------------------------------------ forgot password (security question, no email) */
+      // Step 1: the question for an email. Resolves to { question } or { error }.
+      async forgotQuestion(email) {
+        email = (email || "").trim().toLowerCase();
+        if (!isEmail(email)) return { error: "Please enter a valid email address." };
+        const r = await questionFor(supabase, email);
+        if (r.error) return { error: r.error === "unavailable" ? resetOff : r.error };
+        return r.question ? { question: r.question } : { error: noQuestion };
+      },
+      // Step 2: a new password for the right answer, then log in with it. Resolves to an error message or null.
+      async resetPassword({ email, answer, next, confirm }) {
+        email = (email || "").trim().toLowerCase();
+        if (!(answer || "").trim()) return "Please type your answer.";
+        if ((next || "").length < 8) return "New password must be at least 8 characters.";
+        if (next !== confirm) return "New passwords don't match.";
+        const r = await resetWithAnswer(supabase, { email, answer, password: next });
+        if (!r.ok) {
+          if (r.error === "wrong") return `That answer doesn't match. ${r.left} ${r.left === 1 ? "try" : "tries"} left before a 15-minute wait.`;
+          if (r.error === "locked") return `Too many wrong answers. Try again in ${r.minutes} minute${r.minutes === 1 ? "" : "s"}.`;
+          if (r.error === "short") return "New password must be at least 8 characters.";
+          if (r.error === "no_question") return noQuestion;
+          return r.error === "unavailable" ? resetOff : r.error;
+        }
+        const err = await login(email, next);
+        return err ? "Your password was changed. Log in with your new password." : null;
+      },
+      // Sets or changes this account's question; the database checks the current password. Error message or null.
+      async saveSecurityQuestion({ question, answer, password }) {
+        if (!user) return "Please log in first.";
+        if (user.isShared) return "This shared account can't have a security question.";
+        if ((question || "").trim().length < 5) return "Please choose a question.";
+        if ((answer || "").trim().length < MIN_ANSWER) return "Please type an answer of at least 2 characters.";
+        if (!password) return "Please enter your current password.";
+        const err = await saveQuestion(supabase, { question: question.trim(), answer, password });
+        if (!err) commit((d) => ({ ...d, securityQuestion: question.trim() }));
+        return err;
       },
 
       logout() {

@@ -20,7 +20,7 @@ function Stat({ icon, bg, fg, num, label, to }) {
 }
 
 export default function Dashboard() {
-  const { user, pets } = useStore();
+  const { user, pets, securityQuestion } = useStore();
   const { openModal, openViewer } = useUI();
   const navigate = useNavigate();
 
@@ -70,6 +70,14 @@ export default function Dashboard() {
         <Stat icon="file" bg="var(--coral-soft)" fg="var(--coral-2)" num={docs.length} label="Documents stored" to="/app/pets" />
         <Stat icon="syringe" bg={dueCount ? "var(--danger-soft)" : "var(--ok-soft)"} fg={dueCount ? "var(--danger)" : "var(--ok)"} num={dueCount} label="Vaccines due / overdue" to="/app/pets" />
       </div>
+
+      {/* Forgot password needs a security question (no email): owners who haven't set one are asked here. */}
+      {securityQuestion === null && !user.isShared && (
+        <section className="card survey-invite sq-nudge">
+          <div><h3>Set a security question</h3><p>If you ever forget your password, you'll answer it to set a new one. No email needed.</p></div>
+          <Link className="btn btn-soft" to="/app/profile?security=1"><Icon name="lock" size={16} /> Set it up</Link>
+        </section>
+      )}
 
       <div className="dash-grid">
         <div className="stack">

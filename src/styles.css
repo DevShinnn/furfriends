@@ -364,6 +364,15 @@ svg { flex-shrink: 0; }
 .field { margin-bottom: 16px; }
 .field label { display: block; font-weight: 700; font-size: 13px; margin-bottom: 7px; }
 .field .hint { font-size: 12px; color: var(--ink-3); margin-top: 5px; }
+/* a label with a link on its right ("Forgot password?") */
+.label-row { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.field-link { font-size: 13px; font-weight: 700; color: var(--primary); }
+/* forgot password: the account's security question */
+.sq-box { background: var(--primary-soft); border-radius: 12px; padding: 12px 14px; margin-bottom: 16px; }
+.sq-box small { display: block; color: var(--ink-3); font-size: 12px; margin-bottom: 3px; overflow-wrap: anywhere; }
+.sq-box b { color: var(--ink); font-size: 15px; }
+.sq-status { color: var(--ink-2); font-size: 14px; margin: 0 0 14px; }
+.sq-nudge { margin-bottom: 22px; }
 .input, .select, .textarea {
   width: 100%; padding: 12px 15px; border-radius: 13px; border: 1.5px solid var(--line);
   background: var(--surface); transition: border-color .15s, box-shadow .15s;

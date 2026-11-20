@@ -27,12 +27,12 @@ const healthy = () => pet({
 });
 
 describe("Pet health check: the indicator", () => {
-  it("A pet with everything in order is on track, 6 of 6", () => {
+  it("[FR2.5] A pet with everything in order is on track, 6 of 6", () => {
     const h = healthCheck(healthy());
     expect(h).toMatchObject({ status: "ok", label: "On track", onTrack: 6, total: 6, score: 100, top: null });
   });
 
-  it("The demo pets come out differently, each from its own records", () => {
+  it("[FR2.5] The demo pets come out differently, each from its own records", () => {
     const [mochi, bori, ginger, kong] = demoPets("u").map((p) => healthCheck(p));
     expect(mochi.label).toBe("Check soon");                      // FVRCP due in 13 days
     expect(mochi.top.detail).toMatch(/FVRCP due in 13 days/);
@@ -42,7 +42,7 @@ describe("Pet health check: the indicator", () => {
     expect(kong).toMatchObject({ label: "On track", onTrack: 6, total: 6 });
   });
 
-  it("Vaccination status: an overdue vaccine is 'act now', a missing core vaccine or one due soon is 'check soon'", () => {
+  it("[FR2.5] Vaccination status: an overdue vaccine is 'act now', a missing core vaccine or one due soon is 'check soon'", () => {
     expect(check(pet({ ...healthy(), vaccinations: [vax("DHPP", -3), vax("Rabies", 90)] }), "vaccines")).toMatchObject({ status: "danger", detail: "DHPP overdue by 3 days" });
     expect(check(pet({ ...healthy(), vaccinations: [vax("DHPP", 90)] }), "vaccines")).toMatchObject({ status: "warn", detail: "No Rabies vaccine recorded" });
     expect(check(pet({ ...healthy(), vaccinations: [vax("5-in-1", 90), vax("Anti-rabies", 10)] }), "vaccines")).toMatchObject({ status: "warn", detail: "Anti-rabies due in 10 days" });
@@ -52,7 +52,7 @@ describe("Pet health check: the indicator", () => {
     expect(check(pet({ species: "Cat", breed: "Puspin", ageYears: 0, ageMonths: 1 }), "vaccines").status).toBe("info");
   });
 
-  it("Medical history: a checkup a year for adults and every 6 months for seniors; a recent illness is 'check soon'", () => {
+  it("[FR2.5] Medical history: a checkup a year for adults and every 6 months for seniors; a recent illness is 'check soon'", () => {
     const old = (years, days) => pet({ ...healthy(), species: "Cat", breed: "Puspin", ageYears: years, medical: [med(days, "Checkup", "Checkup")] });
     expect(check(old(5, 200), "checkup").status).toBe("ok");
     expect(check(old(11, 200), "checkup")).toMatchObject({ status: "warn" });
@@ -66,7 +66,7 @@ describe("Pet health check: the indicator", () => {
     expect(check(pet({ ...healthy(), medical: [...healthy().medical, med(31, "Injury", "Paw pad laceration")] }), "illness").status).toBe("ok");
   });
 
-  it("Diet: a food with something in the allergy records is 'act now'; puppies need more meals", () => {
+  it("[FR2.5] Diet: a food with something in the allergy records is 'act now'; puppies need more meals", () => {
     const allergic = (food, allergy = "Chicken protein sensitivity", notes = "") => pet({ ...healthy(), medical: [...healthy().medical, med(100, "Allergy", allergy, notes)], feeding: [meal(food)] });
     expect(check(allergic("Chicken & rice kibble"), "diet")).toMatchObject({ status: "danger", detail: "Chicken & rice kibble may contain chicken, which is in the allergy records" });
     expect(check(allergic("Salmon & rice kibble", "Fish allergy"), "diet").status).toBe("danger");
@@ -77,7 +77,7 @@ describe("Pet health check: the indicator", () => {
     expect(check(pet({ ...healthy(), feeding: [] }), "diet")).toMatchObject({ status: "unknown", detail: "No feeding schedule" });
   });
 
-  it("Profile: weight is compared with the breed's range (not for puppies), and life stage follows the breed", () => {
+  it("[FR2.5] Profile: weight is compared with the breed's range (not for puppies), and life stage follows the breed", () => {
     expect(check(pet({ ...healthy(), weight: 24 }), "weight")).toMatchObject({ status: "warn", detail: "24 kg, above the typical 8–20 kg" });
     expect(check(pet({ ...healthy(), weight: 14 }), "weight").status).toBe("ok");
     expect(check(pet({ ...healthy(), weight: "" }), "weight").status).toBe("unknown");
@@ -91,7 +91,7 @@ describe("Pet health check: the indicator", () => {
 });
 
 describe("The AI's pet details (pre-context)", () => {
-  it("say the pet's life stage, diet, last checkup, missing vaccines and concerns", () => {
+  it("[FR10.6] say the pet's life stage, diet, last checkup, missing vaccines and concerns", () => {
     const bori = demoPets("u")[1];
     const c = petContext(bori);
     expect(c).toMatchObject({ lifeStage: "adult", diet: { foods: ["Salmon & rice kibble"], mealsPerDay: 2 }, checkupDaysAgo: null, missingVaccines: [] });
@@ -106,7 +106,7 @@ describe("The AI's pet details (pre-context)", () => {
     expect(describePet(petContext(demoPets("u")[2]))).toContain("No record of: Rabies vaccine.");
   });
 
-  it("only a model trained with whole profiles (v6 on) gets them; earlier ones get the details they were trained with", () => {
+  it("[FR10.6] only a model trained with whole profiles (v6 on) gets them; earlier ones get the details they were trained with", () => {
     expect([knowsProfiles("rag-v2"), knowsProfiles("rag-v4"), knowsProfiles("rag-v6"), knowsProfiles("furfriends-rag-v10")]).toEqual([false, false, true, true]);
     const bori = demoPets("u")[1];
     const ask = [{ role: "user", content: "What food is best?" }];
@@ -118,7 +118,7 @@ describe("The AI's pet details (pre-context)", () => {
       + "Medications: Heartworm prevention started. Recent illnesses or surgery: Paw pad laceration. Vaccines: DHPP (Overdue 15d), Rabies (Up to date), Bordetella (Due in 22d).");
   });
 
-  it("an older saved context (without the new fields) prints as before", () => {
+  it("[FR10.6] an older saved context (without the new fields) prints as before", () => {
     const old = { name: "Mingming", species: "Cat", breed: null, gender: null, age: null, weightKg: null, allergies: [], medications: [], recentConditions: [], vaccines: [] };
     expect(describePet(old)).toBe("The owner is asking about Mingming: Cat.");
     expect(describePet({ species: "Dog" })).toBe("The owner is asking about their pet: Dog.");
@@ -127,7 +127,7 @@ describe("The AI's pet details (pre-context)", () => {
 
 describe("Notes from the pet's records under an answer", () => {
   const [mochi, bori] = demoPets("u").map(petContext);
-  it("are added only when the question is about something in the records", () => {
+  it("[FR10.6] are added only when the question is about something in the records", () => {
     expect(petNotes("How do I trim my dog's nails?", bori)).toEqual([]);
     expect(petNotes("What food is best for my dog?", bori).map((x) => x.topic)).toEqual(["allergy"]);
     expect(petNotes("Can I give him a vitamin supplement?", bori).map((x) => x.topic)).toEqual(["allergy", "medication"]);
@@ -136,22 +136,22 @@ describe("Notes from the pet's records under an answer", () => {
     expect(petNoteText("How often should she see the vet for a checkup?", mochi)).toMatch(/Mochi's last recorded checkup was 12 days ago\. Adult pets should have a checkup at least once a year\./);
   });
 
-  it("are never added to an emergency, and never without a pet", () => {
+  it("[FR10.6] are never added to an emergency, and never without a pet", () => {
     expect(petNotes("My dog ate chocolate, what do I do?", bori)).toEqual([]);
     expect(petNotes("What food is best?", null)).toEqual([]);
   });
 
-  it("warn when the pet's current food may contain something it's allergic to", () => {
+  it("[FR10.6] warn when the pet's current food may contain something it's allergic to", () => {
     const c = petContext(pet({ medical: [med(90, "Allergy", "Chicken protein sensitivity")], feeding: [meal("Chicken & rice kibble")] }));
     expect(petNoteText("What should I feed him?", c)).toMatch(/Choco's current food \(Chicken & rice kibble\) may contain chicken, which is in Choco's allergy records/);
   });
 
-  it("follow the conversation: a follow-up keeps the earlier topic", () => {
+  it("[FR10.6] follow the conversation: a follow-up keeps the earlier topic", () => {
     const q = noteQuery([{ role: "user", content: "Can I give my dog vitamins?" }, { role: "user", content: "what about for puppies?" }]);
     expect(petNotes(q, bori).map((x) => x.topic)).toContain("medication");
   });
 
-  it("replace any notes the model wrote, so a wrong fact about the pet never shows", () => {
+  it("[FR10.6] replace any notes the model wrote, so a wrong fact about the pet never shows", () => {
     const written = "Choose a complete and balanced food.\n\nFrom Bori's records:\n- Bori has an allergy record: Beef allergy.";
     expect(stripPetNotes(written)).toBe("Choose a complete and balanced food.");
     const shown = withPetNotes("What food is best for my dog?", written, bori);
@@ -178,7 +178,7 @@ describe("Symptom rules: what a pet's history means for a symptom (symptomNotes.
   const all = { unreviewed: true };   // every rule, as for the review; the app uses only approved ones
   const ctxOf = (o) => petContext(pet(o));
 
-  it("every rule quotes its checked answer word for word ([...] marks a cut), and that answer is in the library", () => {
+  it("[FR10.8] every rule quotes its checked answer word for word ([...] marks a cut), and that answer is in the library", () => {
     for (const r of RULES) {
       const species = r.species ? [r.species] : TOPICS.find((t) => t.id === r.topic).species ? [TOPICS.find((t) => t.id === r.topic).species] : ["Dog", "Cat"];
       for (const s of species) {
@@ -191,7 +191,7 @@ describe("Symptom rules: what a pet's history means for a symptom (symptomNotes.
     }
   });
 
-  it("a rule is used only once two teammates approved it, and only while its text stays the same", () => {
+  it("[FR10.8] a rule is used only once two teammates approved it, and only while its text stays the same", () => {
     const male = ctxOf({ species: "Cat", breed: "Puspin", name: "Tiger", gender: "Male" });
     expect(petNotes("My cat pees outside the litter box", male)).toEqual([]);   // nothing approved yet (src/lib/symptomReview.json)
     expect(petNotes("My cat pees outside the litter box", male, all).map((x) => x.rule)).toEqual(["litter-male-cat"]);
@@ -199,7 +199,7 @@ describe("Symptom rules: what a pet's history means for a symptom (symptomNotes.
     expect(ruleHash({ ...rule, note: rule.note + " Soon." })).not.toBe(ruleHash(rule));
   });
 
-  it("the notes repeat the pet's facts and the source's words", () => {
+  it("[FR10.8] the notes repeat the pet's facts and the source's words", () => {
     const male = ctxOf({ species: "Cat", breed: "Puspin", name: "Tiger", gender: "Male" });
     expect(petNoteText("Why does my cat pee on the floor?", male, all)).toBe("From Tiger's records:\n- Tiger is a male cat, and male cats are most at risk of a blocked bladder. Go to the vet now if he strains with little or no pee coming out.");
     expect(petNotes("My cat pees outside the litter box", ctxOf({ species: "Cat", breed: "Puspin", gender: "Female" }), all)).toEqual([]);
@@ -207,14 +207,14 @@ describe("Symptom rules: what a pet's history means for a symptom (symptomNotes.
     expect(petNoteText("My cat is drinking a lot more water than before", old, all)).toMatch(/Choco is 16 years old\. Kidney disease affects about 80% of cats over 15/);
   });
 
-  it("a puppy with diarrhea gets the parvo warning even though the first-aid guide comes up, and nothing else", () => {
+  it("[FR10.8] a puppy with diarrhea gets the parvo warning even though the first-aid guide comes up, and nothing else", () => {
     const puppy = ctxOf({ ageYears: 0, ageMonths: 3, vaccinations: [], medical: [med(100, "Allergy", "Chicken protein sensitivity")] });
     const notes = petNotes("My puppy has diarrhea", puppy, all);
     expect(notes.map((x) => x.rule)).toEqual(["diarrhea-puppy", "diarrhea-puppy-no-dhpp"]);
     expect(notes[0].text).toBe("Choco is a puppy. Diarrhea in a puppy can be an early sign of parvo, which can be deadly, so go to a vet now.");
   });
 
-  it("medicines count for appetite only when started in the last 30 days; a medicine isn't an ear problem", () => {
+  it("[FR10.8] medicines count for appetite only when started in the last 30 days; a medicine isn't an ear problem", () => {
     const q = "My dog won't eat";
     expect(petNotes(q, ctxOf({ medical: [med(10, "Medication", "Antibiotics for skin infection")] }), all).map((x) => x.rule)).toContain("appetite-new-medicine-dog");
     expect(petNotes(q, ctxOf({ medical: [med(200, "Medication", "Insulin")] }), all).map((x) => x.rule || x.topic)).not.toContain("appetite-new-medicine-dog");
@@ -222,13 +222,13 @@ describe("Symptom rules: what a pet's history means for a symptom (symptomNotes.
     expect(petNotes("My dog keeps scratching his ears", ctxOf({ medical: [med(60, "Illness", "Ear infection")] }), all).map((x) => x.rule)).toContain("ears-before-dog");
   });
 
-  it("a food question only mentions allergies a food can contain", () => {
+  it("[FR10.8] a food question only mentions allergies a food can contain", () => {
     const flea = ctxOf({ medical: [med(100, "Allergy", "Flea allergy dermatitis")] });
     expect(petNotes("What food is best for my dog?", flea)).toEqual([]);
     expect(petNotes("My dog keeps scratching", flea, all).map((x) => x.rule)).toEqual(["skin-allergy"]);
   });
 
-  it("the pet's history (with dates) is what the model reads, instead of the undated list", () => {
+  it("[FR10.6] the pet's history (with dates) is what the model reads, instead of the undated list", () => {
     const c = ctxOf({ medical: [med(90, "Illness", "Ear infection"), med(400, "Surgery", "Neuter surgery")] });
     expect(describePet(c)).toContain("Medical history: Ear infection (3 months ago), Neuter surgery (13 months ago).");
     expect(describePet(c)).not.toContain("Recent illnesses or surgery");

@@ -8,6 +8,7 @@
   "inventedHealthWord": "0% (0/68)",
   "wrongSpecies": "0% (0/68)",
   "wrongPronoun": "25% (17/68)",
+  "wrongPronounShown": "1.5% (1/68)",
   "wroteOwnPetNotes": "63.2% (43/68)",
   "usesPetName": "1.5% (1/68)",
   "relatedAccepted": "97.1% (33/34)",
@@ -19,6 +20,7 @@
    "id": "5a054b20-y2",
    "pet": "Bubbles",
    "species": "Cat",
+   "gender": "Male",
    "related": true,
    "topics": [
     "recovering"
@@ -31,14 +33,17 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": true,
+   "pronounShown": false,
    "words": 118,
    "question": "My cat keeps sneezing and has watery eyes",
-   "reply": "It may be an upper respiratory infection, often called cat flu. Viruses like feline herpesvirus and calicivirus are common causes, and they spread easily between cats. Signs include sneezing, runny eyes or nose, mouth sores, tiredness and poor appetite.\n\nWhat helps:\n- Gently wipe her nose clean. A blocked nose can stop her smelling food, so she may eat less.\n- Make sure she keeps eating and drinking.\n\nSee your vet within 24 hours if the sneezing doesn't stop. Go now if she:\n- Has trouble breathing, or her gums look bluish\n- Hasn't eaten properly for 24 hours\n- Is a kitten. Young cats are more likely to get seriously ill.\n\nVaccines can make these infections milder."
+   "reply": "It may be an upper respiratory infection, often called cat flu. Viruses like feline herpesvirus and calicivirus are common causes, and they spread easily between cats. Signs include sneezing, runny eyes or nose, mouth sores, tiredness and poor appetite.\n\nWhat helps:\n- Gently wipe her nose clean. A blocked nose can stop her smelling food, so she may eat less.\n- Make sure she keeps eating and drinking.\n\nSee your vet within 24 hours if the sneezing doesn't stop. Go now if she:\n- Has trouble breathing, or her gums look bluish\n- Hasn't eaten properly for 24 hours\n- Is a kitten. Young cats are more likely to get seriously ill.\n\nVaccines can make these infections milder.",
+   "shown": "It may be an upper respiratory infection, often called cat flu. Viruses like feline herpesvirus and calicivirus are common causes, and they spread easily between cats. Signs include sneezing, runny eyes or nose, mouth sores, tiredness and poor appetite.\n\nWhat helps:\n- Gently wipe his nose clean. A blocked nose can stop him smelling food, so he may eat less.\n- Make sure he keeps eating and drinking.\n\nSee your vet within 24 hours if the sneezing doesn't stop. Go now if he:\n- Has trouble breathing, or his gums look bluish\n- Hasn't eaten properly for 24 hours\n- Is a kitten. Young cats are more likely to get seriously ill.\n\nVaccines can make these infections milder."
   },
   {
    "id": "5a054b20-n1",
    "pet": "Bubbles",
    "species": "Cat",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": false,
@@ -49,6 +54,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 137,
    "question": "What should I feed my cat?",
    "reply": "Adult dogs: most do well on 1 or 2 meals a day. The ASPCA suggests two meals, about 8 to 12 hours apart.\n\nAdult cats (from about 1 year old): once or twice a day suits most cats. Leaving food out all day works for some cats, but makes others overeat and gain weight. Replace any food left out with fresh food daily.\n\nHow much:\n- The amount on the label is based on an average pet. A less active pet may need less.\n- Check your pet's body. You should be able to feel the ribs without pressing hard, and see a waist behind the ribs from above.\n- If you can't feel the ribs without pressing, there is too much fat. Ask your vet how much to cut back.\n\nAlways keep fresh, clean water out."
@@ -57,6 +63,7 @@
    "id": "be4677c1-H19",
    "pet": "Simba",
    "species": "Cat",
+   "gender": "Female",
    "related": true,
    "topics": [
     "vaccine"
@@ -69,6 +76,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 107,
    "question": "Does my cat need vaccines if she never goes outside?",
    "reply": "Yes. The American Association of Feline Practitioners recommends core vaccines even for cats that never go outside. Core vaccines for cats cover:\n- Panleukopenia (feline distemper)\n- Herpesvirus\n- Calicivirus\n(these three come together as FVRCP)\n- Rabies, where the disease is present or the law requires it\n\nFeline leukemia vaccine is advised for kittens under 1 year. For adults it depends on risk, such as going outdoors or living with cats that do.\n\nGood news for indoor cats: global guidelines say low-risk indoor adults usually need core boosters only every 3 years or longer.\n\nYour vet will choose the vaccines and timing that fit your cat."
@@ -77,6 +85,7 @@
    "id": "be4677c1-H05",
    "pet": "Simba",
    "species": "Cat",
+   "gender": "Female",
    "related": false,
    "topics": [],
    "declined": false,
@@ -87,6 +96,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 157,
    "question": "Is chocolate bad for cats?",
    "reply": "Yes, many everyday foods, medicines and plants are toxic. Act fast, even if your pet seems fine. Signs can take hours or days.\n\nWhat to do now:\n- Move your pet away from the source and remove anything left in their mouth, if it's safe to do so.\n- Note what they ate, about how much, and when. Bring the packaging, label or a piece of the plant.\n- Call your vet or the nearest 24-hour clinic now and tell them you're on your way.\n- If it's on their skin or fur (for example a flea product), wash with mild dish soap and lukewarm water, then rinse well.\n- Don't make your pet vomit unless a vet tells you to. It's dangerous with some poisons and if your pet is drowsy.\n- Home remedies like salt, milk, oil or hydrogen peroxide.\n- Giving any human medicine.\n\nGo to your vet or the nearest 24-hour clinic now."
@@ -95,6 +105,7 @@
    "id": "7d02b594-r08",
    "pet": "Pepper",
    "species": "Dog",
+   "gender": "Male",
    "related": true,
    "topics": [
     "senior"
@@ -107,6 +118,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 137,
    "question": "How many times a day should I feed an adult dog?",
    "reply": "Adult dogs: most do well on 1 or 2 meals a day. The ASPCA suggests two meals, about 8 to 12 hours apart.\n\nAdult cats (from about 1 year old): once or twice a day suits most cats. Leaving food out all day works for some cats, but makes others overeat and gain weight. Replace any food left out with fresh food daily.\n\nHow much:\n- The amount on the label is based on an average pet. A less active pet may need less.\n- Check your pet's body. You should be able to feel the ribs without pressing hard, and see a waist behind the ribs from above.\n- If you can't feel the ribs without pressing, there is too much fat. Ask your vet how much to cut back.\n\nAlways keep fresh, clean water out."
@@ -115,6 +127,7 @@
    "id": "7d02b594-y1",
    "pet": "Pepper",
    "species": "Dog",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": false,
@@ -125,6 +138,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 131,
    "question": "My dog has been vomiting since this morning",
    "reply": "One vomit in a dog that otherwise seems well is often not serious, and many cases settle within a day. But vomiting can also be a sign of poisoning, a blockage or other illness.\n\nGo to the vet right away if he vomits and also has:\n- Blood in the vomit\n- Diarrhea, belly pain or fever\n- Low energy, no appetite or signs of dehydration\n- A chance he swallowed something toxic or an object\n\nSee your vet today if vomiting goes on for more than 24 hours, even if he seems fine.\n\nFor a mild case, your vet may suggest resting the stomach for a short time, then small, frequent meals of a bland food. Keep fresh water available. Don't give human medicines unless your vet tells you to."
@@ -133,6 +147,7 @@
    "id": "2053bc3f-H09",
    "pet": "Princess",
    "species": "Dog",
+   "gender": "Male",
    "related": true,
    "topics": [
     "allergy",
@@ -146,6 +161,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 118,
    "question": "Can I give my dog aspirin?",
    "reply": "Go to your vet or the nearest 24-hour clinic now. Human pain relievers like ibuprofen, naproxen and aspirin (NSAIDs) are dangerous for dogs. They can cause stomach ulcers, bleeding and kidney damage, and large amounts can cause seizures or coma.\n\nSigns may include vomiting, diarrhea, black stools, belly pain, not eating, weakness and pale gums.\n\nBefore you go:\n- Bring the bottle and count how many tablets are missing, so the vet can judge the risk.\n- Only make your dog vomit if a vet tells you to.\n- Don't give any other medicine.\n\nOn the way, keep him calm and watch for vomiting or weakness. Never give human pain medicine to a pet without your vet's advice."
@@ -154,6 +170,7 @@
    "id": "2053bc3f-H14",
    "pet": "Princess",
    "species": "Dog",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": false,
@@ -164,6 +181,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 133,
    "question": "My dog is having a seizure",
    "reply": "Stay calm and focus on keeping him safe.\n\nWhile it's happening:\n- Move furniture and hard objects away. Only move him if he's near stairs, water or another danger.\n- Keep your hands away from his mouth. He can't control his jaws and may bite without meaning to.\n- Don't try to hold him down.\n- Time the seizure, and take a short video for the vet if you can.\n\nGo to your vet or the nearest 24-hour clinic now if the seizure lasts more than about 3 minutes, if he has more than one in a row, or if he might have eaten something poisonous. Otherwise, call your vet soon after.\n\nAfterward he may pace or seem confused. On the way to the vet, keep him calm, quiet and away from edges."
@@ -172,6 +190,7 @@
    "id": "7d5fce76-H09",
    "pet": "Shadow",
    "species": "Dog",
+   "gender": "Male",
    "related": true,
    "topics": [
     "medication"
@@ -184,6 +203,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 118,
    "question": "Can I give my dog aspirin?",
    "reply": "Go to your vet or the nearest 24-hour clinic now. Human pain relievers like ibuprofen, naproxen and aspirin (NSAIDs) are dangerous for dogs. They can cause stomach ulcers, bleeding and kidney damage, and large amounts can cause seizures or coma.\n\nSigns may include vomiting, diarrhea, black stools, belly pain, not eating, weakness and pale gums.\n\nBefore you go:\n- Bring the bottle and count how many tablets are missing, so the vet can judge the risk.\n- Only make your dog vomit if a vet tells you to.\n- Don't give any other medicine.\n\nOn the way, keep him calm and watch for vomiting or weakness. Never give human pain medicine to a pet without your vet's advice."
@@ -192,6 +212,7 @@
    "id": "7d5fce76-y1",
    "pet": "Shadow",
    "species": "Dog",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": false,
@@ -202,6 +223,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 131,
    "question": "My dog has been vomiting since this morning",
    "reply": "One vomit in a dog that otherwise seems well is often not serious, and many cases settle within a day. But vomiting can also be a sign of poisoning, a blockage or other illness.\n\nGo to the vet right away if he vomits and also has:\n- Blood in the vomit\n- Diarrhea, belly pain or fever\n- Low energy, no appetite or signs of dehydration\n- A chance he swallowed something toxic or an object\n\nSee your vet today if vomiting goes on for more than 24 hours, even if he seems fine.\n\nFor a mild case, your vet may suggest resting the stomach for a short time, then small, frequent meals of a bland food. Keep fresh water available. Don't give human medicines unless your vet tells you to."
@@ -210,6 +232,7 @@
    "id": "b42b6bed-l07",
    "pet": "Simba",
    "species": "Cat",
+   "gender": "Male",
    "related": true,
    "topics": [
     "medication"
@@ -222,6 +245,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 120,
    "question": "Is tick fever common in the Philippines?",
    "reply": "\"Tick fever\" usually means germs like Ehrlichia, Anaplasma or Babesia spread by ticks. In the Philippines, the warm climate suits the brown dog tick, which can live in homes and kennels. Ehrlichia canis was the most common tick-borne germ found in a study of dogs in Metro Manila and Laguna.\n\nSigns may show 1 to 3 weeks after a bite:\n- Fever, low energy, poor appetite\n- Swollen glands, stiffness or limping\n- Nosebleeds, bruises on the skin or gums, or blood in urine or poop\n\nSee a vet today if you notice bleeding, bruising, pale gums or weakness. A blood test is needed to confirm it.\n\nPrevent it with year-round tick control your vet recommends and daily tick checks."
@@ -230,6 +254,7 @@
    "id": "b42b6bed-l04",
    "pet": "Simba",
    "species": "Cat",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": false,
@@ -240,6 +265,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 98,
    "question": "Is there a penalty for animal cruelty here?",
    "reply": "Under Section 6 of the Animal Welfare Act (RA 8485, as amended by RA 10631), it is illegal to:\n\n- Torture any animal\n- Neglect to give an animal enough care, food or shelter, or otherwise maltreat it\n- Use dogs or horses in dogfights or horsefights\n- Kill an animal other than livestock like cattle, pigs, goats, poultry and rabbits, except in cases the law allows\n- Use animals in research not approved by the Committee on Animal Welfare\n\nAbandoning a pet without arranging its care is also treated as maltreatment (Section 7, added by RA 10631)."
@@ -248,6 +274,7 @@
    "id": "43fbc136-h2",
    "pet": "Luna",
    "species": "Cat",
+   "gender": "Male",
    "related": true,
    "topics": [
     "allergy"
@@ -260,6 +287,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 85,
    "question": "How do I stop my cat scratching the sofa?",
    "reply": "Scratching is normal for cats. It keeps their claws healthy and marks their space, so give them a better place to do it.\n- Put a sturdy scratching post next to the sofa, tall enough for a full stretch\n- Try both upright posts and flat cardboard scratchers\n- Reward your cat with treats or play when they use it\n- Cover the sofa spots with a throw or double-sided tape for a while\n- Trim the claws regularly\n\nDon't punish or declaw your cat."
@@ -268,6 +296,7 @@
    "id": "43fbc136-d2",
    "pet": "Luna",
    "species": "Cat",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": false,
@@ -280,6 +309,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 29,
    "question": "Can I give my cat paracetamol for fever?",
    "reply": "I couldn't find this in Luna's records, so I doesn't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon."
@@ -288,6 +318,7 @@
    "id": "cbe0eea7-v2",
    "pet": "Chloe",
    "species": "Cat",
+   "gender": "Male",
    "related": true,
    "topics": [
     "vaccine"
@@ -300,6 +331,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 76,
    "question": "What vaccines does my kitten need?",
    "reply": "Most kittens get these core vaccines:\n- FVRCP (cat flu and panleukopenia), usually starting at 6 to 8 weeks and repeated every 3 to 4 weeks until about 16 weeks\n- Rabies, given from around 12 weeks, which is required in the Philippines\n\nYour vet may also suggest FeLV if your kitten will go outdoors or live with other cats. Keep the vaccine card, and add each shot in FurFriends so you get reminders for boosters."
@@ -308,6 +340,7 @@
    "id": "cbe0eea7-d2",
    "pet": "Chloe",
    "species": "Cat",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": true,
@@ -318,6 +351,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 30,
    "question": "Can I give my cat paracetamol for fever?",
    "reply": "I couldn't find this in FurFriends' checked answers, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon."
@@ -326,6 +360,7 @@
    "id": "3127412f-v2",
    "pet": "Simba",
    "species": "Cat",
+   "gender": "Female",
    "related": true,
    "topics": [
     "vaccine"
@@ -338,6 +373,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 76,
    "question": "What vaccines does my kitten need?",
    "reply": "Most kittens get these core vaccines:\n- FVRCP (cat flu and panleukopenia), usually starting at 6 to 8 weeks and repeated every 3 to 4 weeks until about 16 weeks\n- Rabies, given from around 12 weeks, which is required in the Philippines\n\nYour vet may also suggest FeLV if your kitten will go outdoors or live with other cats. Keep the vaccine card, and add each shot in FurFriends so you get reminders for boosters."
@@ -346,6 +382,7 @@
    "id": "3127412f-y2",
    "pet": "Simba",
    "species": "Cat",
+   "gender": "Female",
    "related": false,
    "topics": [],
    "declined": false,
@@ -356,6 +393,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 118,
    "question": "My cat keeps sneezing and has watery eyes",
    "reply": "It may be an upper respiratory infection, often called cat flu. Viruses like feline herpesvirus and calicivirus are common causes, and they spread easily between cats. Signs include sneezing, runny eyes or nose, mouth sores, tiredness and poor appetite.\n\nWhat helps:\n- Gently wipe her nose clean. A blocked nose can stop her smelling food, so she may eat less.\n- Make sure she keeps eating and drinking.\n\nSee your vet within 24 hours if the sneezing doesn't stop. Go now if she:\n- Has trouble breathing, or her gums look bluish\n- Hasn't eaten properly for 24 hours\n- Is a kitten. Young cats are more likely to get seriously ill.\n\nVaccines can make these infections milder."
@@ -364,6 +402,7 @@
    "id": "3d09f4e4-H19",
    "pet": "Kuro",
    "species": "Cat",
+   "gender": "Male",
    "related": true,
    "topics": [
     "vaccine"
@@ -376,6 +415,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 107,
    "question": "Does my cat need vaccines if she never goes outside?",
    "reply": "Yes. The American Association of Feline Practitioners recommends core vaccines even for cats that never go outside. Core vaccines for cats cover:\n- Panleukopenia (feline distemper)\n- Herpesvirus\n- Calicivirus\n(these three come together as FVRCP)\n- Rabies, where the disease is present or the law requires it\n\nFeline leukemia vaccine is advised for kittens under 1 year. For adults it depends on risk, such as going outdoors or living with cats that do.\n\nGood news for indoor cats: global guidelines say low-risk indoor adults usually need core boosters only every 3 years or longer.\n\nYour vet will choose the vaccines and timing that fit your cat."
@@ -384,6 +424,7 @@
    "id": "3d09f4e4-H08",
    "pet": "Kuro",
    "species": "Cat",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": true,
@@ -394,6 +435,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 30,
    "question": "Nagsusuka ang pusa ko kanina pa",
    "reply": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon."
@@ -402,6 +444,7 @@
    "id": "47e2b319-v1",
    "pet": "Thor",
    "species": "Dog",
+   "gender": "Female",
    "related": true,
    "topics": [
     "vaccine"
@@ -414,6 +457,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 80,
    "question": "When does my puppy need the anti-rabies shot?",
    "reply": "Puppies usually get their first anti-rabies shot at about 3 months old, then boosters as your vet advises, usually every year. In the Philippines, the Anti-Rabies Act requires dogs to be vaccinated against rabies.\n\n- Many LGUs hold free anti-rabies vaccination drives, so ask your barangay or city vet\n- Keep the vaccination card, because you may need it for travel or boarding\n- Your puppy also needs the core puppy shots (such as 5-in-1), which your vet will schedule"
@@ -422,6 +466,7 @@
    "id": "47e2b319-a1",
    "pet": "Thor",
    "species": "Dog",
+   "gender": "Female",
    "related": false,
    "topics": [],
    "declined": false,
@@ -432,6 +477,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": true,
+   "pronounShown": true,
    "words": 151,
    "question": "My dog has a small cut on his paw, what do I do?",
    "reply": "Limping usually means pain or weakness, so it deserves a vet check.\n\nFirst aid at home:\n- Keep him calm and limit his activity.\n- Gently check the paw for cuts, a broken nail, or something stuck between the toes. Stop if he shows pain. Dogs in pain may bite, even their owners.\n- Don't give human pain medicines unless your vet tells you to. They can poison pets.\n\nGo to the vet now if he:\n- Won't put any weight on the leg, or the leg looks bent or swollen\n- Can't stand or walk without help\n- Was hit by a vehicle or attacked by another animal\n- Is in severe pain, or the limp came on suddenly and badly\n\nSee your vet within 24 hours if the limp lasts more than a day or is getting worse. A short video of him walking at home helps the vet."
@@ -440,6 +486,7 @@
    "id": "9a1285b3-y3",
    "pet": "Ganda",
    "species": "Dog",
+   "gender": "Female",
    "related": true,
    "topics": [
     "allergy"
@@ -452,6 +499,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 110,
    "question": "Why is my dog scratching so much?",
    "reply": "It could be. Common flea signs include:\n- Scratching, biting or licking the skin a lot\n- Hair loss or red skin near the tail and between or behind the legs\n- Small red bumps or flaky skin\n- Seeing adult fleas or \"flea dirt\" (tiny black specks of flea poop) in the fur\n\nSome pets are allergic to flea bites, which makes the itching worse. A heavy flea load can cause blood loss (anemia). Fleas also spread tapeworms.\n\nItching can have other causes too, like mites or allergies, so have your vet check your dog. Ask your vet for a flea product that suits your dog's weight and age."
@@ -460,6 +508,7 @@
    "id": "9a1285b3-y1",
    "pet": "Ganda",
    "species": "Dog",
+   "gender": "Female",
    "related": false,
    "topics": [],
    "declined": false,
@@ -470,14 +519,17 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": true,
+   "pronounShown": false,
    "words": 131,
    "question": "My dog has been vomiting since this morning",
-   "reply": "One vomit in a dog that otherwise seems well is often not serious, and many cases settle within a day. But vomiting can also be a sign of poisoning, a blockage or other illness.\n\nGo to the vet right away if he vomits and also has:\n- Blood in the vomit\n- Diarrhea, belly pain or fever\n- Low energy, no appetite or signs of dehydration\n- A chance he swallowed something toxic or an object\n\nSee your vet today if vomiting goes on for more than 24 hours, even if he seems fine.\n\nFor a mild case, your vet may suggest resting the stomach for a short time, then small, frequent meals of a bland food. Keep fresh water available. Don't give human medicines unless your vet tells you to."
+   "reply": "One vomit in a dog that otherwise seems well is often not serious, and many cases settle within a day. But vomiting can also be a sign of poisoning, a blockage or other illness.\n\nGo to the vet right away if he vomits and also has:\n- Blood in the vomit\n- Diarrhea, belly pain or fever\n- Low energy, no appetite or signs of dehydration\n- A chance he swallowed something toxic or an object\n\nSee your vet today if vomiting goes on for more than 24 hours, even if he seems fine.\n\nFor a mild case, your vet may suggest resting the stomach for a short time, then small, frequent meals of a bland food. Keep fresh water available. Don't give human medicines unless your vet tells you to.",
+   "shown": "One vomit in a dog that otherwise seems well is often not serious, and many cases settle within a day. But vomiting can also be a sign of poisoning, a blockage or other illness.\n\nGo to the vet right away if she vomits and also has:\n- Blood in the vomit\n- Diarrhea, belly pain or fever\n- Low energy, no appetite or signs of dehydration\n- A chance she swallowed something toxic or an object\n\nSee your vet today if vomiting goes on for more than 24 hours, even if she seems fine.\n\nFor a mild case, your vet may suggest resting the stomach for a short time, then small, frequent meals of a bland food. Keep fresh water available. Don't give human medicines unless your vet tells you to."
   },
   {
    "id": "11365aae-v1",
    "pet": "Bruno",
    "species": "Dog",
+   "gender": "Female",
    "related": true,
    "topics": [
     "vaccine"
@@ -490,6 +542,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 77,
    "question": "When does my puppy need the anti-rabies shot?",
    "reply": "Puppies usually get their first anti-rabies shot at about 3 months old, then boosters as your vet advises, usually every year. In the Philippines, the Anti-Rabies Act requires dogs to be vaccinated against rabies.\n\nMany LGUs hold free anti-rabies vaccination drives, so ask your barangay or city vet\nKeep the vaccination card, because you may need it for travel or boarding\nYour puppy also needs the core puppy shots (such as 5-in-1), which your vet will schedule"
@@ -498,6 +551,7 @@
    "id": "11365aae-y3",
    "pet": "Bruno",
    "species": "Dog",
+   "gender": "Female",
    "related": false,
    "topics": [],
    "declined": false,
@@ -508,6 +562,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 110,
    "question": "Why is my dog scratching so much?",
    "reply": "It could be. Common flea signs include:\n- Scratching, biting or licking the skin a lot\n- Hair loss or red skin near the tail and between or behind the legs\n- Small red bumps or flaky skin\n- Seeing adult fleas or \"flea dirt\" (tiny black specks of flea poop) in the fur\n\nSome pets are allergic to flea bites, which makes the itching worse. A heavy flea load can cause blood loss (anemia). Fleas also spread tapeworms.\n\nItching can have other causes too, like mites or allergies, so have your vet check your dog. Ask your vet for a flea product that suits your dog's weight and age."
@@ -516,6 +571,7 @@
    "id": "52848f6b-l08",
    "pet": "Lucky",
    "species": "Dog",
+   "gender": "Male",
    "related": true,
    "topics": [
     "vaccine"
@@ -528,6 +584,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 75,
    "question": "Is there free anti-rabies vaccine for dogs in the Philippines?",
    "reply": "Every year. Section 5 of RA 9482 says owners must have their dogs \"regularly\" vaccinated against rabies. The implementing rules make it clearer: a properly immunized dog is one vaccinated yearly, and LGUs register and vaccinate dogs annually.\n\nThe shot must be given by a licensed veterinarian, or by a trained vaccinator under a vet's direct supervision during government mass vaccination drives.\n\nKeep the record of each shot on your dog's vaccination or registration card."
@@ -536,6 +593,7 @@
    "id": "52848f6b-e03",
    "pet": "Lucky",
    "species": "Dog",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": false,
@@ -546,6 +604,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 85,
    "question": "My dog's belly is swollen and he keeps trying to vomit",
    "reply": "This sounds like it could be bloat (twisted stomach). The stomach fills with gas and can twist. It can kill within hours and usually needs surgery. Most common in large, deep-chested dogs.\n\nWhat to do now:\n- Go to the vet immediately. Call ahead so they can prepare.\n- Keep your dog as calm and still on the way.\nDon't:\n- Waiting to see if it passes.\n- Giving food, water or home remedies.\n- Trying to make them vomit.\nGo to your vet now."
@@ -554,6 +613,7 @@
    "id": "442bff1b-t06",
    "pet": "Snowy",
    "species": "Dog",
+   "gender": "Female",
    "related": true,
    "topics": [
     "recovering"
@@ -566,6 +626,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 136,
    "question": "Ilang beses dapat paliguan ang aso?",
    "reply": "Dogs: The ASPCA suggests a bath at least once every three months. Dogs that spend a lot of time outdoors or have skin problems may need baths more often.\n\nCats: Most cats keep themselves clean. They only need a bath if they get very dirty or into something sticky or smelly.\n\nBath tips:\n- Brush out loose hair and mats first.\n- Use lukewarm water and a shampoo made for pets. Human shampoo can irritate or dry out the skin.\n- Keep water out of the eyes, ears and nose. Wipe the face with a damp cloth.\n- Rinse well and dry fully, including any skin folds.\n- For cats, trim the claws first and use a rubber mat so they don't slip.\n\nSee your vet if you notice scabs, bald spots, redness or constant scratching."
@@ -574,6 +635,7 @@
    "id": "442bff1b-t08",
    "pet": "Snowy",
    "species": "Dog",
+   "gender": "Female",
    "related": false,
    "topics": [],
    "declined": false,
@@ -584,6 +646,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 93,
    "question": "Kailangan ko bang iparehistro ang aso ko?",
    "reply": "Yes. Section 5 of RA 9482 requires owners to keep a registration card that records all of their dog's vaccinations. The implementing rules say the card should show the registration number, the dog's description, and vaccination details.\n\nKeep it safe because you may need it:\n- To show your dog is registered and vaccinated if asked by the LGU\n- To get a BAI shipping permit when travelling with your pet\n- If your dog bites someone and its rabies status is checked\n\nTaking a photo of the card is a handy backup."
@@ -592,6 +655,7 @@
    "id": "92545a8f-t07",
    "pet": "Puti",
    "species": "Cat",
+   "gender": "Male",
    "related": true,
    "topics": [
     "allergy"
@@ -604,6 +668,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 149,
    "question": "Nalalagas ang balahibo ng pusa ko",
    "reply": "Normal shedding thins the coat evenly, with no bald patches. Hair loss is different: bald or thin patches, or hair missing from both sides of the body. Hair loss is a sign of another problem, not a disease on its own. Common causes in cats are fleas and flea allergy (the most common cause of hair loss on both sides), other parasites, fungal or bacterial skin infections, allergies, and overgrooming from stress or pain. See your vet if you notice: - Bald or thin patches, or red, scabby or sore skin - Your cat licking or scratching the same spot a lot - Hair loss that is sudden, spreading or not settling - Hair loss together with weight loss, low energy or a change in eating or drinking Your vet will check for fleas and skin infection, and may run skin, blood or urine tests to find the cause."
@@ -612,6 +677,7 @@
    "id": "92545a8f-t05",
    "pet": "Puti",
    "species": "Cat",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": false,
@@ -622,6 +688,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 128,
    "question": "Nagtatae ang pusa ko ng dalawang araw na",
    "reply": "Mild diarrhea in an adult pet that is still bright and eating can sometimes be watched at home for a short time.\n\nHome care:\n- Always keep fresh water out. Diarrhea can quickly cause dehydration.\n- Ask your vet about a short rest for the stomach, or small meals of a bland or gut-friendly diet.\n- When the stool firms up, switch back to the usual food slowly over about a week.\n\nSee your vet if it lasts more than 24 hours.\n\nGo now if there is:\n- Blood in the stool, or black, tarry stool\n- Vomiting, weakness, fever, belly pain or no appetite\n- Diarrhea in a puppy. It can be an early sign of parvo, which can be deadly.\n- Straining with nothing coming out"
@@ -630,6 +697,7 @@
    "id": "e3676427-t02",
    "pet": "Summer",
    "species": "Dog",
+   "gender": "Female",
    "related": true,
    "topics": [
     "medication"
@@ -642,14 +710,17 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": true,
+   "pronounShown": false,
    "words": 124,
    "question": "May garapata ang aso ko paano tanggalin",
-   "reply": "Remove ticks as soon as you find them:\n- Use fine-tipped tweezers and grip the tick as close to the skin as you can\n- Pull straight out with slow, steady pressure. Don't twist or jerk\n- Don't use bare hands, matches, heat, nail polish or petroleum jelly\n- Don't crush the tick. Drop it in rubbing alcohol, seal it in a bag or wrap it in tape\n- Wash the bite area and your hands with soap and water\n\nIf small mouthparts stay in the skin, it usually heals on its own.\n\nWatch the spot for a few days. See your vet if it gets red or swollen, if your dog has many ticks, or if he seems unwell in the weeks after."
+   "reply": "Remove ticks as soon as you find them:\n- Use fine-tipped tweezers and grip the tick as close to the skin as you can\n- Pull straight out with slow, steady pressure. Don't twist or jerk\n- Don't use bare hands, matches, heat, nail polish or petroleum jelly\n- Don't crush the tick. Drop it in rubbing alcohol, seal it in a bag or wrap it in tape\n- Wash the bite area and your hands with soap and water\n\nIf small mouthparts stay in the skin, it usually heals on its own.\n\nWatch the spot for a few days. See your vet if it gets red or swollen, if your dog has many ticks, or if he seems unwell in the weeks after.",
+   "shown": "Remove ticks as soon as you find them:\n- Use fine-tipped tweezers and grip the tick as close to the skin as you can\n- Pull straight out with slow, steady pressure. Don't twist or jerk\n- Don't use bare hands, matches, heat, nail polish or petroleum jelly\n- Don't crush the tick. Drop it in rubbing alcohol, seal it in a bag or wrap it in tape\n- Wash the bite area and your hands with soap and water\n\nIf small mouthparts stay in the skin, it usually heals on its own.\n\nWatch the spot for a few days. See your vet if it gets red or swollen, if your dog has many ticks, or if she seems unwell in the weeks after."
   },
   {
    "id": "e3676427-y1",
    "pet": "Summer",
    "species": "Dog",
+   "gender": "Female",
    "related": false,
    "topics": [],
    "declined": false,
@@ -660,14 +731,17 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": true,
+   "pronounShown": false,
    "words": 131,
    "question": "My dog has been vomiting since this morning",
-   "reply": "One vomit in a dog that otherwise seems well is often not serious, and many cases settle within a day. But vomiting can also be a sign of poisoning, a blockage or other illness.\n\nGo to the vet right away if he vomits and also has:\n- Blood in the vomit\n- Diarrhea, belly pain or fever\n- Low energy, no appetite or signs of dehydration\n- A chance he swallowed something toxic or an object\n\nSee your vet today if vomiting goes on for more than 24 hours, even if he seems fine.\n\nFor a mild case, your vet may suggest resting the stomach for a short time, then small, frequent meals of a bland food. Keep fresh water available. Don't give human medicines unless your vet tells you to."
+   "reply": "One vomit in a dog that otherwise seems well is often not serious, and many cases settle within a day. But vomiting can also be a sign of poisoning, a blockage or other illness.\n\nGo to the vet right away if he vomits and also has:\n- Blood in the vomit\n- Diarrhea, belly pain or fever\n- Low energy, no appetite or signs of dehydration\n- A chance he swallowed something toxic or an object\n\nSee your vet today if vomiting goes on for more than 24 hours, even if he seems fine.\n\nFor a mild case, your vet may suggest resting the stomach for a short time, then small, frequent meals of a bland food. Keep fresh water available. Don't give human medicines unless your vet tells you to.",
+   "shown": "One vomit in a dog that otherwise seems well is often not serious, and many cases settle within a day. But vomiting can also be a sign of poisoning, a blockage or other illness.\n\nGo to the vet right away if she vomits and also has:\n- Blood in the vomit\n- Diarrhea, belly pain or fever\n- Low energy, no appetite or signs of dehydration\n- A chance she swallowed something toxic or an object\n\nSee your vet today if vomiting goes on for more than 24 hours, even if she seems fine.\n\nFor a mild case, your vet may suggest resting the stomach for a short time, then small, frequent meals of a bland food. Keep fresh water available. Don't give human medicines unless your vet tells you to."
   },
   {
    "id": "feda7c26-y3",
    "pet": "Brownie",
    "species": "Dog",
+   "gender": "Male",
    "related": true,
    "topics": [
     "allergy"
@@ -680,6 +754,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 110,
    "question": "Why is my dog scratching so much?",
    "reply": "It could be. Common flea signs include:\n- Scratching, biting or licking the skin a lot\n- Hair loss or red skin near the tail and between or behind the legs\n- Small red bumps or flaky skin\n- Seeing adult fleas or \"flea dirt\" (tiny black specks of flea poop) in the fur\n\nSome pets are allergic to flea bites, which makes the itching worse. A heavy flea load can cause blood loss (anemia). Fleas also spread tapeworms.\n\nItching can have other causes too, like mites or allergies, so have your vet check your dog. Ask your vet for a flea product that suits your dog's weight and age."
@@ -688,6 +763,7 @@
    "id": "feda7c26-y1",
    "pet": "Brownie",
    "species": "Dog",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": false,
@@ -698,6 +774,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 131,
    "question": "My dog has been vomiting since this morning",
    "reply": "One vomit in a dog that otherwise seems well is often not serious, and many cases settle within a day. But vomiting can also be a sign of poisoning, a blockage or other illness.\n\nGo to the vet right away if he vomits and also has:\n- Blood in the vomit\n- Diarrhea, belly pain or fever\n- Low energy, no appetite or signs of dehydration\n- A chance he swallowed something toxic or an object\n\nSee your vet today if vomiting goes on for more than 24 hours, even if he seems fine.\n\nFor a mild case, your vet may suggest resting the stomach for a short time, then small, frequent meals of a bland food. Keep fresh water available. Don't give human medicines unless your vet tells you to."
@@ -706,6 +783,7 @@
    "id": "9688613f-H19",
    "pet": "Snow",
    "species": "Cat",
+   "gender": "Male",
    "related": true,
    "topics": [
     "vaccine"
@@ -718,6 +796,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 108,
    "question": "Does my cat need vaccines if she never goes outside?",
    "reply": "Yes. The American Association of Feline Practitioners recommends core vaccines even for cats that never go outside. Core vaccines for cats cover:\n- Panleukopenia (feline distemper)\n- Herpesvirus\n- Calicivirus\n(these three come together as FVRCP)\n- Rabies, where the disease is present or the law requires it\n\nFeline leukemia (FeLV) vaccine is advised for kittens under 1 year. For adults it depends on risk, such as going outdoors or living with cats that do.\n\nGood news for indoor cats: global guidelines say low-risk indoor adults usually need core boosters only every 3 years or longer.\n\nYour vet will choose the vaccines and timing that fit your cat."
@@ -726,6 +805,7 @@
    "id": "9688613f-y2",
    "pet": "Snow",
    "species": "Cat",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": false,
@@ -736,14 +816,17 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": true,
+   "pronounShown": false,
    "words": 118,
    "question": "My cat keeps sneezing and has watery eyes",
-   "reply": "It may be an upper respiratory infection, often called cat flu. Viruses like feline herpesvirus and calicivirus are common causes, and they spread easily between cats. Signs include sneezing, runny eyes or nose, mouth sores, tiredness and poor appetite.\n\nWhat helps:\n- Gently wipe her nose clean. A blocked nose can stop her smelling food, so she may eat less.\n- Make sure she keeps eating and drinking.\n\nSee your vet within 24 hours if the sneezing doesn't stop. Go now if she:\n- Has trouble breathing, or her gums look bluish\n- Hasn't eaten properly for 24 hours\n- Is a kitten. Young cats are more likely to get seriously ill.\n\nVaccines can make these infections milder."
+   "reply": "It may be an upper respiratory infection, often called cat flu. Viruses like feline herpesvirus and calicivirus are common causes, and they spread easily between cats. Signs include sneezing, runny eyes or nose, mouth sores, tiredness and poor appetite.\n\nWhat helps:\n- Gently wipe her nose clean. A blocked nose can stop her smelling food, so she may eat less.\n- Make sure she keeps eating and drinking.\n\nSee your vet within 24 hours if the sneezing doesn't stop. Go now if she:\n- Has trouble breathing, or her gums look bluish\n- Hasn't eaten properly for 24 hours\n- Is a kitten. Young cats are more likely to get seriously ill.\n\nVaccines can make these infections milder.",
+   "shown": "It may be an upper respiratory infection, often called cat flu. Viruses like feline herpesvirus and calicivirus are common causes, and they spread easily between cats. Signs include sneezing, runny eyes or nose, mouth sores, tiredness and poor appetite.\n\nWhat helps:\n- Gently wipe his nose clean. A blocked nose can stop him smelling food, so he may eat less.\n- Make sure he keeps eating and drinking.\n\nSee your vet within 24 hours if the sneezing doesn't stop. Go now if he:\n- Has trouble breathing, or his gums look bluish\n- Hasn't eaten properly for 24 hours\n- Is a kitten. Young cats are more likely to get seriously ill.\n\nVaccines can make these infections milder."
   },
   {
    "id": "8b9e77ae-H19",
    "pet": "Snow",
    "species": "Cat",
+   "gender": "Male",
    "related": true,
    "topics": [
     "vaccine"
@@ -756,6 +839,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 108,
    "question": "Does my cat need vaccines if she never goes outside?",
    "reply": "Yes. The American Association of Feline Practitioners recommends core vaccines even for cats that never go outside. Core vaccines for cats cover:\n- Panleukopenia (feline distemper)\n- Herpesvirus\n- Calicivirus\n(these three come together as FVRCP)\n- Rabies, where the disease is present or the law requires it\n\nFeline leukemia (FeLV) vaccine is advised for kittens under 1 year. For adults it depends on risk, such as going outdoors or living with cats that do.\n\nGood news for indoor cats: global guidelines say low-risk indoor adults usually need core boosters only every 3 years or longer.\n\nYour vet will choose the vaccines and timing that fit your cat."
@@ -764,6 +848,7 @@
    "id": "8b9e77ae-H05",
    "pet": "Snow",
    "species": "Cat",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": false,
@@ -774,6 +859,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 157,
    "question": "Is chocolate bad for cats?",
    "reply": "Yes, many everyday foods, medicines and plants are toxic. Act fast, even if your pet seems fine. Signs can take hours or days.\n\nWhat to do now:\n- Move your pet away from the source and remove anything left in their mouth, if it's safe to do so.\n- Note what they ate, about how much, and when. Bring the packaging, label or a piece of the plant.\n- Call your vet or the nearest 24-hour clinic now and tell them you're on your way.\n- If it's on their skin or fur (for example a flea product), wash with mild dish soap and lukewarm water, then rinse well.\n- Don't make your pet vomit unless a vet tells you to. It's dangerous with some poisons and if your pet is drowsy.\n- Home remedies like salt, milk, oil or hydrogen peroxide.\n- Giving any human medicine.\n\nGo to your vet or the nearest 24-hour clinic now."
@@ -782,6 +868,7 @@
    "id": "02575fb5-H19",
    "pet": "Snow",
    "species": "Cat",
+   "gender": "Male",
    "related": true,
    "topics": [
     "vaccine"
@@ -794,6 +881,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 108,
    "question": "Does my cat need vaccines if she never goes outside?",
    "reply": "Yes. The American Association of Feline Practitioners recommends core vaccines even for cats that never go outside. Core vaccines for cats cover:\n- Panleukopenia (feline distemper)\n- Herpesvirus\n- Calicivirus\n(these three come together as FVRCP)\n- Rabies, where the disease is present or the law requires it\n\nFeline leukemia (FeLV) vaccine is advised for kittens under 1 year. For adults it depends on risk, such as going outdoors or living with cats that do.\n\nGood news for indoor cats: global guidelines say low-risk indoor adults usually need core boosters only every 3 years or longer.\n\nYour vet will choose the vaccines and timing that fit your cat."
@@ -802,6 +890,7 @@
    "id": "02575fb5-H05",
    "pet": "Snow",
    "species": "Cat",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": false,
@@ -812,6 +901,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 157,
    "question": "Is chocolate bad for cats?",
    "reply": "Yes, many everyday foods, medicines and plants are toxic. Act fast, even if your pet seems fine. Signs can take hours or days.\n\nWhat to do now:\n- Move your pet away from the source and remove anything left in their mouth, if it's safe to do so.\n- Note what they ate, about how much, and when. Bring the packaging, label or a piece of the plant.\n- Call your vet or the nearest 24-hour clinic now and tell them you're on your way.\n- If it's on their skin or fur (for example a flea product), wash with mild dish soap and lukewarm water, then rinse well.\n- Don't make your pet vomit unless a vet tells you to. It's dangerous with some poisons and if your pet is drowsy.\n- Home remedies like salt, milk, oil or hydrogen peroxide.\n- Giving any human medicine.\n\nGo to your vet or the nearest 24-hour clinic now."
@@ -820,6 +910,7 @@
    "id": "3bc40c8d-H20",
    "pet": "Lucky",
    "species": "Dog",
+   "gender": "Female",
    "related": true,
    "topics": [
     "senior"
@@ -832,14 +923,17 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": true,
+   "pronounShown": false,
    "words": 123,
    "question": "Why does my dog eat grass?",
-   "reply": "Yes, it is very common, and most grass-eating dogs are not sick. Studies show fewer than 1 in 4 dogs vomiting after eating grass. Dogs may eat grass for fiber, out of boredom or to get attention, or simply from instinct.\n\nThings to watch:\n- Grass sprayed with weed killers or pesticides can poison your dog. Keep him off treated lawns.\n- Grass can carry worm eggs from other animals' poop. Ask your vet about regular deworming.\n- If he seems bored or lonely, spend more time playing with him.\n\nSee your vet if he eats grass and then vomits often or seems to have stomach pain that doesn't go away. That can point to a stomach or gut problem that needs checking."
+   "reply": "Yes, it is very common, and most grass-eating dogs are not sick. Studies show fewer than 1 in 4 dogs vomiting after eating grass. Dogs may eat grass for fiber, out of boredom or to get attention, or simply from instinct.\n\nThings to watch:\n- Grass sprayed with weed killers or pesticides can poison your dog. Keep him off treated lawns.\n- Grass can carry worm eggs from other animals' poop. Ask your vet about regular deworming.\n- If he seems bored or lonely, spend more time playing with him.\n\nSee your vet if he eats grass and then vomits often or seems to have stomach pain that doesn't go away. That can point to a stomach or gut problem that needs checking.",
+   "shown": "Yes, it is very common, and most grass-eating dogs are not sick. Studies show fewer than 1 in 4 dogs vomiting after eating grass. Dogs may eat grass for fiber, out of boredom or to get attention, or simply from instinct.\n\nThings to watch:\n- Grass sprayed with weed killers or pesticides can poison your dog. Keep her off treated lawns.\n- Grass can carry worm eggs from other animals' poop. Ask your vet about regular deworming.\n- If she seems bored or lonely, spend more time playing with her.\n\nSee your vet if she eats grass and then vomits often or seems to have stomach pain that doesn't go away. That can point to a stomach or gut problem that needs checking."
   },
   {
    "id": "3bc40c8d-e3",
    "pet": "Lucky",
    "species": "Dog",
+   "gender": "Female",
    "related": false,
    "topics": [],
    "declined": true,
@@ -850,6 +944,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 30,
    "question": "Nasagasaan ang aso ko",
    "reply": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon."
@@ -858,6 +953,7 @@
    "id": "7d5a92a8-y2",
    "pet": "Snow",
    "species": "Cat",
+   "gender": "Male",
    "related": true,
    "topics": [
     "recovering"
@@ -870,14 +966,17 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": true,
+   "pronounShown": false,
    "words": 118,
    "question": "My cat keeps sneezing and has watery eyes",
-   "reply": "It may be an upper respiratory infection, often called cat flu. Viruses like feline herpesvirus and calicivirus are common causes, and they spread easily between cats. Signs include sneezing, runny eyes or nose, mouth sores, tiredness and poor appetite.\n\nWhat helps:\n- Gently wipe her nose clean. A blocked nose can stop her smelling food, so she may eat less.\n- Make sure she keeps eating and drinking.\n\nSee your vet within 24 hours if the sneezing doesn't stop. Go now if she:\n- Has trouble breathing, or her gums look bluish\n- Hasn't eaten properly for 24 hours\n- Is a kitten. Young cats are more likely to get seriously ill.\n\nVaccines can make these infections milder."
+   "reply": "It may be an upper respiratory infection, often called cat flu. Viruses like feline herpesvirus and calicivirus are common causes, and they spread easily between cats. Signs include sneezing, runny eyes or nose, mouth sores, tiredness and poor appetite.\n\nWhat helps:\n- Gently wipe her nose clean. A blocked nose can stop her smelling food, so she may eat less.\n- Make sure she keeps eating and drinking.\n\nSee your vet within 24 hours if the sneezing doesn't stop. Go now if she:\n- Has trouble breathing, or her gums look bluish\n- Hasn't eaten properly for 24 hours\n- Is a kitten. Young cats are more likely to get seriously ill.\n\nVaccines can make these infections milder.",
+   "shown": "It may be an upper respiratory infection, often called cat flu. Viruses like feline herpesvirus and calicivirus are common causes, and they spread easily between cats. Signs include sneezing, runny eyes or nose, mouth sores, tiredness and poor appetite.\n\nWhat helps:\n- Gently wipe his nose clean. A blocked nose can stop him smelling food, so he may eat less.\n- Make sure he keeps eating and drinking.\n\nSee your vet within 24 hours if the sneezing doesn't stop. Go now if he:\n- Has trouble breathing, or his gums look bluish\n- Hasn't eaten properly for 24 hours\n- Is a kitten. Young cats are more likely to get seriously ill.\n\nVaccines can make these infections milder."
   },
   {
    "id": "7d5a92a8-d2",
    "pet": "Snow",
    "species": "Cat",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": true,
@@ -888,6 +987,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 30,
    "question": "Can I give my cat paracetamol for fever?",
    "reply": "I couldn't find this in FurFriends' checked answer, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon."
@@ -896,6 +996,7 @@
    "id": "984e4e31-H20",
    "pet": "Shadow",
    "species": "Dog",
+   "gender": "Female",
    "related": true,
    "topics": [
     "senior"
@@ -908,14 +1009,17 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": true,
+   "pronounShown": false,
    "words": 107,
    "question": "Why does my dog eat grass?",
-   "reply": "Yes, it is very common, and most grass-eating dogs are not sick.\nDogs may eat grass for fiber, out of boredom or to get attention, or simply from instinct.\n\nThings to watch:\n- Grass sprayed with weed killers or pesticides can poison your dog. Keep him off treated lawns.\n- Grass can carry worm eggs from other animals' poop. Ask your vet about regular deworming.\n- If he seems bored or lonely, spend more time playing with him.\n\nSee your vet if he eats grass and then vomits often or seems to have stomach pain that can point to a stomach or gut problem that needs checking."
+   "reply": "Yes, it is very common, and most grass-eating dogs are not sick.\nDogs may eat grass for fiber, out of boredom or to get attention, or simply from instinct.\n\nThings to watch:\n- Grass sprayed with weed killers or pesticides can poison your dog. Keep him off treated lawns.\n- Grass can carry worm eggs from other animals' poop. Ask your vet about regular deworming.\n- If he seems bored or lonely, spend more time playing with him.\n\nSee your vet if he eats grass and then vomits often or seems to have stomach pain that can point to a stomach or gut problem that needs checking.",
+   "shown": "Yes, it is very common, and most grass-eating dogs are not sick.\nDogs may eat grass for fiber, out of boredom or to get attention, or simply from instinct.\n\nThings to watch:\n- Grass sprayed with weed killers or pesticides can poison your dog. Keep her off treated lawns.\n- Grass can carry worm eggs from other animals' poop. Ask your vet about regular deworming.\n- If she seems bored or lonely, spend more time playing with her.\n\nSee your vet if she eats grass and then vomits often or seems to have stomach pain that can point to a stomach or gut problem that needs checking."
   },
   {
    "id": "984e4e31-y1",
    "pet": "Shadow",
    "species": "Dog",
+   "gender": "Female",
    "related": false,
    "topics": [],
    "declined": false,
@@ -926,14 +1030,17 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": true,
+   "pronounShown": false,
    "words": 131,
    "question": "My dog has been vomiting since this morning",
-   "reply": "One vomit in a dog that otherwise seems well is often not serious, and many cases settle within a day. But vomiting can also be a sign of poisoning, a blockage or other illness.\n\nGo to the vet right away if he vomits and also has:\n- Blood in the vomit\n- Diarrhea, belly pain or fever\n- Low energy, no appetite or signs of dehydration\n- A chance he swallowed something toxic or an object\n\nSee your vet today if vomiting goes on for more than 24 hours, even if he seems fine.\n\nFor a mild case, your vet may suggest resting the stomach for a short time, then small, frequent meals of a bland food. Keep fresh water available. Don't give human medicines unless your vet tells you to."
+   "reply": "One vomit in a dog that otherwise seems well is often not serious, and many cases settle within a day. But vomiting can also be a sign of poisoning, a blockage or other illness.\n\nGo to the vet right away if he vomits and also has:\n- Blood in the vomit\n- Diarrhea, belly pain or fever\n- Low energy, no appetite or signs of dehydration\n- A chance he swallowed something toxic or an object\n\nSee your vet today if vomiting goes on for more than 24 hours, even if he seems fine.\n\nFor a mild case, your vet may suggest resting the stomach for a short time, then small, frequent meals of a bland food. Keep fresh water available. Don't give human medicines unless your vet tells you to.",
+   "shown": "One vomit in a dog that otherwise seems well is often not serious, and many cases settle within a day. But vomiting can also be a sign of poisoning, a blockage or other illness.\n\nGo to the vet right away if she vomits and also has:\n- Blood in the vomit\n- Diarrhea, belly pain or fever\n- Low energy, no appetite or signs of dehydration\n- A chance she swallowed something toxic or an object\n\nSee your vet today if vomiting goes on for more than 24 hours, even if she seems fine.\n\nFor a mild case, your vet may suggest resting the stomach for a short time, then small, frequent meals of a bland food. Keep fresh water available. Don't give human medicines unless your vet tells you to."
   },
   {
    "id": "8b079a05-y3",
    "pet": "Lucy",
    "species": "Dog",
+   "gender": "Male",
    "related": true,
    "topics": [
     "allergy"
@@ -946,6 +1053,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 202,
    "question": "Why is my dog scratching so much?",
    "reply": "It could be. Common flea signs include:\n- Scratching, biting or licking the skin a lot\n- Hair loss or red skin near the tail and between or behind the legs\n- Small red bumps or flaky skin\n- Seeing adult fleas or \"flea dirt\" (tiny black specks of flea poop) in the fur\n\nSome pets are allergic to flea bites, which makes the itching worse. A heavy flea load can cause blood loss (anemia). Fleas also spread tapeworms.\n\nItching can have other causes too, like mites or allergies to things like insect bites, food, pollen, mold or dust. Itching only in certain seasons often points to a seasonal allergen. Itching all year can point to dust mites or food. What to check at home:\n- Look through the coat for fleas or flea dirt, and at the skin for redness, scabs or hair loss\n- Note where he scratches. Licking and rubbing of the feet and face is common with allergies and infections\n- See your vet if the itching lasts more than a few days, or if there is hair loss, scaling, a bad smell, or fluid on the skin. Please don't give human allergy pills or leftover steroids. Antihist"
@@ -954,6 +1062,7 @@
    "id": "8b079a05-y1",
    "pet": "Lucy",
    "species": "Dog",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": false,
@@ -964,6 +1073,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 131,
    "question": "My dog has been vomiting since this morning",
    "reply": "One vomit in a dog that otherwise seems well is often not serious, and many cases settle within a day. But vomiting can also be a sign of poisoning, a blockage or other illness.\n\nGo to the vet right away if he vomits and also has:\n- Blood in the vomit\n- Diarrhea, belly pain or fever\n- Low energy, no appetite or signs of dehydration\n- A chance he swallowed something toxic or an object\n\nSee your vet today if vomiting goes on for more than 24 hours, even if he seems fine.\n\nFor a mild case, your vet may suggest resting the stomach for a short time, then small, frequent meals of a bland food. Keep fresh water available. Don't give human medicines unless your vet tells you to."
@@ -972,6 +1082,7 @@
    "id": "f95cd09e-r30",
    "pet": "Biscuit",
    "species": "Dog",
+   "gender": "Female",
    "related": true,
    "topics": [
     "medication"
@@ -984,6 +1095,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 115,
    "question": "How do I get rid of fleas in my house?",
    "reply": "Most of the flea problem lives in your home, not on your pet. Eggs fall off into carpets, bedding and corners, and flea cocoons can wait there for months.\n\nWhat helps:\n- Treat every dog and cat in the home, not just the itchy one, using products your vet recommends\n- Vacuum often\n- Wash pet bedding and blankets regularly\n- If you use a home spray, keep pets out of the room and follow the label\n- Never put a house or yard product directly on a pet\n\nFleas can live indoors all year, so experts advise year-round flea prevention.\n\nIt can take weeks to months of steady treatment to fully clear an infestation."
@@ -992,6 +1104,7 @@
    "id": "f95cd09e-r25",
    "pet": "Biscuit",
    "species": "Dog",
+   "gender": "Female",
    "related": false,
    "topics": [],
    "declined": false,
@@ -1002,6 +1115,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 150,
    "question": "What should I put in a pet first aid kit?",
    "reply": "A basic kit helps in the first minutes, but it never replaces a vet. Useful items:\n- Gauze, sterile pads, stretch bandage and adhesive tape\n- Small blunt-tipped scissors and tweezers\n- Saline solution for rinsing wounds and eyes\n- Cotton balls or swabs and disposable gloves\n- A muzzle for dogs, and a towel for wrapping or carrying\n- A rectal thermometer and lubricating jelly\n- Splint material\n- A small supply of your pet's regular medicines\n- Your vet's number, the nearest 24-hour clinic, and your pet's health records\n\nKeep it in a box with a secure lid you can grab fast, and check expiration dates every year. Ask your vet before giving any medicine, and only make your pet vomit if a vet tells you to. In an emergency, go to your nearest vet now and use the kit on the way, and ask for help later."
@@ -1010,6 +1124,7 @@
    "id": "52c24297-y3",
    "pet": "Thor",
    "species": "Dog",
+   "gender": "Female",
    "related": true,
    "topics": [
     "allergy"
@@ -1022,14 +1137,17 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": true,
+   "pronounShown": false,
    "words": 202,
    "question": "Why is my dog scratching so much?",
-   "reply": "It could be. Common flea signs include:\n- Scratching, biting or licking the skin a lot\n- Hair loss or red skin near the tail and between or behind the legs\n- Small red bumps or flaky skin\n- Seeing adult fleas or \"flea dirt\" (tiny black specks of flea poop) in the fur\n\nSome pets are allergic to flea bites, which makes the itching worse. A heavy flea load can cause blood loss (anemia). Fleas also spread tapeworms.\n\nItching can have other causes too, like mites or allergies to things like insect bites, food, pollen, mold or dust. Itching only in certain seasons often points to a seasonal allergen. Itching all year can point to dust mites or food. What to check at home:\n- Look through the coat for fleas or flea dirt, and at the skin for redness, scabs or hair loss\n- Note where he scratches. Licking and rubbing of the feet and face is common with allergies and infections\n- See your vet if the itching lasts more than a few days, or if there is hair loss, scaling, a bad smell, or fluid on the skin. Please don't give human allergy pills or leftover steroids. Antihist"
+   "reply": "It could be. Common flea signs include:\n- Scratching, biting or licking the skin a lot\n- Hair loss or red skin near the tail and between or behind the legs\n- Small red bumps or flaky skin\n- Seeing adult fleas or \"flea dirt\" (tiny black specks of flea poop) in the fur\n\nSome pets are allergic to flea bites, which makes the itching worse. A heavy flea load can cause blood loss (anemia). Fleas also spread tapeworms.\n\nItching can have other causes too, like mites or allergies to things like insect bites, food, pollen, mold or dust. Itching only in certain seasons often points to a seasonal allergen. Itching all year can point to dust mites or food. What to check at home:\n- Look through the coat for fleas or flea dirt, and at the skin for redness, scabs or hair loss\n- Note where he scratches. Licking and rubbing of the feet and face is common with allergies and infections\n- See your vet if the itching lasts more than a few days, or if there is hair loss, scaling, a bad smell, or fluid on the skin. Please don't give human allergy pills or leftover steroids. Antihist",
+   "shown": "It could be. Common flea signs include:\n- Scratching, biting or licking the skin a lot\n- Hair loss or red skin near the tail and between or behind the legs\n- Small red bumps or flaky skin\n- Seeing adult fleas or \"flea dirt\" (tiny black specks of flea poop) in the fur\n\nSome pets are allergic to flea bites, which makes the itching worse. A heavy flea load can cause blood loss (anemia). Fleas also spread tapeworms.\n\nItching can have other causes too, like mites or allergies to things like insect bites, food, pollen, mold or dust. Itching only in certain seasons often points to a seasonal allergen. Itching all year can point to dust mites or food. What to check at home:\n- Look through the coat for fleas or flea dirt, and at the skin for redness, scabs or hair loss\n- Note where she scratches. Licking and rubbing of the feet and face is common with allergies and infections\n- See your vet if the itching lasts more than a few days, or if there is hair loss, scaling, a bad smell, or fluid on the skin. Please don't give human allergy pills or leftover steroids. Antihist"
   },
   {
    "id": "52c24297-y1",
    "pet": "Thor",
    "species": "Dog",
+   "gender": "Female",
    "related": false,
    "topics": [],
    "declined": false,
@@ -1040,14 +1158,17 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": true,
+   "pronounShown": false,
    "words": 131,
    "question": "My dog has been vomiting since this morning",
-   "reply": "One vomit in a dog that otherwise seems well is often not serious, and many cases settle within a day. But vomiting can also be a sign of poisoning, a blockage or other illness.\n\nGo to the vet right away if he vomits and also has:\n- Blood in the vomit\n- Diarrhea, belly pain or fever\n- Low energy, no appetite or signs of dehydration\n- A chance he swallowed something toxic or an object\n\nSee your vet today if vomiting goes on for more than 24 hours, even if he seems fine.\n\nFor a mild case, your vet may suggest resting the stomach for a short time, then small, frequent meals of a bland food. Keep fresh water available. Don't give human medicines unless your vet tells you to."
+   "reply": "One vomit in a dog that otherwise seems well is often not serious, and many cases settle within a day. But vomiting can also be a sign of poisoning, a blockage or other illness.\n\nGo to the vet right away if he vomits and also has:\n- Blood in the vomit\n- Diarrhea, belly pain or fever\n- Low energy, no appetite or signs of dehydration\n- A chance he swallowed something toxic or an object\n\nSee your vet today if vomiting goes on for more than 24 hours, even if he seems fine.\n\nFor a mild case, your vet may suggest resting the stomach for a short time, then small, frequent meals of a bland food. Keep fresh water available. Don't give human medicines unless your vet tells you to.",
+   "shown": "One vomit in a dog that otherwise seems well is often not serious, and many cases settle within a day. But vomiting can also be a sign of poisoning, a blockage or other illness.\n\nGo to the vet right away if she vomits and also has:\n- Blood in the vomit\n- Diarrhea, belly pain or fever\n- Low energy, no appetite or signs of dehydration\n- A chance she swallowed something toxic or an object\n\nSee your vet today if vomiting goes on for more than 24 hours, even if she seems fine.\n\nFor a mild case, your vet may suggest resting the stomach for a short time, then small, frequent meals of a bland food. Keep fresh water available. Don't give human medicines unless your vet tells you to."
   },
   {
    "id": "bd80159c-H29",
    "pet": "Ganda",
    "species": "Dog",
+   "gender": "Male",
    "related": true,
    "topics": [
     "vaccine"
@@ -1060,6 +1181,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 75,
    "question": "What is the fine if my dog is not vaccinated against rabies?",
    "reply": "Every year. Section 5 of RA 9482 says owners must have their dogs \"regularly\" vaccinated against rabies. The implementing rules make it clearer: a properly immunized dog is one vaccinated yearly, and LGUs register and vaccinate dogs annually.\n\nThe shot must be given by a licensed veterinarian, or by a trained vaccinator under a vet's direct supervision during government mass vaccination drives.\n\nKeep the record of each shot on your dog's vaccination or registration card."
@@ -1068,6 +1190,7 @@
    "id": "bd80159c-a1",
    "pet": "Ganda",
    "species": "Dog",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": false,
@@ -1078,6 +1201,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 151,
    "question": "My dog has a small cut on his paw, what do I do?",
    "reply": "Limping usually means pain or weakness, so it deserves a vet check.\n\nFirst aid at home:\n- Keep him calm and limit his activity.\n- Gently check the paw for cuts, a broken nail, or something stuck between the toes. Stop if he shows pain. Dogs in pain may bite, even their owners.\n- Don't give human pain medicines unless your vet tells you to. They can poison pets.\n\nGo to the vet now if he:\n- Won't put any weight on the leg, or the leg looks bent or swollen\n- Can't stand or walk without help\n- Was hit by a vehicle or attacked by another animal\n- Is in severe pain, or the limp came on suddenly and badly\n\nSee your vet within 24 hours if the limp lasts more than a day or is getting worse. A short video of him walking at home helps the vet."
@@ -1086,6 +1210,7 @@
    "id": "fa77f6ff-H29",
    "pet": "Toffee",
    "species": "Dog",
+   "gender": "Male",
    "related": true,
    "topics": [
     "vaccine"
@@ -1098,6 +1223,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 30,
    "question": "What is the fine if my dog is not vaccinated against rabies?",
    "reply": "I couldn't find this in FurFriends' checked sources, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon."
@@ -1106,6 +1232,7 @@
    "id": "fa77f6ff-H21",
    "pet": "Toffee",
    "species": "Dog",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": false,
@@ -1116,6 +1243,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 85,
    "question": "My dog howls and barks when I go to work",
    "reply": "This is often separation anxiety: your dog is stressed being alone.\n- Give a good walk and play before you leave\n- Practise short absences, then make them slowly longer\n- Leave a safe chew toy or a food puzzle\n- Keep leaving and coming home calm and low-key\n- Don't punish the barking, because it adds to the stress\n\nIf your dog also destroys things, soils the house or hurts themselves, talk to your vet or a trainer. Some dogs need a behavior plan."
@@ -1124,6 +1252,7 @@
    "id": "8ebb8a7a-l01",
    "pet": "Bingo",
    "species": "Dog",
+   "gender": "Male",
    "related": true,
    "topics": [
     "vaccine"
@@ -1136,6 +1265,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 75,
    "question": "Is it required by law to vaccinate my dog against rabies in the Philippines?",
    "reply": "Every year. Section 5 of RA 9482 says owners must have their dogs \"regularly\" vaccinated against rabies. The implementing rules make it clearer: a properly immunized dog is one vaccinated yearly, and LGUs register and vaccinate dogs annually.\n\nThe shot must be given by a licensed veterinarian, or by a trained vaccinator under a vet's direct supervision during government mass vaccination drives.\n\nKeep the record of each shot on your dog's vaccination or registration card."
@@ -1144,6 +1274,7 @@
    "id": "8ebb8a7a-a1",
    "pet": "Bingo",
    "species": "Dog",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": false,
@@ -1154,6 +1285,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 151,
    "question": "My dog has a small cut on his paw, what do I do?",
    "reply": "Limping usually means pain or weakness, so it deserves a vet check.\n\nFirst aid at home:\n- Keep him calm and limit his activity.\n- Gently check the paw for cuts, a broken nail, or something stuck between the toes. Stop if he shows pain. Dogs in pain may bite, even their owners.\n- Don't give human pain medicines unless your vet tells you to. They can poison pets.\n\nGo to the vet now if he:\n- Won't put any weight on the leg, or the leg looks bent or swollen\n- Can't stand or walk without help\n- Was hit by a vehicle or attacked by another animal\n- Is in severe pain, or the limp came on suddenly and badly\n\nSee your vet within 24 hours if the limp lasts more than a day or is getting worse. A short video of him walking at home helps the vet."
@@ -1162,6 +1294,7 @@
    "id": "d0dc606a-t02",
    "pet": "Brownie",
    "species": "Dog",
+   "gender": "Female",
    "related": true,
    "topics": [
     "medication"
@@ -1174,14 +1307,17 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": true,
+   "pronounShown": false,
    "words": 124,
    "question": "May garapata ang aso ko paano tanggalin",
-   "reply": "Remove ticks as soon as you find them:\n- Use fine-tipped tweezers and grip the tick as close to the skin as you can\n- Pull straight out with slow, steady pressure. Don't twist or jerk\n- Don't use bare hands, matches, heat, nail polish or petroleum jelly\n- Don't crush the tick. Drop it in rubbing alcohol, seal it in a bag or wrap it in tape\n- Wash the bite area and your hands with soap and water\n\nIf small mouthparts stay in the skin, it usually heals on its own.\n\nWatch the spot for a few days. See your vet if it gets red or swollen, if your dog has many ticks, or if he seems unwell in the weeks after."
+   "reply": "Remove ticks as soon as you find them:\n- Use fine-tipped tweezers and grip the tick as close to the skin as you can\n- Pull straight out with slow, steady pressure. Don't twist or jerk\n- Don't use bare hands, matches, heat, nail polish or petroleum jelly\n- Don't crush the tick. Drop it in rubbing alcohol, seal it in a bag or wrap it in tape\n- Wash the bite area and your hands with soap and water\n\nIf small mouthparts stay in the skin, it usually heals on its own.\n\nWatch the spot for a few days. See your vet if it gets red or swollen, if your dog has many ticks, or if he seems unwell in the weeks after.",
+   "shown": "Remove ticks as soon as you find them:\n- Use fine-tipped tweezers and grip the tick as close to the skin as you can\n- Pull straight out with slow, steady pressure. Don't twist or jerk\n- Don't use bare hands, matches, heat, nail polish or petroleum jelly\n- Don't crush the tick. Drop it in rubbing alcohol, seal it in a bag or wrap it in tape\n- Wash the bite area and your hands with soap and water\n\nIf small mouthparts stay in the skin, it usually heals on its own.\n\nWatch the spot for a few days. See your vet if it gets red or swollen, if your dog has many ticks, or if she seems unwell in the weeks after."
   },
   {
    "id": "d0dc606a-t01",
    "pet": "Brownie",
    "species": "Dog",
+   "gender": "Female",
    "related": false,
    "topics": [],
    "declined": true,
@@ -1192,6 +1328,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 30,
    "question": "Nagsusuka ang aso ko, ano ang dapat gawin?",
    "reply": "I couldn't find this in FurFriends' checked answers, so I don't want to guess. Please ask your vet, and if your pet seems unwell or in pain, see them soon."
@@ -1200,6 +1337,7 @@
    "id": "4cf2a1b8-H09",
    "pet": "Bantay",
    "species": "Dog",
+   "gender": "Female",
    "related": true,
    "topics": [
     "allergy"
@@ -1212,14 +1350,17 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": true,
+   "pronounShown": false,
    "words": 118,
    "question": "Can I give my dog aspirin?",
-   "reply": "Go to your vet or the nearest 24-hour clinic now. Human pain relievers like ibuprofen, naproxen and aspirin (NSAIDs) are dangerous for dogs. They can cause stomach ulcers, bleeding and kidney damage, and large amounts can cause seizures or coma.\n\nSigns may include vomiting, diarrhea, black stools, belly pain, not eating, weakness and pale gums.\n\nBefore you go:\n- Bring the bottle and count how many tablets are missing, so the vet can judge the risk.\n- Only make your dog vomit if a vet tells you to.\n- Don't give any other medicine.\n\nOn the way, keep him calm and watch for vomiting or weakness. Never give human pain medicine to a pet without your vet's advice."
+   "reply": "Go to your vet or the nearest 24-hour clinic now. Human pain relievers like ibuprofen, naproxen and aspirin (NSAIDs) are dangerous for dogs. They can cause stomach ulcers, bleeding and kidney damage, and large amounts can cause seizures or coma.\n\nSigns may include vomiting, diarrhea, black stools, belly pain, not eating, weakness and pale gums.\n\nBefore you go:\n- Bring the bottle and count how many tablets are missing, so the vet can judge the risk.\n- Only make your dog vomit if a vet tells you to.\n- Don't give any other medicine.\n\nOn the way, keep him calm and watch for vomiting or weakness. Never give human pain medicine to a pet without your vet's advice.",
+   "shown": "Go to your vet or the nearest 24-hour clinic now. Human pain relievers like ibuprofen, naproxen and aspirin (NSAIDs) are dangerous for dogs. They can cause stomach ulcers, bleeding and kidney damage, and large amounts can cause seizures or coma.\n\nSigns may include vomiting, diarrhea, black stools, belly pain, not eating, weakness and pale gums.\n\nBefore you go:\n- Bring the bottle and count how many tablets are missing, so the vet can judge the risk.\n- Only make your dog vomit if a vet tells you to.\n- Don't give any other medicine.\n\nOn the way, keep her calm and watch for vomiting or weakness. Never give human pain medicine to a pet without your vet's advice."
   },
   {
    "id": "4cf2a1b8-H14",
    "pet": "Bantay",
    "species": "Dog",
+   "gender": "Female",
    "related": false,
    "topics": [],
    "declined": false,
@@ -1230,14 +1371,17 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": true,
+   "pronounShown": false,
    "words": 133,
    "question": "My dog is having a seizure",
-   "reply": "Stay calm and focus on keeping him safe.\n\nWhile it's happening:\n- Move furniture and hard objects away. Only move him if he's near stairs, water or another danger.\n- Keep your hands away from his mouth. He can't control his jaws and may bite without meaning to.\n- Don't try to hold him down.\n- Time the seizure, and take a short video for the vet if you can.\n\nGo to your vet or the nearest 24-hour clinic now if the seizure lasts more than about 3 minutes, if he has more than one in a row, or if he might have eaten something poisonous. Otherwise, call your vet soon after.\n\nAfterward he may pace or seem confused. On the way to the vet, keep him calm, quiet and away from edges."
+   "reply": "Stay calm and focus on keeping him safe.\n\nWhile it's happening:\n- Move furniture and hard objects away. Only move him if he's near stairs, water or another danger.\n- Keep your hands away from his mouth. He can't control his jaws and may bite without meaning to.\n- Don't try to hold him down.\n- Time the seizure, and take a short video for the vet if you can.\n\nGo to your vet or the nearest 24-hour clinic now if the seizure lasts more than about 3 minutes, if he has more than one in a row, or if he might have eaten something poisonous. Otherwise, call your vet soon after.\n\nAfterward he may pace or seem confused. On the way to the vet, keep him calm, quiet and away from edges.",
+   "shown": "Stay calm and focus on keeping her safe.\n\nWhile it's happening:\n- Move furniture and hard objects away. Only move her if she's near stairs, water or another danger.\n- Keep your hands away from her mouth. She can't control her jaws and may bite without meaning to.\n- Don't try to hold her down.\n- Time the seizure, and take a short video for the vet if you can.\n\nGo to your vet or the nearest 24-hour clinic now if the seizure lasts more than about 3 minutes, if she has more than one in a row, or if she might have eaten something poisonous. Otherwise, call your vet soon after.\n\nAfterward she may pace or seem confused. On the way to the vet, keep her calm, quiet and away from edges."
   },
   {
    "id": "a8a70f70-H09",
    "pet": "Princess",
    "species": "Dog",
+   "gender": "Female",
    "related": true,
    "topics": [
     "allergy"
@@ -1250,14 +1394,17 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": true,
+   "pronounShown": false,
    "words": 118,
    "question": "Can I give my dog aspirin?",
-   "reply": "Go to your vet or the nearest 24-hour clinic now. Human pain relievers like ibuprofen, naproxen and aspirin (NSAIDs) are dangerous for dogs. They can cause stomach ulcers, bleeding and kidney damage, and large amounts can cause seizures or coma.\n\nSigns may include vomiting, diarrhea, black stools, belly pain, not eating, weakness and pale gums.\n\nBefore you go:\n- Bring the bottle and count how many tablets are missing, so the vet can judge the risk.\n- Only make your dog vomit if a vet tells you to.\n- Don't give any other medicine.\n\nOn the way, keep him calm and watch for vomiting or weakness. Never give human pain medicine to a pet without your vet's advice."
+   "reply": "Go to your vet or the nearest 24-hour clinic now. Human pain relievers like ibuprofen, naproxen and aspirin (NSAIDs) are dangerous for dogs. They can cause stomach ulcers, bleeding and kidney damage, and large amounts can cause seizures or coma.\n\nSigns may include vomiting, diarrhea, black stools, belly pain, not eating, weakness and pale gums.\n\nBefore you go:\n- Bring the bottle and count how many tablets are missing, so the vet can judge the risk.\n- Only make your dog vomit if a vet tells you to.\n- Don't give any other medicine.\n\nOn the way, keep him calm and watch for vomiting or weakness. Never give human pain medicine to a pet without your vet's advice.",
+   "shown": "Go to your vet or the nearest 24-hour clinic now. Human pain relievers like ibuprofen, naproxen and aspirin (NSAIDs) are dangerous for dogs. They can cause stomach ulcers, bleeding and kidney damage, and large amounts can cause seizures or coma.\n\nSigns may include vomiting, diarrhea, black stools, belly pain, not eating, weakness and pale gums.\n\nBefore you go:\n- Bring the bottle and count how many tablets are missing, so the vet can judge the risk.\n- Only make your dog vomit if a vet tells you to.\n- Don't give any other medicine.\n\nOn the way, keep her calm and watch for vomiting or weakness. Never give human pain medicine to a pet without your vet's advice."
   },
   {
    "id": "a8a70f70-H20",
    "pet": "Princess",
    "species": "Dog",
+   "gender": "Female",
    "related": false,
    "topics": [],
    "declined": false,
@@ -1268,14 +1415,17 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": true,
+   "pronounShown": false,
    "words": 107,
    "question": "Why does my dog eat grass?",
-   "reply": "Yes, it is very common, and most grass-eating dogs are not sick.\nDogs may eat grass for fiber, out of boredom or to get attention, or simply from instinct.\n\nThings to watch:\n- Grass sprayed with weed killers or pesticides can poison your dog. Keep him off treated lawns.\n- Grass can carry worm eggs from other animals' poop. Ask your vet about regular deworming.\n- If he seems bored or lonely, spend more time playing with him.\n\nSee your vet if he eats grass and then vomits often or seems to have stomach pain that can point to a stomach or gut problem that needs checking."
+   "reply": "Yes, it is very common, and most grass-eating dogs are not sick.\nDogs may eat grass for fiber, out of boredom or to get attention, or simply from instinct.\n\nThings to watch:\n- Grass sprayed with weed killers or pesticides can poison your dog. Keep him off treated lawns.\n- Grass can carry worm eggs from other animals' poop. Ask your vet about regular deworming.\n- If he seems bored or lonely, spend more time playing with him.\n\nSee your vet if he eats grass and then vomits often or seems to have stomach pain that can point to a stomach or gut problem that needs checking.",
+   "shown": "Yes, it is very common, and most grass-eating dogs are not sick.\nDogs may eat grass for fiber, out of boredom or to get attention, or simply from instinct.\n\nThings to watch:\n- Grass sprayed with weed killers or pesticides can poison your dog. Keep her off treated lawns.\n- Grass can carry worm eggs from other animals' poop. Ask your vet about regular deworming.\n- If she seems bored or lonely, spend more time playing with her.\n\nSee your vet if she eats grass and then vomits often or seems to have stomach pain that can point to a stomach or gut problem that needs checking."
   },
   {
    "id": "9fa13f85-l08",
    "pet": "Blackie",
    "species": "Dog",
+   "gender": "Male",
    "related": true,
    "topics": [
     "vaccine"
@@ -1288,6 +1438,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 75,
    "question": "Is there free anti-rabies vaccine for dogs in the Philippines?",
    "reply": "Every year. Section 5 of RA 9482 says owners must have their dogs \"regularly\" vaccinated against rabies. The implementing rules make it clearer: a properly immunized dog is one vaccinated yearly, and LGUs register and vaccinate dogs annually.\n\nThe shot must be given by a licensed veterinarian, or by a trained vaccinator under a vet's direct supervision during government mass vaccination drives.\n\nKeep the record of each shot on your dog's vaccination or registration card."
@@ -1296,6 +1447,7 @@
    "id": "9fa13f85-a1",
    "pet": "Blackie",
    "species": "Dog",
+   "gender": "Male",
    "related": false,
    "topics": [],
    "declined": false,
@@ -1306,6 +1458,7 @@
    "invented": [],
    "wrongSpecies": false,
    "pronoun": false,
+   "pronounShown": false,
    "words": 151,
    "question": "My dog has a small cut on his paw, what do I do?",
    "reply": "Limping usually means pain or weakness, so it deserves a vet check.\n\nFirst aid at home:\n- Keep him calm and limit his activity.\n- Gently check the paw for cuts, a broken nail, or something stuck between the toes. Stop if he shows pain. Dogs in pain may bite, even their owners.\n- Don't give human pain medicines unless your vet tells you to. They can poison pets.\n\nGo to the vet now if he:\n- Won't put any weight on the leg, or the leg looks bent or swollen\n- Can't stand or walk without help\n- Was hit by a vehicle or attacked by another animal\n- Is in severe pain, or the limp came on suddenly and badly\n\nSee your vet within 24 hours if the limp lasts more than a day or is getting worse. A short video of him walking at home helps the vet."

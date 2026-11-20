@@ -47,7 +47,7 @@ describe("AI with a pet selected (askAssistant end to end)", () => {
   });
   const ask = (id, pet) => askAssistant({ messages: turns(id).map((content) => ({ role: "user", content })), pet });
 
-  it("the server gets the pet's whole profile, and the answer ends with the notes the rule picks, not the model's", async () => {
+  it("[FR10.6] the server gets the pet's whole profile, and the answer ends with the notes the rule picks, not the model's", async () => {
     const { q, vector } = fixture.queries.R07;   // "My dog stopped eating two days ago, is it dangerous?"
     const { evidence } = planAnswer(index, search(index, vector, q, {}), q, turns("R07").at(-1));
     // An answer written from the passage, with notes the model got wrong.
@@ -65,7 +65,7 @@ describe("AI with a pet selected (askAssistant end to end)", () => {
     expect(r.reply.match(/From Choco's records:/g)).toHaveLength(1);
   });
 
-  it("with no pet selected, no notes; with a pet whose records aren't about the question, none either", async () => {
+  it("[FR10.6] with no pet selected, no notes; with a pet whose records aren't about the question, none either", async () => {
     const { q, vector } = fixture.queries.R07;
     const { evidence } = planAnswer(index, search(index, vector, q, {}), q, turns("R07").at(-1));
     serverReply = evidence[0].a.split("\n\n")[0];
@@ -84,14 +84,14 @@ describe.runIf(existsSync(V6))("AI training data v6 (pet profiles, ai-server/add
   const pets = rows.filter((r) => r.simulated_pet);
   const owner = (r) => r.messages.filter((m) => m.role === "user");
 
-  it("keeps every v5 example and adds examples with simulated, labelled pet profiles", () => {
+  it("[FR10.8] keeps every v5 example and adds examples with simulated, labelled pet profiles", () => {
     expect(rows.filter((r) => !r.simulated_pet && !r.extra_question).map((r) => r.id).sort()).toEqual(v5.map((r) => r.id).sort());
     expect(pets.length).toBeGreaterThan(300);
     for (const r of pets) expect(r.pet, r.id).toMatchObject({ name: expect.any(String), species: expect.stringMatching(/^(Dog|Cat)$/) });
     expect(rows.some((r) => r.unreviewed_rules)).toBe(false);   // never the --unreviewed preview
   });
 
-  it("the other wordings of symptom questions keep their checked answer and sources word for word", () => {
+  it("[FR10.8] the other wordings of symptom questions keep their checked answer and sources word for word", () => {
     const wordings = JSON.parse(readFileSync("ai-server/data/symptom_questions.json", "utf8"));
     const extra = rows.filter((r) => r.extra_question && !r.simulated_pet);
     expect(extra.length).toBe(Object.entries(wordings).filter(([k]) => !k.startsWith("_")).reduce((n, [, qs]) => n + qs.length, 0));
@@ -103,7 +103,7 @@ describe.runIf(existsSync(V6))("AI training data v6 (pet profiles, ai-server/add
     }
   });
 
-  it("each answer is the v5 answer plus exactly the notes the app adds for that question and pet", () => {
+  it("[FR10.8] each answer is the v5 answer plus exactly the notes the app adds for that question and pet", () => {
     let withNotes = 0;
     for (const r of pets) {
       const answers = answersOf(r.id.replace(/-pet\d+$/, "").replace(/-ask\d+$/, ""));
@@ -118,7 +118,7 @@ describe.runIf(existsSync(V6))("AI training data v6 (pet profiles, ai-server/add
     expect(pets.length - withNotes).toBeGreaterThan(100);
   });
 
-  it("\"couldn't find\" answers stay word for word, and no evaluation question is trained on", () => {
+  it("[FR10.8] \"couldn't find\" answers stay word for word, and no evaluation question is trained on", () => {
     expect(pets.filter((r) => /^I couldn't find/.test(r.messages.at(-1).content)).every((r) => r.messages.at(-1).content === PROMPT.notFound)).toBe(true);
     const evals = new Set([
       ...jsonl("ai-server/data/retrieval_eval.jsonl").flatMap((c) => c.turns),

@@ -15,7 +15,7 @@ async function loggedIn(account) {
 }
 
 describe("Chats saved per pet", () => {
-  it("are on once the table exists, and read per pet (or the general chat), oldest first", async () => {
+  it("[FR10.7] are on once the table exists, and read per pet (or the general chat), oldest first", async () => {
     supabase.state.rows.assistant_messages = [
       { id: "b", pet_id: "pet-1", role: "assistant", content: "Fine.", meta: { model: "rag-v6", rating: 1 }, created_at: "2026-11-20T01:00:02Z" },
       { id: "a", pet_id: "pet-1", role: "user", content: "How is she?", meta: {}, created_at: "2026-11-20T01:00:01Z" },
@@ -31,7 +31,7 @@ describe("Chats saved per pet", () => {
     expect([...(await s.current.chatRooms())].sort()).toEqual(["", "pet-1"]);
   });
 
-  it("save each message once (by its id), update a rating, and 'New chat' deletes only that chat", async () => {
+  it("[FR10.7] save each message once (by its id), update a rating, and 'New chat' deletes only that chat", async () => {
     const s = await loggedIn();
     await run(() => s.current.saveChatMessage("pet-1", { id: "m1", role: "assistant", content: "Answer", model: "rag-v6", sources: [], rating: 0, ctx: { name: "Mochi" } }));
     expect(calls("assistant_messages", "upsert").at(-1).payload).toEqual({
@@ -49,7 +49,7 @@ describe("Chats saved per pet", () => {
     expect(calls("assistant_messages", "delete").at(-1).filters).toEqual([["pet_id", null]]);
   });
 
-  it("stay in the tab without the table, and on the shared demo account", async () => {
+  it("[FR10.7] stay in the tab without the table, and on the shared demo account", async () => {
     supabase.state.missingTables = ["assistant_messages"];
     const s = await loggedIn();
     expect(s.current.chatSaved).toBe(false);

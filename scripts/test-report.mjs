@@ -41,13 +41,14 @@ const tests = raw.testResults.flatMap((file) => file.assertionResults.map((t) =>
 const USE_CASES = [
   {
     id: "UC1", name: "Register / Login", source: "Figure 2.2",
-    goal: "A pet owner creates an account or logs in, so their pets and records are kept private to them.",
-    code: "src/pages/Auth.jsx, src/store/StoreContext.jsx (register, login, logout)",
+    goal: "A pet owner creates an account or logs in, so their pets and records are kept private to them, and can set a new password with their security question if they forget it.",
+    code: "src/pages/Auth.jsx (Login, Register, ForgotPassword), src/store/StoreContext.jsx (register, login, logout, forgotQuestion, resetPassword), src/lib/passwordReset.js, supabase/migrations/20261120120000_security_questions.sql",
     frs: [
-      ["FR1.1", "Owners can create an account with name, email and password. The form requires a name, a valid email, a password of at least 8 characters, and matching passwords. If email confirmation is on, the owner is asked to check their email."],
+      ["FR1.1", "Owners can create an account with name, email and password. The form requires a name, a valid email, a password of at least 8 characters, and matching passwords. If email confirmation is on, the owner is asked to check their email. Once the database has forgot password, sign-up also asks for a security question and answer."],
       ["FR1.2", "Owners can log in with email and password. Missing fields or wrong details show a clear message."],
       ["FR1.3", "Owners can log out, which ends the session and clears their data from the screen."],
       ["FR1.4", "Visitors can explore the app with a shared demo account, which no one can register over."],
+      ["FR1.5", "Forgot password, with no email: the owner enters their email, answers the security question they picked (any letter case or spacing), and sets a new password of at least 8 characters, then is logged in. 5 wrong answers lock the reset for 15 minutes. Accounts with no question, and the shared accounts, are told to ask the FurFriends team."],
     ],
     flows: [
       ["Part a: log in, demo account and log out", `
@@ -82,18 +83,40 @@ flowchart TD
   L -- No --> M[Supabase creates the<br/>account and profile]
   M --> N{Email confirmation<br/>on?}
   N -- Yes --> N1[Show: Check your email;<br/>owner opens the link, then logs in] --> X1([Log-in page])
-  N -- No --> Z[Logged in: Dashboard] --> X([End])`],
+  N -- No --> Q[Security question saved,<br/>if the form asked for one]
+  Q --> Z[Logged in: Dashboard] --> X([End])`],
+      ["Part c: forgot password (security question, no email)", `
+flowchart TD
+  S([From the log-in page:<br/>Forgot password?]) --> A[/Enter the account's email/]
+  qA((A)) --> A
+  A --> B{Valid email?}
+  B -- No --> B1[Show: Please enter a<br/>valid email address] --> rA1((A))
+  B -- Yes --> C{Account has a<br/>security question?}
+  C -- No --> C1([Show: no security question;<br/>ask the FurFriends team])
+  C -- Yes --> D[Show the account's question]
+  D --> E[/Answer, new password,<br/>confirm password/]
+  qB((B)) --> E
+  E --> F{8+ characters<br/>and match?}
+  F -- No --> F1[Show what to fix] --> rB1((B))
+  F -- Yes --> G{Locked after<br/>5 wrong answers?}
+  G -- Yes --> G1([Show: try again<br/>in 15 minutes])
+  G -- No --> H{Answer matches?<br/>Any letter case}
+  H -- No --> H1[Show: tries left<br/>before a 15-minute wait] --> rB2((B))
+  H -- Yes --> I[Database saves the new password<br/>and logs out other devices]
+  I --> J[Logged in: Dashboard] --> X([End])`],
     ],
   },
   {
     id: "UC2", name: "Manage Pet Profile", source: "Figure 2.2",
-    goal: "The owner adds, edits or deletes a pet, and keeps its health records: medical history, vaccinations and documents.",
-    code: "src/components/Forms.jsx (PetForm, MedForm, VaxForm, DocForm), src/store/StoreContext.jsx (addPet, updatePet, deletePet, upsertItem, removeItem)",
+    goal: "The owner adds, edits or deletes a pet, keeps its health records (medical history, vaccinations, documents, weight history), and sees its health check.",
+    code: "src/components/Forms.jsx (PetForm, MedForm, VaxForm, DocForm), src/store/StoreContext.jsx (addPet, updatePet, deletePet, upsertItem, removeItem, saveWeight, removeWeight), src/lib/health.js, src/components/Health.jsx, supabase/migrations/20261112000000_weight_log.sql",
     frs: [
       ["FR2.1", "Add a pet with photo, name, species (cat or dog), breed, age, gender and weight. Name is required, age months must be 0 to 11, and weight must be above 0. Photos are kept in private storage under the owner's folder."],
       ["FR2.2", "Edit a pet's profile."],
       ["FR2.3", "Delete a pet, after confirming, together with all its records, photos and documents."],
       ["FR2.4", "Keep health records for each pet: medical history, vaccinations (the next due date must be after the date given) and documents (a photo or a PDF)."],
+      ["FR2.5", "Each pet has a health check from its own records: vaccines, vet checkups (yearly for adults, every 6 months for seniors), recent illness, deworming, weight for its breed and life stage, and diet (including a food with something it's allergic to). Each check is on track, check soon or act now, shown as a ring on the profile and a badge on the pet's card. It follows the checked library and is not a diagnosis."],
+      ["FR2.6", "Each pet keeps a weight history: today's weight is saved whenever its weight changes, the owner can add earlier weights or delete one, and the weight check shows the trend over the last year."],
     ],
     flows: [
       ["Part a: add or edit a pet", `
@@ -127,6 +150,22 @@ flowchart TD
   O0 --> O{All OK?}
   O -- No --> O1[Show the error] --> rC((C))
   O -- Yes --> P[Record saved under the pet,<br/>shown in its tab] --> X([End])`],
+      ["Part c: health check and weight history", `
+flowchart TD
+  S([Start]) --> A[Pet profile or My Pets]
+  A --> B[Health check from the pet's own records:<br/>vaccines, vet checkups, recent illness,<br/>deworming, weight for its breed, diet]
+  B --> C{Each check}
+  C -- In order --> C1[On track]
+  C -- Due soon or missing --> C2[Check soon]
+  C -- Overdue, or a food with<br/>something it's allergic to --> C3[Act now]
+  C1 & C2 & C3 --> D[Ring on the profile, badge on the card:<br/>how many of 6 are on track,<br/>and what to look at first]
+  D --> E{Owner adds<br/>a weight?}
+  E -- No --> X([End])
+  E -- Yes --> F[/Date and weight/]
+  F --> G{Today's date?}
+  G -- Yes --> G1[Also becomes the<br/>pet's current weight] --> H
+  G -- No --> H[Saved in the weight history]
+  H --> I[Weight check shows the trend<br/>over the last year] --> X`],
     ],
   },
   {
@@ -318,12 +357,13 @@ flowchart TD
   },
   {
     id: "UC9", name: "Manage Account Settings", source: "Figure 2.2",
-    goal: "The owner updates their details and password, and turns reminders on or off.",
-    code: "src/pages/Profile.jsx, src/store/StoreContext.jsx (updateUser, changePassword, setNotifications)",
+    goal: "The owner updates their details, password and security question, and turns reminders on or off.",
+    code: "src/pages/Profile.jsx, src/pages/Dashboard.jsx (security question reminder), src/store/StoreContext.jsx (updateUser, changePassword, saveSecurityQuestion, setNotifications)",
     frs: [
       ["FR9.1", "Update name, email, phone, city and address. Name is required and the email must be valid; a new email changes only after its confirmation link is opened."],
       ["FR9.2", "Change the password: at least 8 characters, typed twice, and the current password must be correct."],
       ["FR9.3", "The shared demo and sample accounts can't change their password or email."],
+      ["FR9.4", "Set or change the security question for forgot password: a question from the list or the owner's own, an answer of at least 2 characters, and the current password, which the database checks. The answer is kept only as a hash. Owners without one are reminded on the dashboard; the shared accounts can't set one."],
     ],
     flows: [
       ["Part a: personal information", `
@@ -363,39 +403,81 @@ flowchart TD
   M2 --> M3{Allowed?}
   M3 -- Yes --> M4[Device registered for alerts<br/>when the app is closed] --> X
   M3 -- No --> M5[Alerts only while<br/>the app is open] --> X`],
+      ["Part d: security question", `
+flowchart TD
+  S([Start]) --> A{Opened from}
+  A -- Dashboard reminder:<br/>Set a security question --> B[Profile page:<br/>Security question]
+  A -- Profile page --> B
+  B --> C{Shared demo<br/>account?}
+  C -- Yes --> C1([Show: shared accounts can't<br/>set a security question])
+  C -- No --> D[/Question from the list or my own,<br/>answer, current password/]
+  qA((A)) --> D
+  D --> E{Question chosen, answer of<br/>2+ characters, password given?}
+  E -- No --> E1[Show what to fix] --> rA1((A))
+  E -- Yes --> F{Current password<br/>correct?}
+  F -- No --> F1[Show: Your password<br/>is incorrect] --> rA2((A))
+  F -- Yes --> G[Answer saved only as a hash;<br/>forgot password now works] --> X([End])`],
     ],
   },
   {
     id: "UC10", name: "Ask FurFriends (AI assistant)", source: "Added during development, not in Figure 2.2",
-    goal: "The owner asks a pet-care question in English, Tagalog or Taglish and gets an answer from checked sources.",
-    code: "src/lib/knowledge.js, src/lib/assistant.js, src/pages/Assistant.jsx, api/ask.py",
+    goal: "The owner asks a pet-care question in English, Tagalog or Taglish and gets an answer from checked sources, in a separate chat for each pet, using that pet's own records.",
+    code: "src/lib/knowledge.js, src/lib/evidence.js, src/lib/assistant.js, src/lib/petAnswers.js, src/lib/petNotes.js, src/lib/chatHistory.js, src/pages/Assistant.jsx, api/ask.py",
     frs: [
       ["FR10.1", "Never give medicine doses; dose questions get 'only a vet can prescribe' advice."],
       ["FR10.2", "Give a short reply to greetings and thanks, and understand common Tagalog words."],
+      ["FR10.3", "Answer only from checked sources. The AI gets only passages about the question (none for prices, other animals, or questions the library can't answer; a law only for legal questions). An AI answer that names a law, organisation, number or medicine its passages don't have, or wanders off them, is replaced by the checked answer, and only the passages an answer uses are credited. When the AI says it couldn't find an answer although a first-aid guide or a close passage was sent, it is asked once more, and that answer is kept only if it passes the same check and uses the best passage."],
+      ["FR10.4", "Safety notes: emergency wording (English or Tagalog) brings up the first-aid guide first and 'go to a vet now'; an answer about a symptom or something the pet swallowed tells the owner to see a vet; a cat that hasn't eaten for days is told first to go to a vet now."],
+      ["FR10.5", "Follow-up questions keep the subject they refer to, and a new topic or animal starts fresh. The AI gets the owner's messages in the conversation, never the app's earlier answers."],
+      ["FR10.6", "With a pet chosen: questions about its own records (condition, vaccines, allergies, last vet visit, weight, diet, age, medicines) are answered from its health check, not by the AI; its name is searched as its species; the AI gets its profile (the whole profile from model v6 on); notes from its records are added under an answer only when relevant, replacing any the AI wrote; and he/she in the answer matches the pet's sex."],
+      ["FR10.7", "One conversation per pet, plus one about pets in general. Picking a pet opens its chat, the AI gets only that chat, and New chat clears only that one. Chats are saved to the owner's account (on the shared accounts, only in the browser tab)."],
+      ["FR10.8", "The AI's training data: no evaluation question or evaluation pet is trained on; the pets are simulated and labelled; 'couldn't find' examples really don't answer and never cover emergencies; symptom rules quote their checked answer word for word and are used only after two teammates approve them."],
     ],
-    note: "These tests cover the assistant's fixed safety rules. How accurate the AI's own answers are is measured separately, with the 31 held-out questions graded by the team (ai-server/evaluate.py).",
+    note: "These tests run the assistant's real code on the real knowledge index, with recorded search vectors and a faked AI server. How accurate the AI's own answers are is measured separately: the automatic benchmark and pet test (ai-server/README.md) and the held-out questions graded by the team (ai-server/evaluate.py).",
     flows: [
-      ["Part a: safety rules before the AI", `
+      ["Part a: rules before the AI", `
 flowchart TD
-  S([Start]) --> A[/Owner asks a question:<br/>English, Tagalog or Taglish/]
+  S([Start]) --> P[/Owner picks a pet or Pets in general:<br/>each has its own chat, UC10 part c/]
+  P --> A[/Owner asks a question:<br/>English, Tagalog or Taglish/]
   A --> U{Emergency<br/>wording?}
   U -- Yes --> U1[Red box links to the first-aid guide;<br/>the guide is given to the AI first]
   U -- No --> B{Greeting, thanks<br/>or dose question?}
   U1 --> B
   B -- Yes --> B1[Short reply, or: I can't give doses,<br/>only a vet can prescribe] --> X([End])
-  B -- No --> C{Weight or breed<br/>question, pet chosen?}
+  B -- No --> R{About the chosen<br/>pet's own records?}
+  R -- Yes --> R1[Answer from its health check:<br/>no AI, no diagnosis] --> X
+  R -- No --> C{Weight or breed<br/>question, pet chosen?}
   C -- Yes --> C1[Answer from the breed guide,<br/>using the pet's own weight] --> X
   C -- No --> UC10b[[Writing the answer, UC10 part b]]`],
       ["Part b: writing the answer", `
 flowchart TD
-  S([Question not answered<br/>by a rule]) --> D[Search on the device:<br/>2 closest checked passages]
-  D --> E[FurFriends AI on Vercel writes<br/>the answer from the 2 passages]
-  E --> F{AI answered?}
-  F -- Yes --> G[Show the answer, both sources<br/>and rating buttons]
-  F -- No: offline, limit used up,<br/>or not in the passages --> H{Checked answer<br/>close enough?}
+  S([Question not answered<br/>by a rule]) --> D[Search on the device: up to 2 checked<br/>passages about the question; the pet's<br/>name is searched as cat or dog]
+  D --> D1{Any passage<br/>about it?}
+  D1 -- No --> H
+  D1 -- Yes --> E[FurFriends AI on Vercel writes the<br/>answer from those passages and<br/>the pet's profile]
+  E --> F{What came back?}
+  F -- Nothing: offline<br/>or limit used up --> H
+  F -- Couldn't find, though a first-aid<br/>guide or close passage was sent --> F1[Asked once more: kept only<br/>if it uses the best passage] --> G0
+  F -- Couldn't find --> H
+  F -- An answer --> G0{Says only what<br/>its passages say?}
+  G0 -- Yes --> G[Show it: he/she for the pet, notes<br/>from its records, sources, rating]
+  G0 -- No --> H{Checked answer<br/>close enough?}
   H -- Yes --> I[Show the checked answer<br/>with its source]
   H -- No --> J[Say there is no checked answer<br/>yet, offer similar questions]
-  G & I & J --> X([End])`],
+  G & I & J --> K[Saved in that pet's chat] --> X([End])`],
+      ["Part c: one chat per pet", `
+flowchart TD
+  S([Ask page]) --> A[/Owner picks a pet,<br/>or Pets in general/]
+  qA((A)) --> A
+  A --> B{Shared demo<br/>account?}
+  B -- No --> C[Open that pet's chat,<br/>saved in the owner's account]
+  B -- Yes --> D[Open that pet's chat,<br/>kept in this browser tab]
+  C & D --> E[/Owner asks in this chat/]
+  E --> F[The AI gets only this chat's questions;<br/>the answer lands in this chat]
+  F --> G{Owner chooses}
+  G -- Another pet --> rA1((A))
+  G -- New chat about this pet --> H[Only this pet's<br/>chat is cleared] --> rA2((A))
+  G -- Done --> X([End])`],
     ],
   },
   {
@@ -425,7 +507,9 @@ const NOT_UNIT_TESTED = [
   ["Web push when the app is closed (UC4)", "Runs in Supabase's send-reminders edge function on a schedule, outside the app. It uses the same rules as the tested src/lib/reminders.js. It was checked end to end on the live project on 19 Oct 2026 (one real notification sent, none on the rerun)."],
   ["Live TomTom data (UC7)", "The tests use recorded TomTom answers. The live find-clinics function was checked on 29 Oct 2026: 11 clinics for Batangas City, a repeat search served from the saved search, an address search for Lipa City, and a refusal when not logged in."],
   ["Map display and Google Maps app (UC7, UC8)", "Drawing the map and opening Google Maps happen in the browser and the phone; the tests check the exact links the buttons open."],
-  ["Forgot password", "Listed in the project proposal but not built: the log-in page has no password reset."],
+  ["Forgot password in the database (UC1, UC9)", "Checking the answer, the 15-minute lock and setting the new password are done by database functions in Supabase; the unit tests use a stand-in with the same rules. The SQL itself was run on 20 Nov 2026 on a local PostgreSQL 18 with a stand-in for Supabase's auth tables (supabase/tests/security_questions.sql): all 14 checks came out as expected."],
+  ["Saved chats on the live database (UC10)", "Checked on the preview on 20 Nov 2026: the table and its row-level security with the app's public key (a stranger can't read or add chats), then saving and reopening each pet's chat by the team."],
+  ["The AI model's own answers (UC10)", "The unit tests fake the AI server. The real model is measured separately: the automatic benchmark and pet test in ai-server/README.md, and the held-out questions graded by the team."],
 ];
 
 /* ---------------------------------------------------------------- page */
@@ -539,9 +623,9 @@ const html = `<!doctype html>
   <ul>
     <li><b>Run:</b> ${esc(when)} (Philippine time), with <code>npm run test:report</code>. The results tables below are filled in from that run, not typed by hand.</li>
     <li><b>Tools:</b> Vitest ${esc(ver("vitest"))} in a simulated browser (jsdom ${esc(ver("jsdom"))}), React Testing Library ${esc(ver("@testing-library/react"))}, Node ${esc(process.version)}.</li>
-    <li><b>What is tested:</b> the app's real code (forms, the data store, scheduling, reminders, breed and emergency content, the clinic search and the assistant's safety rules). Each test is tagged with the requirement it checks.</li>
-    <li><b>Test doubles:</b> Supabase is replaced by an in-memory fake that records every database call, and TomTom by recorded answers, so tests never touch the live database or use the free TomTom searches. Date tests use a fixed clock: Thursday 29 Oct 2026, 10:00 AM.</li>
-    <li><b>Do the tests catch mistakes?</b> Before this run, three rules were broken on purpose (password length, the clinic filter, the dose refusal). The matching tests failed each time, and passed again once the code was restored.</li>
+    <li><b>What is tested:</b> the app's real code (forms, the data store, scheduling, reminders, the health check and weight history, forgot password, breed and emergency content, the clinic search, and the assistant's rules, evidence check and per-pet chats). Each test is tagged with the requirement it checks.</li>
+    <li><b>Test doubles:</b> Supabase is replaced by an in-memory fake that records every database call (its database functions, such as forgot password's, by stand-ins with the same rules), TomTom by recorded answers, and the AI server and the browser's search model by recorded answers and vectors, so tests never touch the live database or use the free TomTom searches. Reminder and schedule tests use a fixed clock (Thursday 29 Oct 2026, 10:00 AM); the health-check tests date their records from the day they run.</li>
+    <li><b>Do the tests catch mistakes?</b> On 20 Nov 2026, four rules were broken on purpose, one at a time: the password length (UC1), the evidence check's law rule (UC10), he/she for the pet (UC10) and the shared accounts' security question (UC9). The matching tests failed each time (1, 1, 5 and 1 tests), and passed again once the code was restored. The same check on 29 Oct 2026 broke the password length, the clinic filter and the dose refusal.</li>
   </ul>
   <h3>Not covered by unit tests</h3>
   <table><tbody>${NOT_UNIT_TESTED.map(([a, b]) => `<tr><td class="k" style="white-space:normal;width:32%">${esc(a)}</td><td>${esc(b)}</td></tr>`).join("")}</tbody></table>

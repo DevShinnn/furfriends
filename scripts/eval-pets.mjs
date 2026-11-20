@@ -18,7 +18,8 @@
      invented   a health word (diabetes, kidney, allergy, ...) that is in neither the prompt (pet details, passages)
                 nor the question: the model saying something about the pet that nothing told it
      species    "your dog" to a cat owner, or the other way round
-     pronoun    he/him for a female pet, or she/her for a male one
+     pronoun    he/him for a female pet, or she/her for a male one, in the model's answer; "shown" is the same check
+                on what the owner sees, after the app switches he/she to the pet's sex (matchPronouns, petAnswers.js)
    These are word checks: read the flagged answers before reporting them. */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -28,6 +29,7 @@ import { EMBED_MODEL, EMBED_OPTIONS, chatReply, decodeIndex, queryText, safetyRe
 import { checkAnswer, planAnswer } from "../src/lib/evidence.js";
 import { MODEL_HISTORY, basicPet, chatMessages, conversation, describePet, petContext, sourcesFor } from "../src/lib/prompt.js";
 import { noteQuery, petNotes, stripPetNotes } from "../src/lib/petNotes.js";
+import { matchPronouns } from "../src/lib/petAnswers.js";
 import PROMPT from "../src/lib/aiPrompt.json";
 import { asOfToday } from "./simPets.mjs";
 
@@ -121,23 +123,30 @@ if (scoreFile) {
     const given = p.messages.map((m) => m.content).join("\n").toLowerCase();
     const invented = HEALTH.filter((w) => new RegExp(`\\b${w}`, "i").test(reply) && !new RegExp(`\\b${w}`, "i").test(given));
     const species = pet.species === "Cat" ? /\byour (dog|puppy)\b/i.test(reply) : /\byour (cat|kitten)\b/i.test(reply);
-    const pronoun = pet.gender === "Female" ? /\b(he|him|his)\b/i.test(reply) : pet.gender === "Male" ? /\b(she|her|hers)\b/i.test(reply) : false;
-    return { id: a.id, pet: pet.name, species: pet.species, related: p.related, topics: p.topics, declined, accepted: !!review?.ok,
+    const wrongSex = (text) => (pet.gender === "Female" ? /\b(he|him|his)\b/i.test(text) : pet.gender === "Male" ? /\b(she|her|hers)\b/i.test(text) : false);
+    const pronoun = wrongSex(reply);
+    const shown = matchPronouns(reply, pet, { asked: question });
+    return { id: a.id, pet: pet.name, species: pet.species, gender: pet.gender, related: p.related, topics: p.topics, declined, accepted: !!review?.ok,
       problems: review?.problems || [], modelNotes: a.answer !== reply, usesName: reply.includes(pet.name), invented, wrongSpecies: species,
-      pronoun, words: reply.split(/\s+/).length, question, reply };
+      pronoun, pronounShown: wrongSex(shown), words: reply.split(/\s+/).length, question, reply, ...(shown !== reply && { shown }) };
   });
   const pct = (f, of = rows) => `${Math.round((1000 * of.filter(f).length) / (of.length || 1)) / 10}% (${of.filter(f).length}/${of.length})`;
   const report = {
     model: label, context: full ? "full profile" : "basic pet details", prompts: rows.length,
     answered: pct((r) => !r.declined), acceptedByEvidenceCheck: pct((r) => r.accepted),
     inventedHealthWord: pct((r) => r.invented.length), wrongSpecies: pct((r) => r.wrongSpecies), wrongPronoun: pct((r) => r.pronoun),
+    wrongPronounShown: pct((r) => r.pronounShown),
     wroteOwnPetNotes: pct((r) => r.modelNotes), usesPetName: pct((r) => r.usesName),
     relatedAccepted: pct((r) => r.accepted, rows.filter((r) => r.related)), unrelatedAccepted: pct((r) => r.accepted, rows.filter((r) => !r.related)),
     meanWords: Math.round(rows.reduce((n, r) => n + r.words, 0) / (rows.length || 1)),
   };
   console.log(JSON.stringify(report, null, 1));
   const flagged = rows.filter((r) => r.invented.length || r.wrongSpecies || r.pronoun);
-  for (const r of flagged) console.log(`\n${r.id} ${r.pet} (${r.species})${r.invented.length ? ` invented: ${r.invented.join(", ")}` : ""}${r.wrongSpecies ? " WRONG SPECIES" : ""}${r.pronoun ? " pronoun" : ""}\n  Q: ${r.question}\n  A: ${r.reply.slice(0, 400).replace(/\n/g, " ")}`);
+  for (const r of flagged) {
+    console.log(`\n${r.id} ${r.pet} (${r.gender} ${r.species})${r.invented.length ? ` invented: ${r.invented.join(", ")}` : ""}${r.wrongSpecies ? " WRONG SPECIES" : ""}`
+      + `${r.pronoun ? ` pronoun${r.pronounShown ? ", STILL WRONG AS SHOWN" : ", fixed as shown"}` : ""}\n  Q: ${r.question}\n  A: ${r.reply.slice(0, 400).replace(/\n/g, " ")}`
+      + `${r.shown ? `\n  Shown: ${r.shown.slice(0, 400).replace(/\n/g, " ")}` : ""}`);
+  }
   writeFileSync(join(dirname(resolve(scoreFile)), `pets-eval-${label}.json`), JSON.stringify({ report, rows }, null, 1));
 }
 if (!promptDir && !scoreFile) console.log("Use --prompts <dir> or --score <answers.jsonl> --context full|basic --label <name> (see the top of this file).");

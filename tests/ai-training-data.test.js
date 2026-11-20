@@ -15,7 +15,7 @@ const answer = (r) => r.messages.at(-1).content;
 const asked = (r) => r.messages.filter((m) => m.role === "user").map((m) => m.content);
 
 describe("AI training data (v4)", () => {
-  it("No evaluation question is trained on, not even as an earlier message in a conversation", () => {
+  it("[FR10.8] No evaluation question is trained on, not even as an earlier message in a conversation", () => {
     const evals = new Set([
       ...jsonl("ai-server/data/retrieval_eval.jsonl").flatMap((c) => c.turns),
       ...JSON.parse(readFileSync("ai-server/data/safety_eval.json", "utf8")).cases.map((c) => c.q),
@@ -24,13 +24,13 @@ describe("AI training data (v4)", () => {
     expect(rows.flatMap(asked).filter((q) => evals.has(q.trim().toLowerCase()))).toEqual([]);
   });
 
-  it("Every \"couldn't find\" answer is word for word the one the app recognises", () => {
+  it("[FR10.8] Every \"couldn't find\" answer is word for word the one the app recognises", () => {
     const declines = rows.filter((r) => /^I couldn't find/.test(answer(r)));
     expect(declines.length).toBeGreaterThan(150);
     expect(declines.every((r) => answer(r) === PROMPT.notFound)).toBe(true);
   });
 
-  it("Conversations are in the form the app sends them: the owner's messages only, then the answer", () => {
+  it("[FR10.8] Conversations are in the form the app sends them: the owner's messages only, then the answer", () => {
     const convos = rows.filter((r) => r.messages.length > 2);
     expect(convos.length).toBeGreaterThan(100);
     for (const r of convos) {
@@ -40,7 +40,7 @@ describe("AI training data (v4)", () => {
     }
   });
 
-  it("A near-miss example's passages cover none of what its question asks, by the evidence check's own measure", () => {
+  it("[FR10.8] A near-miss example's passages cover none of what its question asks, by the evidence check's own measure", () => {
     const near = rows.filter((r) => r.id.endsWith("-near"));
     expect(near.length).toBeGreaterThan(50);
     for (const r of near) {
@@ -50,7 +50,7 @@ describe("AI training data (v4)", () => {
     }
   });
 
-  it("Emergencies and poisons are never taught as \"couldn't find\"", () => {
+  it("[FR10.8] Emergencies and poisons are never taught as \"couldn't find\"", () => {
     expect(rows.filter((r) => ["emergency", "poison"].includes(r.category) && answer(r) === PROMPT.notFound)).toEqual([]);
   });
 });

@@ -155,7 +155,8 @@ only credits the passages its answer actually uses. This test measures that part
   training data. Each pet gets one question its records are about and one that isn't. The prompts are the app's own:
   the whole profile for rag-v6 and later, the basic pet details for earlier models (`knowsProfiles`). It reports how
   often the answer passes the evidence check, and three word checks to read by hand: a health word that is in neither
-  the prompt nor the question (*invented*), the wrong species, and the wrong pronoun for the pet.
+  the prompt nor the question (*invented*), the wrong species, and the wrong pronoun for the pet (*wrongPronoun* in
+  the model's answer, *wrongPronounShown* in what the owner sees after the app switches he/she to the pet's sex).
   ```
   npm run eval:pets -- --prompts ai-server/results/pets
   cd ai-server && python answer_prompts.py --prompts results/pets/pets-full.jsonl --out results/pets/answers-v6.jsonl --model exports/furfriends-rag-v6

@@ -6,6 +6,8 @@ import Icon, { Stars } from "../components/Icon";
 import { Brand, useInstallPrompt } from "../components/AppShell";
 import { useDemoAccounts } from "../components/DemoAccounts";
 import { DEMO_EMAIL, DEMO_PASS } from "../lib/demoData";
+import { supabase } from "../lib/supabase";
+import { OWN_QUESTION, QUESTIONS, resetReady } from "../lib/passwordReset";
 
 const PET = (f) => `/assets/pets/${f}.jpg`;
 
@@ -91,7 +93,10 @@ export function Login() {
       <form onSubmit={submit} noValidate>
         {error && <div className="error-msg">{error}</div>}
         <div className="field"><label htmlFor="email">Email</label><input className="input" id="email" type="email" autoComplete="email" placeholder="you@example.com" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} /></div>
-        <div className="field"><label htmlFor="password">Password</label><input className="input" id="password" type="password" autoComplete="current-password" placeholder="••••••••" value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} /></div>
+        <div className="field">
+          <div className="label-row"><label htmlFor="password">Password</label><Link className="field-link" to="/forgot">Forgot password?</Link></div>
+          <input className="input" id="password" type="password" autoComplete="current-password" placeholder="••••••••" value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} />
+        </div>
         <button className="btn btn-primary btn-block btn-lg" type="submit" disabled={busy}>{busy ? "Logging in…" : "Log in"}</button>
       </form>
       <p className="auth-switch">New to FurFriends? <Link to="/register">Create an account</Link></p>
@@ -103,16 +108,25 @@ export function Register() {
   const { user, register } = useStore();
   const { toast } = useUI();
   const navigate = useNavigate();
-  const [f, setF] = useState({ name: "", email: "", password: "", confirm: "" });
+  const [f, setF] = useState({ name: "", email: "", password: "", confirm: "", question: QUESTIONS[0], own: "", answer: "" });
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [sentTo, setSentTo] = useState("");
+  // The security question for forgot password, once the database has it (supabase/migrations/…_security_questions.sql).
+  const [withQuestion, setWithQuestion] = useState(false);
+  useEffect(() => {
+    let on = true;
+    resetReady(supabase).then((ok) => on && setWithQuestion(ok));
+    return () => { on = false; };
+  }, []);
   if (user) return <Navigate to="/app" replace />;
   const bind = (k) => ({ value: f[k], onChange: (e) => setF({ ...f, [k]: e.target.value }) });
   const submit = async (e) => {
     e.preventDefault();
     setBusy(true);
-    const { error: err, confirmEmail } = await register(f);
+    const { name, email, password, confirm } = f;
+    const { error: err, confirmEmail } = await register({ name, email, password, confirm,
+      ...(withQuestion && { question: f.question === OWN_QUESTION ? f.own : f.question, answer: f.answer }) });
     setBusy(false);
     if (err) return setError(err);
     if (confirmEmail) return setSentTo(f.email.trim());
@@ -139,9 +153,87 @@ export function Register() {
           <div className="field"><label htmlFor="password">Password</label><input className="input" id="password" type="password" autoComplete="new-password" {...bind("password")} /><div className="hint">At least 8 characters</div></div>
           <div className="field"><label htmlFor="confirm">Confirm</label><input className="input" id="confirm" type="password" autoComplete="new-password" {...bind("confirm")} /></div>
         </div>
+        {withQuestion && <QuestionFields f={f} bind={bind} />}
         <button className="btn btn-primary btn-block btn-lg" type="submit" disabled={busy}>{busy ? "Creating account…" : <>Create account <Icon name="arrowR" className="arrow" /></>}</button>
       </form>
       <p className="auth-switch">Already have an account? <Link to="/login">Log in</Link></p>
+    </AuthShell>
+  );
+}
+
+/* The security question and answer, on sign-up and in Profile. f: { question, own, answer }. */
+export function QuestionFields({ f, bind, label = "Security question", extra = null, hint = true }) {
+  const answer = <div className="field"><label htmlFor="sq-answer">Answer</label><input className="input" id="sq-answer" autoComplete="off" maxLength={100} {...bind("answer")} /><div className="hint">Capital letters and extra spaces don't matter</div></div>;
+  return (
+    <>
+      <div className="field">
+        <label htmlFor="sq">{label}</label>
+        <select className="select" id="sq" {...bind("question")}>{[...QUESTIONS, OWN_QUESTION].map((q) => <option key={q}>{q}</option>)}</select>
+        {hint && <div className="hint">If you forget your password, you'll answer this on the log-in page to set a new one. No email is sent.</div>}
+      </div>
+      {f.question === OWN_QUESTION && (
+        <div className="field"><label htmlFor="sq-own">Your question</label><input className="input" id="sq-own" maxLength={200} placeholder="A question only you know the answer to" {...bind("own")} /></div>
+      )}
+      {extra ? <div className="row">{answer}{extra}</div> : answer}
+    </>
+  );
+}
+
+/* Forgot password, with no email: the owner's email, then the security question they picked, then a new password.
+   The database checks the answer (5 wrong answers lock it for 15 minutes) and sets the password; then they're logged in. */
+export function ForgotPassword() {
+  const { user, forgotQuestion, resetPassword } = useStore();
+  const { toast } = useUI();
+  const navigate = useNavigate();
+  const [f, setF] = useState({ email: "", answer: "", next: "", confirm: "" });
+  const [question, setQuestion] = useState("");
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  if (user) return <Navigate to="/app" replace />;
+  const bind = (k) => ({ value: f[k], onChange: (e) => setF({ ...f, [k]: e.target.value }) });
+
+  const findQuestion = async (e) => {
+    e.preventDefault();
+    setBusy(true);
+    const r = await forgotQuestion(f.email);
+    setBusy(false);
+    setError(r.error || "");
+    if (r.question) setQuestion(r.question);
+  };
+  const reset = async (e) => {
+    e.preventDefault();
+    setBusy(true);
+    const err = await resetPassword({ email: f.email, answer: f.answer, next: f.next, confirm: f.confirm });
+    setBusy(false);
+    if (err) return setError(err);
+    toast("Password changed. Welcome back!"); navigate("/app");
+  };
+  const otherEmail = () => { setQuestion(""); setError(""); setF({ email: f.email, answer: "", next: "", confirm: "" }); };
+
+  return (
+    <AuthShell img="/assets/site/cat-dog-cuddle.jpg" quote="“Every vaccine date and vet document for both of my pets, right where I need them.”" by="Hana, cat & dog parent">
+      <h1>Forgot password</h1>
+      <p className="sub">{question ? "Answer your security question and choose a new password." : "Enter your account's email to see your security question. No email is sent."}</p>
+      {!question ? (
+        <form onSubmit={findQuestion} noValidate>
+          {error && <div className="error-msg">{error}</div>}
+          <div className="field"><label htmlFor="fp-email">Email</label><input className="input" id="fp-email" type="email" autoComplete="email" placeholder="you@example.com" {...bind("email")} /></div>
+          <button className="btn btn-primary btn-block btn-lg" type="submit" disabled={busy}>{busy ? "Checking…" : "Next"}</button>
+        </form>
+      ) : (
+        <form onSubmit={reset} noValidate>
+          {error && <div className="error-msg">{error}</div>}
+          <div className="sq-box"><small>Security question for {f.email.trim().toLowerCase()}</small><b>{question}</b></div>
+          <div className="field"><label htmlFor="fp-answer">Your answer</label><input className="input" id="fp-answer" autoComplete="off" {...bind("answer")} /></div>
+          <div className="row">
+            <div className="field"><label htmlFor="fp-new">New password</label><input className="input" id="fp-new" type="password" autoComplete="new-password" {...bind("next")} /><div className="hint">At least 8 characters</div></div>
+            <div className="field"><label htmlFor="fp-confirm">Confirm</label><input className="input" id="fp-confirm" type="password" autoComplete="new-password" {...bind("confirm")} /></div>
+          </div>
+          <button className="btn btn-primary btn-block btn-lg" type="submit" disabled={busy}>{busy ? "Resetting…" : "Reset password"}</button>
+          <button className="btn btn-white btn-block btn-sm" type="button" style={{ marginTop: 10 }} onClick={otherEmail}>Use a different email</button>
+        </form>
+      )}
+      <p className="auth-switch">Remembered it? <Link to="/login">Log in</Link></p>
     </AuthShell>
   );
 }

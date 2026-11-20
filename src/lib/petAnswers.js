@@ -5,7 +5,8 @@
                   (0.61 against 1.01 with "my cat", 2026-11-20 on the preview). The model still gets the owner's words.
    recordsReply   "What is Mochi's condition?", "Is Bori allergic to anything?", "Is Mochi up to date on vaccines?" are
                   about the pet's records, which the library can't answer: they get the pet's health check
-                  (health.js), word for word, with no model and no diagnosis. Symptoms still go to the library. */
+                  (health.js), word for word, with no model and no diagnosis. Symptoms still go to the library.
+   matchPronouns  "he"/"she" in an answer, switched to the pet's sex (the sources use either for any pet). */
 import { STATUS_TEXT, healthCheck } from "./health";
 import { SYMPTOM, withEnglish } from "./knowledge";
 import { petContext } from "./prompt";
@@ -93,4 +94,58 @@ function ageText(pet) {
   const y = Number(pet.ageYears) || 0, m = Number(pet.ageMonths) || 0;
   const parts = [y ? `${y} year${y === 1 ? "" : "s"}` : "", m ? `${m} month${m === 1 ? "" : "s"}` : ""].filter(Boolean);
   return parts.join(" ") || "less than a month";
+}
+
+/* ------------------------------------------------------------------ he/she for the pet
+   The checked sources say "he" or "her" about any pet, and the model copies them: in the pet test (68 questions about
+   simulated pets, ai-server/results/pets) 17 v6 answers and 15 v2 answers called the pet by the other sex, like
+   "Gently wipe her nose" to the owner of a male cat. In a pet's own chat, he/she is that pet, so the answer is switched
+   to its sex. "her" becomes "him" or "his" depending on the words around it. Nothing changes when the owner's own
+   question says he/she the other way: then it's probably about another animal. */
+const words = (s) => new Set(s.trim().split(/\s+/));
+// "her" is the object ("him") before these words, or at the end of a sentence: "give her a treat", "with her."
+const OBJECT_NEXT = words(`a an the some any this that these those each every it yourself
+  to for with at on in into onto from of off out up down over under away around through by near inside outside indoors outdoors alone
+  and or but if when while until as so because before after unless than
+  gently slowly closely carefully regularly often again now too once twice quietly immediately straight soon today`);
+// ... before these, "have her seen by a vet", "get her vaccinated".
+const PARTICIPLE = words("vaccinated checked spayed neutered examined seen treated groomed dewormed microchipped tested weighed boarded fixed sterilized sterilised castrated");
+// ... after these verbs: "let her rest", "help her eat", "stop her smelling food", "give her water", unless what follows
+// is hers: "feed her usual food".
+const VERB_OBJECT = words("let lets letting help helps helping helped make makes making made give gives giving gave offer offers offering offered feed feeds feeding fed stop stops stopping stopped prevent prevents preventing prevented");
+const POSSESSED = words("own usual regular normal favorite favourite daily prescribed current next first last full whole entire");
+// ... and "keep her calm", "keep her company" (but "keep her nails short").
+const COMPLEMENT_VERB = words("keep keeps keeping kept leave leaves leaving left get gets getting got find finds found make makes making made");
+const COMPLEMENT = words("calm warm cool comfortable comfy quiet safe still dry clean hydrated busy relaxed occupied confined rested content happy active entertained company close");
+
+const prevWord = (text, at) => (text.slice(0, at).match(/([A-Za-z][\w'’-]*)[ \t]+$/)?.[1] || "").toLowerCase();
+const nextWord = (text, end) => (text.slice(end).match(/^[ \t]+([A-Za-z][\w'’-]*)/)?.[1] || "").toLowerCase();
+function herAs(prev, next) {
+  if (!next || OBJECT_NEXT.has(next) || PARTICIPLE.has(next)) return "him";
+  if (COMPLEMENT_VERB.has(prev) && COMPLEMENT.has(next)) return "him";
+  if (VERB_OBJECT.has(prev) && !POSSESSED.has(next)) return "him";
+  return "his";
+}
+const likeCase = (w, to) => (w.length > 1 && w === w.toUpperCase() ? to.toUpperCase() : w[0] === w[0].toUpperCase() ? to[0].toUpperCase() + to.slice(1) : to);
+const TO_FEMALE = { he: "she", him: "her", himself: "herself" };
+const TO_MALE = { she: "he", hers: "his", herself: "himself" };
+
+/* The answer with he/she for the pet's sex (pet.gender "Female" or "Male"; anything else is left as it is).
+   partial: the text is still streaming in, so its last word may still grow ("he" → "heat"), and "her"/"his" wait
+   for the word after them. asked: the owner's question. */
+export function matchPronouns(text, pet, { partial = false, asked = "" } = {}) {
+  const sex = pet?.gender === "Female" ? "female" : pet?.gender === "Male" ? "male" : null;
+  if (!sex || !text) return text;
+  if (asked && (sex === "female" ? /\b(he|him|his|himself)\b/i : /\b(she|her|hers|herself)\b/i).test(asked)) return text;
+  if (partial) {
+    const cut = text.search(/(?:\b(?:her|his)\s+)?\S*$/i);
+    return matchPronouns(text.slice(0, cut), pet) + text.slice(cut);
+  }
+  return text.replace(/\b(he|him|his|himself|she|her|hers|herself)\b/gi, (w, _, at) => {
+    const lw = w.toLowerCase();
+    const to = sex === "female"
+      ? (lw === "his" ? (nextWord(text, at + w.length) ? "her" : "hers") : TO_FEMALE[lw])
+      : (lw === "her" ? herAs(prevWord(text, at), nextWord(text, at + w.length)) : TO_MALE[lw]);
+    return to ? likeCase(w, to) : w;
+  });
 }

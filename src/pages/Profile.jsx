@@ -1,5 +1,7 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { QuestionFields } from "./Auth";
+import { OWN_QUESTION, QUESTIONS } from "../lib/passwordReset";
 import { notifySupport } from "../lib/reminders";
 import { getPushSubscription, dropPushSubscription, pushConfigured } from "../lib/push";
 import { useStore } from "../store/StoreContext";
@@ -9,9 +11,14 @@ import { initials } from "../lib/utils";
 import { useInstallPrompt } from "../components/AppShell";
 
 export default function Profile() {
-  const { user, pets, logout, updateUser, changePassword, resetDemo, setNotifications, savePushSubscription, removePushSubscription } = useStore();
+  const { user, pets, logout, updateUser, changePassword, resetDemo, setNotifications, savePushSubscription, removePushSubscription,
+    securityQuestion, saveSecurityQuestion } = useStore();
   const { toast, confirm } = useUI();
   const install = useInstallPrompt();
+  // The dashboard's "Set it up" opens #/app/profile?security=1 at the security question.
+  const [params] = useSearchParams();
+  const securityRef = useRef(null);
+  useEffect(() => { if (params.get("security")) securityRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); }, [params]);
   const [info, setInfo] = useState({ name: user.name, email: user.email, phone: user.phone || "", city: user.city || "", address: user.address || "" });
   const [pw, setPw] = useState({ current: "", next: "", confirm: "" });
   const [infoErr, setInfoErr] = useState("");
@@ -116,9 +123,45 @@ export default function Profile() {
             </div>
             <div style={{ display: "flex", justifyContent: "flex-end" }}><button className="btn btn-primary" type="submit">Update password</button></div>
           </form>
+          {securityQuestion !== undefined && <div ref={securityRef}><SecurityQuestion user={user} current={securityQuestion} save={saveSecurityQuestion} /></div>}
         </div>
       </div>
     </>
+  );
+}
+
+/* Forgot password works with a security question, not email: set or change it here. The database checks the
+   current password, and keeps the answer only as a hash. */
+function SecurityQuestion({ user, current, save }) {
+  const { toast } = useUI();
+  const known = !current || QUESTIONS.includes(current);
+  const [f, setF] = useState({ question: current ? (known ? current : OWN_QUESTION) : QUESTIONS[0], own: known ? "" : current, answer: "", password: "" });
+  const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(false);
+  const bind = (k) => ({ value: f[k], onChange: (e) => setF({ ...f, [k]: e.target.value }) });
+  const submit = async (e) => {
+    e.preventDefault();
+    setBusy(true);
+    const error = await save({ question: f.question === OWN_QUESTION ? f.own : f.question, answer: f.answer, password: f.password });
+    setBusy(false);
+    setErr(error || "");
+    if (!error) { setF((x) => ({ ...x, answer: "", password: "" })); toast("Security question saved"); }
+  };
+  return (
+    <form className="card" onSubmit={submit} noValidate>
+      <div className="card-head"><h3>Security question</h3><span style={{ color: "var(--ink-3)" }}><Icon name="lock" /></span></div>
+      {user.isShared ? <p className="sq-status">Shared demo accounts can't set a security question. Log in with your own account to set one.</p> : (
+        <>
+          <p className="sq-status">{current
+            ? <>Your question: <b>{current}</b> If you forget your password, answer it on the log-in page to set a new one.</>
+            : <><b>Not set yet.</b> Without it, you can't reset your password if you forget it. No email is needed.</>}</p>
+          {err && <div className="error-msg">{err}</div>}
+          <QuestionFields f={f} bind={bind} label={current ? "New question" : "Question"} hint={false}
+            extra={<div className="field"><label htmlFor="sq-pw">Current password</label><input className="input" id="sq-pw" type="password" autoComplete="current-password" {...bind("password")} /></div>} />
+          <div style={{ display: "flex", justifyContent: "flex-end" }}><button className="btn btn-primary" type="submit" disabled={busy}>{busy ? "Saving…" : current ? "Change question" : "Save question"}</button></div>
+        </>
+      )}
+    </form>
   );
 }
 

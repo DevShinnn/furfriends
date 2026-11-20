@@ -161,6 +161,14 @@ What we learned (keep these when retraining):
   92.4%), on unanswerable ones 6.1% (v6 3.0%, v2 6.1%), 0 unsupported, wrong credits 4 (v6 4, v2 3). Pet test: 97.1%
   passed the checks (v6 89.7%, v2 94.1%), 0 invented health facts. It costs a second answer only for those questions.
   The same run found rag-v6 writing "From my records:", now also stripped (stripPetNotes).
+- **he/she is fixed by the app, not the model** (2026-11-20). The checked answers say "he" or "her" about any pet,
+  and both models copy them: in the pet test 17 of 68 v6 answers (v2: 15) called the pet by the other sex ("Gently
+  wipe her nose" to the owner of a male cat). In a pet's chat the app now switches he/she to the pet's sex before the
+  owner sees it (`matchPronouns` in src/lib/petAnswers.js; "her" becomes "him" or "his" from the words around it),
+  also while the answer streams in, and also in the checked answers and the cat-appetite advice. Nothing changes when
+  the owner's own question says he/she the other way. Re-scored on the same saved answers (`wrongPronounShown` in
+  `results/pets/pets-eval-v6.json` and `-v2.json`): v6 1 of 68 (the question itself said "his paw" for a female
+  dog), v2 0 of 68; every other number unchanged. No retraining needed.
 - **Never train on the evaluation questions.** v2 and v3 were trained on 11 questions that are also in
   `retrieval_eval.jsonl` and `safety_eval.json` (the library's own questions, such as "How often should I deworm my
   kitten?"). `build_rag_data.py` now leaves them out, also as earlier messages in a conversation, and

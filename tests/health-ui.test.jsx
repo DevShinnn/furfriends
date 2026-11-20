@@ -13,7 +13,7 @@ const bori = demoPets("u")[1];
 beforeEach(() => Object.assign(store, { weightLog: true, saveWeight: vi.fn(() => true), removeWeight: vi.fn(() => true) }));
 
 describe("Health indicator on screen", () => {
-  it("the panel shows the status, the checks that need a look, and the ring", () => {
+  it("[FR2.5] the panel shows the status, the checks that need a look, and the ring", () => {
     renderForm(<HealthPanel pet={bori} onAction={() => {}} />);
     expect(screen.getByText("Needs attention")).toBeTruthy();
     expect(screen.getByRole("img", { name: /Needs attention: 3 of 6 checks on track/ })).toBeTruthy();
@@ -21,7 +21,7 @@ describe("Health indicator on screen", () => {
     expect(screen.getByText(/It isn't a vet exam/)).toBeTruthy();
   });
 
-  it("the weight check shows the saved weights and a trend line, and a weight can be added", () => {
+  it("[FR2.6] the weight check shows the saved weights and a trend line, and a weight can be added", () => {
     renderForm(<HealthPanel pet={bori} onAction={() => {}} />);
     fireEvent.click(screen.getByText("Show 3 more checks"));
     expect(screen.getByText(/down 1.8 kg \(6%\) since 10 months ago/)).toBeTruthy();
@@ -37,14 +37,14 @@ describe("Health indicator on screen", () => {
     expect(store.saveWeight).toHaveBeenCalledWith(bori.id, { date: addDays(-3), kg: 29 });
   });
 
-  it("without the weight_log table in the database, no weight history is offered", () => {
+  it("[FR2.6] without the weight_log table in the database, no weight history is offered", () => {
     store.weightLog = false;
     renderForm(<HealthPanel pet={bori} onAction={() => {}} />);
     fireEvent.click(screen.getByText("Show 3 more checks"));
     expect(screen.queryByRole("button", { name: /Add a weight/ })).toBeNull();
   });
 
-  it("the card badge names the most important thing to look at", () => {
+  it("[FR2.5] the card badge names the most important thing to look at", () => {
     renderForm(<HealthBadge pet={{ ...bori, weights: [{ date: todayISO(), kg: 29.4 }] }} />);
     expect(screen.getByText("Needs attention")).toBeTruthy();
     expect(screen.getByText(/DHPP overdue by 15 days/)).toBeTruthy();
