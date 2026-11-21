@@ -157,8 +157,9 @@ async function askKnowledge({ messages, pet, signal, onStatus, onText }) {
   // advice say "her" for any pet. The notes from its records use its name.
   const sexed = (text, partial = false) => matchPronouns(text, pet, { partial, asked });
   // Parts of a passage for the other animal, repeats and a cut-off end are taken out (tidyAnswer.js), before the
-  // pet's notes and the emergency advice are added. The animal: the chosen pet's, or the one the question names.
-  const kind = species || speciesAsked(last);
+  // pet's notes and the emergency advice are added. The animal: the one the question names ("can my cat eat this?"
+  // in a dog's chat is about a cat), otherwise the chosen pet's. The owner's own words: the pet's name counts as neither.
+  const kind = speciesAsked(asked) || species;
   const tidy = (text, partial = false) => tidyAnswer(text, { species: kind, partial });
   const checked = { reply: sexed(withEmergency(last, withAppetiteAdvice(q, personal(tidy(fallback.reply)), species, owner))), model: index.version, match: fallback.match, related: fallback.related };
   // Nothing checked is about the question: the model isn't asked, so it can't fill the gap with a guess.

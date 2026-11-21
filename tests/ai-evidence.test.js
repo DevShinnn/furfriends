@@ -329,6 +329,10 @@ describe("AI evidence: what the owner sees (askAssistant end to end)", () => {
     expect(r.sources.map((s) => s.id)).toContain("q95d19a");
     expect(r.reply).toMatch(/dewclaws/);
     expect(r.reply).not.toMatch(/Cats:|toe pad/);
+    // In a cat's chat the question still names a dog: the dogs' part is what stays.
+    const r2 = await ask("r10", { id: "p2", name: "Mingming", species: "Cat", breed: "", medical: [], vaccinations: [] });
+    expect(r2.reply).toMatch(/dewclaws/);
+    expect(r2.reply).not.toMatch(/toe pad/);
   });
 
   it("[FR10.3] A question with evidence goes to the AI with only that evidence, and the passage it uses is credited", async () => {

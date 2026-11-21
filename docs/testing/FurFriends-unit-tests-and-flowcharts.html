@@ -57,7 +57,7 @@
 
   <h3>How the tests were run</h3>
   <ul>
-    <li><b>Run:</b> November 21, 2026 at 6:23 PM (Philippine time), with <code>npm run test:report</code>. The results tables below are filled in from that run, not typed by hand.</li>
+    <li><b>Run:</b> November 21, 2026 at 6:37 PM (Philippine time), with <code>npm run test:report</code>. The results tables below are filled in from that run, not typed by hand.</li>
     <li><b>Tools:</b> Vitest 3.2.4 in a simulated browser (jsdom 26.1.0), React Testing Library 16.3.0, Node v22.23.4.</li>
     <li><b>What is tested:</b> the app's real code (forms, the data store, scheduling, reminders, the health check and weight history, forgot password, breed and emergency content, the clinic search, and the assistant's rules, evidence check and per-pet chats). Each test is tagged with the requirement it checks.</li>
     <li><b>Test doubles:</b> Supabase is replaced by an in-memory fake that records every database call (its database functions, such as forgot password's, by stand-ins with the same rules), TomTom by recorded answers, and the AI server and the browser's search model by recorded answers and vectors, so tests never touch the live database or use the free TomTom searches. Reminder and schedule tests use a fixed clock (Thursday 29 Oct 2026, 10:00 AM); the health-check tests date their records from the day they run.</li>
