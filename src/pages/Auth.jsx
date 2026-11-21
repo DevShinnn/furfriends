@@ -120,9 +120,11 @@ export function Register() {
     return () => { on = false; };
   }, []);
   if (user) return <Navigate to="/app" replace />;
-  const bind = (k) => ({ value: f[k], onChange: (e) => setF({ ...f, [k]: e.target.value }) });
+  // An error from the last try goes away as soon as a field is changed, so it never describes old values.
+  const bind = (k) => ({ value: f[k], onChange: (e) => { setError(""); setF({ ...f, [k]: e.target.value }); } });
   const submit = async (e) => {
     e.preventDefault();
+    if (withQuestion && f.question === OWN_QUESTION && f.own.trim().length < 5) return setError("Please type your own question (at least 5 characters).");
     setBusy(true);
     const { name, email, password, confirm } = f;
     const { error: err, confirmEmail } = await register({ name, email, password, confirm,

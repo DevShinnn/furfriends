@@ -10,7 +10,13 @@
    can also do this itself from Profile → Reset demo data.
    Reads VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY from .env.local. It signs up through
    the normal sign-up, so it needs "Confirm email" switched off (Supabase → Authentication →
-   Sign In / Providers), as it is now. Never writes to the usability survey table. */
+   Sign In / Providers), as it is now. Never writes to the usability survey table.
+
+   Your own test account (one you made on the sign-up page):
+     npm run seed -- --account you@example.com
+   asks for that account's password (typed by you, not shown, never saved) and adds all four sample pets with
+   their full records. It leaves the account's name and profile alone, and stops if the account already has pets
+   (add --replace to delete them first). The pets are the same made-up ones as in the demo account. */
 import { build } from "esbuild";
 import { spawnSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
@@ -18,6 +24,7 @@ import { existsSync, mkdtempSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { createInterface } from "node:readline";
 import { createClient } from "@supabase/supabase-js";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -72,8 +79,14 @@ async function seed(a) {
     if (!data.session) throw new Error(`${a.email}: sign-up needs email confirmation. Switch off "Confirm email" in Supabase first.`);
   }
   const uid = data.user.id;
-  const prof = await db.from("profiles").update({ name: a.name, phone: a.phone, city: a.city, notifications_enabled: true }).eq("id", uid);
-  if (prof.error) throw new Error(`profile: ${prof.error.message}`);
+  if (a.own) {
+    const has = await db.from("pets").select("id");
+    if (has.error) throw new Error(`list pets: ${has.error.message}`);
+    if (has.data.length && !a.replace) throw new Error(`${a.email} already has ${has.data.length} pet(s). Run again with --replace to delete them and add the sample pets.`);
+  } else {
+    const prof = await db.from("profiles").update({ name: a.name, phone: a.phone, city: a.city, notifications_enabled: true }).eq("id", uid);
+    if (prof.error) throw new Error(`profile: ${prof.error.message}`);
+  }
   await clearPets(db, uid);
   if (a.pets) await addDemoPets(db, uid, files, a.pets);
 
@@ -84,9 +97,29 @@ async function seed(a) {
   return back.data;
 }
 
-for (const a of ACCOUNTS) {
+/* The password of your own account, typed without showing it. */
+function askHidden(question) {
+  return new Promise((done) => {
+    const rl = createInterface({ input: process.stdin, output: process.stdout, terminal: true });
+    rl._writeToOutput = (s) => { if (s.includes(question)) process.stdout.write(question); };
+    rl.question(question, (answer) => { rl.close(); process.stdout.write("\n"); done(answer); });
+  });
+}
+
+const args = process.argv.slice(2);
+const at = args.indexOf("--account");
+let todo = ACCOUNTS;
+if (at >= 0) {
+  const email = (args[at + 1] || "").trim().toLowerCase();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) throw new Error("Usage: npm run seed -- --account you@example.com [--replace]");
+  if (ACCOUNTS.some((a) => a.email === email)) throw new Error(`${email} is a shared sample account: run npm run seed without --account.`);
+  const password = await askHidden(`Password for ${email}: `);
+  todo = [{ email, password, name: email, pets: [] /* all four */, own: true, replace: args.includes("--replace") }];
+}
+
+for (const a of todo) {
   const pets = await seed(a);
-  console.log(`${a.email} / ${a.password}  (${a.name}, ${pets.length} pets)`);
+  console.log(a.own ? `${a.email}  (${pets.length} pets)` : `${a.email} / ${a.password}  (${a.name}, ${pets.length} pets)`);
   for (const p of pets) {
     console.log(`  ${p.name.padEnd(7)} photo ${p.photo_path ? "yes" : "no "} · ${p.medical_records.length} medical · ${p.vaccinations.length} vaccines · ${p.documents.length} documents · ${p.feeding_schedules.length} meals · ${p.care_tasks.length} care tasks · ${p.feeding_log.length} meals logged`);
   }

@@ -38,6 +38,16 @@ npm run seed
 It deletes each account's pets and files and adds them again, so due dates and the
 meal log line up with today. Anything changed in these accounts during a demo is reset.
 
+## Fill your own test account
+To test with a personal account (chats are saved only on personal accounts, never on the demo or sample
+ones), make the account on the sign-up page, then run:
+```
+npm run seed -- --account you@example.com
+```
+It asks for that account's password (you type it; it isn't shown or saved) and adds all four made-up pets
+(Mochi, Bori, Ginger, Kong) with their full records, the same as the demo account. It doesn't touch the
+account's name or profile, and it stops if the account already has pets (add `--replace` to delete them first).
+
 ## Notes
 - The repo is public, so anyone could log in with these passwords. Keep only made-up data in them,
   and run `npm run seed` to reset them if someone changes something.
