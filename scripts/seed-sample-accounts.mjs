@@ -73,6 +73,8 @@ const files = {
 async function seed(a) {
   const db = createClient(URL, KEY, { auth: { persistSession: false, autoRefreshToken: false } });
   let { data, error } = await db.auth.signInWithPassword({ email: a.email, password: a.password });
+  // Your own account is never signed up here: say why the log-in failed ("Invalid login credentials" = wrong password).
+  if (error && a.own) throw new Error(`${a.email}: log-in failed: ${error.message}. Check the password by logging in on the app's log-in page (Forgot password? resets it), then run this again.`);
   if (error) {
     ({ data, error } = await db.auth.signUp({ email: a.email, password: a.password, options: { data: { name: a.name } } }));
     if (error) throw new Error(`${a.email}: sign-up failed: ${error.message}. If the account exists with another password, delete it in Supabase → Authentication → Users and run this again.`);
