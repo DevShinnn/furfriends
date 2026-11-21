@@ -201,6 +201,15 @@ What we learned (keep these when retraining):
   from its saved answers; `answer-eval-cmp-v6-rescored.json`), so a cat owner asking when to spay got the ages for
   dogs too. v7's written answers (above) are the fix. The model stays at 0.5B: Vercel's free plan gives the AI about
   3 CPU-hours a month, and a 1.5B model costs about 3 times as much per answer.
+- **v7 stopped pasting but makes more mistakes, so v6 stays live** (tested 2026-11-21, same prompts and second try
+  as v6's test). Benchmark (99 questions): pasted 3.6% of shown AI answers (v6: 81%), AI answer shown on 81.8% of
+  answerable questions (v6: 84.8%), 0 unsupported (v6: 0), vet advice 100% (v6: 100%), but 8 wrong credits (v6: 4).
+  Pet test (68): 80.9% passed the evidence check (v6: 97.1%), and 3 answers named ticks that neither the question nor
+  the profile mentioned (v6: 0). Answers that write their own sentences let a 0.5B model invent ("Scratching alone is
+  usually nothing to worry about") and mix up parts of a passage: "When should I get my female cat spayed?" got the
+  dogs' "6 to 9 months", which the evidence check can't catch because the number is in the passage. Results:
+  `results/answer-eval-cmp-v7.json`, `-cmp-v7final.json`, `results/pets/pets-eval-v7.json`. Next to try: training
+  answers made only of the passage's own sentences, the ones that fit the question (trim, don't reword).
 - **Never train on the evaluation questions.** v2 and v3 were trained on 11 questions that are also in
   `retrieval_eval.jsonl` and `safety_eval.json` (the library's own questions, such as "How often should I deworm my
   kitten?"). `build_rag_data.py` now leaves them out, also as earlier messages in a conversation, and
