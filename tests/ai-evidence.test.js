@@ -320,6 +320,17 @@ describe("AI evidence: what the owner sees (askAssistant end to end)", () => {
     expect(r.reply).not.toMatch(/sled|Chukchi/);
   });
 
+  it("[FR10.6] An answer pasted with the cats' part, to a question about a dog, is shown without it (tidyAnswer)", async () => {
+    const nails = index.entries.find((e) => e.id === "q95d19a");
+    expect(nails.a).toMatch(/\nCats:/);
+    serverReply = nails.a;   // what rag-v6 does: the whole checked answer
+    const r = await ask("r10");
+    expect(r.generated).toBe(true);
+    expect(r.sources.map((s) => s.id)).toContain("q95d19a");
+    expect(r.reply).toMatch(/dewclaws/);
+    expect(r.reply).not.toMatch(/Cats:|toe pad/);
+  });
+
   it("[FR10.3] A question with evidence goes to the AI with only that evidence, and the passage it uses is credited", async () => {
     const { evidence } = plan("r11");
     const passage = evidence[0];

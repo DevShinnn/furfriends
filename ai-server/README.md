@@ -210,6 +210,11 @@ What we learned (keep these when retraining):
   dogs' "6 to 9 months", which the evidence check can't catch because the number is in the passage. Results:
   `results/answer-eval-cmp-v7.json`, `-cmp-v7final.json`, `results/pets/pets-eval-v7.json`. Next to try: training
   answers made only of the passage's own sentences, the ones that fit the question (trim, don't reword).
+- **Messy answers are tidied by the app, not by retraining** (2026-11-21). rag-v6 repeats its passage, so what owners
+  see is only as tidy as the passages. `src/lib/tidyAnswer.js` takes out a part for the other animal (the chosen pet's,
+  or the one the question names: "Cats:" in a dog's answer), a repeated line, a stray "Q:" and a few words cut off at
+  the length limit, but never urgent advice. On v6's saved benchmark and pet-test answers (139 shown): the other
+  animal's part 10 → 0, cut-off ends fixed, no urgent line removed, 15 answers changed. The model itself is unchanged.
 - **Never train on the evaluation questions.** v2 and v3 were trained on 11 questions that are also in
   `retrieval_eval.jsonl` and `safety_eval.json` (the library's own questions, such as "How often should I deworm my
   kitten?"). `build_rag_data.py` now leaves them out, also as earlier messages in a conversation, and

@@ -5,6 +5,7 @@ import { MODEL_HISTORY, basicPet, chatMessages, conversation, describePet, knows
 import { EVIDENCE, forcedAnswerOk, planAnswer, reviewAnswer, strongEvidence, withEmergency } from "./evidence";
 import { noteQuery, petNotes, stripPetNotes, withPetNotes } from "./petNotes";
 import { matchPronouns, petAsSpecies, recordsReply } from "./petAnswers";
+import { speciesAsked, tidyAnswer } from "./tidyAnswer";
 import PROMPT from "./aiPrompt.json";
 
 /* Client for the FurFriends assistant.
@@ -155,15 +156,19 @@ async function askKnowledge({ messages, pet, signal, onStatus, onText }) {
   // he/she in what the owner sees is switched to the pet's sex (petAnswers.js): the sources and the cat-appetite
   // advice say "her" for any pet. The notes from its records use its name.
   const sexed = (text, partial = false) => matchPronouns(text, pet, { partial, asked });
-  const checked = { reply: sexed(withEmergency(last, withAppetiteAdvice(q, personal(fallback.reply), species, owner))), model: index.version, match: fallback.match, related: fallback.related };
+  // Parts of a passage for the other animal, repeats and a cut-off end are taken out (tidyAnswer.js), before the
+  // pet's notes and the emergency advice are added. The animal: the chosen pet's, or the one the question names.
+  const kind = species || speciesAsked(last);
+  const tidy = (text, partial = false) => tidyAnswer(text, { species: kind, partial });
+  const checked = { reply: sexed(withEmergency(last, withAppetiteAdvice(q, personal(tidy(fallback.reply)), species, owner))), model: index.version, match: fallback.match, related: fallback.related };
   // Nothing checked is about the question: the model isn't asked, so it can't fill the gap with a guess.
   if (!evidence.length) return checked;
   // FurFriends' trained model writes the answer from the evidence: on the server, or on this device if the
   // owner turned that on.
   // The model's "couldn't find" isn't shown while it's written: on the server it may be asked again (below).
-  const draft = onText && ((t) => { if (!declineDraft(t)) onText(sexed(t, true)); });
+  const draft = onText && ((t) => { if (!declineDraft(t)) onText(sexed(tidy(t, true), true)); });
   const write = ASSISTANT_URL ? (more = {}) => askServer(messages, pet, evidence, { signal, onStatus, onText: draft, ...more })
-    : (await chatReady()) ? () => generate(chatMessages(messages, pet, evidence, MODEL_HISTORY, knowsProfiles(CHAT_VERSION)), { signal, onStatus, onText: onText && ((t) => onText(sexed(t, true))) }).then((reply) => ({ reply, model: CHAT_VERSION }))
+    : (await chatReady()) ? () => generate(chatMessages(messages, pet, evidence, MODEL_HISTORY, knowsProfiles(CHAT_VERSION)), { signal, onStatus, onText: onText && ((t) => onText(sexed(tidy(t, true), true))) }).then((reply) => ({ reply, model: CHAT_VERSION }))
       : null;
   if (write) {
     try {
@@ -190,7 +195,7 @@ async function askKnowledge({ messages, pet, signal, onStatus, onText }) {
           // the pet ate and the answer doesn't already say to see a vet soon.
           // Written only from passages that cleared the lower limit: say it's the closest checked information.
           const uncertain = review.used.every((e) => e.kind !== "guide" && e.score < EVIDENCE.strong);
-          return { reply: sexed(withEmergency(last, withAppetiteAdvice(q, personal(withVetAdvice(q, reply)), species, owner))), model, match: sources[0], sources, related: fallback.related, generated: true, uncertain,
+          return { reply: sexed(withEmergency(last, withAppetiteAdvice(q, personal(withVetAdvice(q, tidy(reply))), species, owner))), model, match: sources[0], sources, related: fallback.related, generated: true, uncertain,
             petNotes: petNotes(about, ctx).map((x) => x.topic), modelNotes: written.reply !== reply };
         }
         console.warn("FurFriends AI answer isn't backed by its checked sources, showing the checked answer instead:", review.problems);
